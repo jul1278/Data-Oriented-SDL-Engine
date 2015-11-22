@@ -6,6 +6,7 @@
 #define SDL_RTS_GAMEAPP_H
 
 #include "Graphics.h"
+#include "IEntityTransform.h"
 
 const float PI = 3.1415927;
 
@@ -19,6 +20,11 @@ private:
     std::string appName;
 
     Graphics* graphics;
+    ComponentSpecs* componentSpecs;
+
+    std::vector<IEntityTransform*> entityTransforms;
+
+    std::vector<Entity*> entityList;
 
     std::vector<GraphicsComponent> graphicsComponents;
     std::vector<TransformComponent> transformComponents;
@@ -28,7 +34,7 @@ public:
     GameApp();
     ~GameApp();
 
-    int Run();
+    bool Run();
 };
 
 

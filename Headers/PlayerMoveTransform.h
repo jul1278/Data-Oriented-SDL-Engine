@@ -24,7 +24,7 @@ public:
 
     PlayerMoveTransform(ComponentSpecs *componentSpecs) : IEntityTransform(componentSpecs)
     {
-        entityName = "Player";
+        entityName = "BasicPlayer";
         moveIncrement = 1.0f;
         this->componentSpecs = componentSpecs;
     }

@@ -16,7 +16,7 @@ ComponentSpecs::ComponentSpecs()
 //------------------------------------------------------------------------------
 void ComponentSpecs::RegisterEntitySpec(std::string entityName, std::vector<ComponentType> componentTypes)
 {
-    if (this->componentTypeMap.find(entityName) == this->componentTypeMap.end()) {
+    if (this->EntitySpecExists(entityName)) {
         return;
     }
 

@@ -6,11 +6,9 @@
 //------------------------------------------------------------------------------------
 int main()
 {
-    TestGraphics testGraphics;
+    GameApp gameApp;
+    while (gameApp.Run() == false) {}
 
-    SDL_Delay(5000);
-    //GameApp gameApp;
-    //gameApp.Run();
     return 0;
 }
 

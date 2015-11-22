@@ -3,6 +3,8 @@
 //
 
 #include "../Headers/GameApp.h"
+#include "../Headers/PlayerMoveTransform.h"
+#include "../Headers/RectGraphicsResource.h"
 #include <time.h>
 #include <stdlib.h>
 //------------------------------------------------------------------------------------
@@ -16,6 +18,23 @@ GameApp::GameApp()
     this->appName = "SDL RTS";
 
     this->graphics = new Graphics(this->windowWidth, this->windowHeight, this->appName);
+
+    Entity* playerEntity = new Entity;
+
+    this->componentSpecs = new ComponentSpecs;
+    this->componentSpecs->RegisterEntitySpec("BasicPlayer", std::vector<ComponentType>({TRANSFORM_COMPONENT, GRAPHICS_COMPONENT}));
+
+    this->entityTransforms.push_back(new PlayerMoveTransform(this->componentSpecs));
+
+    int id = this->graphics->AddGraphicsResource(new RectGraphicsResource(0, "resource", 10.0f, 10.0f, 255, 0x8f, 0x00, 0x8f));
+
+    this->graphicsComponents.push_back(GraphicsComponent(0,id,0));
+    this->transformComponents.push_back(TransformComponent(0, Vector2D(100.0f, 100.0f), Vector2D(0.0f), Vector2D(1.0f, 1.0f)));
+
+    playerEntity->AddComponent(TRANSFORM_COMPONENT, &this->transformComponents[0]);
+    playerEntity->AddComponent(GRAPHICS_COMPONENT, &this->graphicsComponents[0]);
+
+    this->entityList.push_back(playerEntity);
 }
 //------------------------------------------------------------------------------------
 // Name: ~GameApp
@@ -23,27 +42,32 @@ GameApp::GameApp()
 //------------------------------------------------------------------------------------
 GameApp::~GameApp()
 {
+
+    for (Entity* entity : this->entityList) {
+        delete entity;
+    }
+
     delete this->graphics;
 }
 //------------------------------------------------------------------------------------
 // Name: Run
 // Desc:
 //------------------------------------------------------------------------------------
-int GameApp::Run()
+bool GameApp::Run()
 {
-    int t = 0;
+    SDL_Event event;
+    SDL_PollEvent(&event);
 
-    while(t < 1000) {
-
-        for ( TransformComponent& transformComponent : this->transformComponents) {
-
-            // Make everything spin around
-            transformComponent.orientation = Vector2D(transformComponent.orientation.Angle() + (1.0f/(80.0f*PI)));
-        }
-
-        this->graphics->UpdateGraphics(this->graphicsComponents, this->transformComponents);
-        t++;
+    if (event.type == SDL_QUIT) {
+        return true;
     }
 
-    return 0;
+    for (IEntityTransform* entityTransform : this->entityTransforms) {
+
+        this->entityList = entityTransform->Transform(this->entityList, &event);
+    }
+
+    this->graphics->UpdateGraphics(this->graphicsComponents, this->transformComponents);
+
+    return false;
 }

@@ -12,12 +12,11 @@
 #include "ComponentSpec.h"
 /*
  * This class provides an interface which allows a generic transform to be applied to a bunch of components
- * These are the so-called 'EntitySystems' found in other component based designs
+ * These are the so-called 'EntitySystems' found in other component based designs.
  *
- *
- *
+ * TODO: IEntityTransform should be able to advertise which entity classes it operates on and what events it can respond to
+ * that way a user can call this more generically.
  */
-
 
 class IEntityTransform
 {
