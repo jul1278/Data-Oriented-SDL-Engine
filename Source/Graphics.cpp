@@ -122,41 +122,30 @@ SDL_Surface* Graphics::LoadSurface(std::string filename, SDL_PixelFormat* format
     return optimizedSurface;
 }
 //------------------------------------------------------------------------------------
+// Name: AddGraphicsResource
+// Desc:
+//------------------------------------------------------------------------------------
+void Graphics::AddGraphicsResource(int resourceId, IGraphicsResource* graphicsResource)
+{
+    this->graphicsResourceMap.insert(std::pair<int, IGraphicsResource*>(resourceId, graphicsResource));
+}
+//------------------------------------------------------------------------------------
 // Name: UpdateGraphics
 // Desc:
 //------------------------------------------------------------------------------------
 void Graphics::UpdateGraphics(std::vector<GraphicsComponent> graphicsComponents, std::vector<TransformComponent> transformComponents)
 {
     int w, h;
-
     SDL_GetWindowSize(this->window, &w, &h);
+
     SDL_RenderClear(this->renderer);
 
     for (GraphicsComponent& graphicsComponent : graphicsComponents) {
         TransformComponent transformComponent = transformComponents[graphicsComponent.transformId];
 
-        float scaleX, scaleY;
-
-        scaleX = transformComponent.scale.x;
-        scaleY = transformComponent.scale.y;
-
-        SDL_Rect rect = {(int)(transformComponent.position.x-0.5f*scaleX), (int)(transformComponent.position.y-0.5*scaleY), (int) scaleX, (int) scaleY};
-
-        SDL_Surface* surface = SDL_CreateRGBSurface(0, rect.w, rect.h, 32, 0, 0, 0, 0);
-
-        if (graphicsComponent.resourceId == RESOURCE_ID_RED_SQUARE) {
-
-            SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 255, 0, 0));
-        }
-        else if (graphicsComponent.resourceId == RESOURCE_ID_BLUE_SQUARE) {
-
-            SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 0, 0, 255));
-        }
-
-        SDL_Texture* texture = SDL_CreateTextureFromSurface(this->renderer, surface);
-        SDL_FreeSurface(surface);
-        SDL_RenderCopyEx(this->renderer, texture, NULL, &rect, 180.0f/transformComponent.orientation.Angle(), NULL, SDL_FLIP_NONE);
+        IGraphicsResource* graphicsResource;
+        graphicsResource = this->graphicsResourceMap[graphicsComponent.resourceId];
+        graphicsResource->Render(this->renderer, &transformComponent);
     }
-
     SDL_RenderPresent(this->renderer);
 }

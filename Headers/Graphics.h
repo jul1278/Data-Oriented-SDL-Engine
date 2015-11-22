@@ -7,16 +7,13 @@
 
 #include <iostream>
 #include <vector>
+#include <map>
 #include "/Library/Frameworks/SDL2.framework/Headers/SDL.h"
 #include "/Library/Frameworks/SDL2_image.framework/Headers/SDL_image.h"
+#include "IGraphicsResource.h"
 #include "GraphicsComponent.h"
 #include "TransformComponent.h"
 
-enum ResourceIds
-{
-    RESOURCE_ID_BLUE_SQUARE,
-    RESOURCE_ID_RED_SQUARE
-};
 
 // Graphics
 class Graphics
@@ -29,11 +26,14 @@ private:
 
     SDL_Surface* LoadSurface(std::string filename, SDL_PixelFormat* format);
 
+    std::map<int, IGraphicsResource*> graphicsResourceMap;
+
 public:
 
     Graphics(int windowWidth, int windowHeight, std::string appName);
     ~Graphics();
 
+    void AddGraphicsResource(int resourceId, IGraphicsResource* graphicsResource);
     void UpdateGraphics(std::vector<GraphicsComponent> graphicsComponents, std::vector<TransformComponent> transformComponents);
 };
 
