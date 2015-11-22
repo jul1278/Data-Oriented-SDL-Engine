@@ -2,34 +2,11 @@
 // Created by Julian  on 22/11/15.
 //
 
-#ifndef SDLRTS_IGRAPHICSRESOURCE_H
-#define SDLRTS_IGRAPHICSRESOURCE_H
+#ifndef SDLRTS_RECTGRAPHICSRESOURCE_H
+#define SDLRTS_RECTGRAPHICSRESOURCE_H
 
-#include <iosfwd>
-#include <string>
-#include "../Headers/TransformComponent.h"
-
-class IGraphicsResource
-{
-private:
-
-    int id;
-    std::string resourceName;
-
-public:
-
-
-    IGraphicsResource(int id, std::string resourceName)
-    {
-        this->id = id;
-        this->resourceName = resourceName;
-    }
-
-    int Id() {return this->id;}
-    std::string ResourceName() { return this->resourceName;}
-
-    virtual void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent) = 0;
-};
+#include "IGraphicsResource.h"
+#include "Graphics.h"
 
 // RectGraphicsResource
 class RectGraphicsResource : public IGraphicsResource
@@ -61,23 +38,20 @@ public:
     {
 
         SDL_Rect rect = {
-                            (int)(transformComponent->position.x-0.5f*transformComponent->scale.x),
-                            (int)(transformComponent->position.y-0.5*transformComponent->scale.y),
-                            (int)this->width,
-                            (int)this->height
-                        };
+                (int)(transformComponent->position.x-0.5f*transformComponent->scale.x),
+                (int)(transformComponent->position.y-0.5*transformComponent->scale.y),
+                (int)this->width,
+                (int)this->height
+        };
 
         SDL_Surface* surface = SDL_CreateRGBSurface(0, rect.w, rect.h, 32, 0, 0, 0, 0);
         SDL_FillRect(surface, NULL, SDL_MapRGBA(surface->format, this->r, this->g, this->b, this->a));
         SDL_Texture* texture = SDL_CreateTextureFromSurface(sdlRenderer, surface);
 
         SDL_FreeSurface(surface);
-
         SDL_RenderCopyEx(sdlRenderer, texture, NULL, &rect, 180.0f/transformComponent->orientation.Angle(), NULL, SDL_FLIP_NONE);
     }
 };
 
 
-
-
-#endif //SDLRTS_GRAPHICSRESOURCE_H
+#endif //SDLRTS_RECTGRAPHICSRESOURCE_H
