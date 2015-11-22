@@ -10,6 +10,7 @@
 #include "../Headers/TransformComponent.h"
 #include "../Headers/GameApp.h"
 #include "../Headers/RectGraphicsResource.h"
+#include "../Headers/SpriteGraphicsResource.h"
 
 // TestGraphics
 class TestGraphics
@@ -28,7 +29,12 @@ public:
     TestGraphics()
     {
         this->graphics = new Graphics(640, 480, "GraphicsTest");
+        this->TestRectGraphicsResource();
+        this->TestAddSpriteGraphicResource();
+    }
 
+    bool TestRectGraphicsResource()
+    {
         int numComponents = 100;
 
         srand(time(0));
@@ -43,14 +49,35 @@ public:
 
             int graphicsId;
             int transformId = i;
-            
+
             graphicsId = this->graphics->AddGraphicsResource(new RectGraphicsResource(i, "rectGraphicsResource", 10.0f, 10.0f, 0xff, 0x8f, 0x00, i*0x08));
 
             this->graphicsComponents.push_back(GraphicsComponent(i, graphicsId, transformId));
             this->transformComponents.push_back(TransformComponent(transformId, Vector2D(randX, randY), Vector2D(angle), Vector2D(scaleX,scaleY)));
         }
 
+
+
         this->graphics->UpdateGraphics(this->graphicsComponents, this->transformComponents);
+
+        return true;
+    }
+
+
+    bool TestAddSpriteGraphicResource()
+    {
+        int graphicsId;
+        int id = graphicsComponents.size();
+        int transformId = graphicsComponents.size();
+
+        graphicsId = this->graphics->LoadGraphicResource("../Resources/tech_wall2.png", "TestSprite");
+
+        this->graphicsComponents.push_back(GraphicsComponent(id, graphicsId, transformId));
+        this->transformComponents.push_back(TransformComponent(transformId, Vector2D(100.0f, 100.0f), Vector2D(PI), Vector2D(1.0f, 1.0f)));
+
+        this->graphics->UpdateGraphics(this->graphicsComponents, this->transformComponents);
+
+        return true;
     }
 
     ~TestGraphics()

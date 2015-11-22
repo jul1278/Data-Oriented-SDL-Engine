@@ -7,6 +7,7 @@
 
 #include "../Headers/IGraphicsResource.h"
 #include "Graphics.h"
+#include "GameApp.h"
 
 class SpriteGraphicsResource : public IGraphicsResource
 {
@@ -50,16 +51,13 @@ public:
                             (this->h) };
         SDL_Rect dstRect = srcRect;
 
+//        dstRect.x -= 0.5f*dstRect.x*transformComponent->scale.x;
+//        dstRect.y -= 0.5f*dstRect.y*transformComponent->scale.y;
+//        dstRect.w *= transformComponent->scale.x;
+//        dstRect.h *= transformComponent->scale.y;
 
-        dstRect.x -= 0.5f*dstRect.x*transformComponent->scale.x;
-        dstRect.y -= 0.5f*dstRect.y*transformComponent->scale.y;
-        dstRect.w *= transformComponent->scale.x;
-        dstRect.h *= transformComponent->scale.y;
-
-        SDL_RenderCopyEx(sdlRenderer, this->spriteTexture, &srcRect, &dstRect, transformComponent->orientation.Angle(), NULL, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(sdlRenderer, this->spriteTexture, &srcRect, &dstRect, transformComponent->orientation.Angle()*(180.0f/PI), NULL, SDL_FLIP_NONE);
     }
-
-
 };
 
 #endif //SDLRTS_SPRITEGRAPHICSRESOURCE_H

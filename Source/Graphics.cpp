@@ -139,14 +139,15 @@ int Graphics::LoadGraphicResource(std::string fileName, std::string resourceName
     SDL_Surface* surface = this->LoadSurface(fileName, this->sdlSurface->format);
 
     if (surface != nullptr) {
-        this->resourceSurfaceMap.insert(std::pair<std::string, SDL_Surface*>(resourceName, surface));
 
         int id = GetNextResourceId();
 
         IGraphicsResource* spriteGraphicsResource = new SpriteGraphicsResource(id, resourceName, surface);
         this->graphicsResourceMap.insert(std::pair<int, IGraphicsResource*>(id, spriteGraphicsResource));
         return id;
+
     } else {
+
         return -1;
     }
 }
