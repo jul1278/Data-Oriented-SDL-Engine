@@ -6,11 +6,10 @@
 #define SDL_RTS_TRANSFORMCOMPONENT_H
 
 #include "Vector.h"
+#include "BaseComponent.h"
 
-struct TransformComponent
+struct TransformComponent : BaseComponent
 {
-public:
-
     int id;
 
     Vector2D position;
