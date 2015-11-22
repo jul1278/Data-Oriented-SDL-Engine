@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.3)
+cmake_minimum_required(VERSION 3.1)
+project(SDLRTS)
+include_directories("/Library/Frameworks/")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -F/Library/Frameworks/ -framework SDL2 -framework SDL2_image")
+set(SOURCE_FILES Source/main.cpp Source/GameApp.cpp Source/Graphics.cpp TestClasses/TestGraphics.cpp TestClasses/TestGraphics.h TestClasses/TestGraphics.cpp TestClasses/TestGraphics.h Headers/GraphicsResource.h)
+add_executable(SDLRTS ${SOURCE_FILES} TestClasses/TestGraphics.cpp TestClasses/TestGraphics.h Headers/GraphicsResource.h)
