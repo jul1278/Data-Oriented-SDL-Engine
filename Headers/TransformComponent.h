@@ -7,7 +7,7 @@
 
 #include "Vector.h"
 
-class TransformComponent
+struct TransformComponent
 {
 public:
 

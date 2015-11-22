@@ -49,7 +49,7 @@ public:
         SDL_Texture* texture = SDL_CreateTextureFromSurface(sdlRenderer, surface);
 
         SDL_FreeSurface(surface);
-        SDL_RenderCopyEx(sdlRenderer, texture, NULL, &rect, 180.0f/transformComponent->orientation.Angle(), NULL, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(sdlRenderer, texture, NULL, &rect, (180.0f/PI)*transformComponent->orientation.Angle(), NULL, SDL_FLIP_NONE);
     }
 };
 

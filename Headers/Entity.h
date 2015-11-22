@@ -8,23 +8,10 @@
 #include "IComponent.h"
 #include <vector>
 
-class Entity
+struct Entity
 {
-private:
-
     std::vector<IComponent*> components;
     int id;
-
-public:
-
-    Entity(int id);
-    ~Entity();
-
-
-    int AddComponent(IComponent* component);
-
-    void Update();
-    int Id() { return this->id;}
 };
 
 

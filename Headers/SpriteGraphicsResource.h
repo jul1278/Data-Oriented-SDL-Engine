@@ -13,8 +13,6 @@ class SpriteGraphicsResource : public IGraphicsResource
 {
 private:
 
-    std::string fileName;
-
     int w;
     int h;
 
