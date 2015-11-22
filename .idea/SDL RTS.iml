@@ -14,7 +14,7 @@
       <sourceFolder url="file://$MODULE_DIR$/Headers/Resources.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Headers/SpriteGraphicsResource.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Headers/TriangleGraphicsResource.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Source/ComponentSpec.cpp.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Source/ComponentSpec.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Source/GameApp.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Source/Graphics.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Source/Resources.cpp" isTestSource="false" />

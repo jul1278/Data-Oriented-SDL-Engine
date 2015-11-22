@@ -16,7 +16,7 @@ private:
 
     ComponentSpecs* componentSpecs;
 
-    std::string entiyName;
+    std::string entityName;
     float moveIncrement;
 
 
@@ -24,37 +24,49 @@ public:
 
     PlayerMoveTransform(ComponentSpecs *componentSpecs) : IEntityTransform(componentSpecs)
     {
+        entityName = "Player";
+        moveIncrement = 1.0f;
         this->componentSpecs = componentSpecs;
     }
 
-    virtual void Transform(std::vector<Entity*> entities, std::vector<SDL_Event*> events)
+    virtual Entity* Transform(Entity* entity, SDL_Event* event)
     {
-        for ( SDL_Event* event : events) {
-            Transform(entities, event);
+        // Check if we can actually respond to this event
+        if (event->type != SDL_KEYDOWN) {
+            return entity;
         }
-    }
 
-    virtual void Transform( std::vector<Entity*> entities, SDL_Event* event)
-    {
-        for ( Entity* entity : entities) {
-            Transform(entity, event);
-        }
-    }
-
-    virtual void Transform(Entity* entity, SDL_Event* event)
-    {
         // Check that our entity has the correct components to satisfy this transform
-        if (!componentSpecs->CheckEntityMeetsSpec(entity, this->entiyName)) {
-            return;
+        if (!componentSpecs->CheckEntityMeetsSpec(entity, this->entityName)) {
+            return entity;
         }
 
         TransformComponent* transformComponent = (TransformComponent*)entity->GetComponent(TRANSFORM_COMPONENT);
 
-        switch() {
+        switch(event->key.keysym.scancode) {
 
-            case
+            case SDL_SCANCODE_LEFT: {
+                transformComponent->position.x -= this->moveIncrement;
+                break;
+            }
 
+            case SDL_SCANCODE_RIGHT: {
+                transformComponent->position.x += this->moveIncrement;
+                break;
+            }
+
+            case SDL_SCANCODE_UP: {
+                transformComponent->position.y -= this->moveIncrement;
+                break;
+            }
+
+            case SDL_SCANCODE_DOWN: {
+                transformComponent->position.y += this->moveIncrement;
+                break;
+            }
         }
+
+        return entity;
     }
 
 };

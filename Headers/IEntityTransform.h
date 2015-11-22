@@ -25,9 +25,26 @@ public:
 
     IEntityTransform(ComponentSpecs* componentSpecs) {}
 
-    virtual void Transform(std::vector<Entity*> entities, std::vector<SDL_Event*>) =0;
-    virtual void Transform(std::vector<Entity*> entities, SDL_Event* event) =0;
-    virtual void Transform(Entity* entity, SDL_Event* event) =0;
+    virtual std::vector<Entity*> Transform(std::vector<Entity*> entities, std::vector<SDL_Event*> events)
+    {
+        for ( SDL_Event* event : events) {
+            Transform(entities, event);
+        }
+
+        return entities;
+    }
+
+    virtual std::vector<Entity*> Transform( std::vector<Entity*> entities, SDL_Event* event)
+    {
+        for ( Entity* entity : entities) {
+            Transform(entity, event);
+        }
+
+        return entities;
+    }
+
+
+    virtual Entity* Transform(Entity* entity, SDL_Event* event) =0;
 
 };
 
