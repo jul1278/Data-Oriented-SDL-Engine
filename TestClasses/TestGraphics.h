@@ -9,6 +9,7 @@
 #include "../Headers/GraphicsComponent.h"
 #include "../Headers/TransformComponent.h"
 #include "../Headers/GameApp.h"
+#include "../Headers/RectGraphicsResource.h"
 
 // TestGraphics
 class TestGraphics
@@ -40,12 +41,13 @@ public:
             float scaleX = static_cast<float> (rand()) / (static_cast<float> (RAND_MAX/((float) 50.0f)));
             float scaleY = static_cast<float> (rand()) / (static_cast<float> (RAND_MAX/((float) 50.0f)));
 
-            this->graphicsResources.push_back(new RectGraphicsResource(i, "rectGraphicsResource", 10.0f, 10.0f, 0xff, 0x8f, 0x00, i*0x08));
+            int graphicsId;
+            int transformId = i;
+            
+            graphicsId = this->graphics->AddGraphicsResource(new RectGraphicsResource(i, "rectGraphicsResource", 10.0f, 10.0f, 0xff, 0x8f, 0x00, i*0x08));
 
-            this->graphics->AddGraphicsResource(i, graphicsResources[i]);
-
-            this->graphicsComponents.push_back(GraphicsComponent(i, i, i));
-            this->transformComponents.push_back(TransformComponent(i, Vector2D(randX, randY), Vector2D(angle), Vector2D(scaleX,scaleY)));
+            this->graphicsComponents.push_back(GraphicsComponent(i, graphicsId, transformId));
+            this->transformComponents.push_back(TransformComponent(transformId, Vector2D(randX, randY), Vector2D(angle), Vector2D(scaleX,scaleY)));
         }
 
         this->graphics->UpdateGraphics(this->graphicsComponents, this->transformComponents);

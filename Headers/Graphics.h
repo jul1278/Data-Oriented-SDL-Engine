@@ -24,16 +24,25 @@ private:
     SDL_Surface* sdlSurface;
     SDL_Window* window;
 
-    SDL_Surface* LoadSurface(std::string filename, SDL_PixelFormat* format);
+    int resourceId;
+    int GetNextResourceId() { return resourceId++; }
 
     std::map<int, IGraphicsResource*> graphicsResourceMap;
+    std::map<std::string, SDL_Surface*> resourceSurfaceMap;
+
+    static SDL_Surface* LoadSurface(std::string filename, SDL_PixelFormat* format);
 
 public:
 
     Graphics(int windowWidth, int windowHeight, std::string appName);
     ~Graphics();
 
-    void AddGraphicsResource(int resourceId, IGraphicsResource* graphicsResource);
+    SDL_PixelFormat* GetPixelFormat() { return this->sdlSurface->format;}
+
+    // Load a sprite resource and associate it with a string
+    int LoadGraphicResource(std::string fileName, std::string resourceName);
+    int AddGraphicsResource(IGraphicsResource* graphicsResource);
+
     void UpdateGraphics(std::vector<GraphicsComponent> graphicsComponents, std::vector<TransformComponent> transformComponents);
 };
 

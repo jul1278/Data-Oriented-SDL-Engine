@@ -24,7 +24,6 @@ public:
     {
 
     }
-
 };
 
 #endif //SDLRTS_TRIANGLEGRAPHICSRESOURCE_H

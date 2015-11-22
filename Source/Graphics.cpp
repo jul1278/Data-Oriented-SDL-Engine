@@ -3,6 +3,8 @@
 //
 
 #include "../Headers/Graphics.h"
+#include "../Headers/SpriteGraphicsResource.h"
+
 //------------------------------------------------------------------------------------
 // Name: LoadSurface
 // Desc:
@@ -80,6 +82,8 @@ Graphics::Graphics(int windowWidth, int windowHeight, std::string appName)
 
         return;
     }
+
+    this->resourceId = 0;
 }
 //------------------------------------------------------------------------------------
 // Name: LoadSurface
@@ -87,6 +91,11 @@ Graphics::Graphics(int windowWidth, int windowHeight, std::string appName)
 //------------------------------------------------------------------------------------
 Graphics::~Graphics()
 {
+    // Free the surfaces
+    for (std::pair<std::string, SDL_Surface*> resourceSurfaceMapElement : this->resourceSurfaceMap ) {
+        SDL_FreeSurface(resourceSurfaceMapElement.second);
+    }
+
     SDL_DestroyWindow(this->window);
     SDL_FreeSurface(this->sdlSurface);
     SDL_DestroyRenderer(this->renderer);
@@ -102,18 +111,18 @@ SDL_Surface* Graphics::LoadSurface(std::string filename, SDL_PixelFormat* format
     SDL_Surface* optimizedSurface = NULL;
 
     //Load image at specified path
-    SDL_Surface* loadedSurface = IMG_Load( filename.c_str() );
+    SDL_Surface* loadedSurface = IMG_Load(filename.c_str());
     if( loadedSurface == NULL )
     {
-        printf( "Unable to load image %s! SDL_image Error: %s\n", filename.c_str(), IMG_GetError() );
+        printf("Unable to load image %s! SDL_image Error: %s\n", filename.c_str(), IMG_GetError());
     }
     else
     {
         //Convert surface to screen format
-        optimizedSurface = SDL_ConvertSurface( loadedSurface, format, NULL );
+        optimizedSurface = SDL_ConvertSurface(loadedSurface, format, NULL);
         if( optimizedSurface == NULL )
         {
-            printf( "Unable to optimize image %s! SDL Error: %s\n", filename.c_str(), SDL_GetError() );
+            printf("Unable to optimize image %s! SDL Error: %s\n", filename.c_str(), SDL_GetError());
         }
 
         //Get rid of old loaded surface
@@ -122,12 +131,34 @@ SDL_Surface* Graphics::LoadSurface(std::string filename, SDL_PixelFormat* format
     return optimizedSurface;
 }
 //------------------------------------------------------------------------------------
+// Name: LoadGraphicResource
+// Desc:
+//------------------------------------------------------------------------------------
+int Graphics::LoadGraphicResource(std::string fileName, std::string resourceName)
+{
+    SDL_Surface* surface = this->LoadSurface(fileName, this->sdlSurface->format);
+
+    if (surface != nullptr) {
+        this->resourceSurfaceMap.insert(std::pair<std::string, SDL_Surface*>(resourceName, surface));
+
+        int id = GetNextResourceId();
+
+        IGraphicsResource* spriteGraphicsResource = new SpriteGraphicsResource(id, resourceName, surface);
+        this->graphicsResourceMap.insert(std::pair<int, IGraphicsResource*>(id, spriteGraphicsResource));
+        return id;
+    } else {
+        return -1;
+    }
+}
+//------------------------------------------------------------------------------------
 // Name: AddGraphicsResource
 // Desc:
 //------------------------------------------------------------------------------------
-void Graphics::AddGraphicsResource(int resourceId, IGraphicsResource* graphicsResource)
+int Graphics::AddGraphicsResource(IGraphicsResource* graphicsResource)
 {
+    int resourceId = this->GetNextResourceId();
     this->graphicsResourceMap.insert(std::pair<int, IGraphicsResource*>(resourceId, graphicsResource));
+    return resourceId;
 }
 //------------------------------------------------------------------------------------
 // Name: UpdateGraphics
