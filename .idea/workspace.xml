@@ -59,8 +59,8 @@
       <file leaf-file-name="IGraphicsResource.h" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Headers/IGraphicsResource.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.65346533">
-              <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.64356434">
+              <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -146,7 +146,6 @@
         <option value="$PROJECT_DIR$/Source/Resources.cpp" />
         <option value="$PROJECT_DIR$/Headers/Resources.h" />
         <option value="$PROJECT_DIR$/Source/main.cpp" />
-        <option value="$PROJECT_DIR$/Headers/IGraphicsResource.h" />
         <option value="$PROJECT_DIR$/Headers/CircleGraphicsResource.h" />
         <option value="$PROJECT_DIR$/Headers/TriangleGraphicsResource.h" />
         <option value="$PROJECT_DIR$/Headers/Graphics.h" />
@@ -163,6 +162,7 @@
         <option value="$PROJECT_DIR$/Headers/Entity.h" />
         <option value="$PROJECT_DIR$/Headers/IEvent.h" />
         <option value="$PROJECT_DIR$/Headers/IComponentTransform.h" />
+        <option value="$PROJECT_DIR$/Headers/IGraphicsResource.h" />
       </list>
     </option>
   </component>
@@ -641,8 +641,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Headers/IGraphicsResource.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.65346533">
-          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.64356434">
+          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
           <folding />
         </state>
       </provider>

@@ -18,7 +18,6 @@ private:
 
 public:
 
-
     IGraphicsResource(int id, std::string resourceName)
     {
         this->id = id;
@@ -30,11 +29,5 @@ public:
 
     virtual void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent) = 0;
 };
-
-// TriangleGraphicsResource
-
-
-
-
 
 #endif //SDLRTS_GRAPHICSRESOURCE_H
