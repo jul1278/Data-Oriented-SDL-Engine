@@ -5,8 +5,7 @@
 #ifndef SDL_RTS_TRANSFORMCOMPONENT_H
 #define SDL_RTS_TRANSFORMCOMPONENT_H
 
-#include "Vector.h"
-#include "BaseComponent.h"
+#include "Components/BaseComponent.h"
 
 struct TransformComponent : BaseComponent
 {

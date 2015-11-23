@@ -2,8 +2,8 @@
 // Created by Julian  on 17/11/15.
 //
 
-#include "../Headers/Graphics.h"
-#include "../Headers/SpriteGraphicsResource.h"
+#include "Graphics.h"
+#include "GraphicsResources/SpriteGraphicsResource.h"
 
 //------------------------------------------------------------------------------------
 // Name: LoadSurface

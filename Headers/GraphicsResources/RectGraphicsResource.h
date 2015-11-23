@@ -5,7 +5,7 @@
 #ifndef SDLRTS_RECTGRAPHICSRESOURCE_H
 #define SDLRTS_RECTGRAPHICSRESOURCE_H
 
-#include "IGraphicsResource.h"
+#include "GraphicsResources/IGraphicsResource.h"
 #include "Graphics.h"
 
 // RectGraphicsResource

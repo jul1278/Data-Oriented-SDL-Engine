@@ -3,17 +3,16 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Headers/CircleGraphicsResource.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Headers/ComponentSpec.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Headers/ComponentType.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Headers/EventType.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Headers/IEvent.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Headers/IGraphicsResource.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Headers/PlayerMoveTransform.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Headers/RectGraphicsResource.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Headers/GraphicsResources/CircleGraphicsResource.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Headers/GraphicsResources/IGraphicsResource.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Headers/GraphicsResources/RectGraphicsResource.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Headers/GraphicsResources/SpriteGraphicsResource.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Headers/GraphicsResources/TriangleGraphicsResource.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Headers/Resources.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Headers/SpriteGraphicsResource.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Headers/TriangleGraphicsResource.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Headers/Transforms/PlayerMoveTransform.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Headers/Utility.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Source/ComponentSpec.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Source/GameApp.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Source/Graphics.cpp" isTestSource="false" />
@@ -188,7 +187,8 @@
           <root url="file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/6.1.0/include" />
           <root url="file:///Library/Frameworks" />
-          <root url="file:///Library/Frameworks/Mono.framework/Headers/fontconfig" />
+          <root url="file://$MODULE_DIR$/Headers" />
+          <root url="file://$MODULE_DIR$/TestClasses" />
           <root url="file:///Library/Frameworks/SDL.framework/Headers" />
           <root url="file:///Library/Frameworks/Mono.framework/Headers/lzma" />
           <root url="file:///Library/Frameworks/iTunesLibrary.framework/Headers" />
@@ -196,11 +196,11 @@
           <root url="file:///Library/Frameworks/Mono.framework/Headers/atk-1.0" />
           <root url="file:///Library/Frameworks/Mono.framework/Headers/glib-2.0" />
           <root url="file:///Library/Frameworks/Mono.framework/Headers/pixman-1" />
-          <root url="file:///Library/Frameworks/Mono.framework/Headers/cairo" />
           <root url="file:///Library/Frameworks/Mono.framework/Headers/libglade-2.0" />
           <root url="file:///Library/Frameworks/Mono.framework/Headers/gtk-2.0" />
           <root url="file:///Library/Frameworks/Mono.framework/Headers/libcroco-0.6" />
           <root url="file:///Library/Frameworks/Mono.framework/Headers/libpng14" />
+          <root url="file:///Library/Frameworks/Mono.framework/Headers" />
           <root url="file:///Library/Frameworks/Mono.framework/Headers/igemacintegration" />
           <root url="file:///Library/Frameworks/SDL2_image.framework/Frameworks/webp.framework/Headers/webp" />
           <root url="file:///Library/Frameworks/SDL2_image.framework/Frameworks/webp.framework/Headers" />
@@ -213,11 +213,12 @@
           <root url="file:///Library/Frameworks/Mono.framework/Headers/libxml2" />
           <root url="file:///Library/Frameworks/Mono.framework/Headers/llvm-c" />
           <root url="file:///Library/Frameworks/Mono.framework/Headers/llvm" />
+          <root url="file:///Library/Frameworks/Mono.framework/Headers/cairo" />
+          <root url="file:///Library/Frameworks/Mono.framework/Headers/fontconfig" />
           <root url="file:///Library/Frameworks/Mono.framework/Headers/librsvg-2.0" />
           <root url="file:///Library/Frameworks/Mono.framework/Headers/gdk-pixbuf-2.0" />
           <root url="file:///Library/Frameworks/SDL2_image.framework/Headers" />
           <root url="file:///Library/Frameworks/SDL2.framework/Headers" />
-          <root url="file:///Library/Frameworks/Mono.framework/Headers" />
         </CLASSES>
         <SOURCES>
           <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk/System/Library/Frameworks/AGL.framework/Headers" />
@@ -381,7 +382,8 @@
           <root url="file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/6.1.0/include" />
           <root url="file:///Library/Frameworks" />
-          <root url="file:///Library/Frameworks/Mono.framework/Headers/fontconfig" />
+          <root url="file://$MODULE_DIR$/Headers" />
+          <root url="file://$MODULE_DIR$/TestClasses" />
           <root url="file:///Library/Frameworks/SDL.framework/Headers" />
           <root url="file:///Library/Frameworks/Mono.framework/Headers/lzma" />
           <root url="file:///Library/Frameworks/iTunesLibrary.framework/Headers" />
@@ -389,11 +391,11 @@
           <root url="file:///Library/Frameworks/Mono.framework/Headers/atk-1.0" />
           <root url="file:///Library/Frameworks/Mono.framework/Headers/glib-2.0" />
           <root url="file:///Library/Frameworks/Mono.framework/Headers/pixman-1" />
-          <root url="file:///Library/Frameworks/Mono.framework/Headers/cairo" />
           <root url="file:///Library/Frameworks/Mono.framework/Headers/libglade-2.0" />
           <root url="file:///Library/Frameworks/Mono.framework/Headers/gtk-2.0" />
           <root url="file:///Library/Frameworks/Mono.framework/Headers/libcroco-0.6" />
           <root url="file:///Library/Frameworks/Mono.framework/Headers/libpng14" />
+          <root url="file:///Library/Frameworks/Mono.framework/Headers" />
           <root url="file:///Library/Frameworks/Mono.framework/Headers/igemacintegration" />
           <root url="file:///Library/Frameworks/SDL2_image.framework/Frameworks/webp.framework/Headers/webp" />
           <root url="file:///Library/Frameworks/SDL2_image.framework/Frameworks/webp.framework/Headers" />
@@ -406,23 +408,36 @@
           <root url="file:///Library/Frameworks/Mono.framework/Headers/libxml2" />
           <root url="file:///Library/Frameworks/Mono.framework/Headers/llvm-c" />
           <root url="file:///Library/Frameworks/Mono.framework/Headers/llvm" />
+          <root url="file:///Library/Frameworks/Mono.framework/Headers/cairo" />
+          <root url="file:///Library/Frameworks/Mono.framework/Headers/fontconfig" />
           <root url="file:///Library/Frameworks/Mono.framework/Headers/librsvg-2.0" />
           <root url="file:///Library/Frameworks/Mono.framework/Headers/gdk-pixbuf-2.0" />
           <root url="file:///Library/Frameworks/SDL2_image.framework/Headers" />
           <root url="file:///Library/Frameworks/SDL2.framework/Headers" />
-          <root url="file:///Library/Frameworks/Mono.framework/Headers" />
         </SOURCES>
         <excluded>
-          <root url="file:///Library/Frameworks/SDL2_image.framework/Frameworks/webp.framework" />
           <root url="file:///Library/Frameworks/SDL2_image.framework" />
-          <root url="file:///Library/Frameworks/GHC.framework" />
-          <root url="file:///Library/Frameworks/SDL.framework" />
+          <root url="file:///Library/Frameworks/Maple.framework" />
           <root url="file:///Library/Frameworks/SDL2.framework" />
+          <root url="file:///Library/Frameworks/GHC.framework" />
+          <root url="file:///Library/Frameworks/SDL2_image.framework/Frameworks/webp.framework" />
+          <root url="file:///Library/Frameworks/SDL.framework" />
           <root url="file:///Library/Frameworks/Mono.framework" />
           <root url="file:///Library/Frameworks/iTunesLibrary.framework" />
           <root url="file:///Library/Frameworks/NyxAudioAnalysis.framework" />
           <root url="file:///Library/Frameworks/PluginManager.framework" />
-          <root url="file:///Library/Frameworks/Maple.framework" />
+          <root url="file://$MODULE_DIR$/Headers/GraphicsResources/CircleGraphicsResource.h" />
+          <root url="file://$MODULE_DIR$/Headers/GraphicsResources/TriangleGraphicsResource.h" />
+          <root url="file://$MODULE_DIR$/Headers/ComponentType.h" />
+          <root url="file://$MODULE_DIR$/Headers/GraphicsResources/IGraphicsResource.h" />
+          <root url="file://$MODULE_DIR$/Headers/GraphicsResources/RectGraphicsResource.h" />
+          <root url="file://$MODULE_DIR$/Headers/Utility.h" />
+          <root url="file://$MODULE_DIR$/Headers/GraphicsResources/SpriteGraphicsResource.h" />
+          <root url="file://$MODULE_DIR$/Headers/Resources.h" />
+          <root url="file://$MODULE_DIR$/Headers/ComponentSpec.h" />
+          <root url="file://$MODULE_DIR$/Headers/Transforms/PlayerMoveTransform.h" />
+          <root url="file://$MODULE_DIR$/TestClasses/TestGraphics.h" />
+          <root url="file://$MODULE_DIR$/TestClasses/TestGraphics.cpp" />
         </excluded>
       </library>
     </orderEntry>

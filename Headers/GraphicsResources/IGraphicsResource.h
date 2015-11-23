@@ -7,7 +7,7 @@
 
 #include <iosfwd>
 #include <string>
-#include "../Headers/TransformComponent.h"
+#include "Components/TransformComponent.h"
 
 class IGraphicsResource
 {

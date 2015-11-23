@@ -10,10 +10,11 @@
 #include <map>
 #include "/Library/Frameworks/SDL2.framework/Headers/SDL.h"
 #include "/Library/Frameworks/SDL2_image.framework/Headers/SDL_image.h"
-#include "IGraphicsResource.h"
-#include "GraphicsComponent.h"
-#include "TransformComponent.h"
 
+#include "GraphicsResources/IGraphicsResource.h"
+#include "Components/GraphicsComponent.h"
+#include "Components/TransformComponent.h"
+#include "Utility.h"
 
 // Graphics
 class Graphics

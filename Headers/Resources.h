@@ -10,7 +10,7 @@
 #include <map>
 #include "/Library/Frameworks/SDL2.framework/Headers/SDL.h"
 #include "/Library/Frameworks/SDL2_image.framework/Headers/SDL_image.h"
-#include "IGraphicsResource.h"
+#include "GraphicsResources/IGraphicsResource.h"
 
 // Resources
 class Resources

@@ -3,8 +3,8 @@
 //
 
 #include "../Headers/GameApp.h"
-#include "../Headers/PlayerMoveTransform.h"
-#include "../Headers/RectGraphicsResource.h"
+#include "../Headers/Transforms/PlayerMoveTransform.h"
+#include "../Headers/GraphicsResources/RectGraphicsResource.h"
 #include <time.h>
 #include <stdlib.h>
 //------------------------------------------------------------------------------------
@@ -19,6 +19,8 @@ GameApp::GameApp()
 
     this->graphics = new Graphics(this->windowWidth, this->windowHeight, this->appName);
 
+    // TODO: move most of this out somewhere else
+
     Entity* playerEntity = new Entity;
 
     this->componentSpecs = new ComponentSpecs;
@@ -26,7 +28,7 @@ GameApp::GameApp()
 
     this->entityTransforms.push_back(new PlayerMoveTransform(this->componentSpecs));
 
-    int id = this->graphics->AddGraphicsResource(new RectGraphicsResource(0, "resource", 10.0f, 10.0f, 255, 0x8f, 0x00, 0x8f));
+    int id = this->graphics->AddGraphicsResource(new RectGraphicsResource(0, "resource", 10.0f, 10.0f, 0xff, 0x8f, 0x00, 0x8f));
 
     this->graphicsComponents.push_back(GraphicsComponent(0,id,0));
     this->transformComponents.push_back(TransformComponent(0, Vector2D(100.0f, 100.0f), Vector2D(0.0f), Vector2D(1.0f, 1.0f)));
@@ -42,7 +44,6 @@ GameApp::GameApp()
 //------------------------------------------------------------------------------------
 GameApp::~GameApp()
 {
-
     for (Entity* entity : this->entityList) {
         delete entity;
     }

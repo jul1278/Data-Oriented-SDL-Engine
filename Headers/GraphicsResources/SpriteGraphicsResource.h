@@ -5,7 +5,7 @@
 #ifndef SDLRTS_SPRITEGRAPHICSRESOURCE_H
 #define SDLRTS_SPRITEGRAPHICSRESOURCE_H
 
-#include "../Headers/IGraphicsResource.h"
+#include "GraphicsResources/IGraphicsResource.h"
 #include "Graphics.h"
 #include "GameApp.h"
 

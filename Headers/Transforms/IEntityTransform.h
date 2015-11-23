@@ -6,9 +6,8 @@
 #define SDLRTS_IENTITYTRANSFORM_H
 
 #include <vector>
-#include "BaseComponent.h"
+#include "Components/BaseComponent.h"
 #include "Entity.h"
-#include "IEvent.h"
 #include "ComponentSpec.h"
 /*
  * This class provides an interface which allows a generic transform to be applied to a bunch of components

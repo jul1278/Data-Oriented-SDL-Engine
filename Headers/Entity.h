@@ -5,7 +5,7 @@
 #ifndef SDL_RTS_ENTITY_H
 #define SDL_RTS_ENTITY_H
 
-#include "BaseComponent.h"
+#include "Components/BaseComponent.h"
 #include <map>
 #include "ComponentType.h"
 

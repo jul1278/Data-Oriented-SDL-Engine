@@ -6,7 +6,7 @@
 #define SDL_RTS_GRAPHICSCOMPONENT_H
 
 #include <string>
-#include "Vector.h"
+#include "Components/BaseComponent.h"
 #include "Graphics.h"
 
 // GraphicsComponent

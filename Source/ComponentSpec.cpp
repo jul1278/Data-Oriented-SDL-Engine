@@ -2,7 +2,7 @@
 // Created by Julian  on 22/11/15.
 //
 
-#include "../Headers/ComponentSpec.h"
+#include "ComponentSpec.h"
 //------------------------------------------------------------------------------
 // Name: ComponentSpecs
 // Desc:

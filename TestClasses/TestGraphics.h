@@ -6,11 +6,11 @@
 #define SDLRTS_TESTGRAPHICS_H
 
 #include "../Headers/Graphics.h"
-#include "../Headers/GraphicsComponent.h"
-#include "../Headers/TransformComponent.h"
+#include "../Headers/Components/GraphicsComponent.h"
+#include "../Headers/Components/TransformComponent.h"
 #include "../Headers/GameApp.h"
-#include "../Headers/RectGraphicsResource.h"
-#include "../Headers/SpriteGraphicsResource.h"
+#include "../Headers/GraphicsResources/RectGraphicsResource.h"
+#include "../Headers/GraphicsResources/SpriteGraphicsResource.h"
 
 // TestGraphics
 class TestGraphics

@@ -6,9 +6,9 @@
 #define SDLRTS_PLAYERMOVETRANSFORM_H
 
 #include <SDL2/SDL_events.h>
-#include "IEntityTransform.h"
+#include "Transforms/IEntityTransform.h"
 #include "ComponentSpec.h"
-#include "TransformComponent.h"
+#include "Components/TransformComponent.h"
 
 class PlayerMoveTransform : public IEntityTransform
 {
@@ -18,7 +18,6 @@ private:
 
     std::string entityName;
     float moveIncrement;
-
 
 public:
 

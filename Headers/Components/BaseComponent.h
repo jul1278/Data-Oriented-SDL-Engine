@@ -5,6 +5,8 @@
 #ifndef SDL_RTS_ICOMPONENT_H
 #define SDL_RTS_ICOMPONENT_H
 
+#include "Vector.h"
+
 // NOTE: BaseComponent not IComponent
 
 struct BaseComponent

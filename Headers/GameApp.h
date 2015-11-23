@@ -6,9 +6,7 @@
 #define SDL_RTS_GAMEAPP_H
 
 #include "Graphics.h"
-#include "IEntityTransform.h"
-
-const float PI = 3.1415927;
+#include "Transforms/IEntityTransform.h"
 
 class GameApp
 {

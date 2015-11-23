@@ -5,7 +5,7 @@
 #ifndef SDLRTS_TRIANGLEGRAPHICSRESOURCE_H
 #define SDLRTS_TRIANGLEGRAPHICSRESOURCE_H
 
-#include "../Headers/IGraphicsResource.h"
+#include "GraphicsResources/IGraphicsResource.h"
 #include "Graphics.h"
 
 class TriangleGraphicsResource : public IGraphicsResource

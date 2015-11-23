@@ -5,7 +5,7 @@
 #ifndef SDLRTS_CIRCLEGRAPHICSRESOURCE_H
 #define SDLRTS_CIRCLEGRAPHICSRESOURCE_H
 
-#include "../Headers/IGraphicsResource.h"
+#include "GraphicsResources/IGraphicsResource.h"
 #include "Graphics.h"
 
 // CircleGraphicsResource
