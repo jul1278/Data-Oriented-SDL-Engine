@@ -20,6 +20,8 @@ private:
     uint8_t g;
     uint8_t b;
 
+    SDL_Surface* surface;
+
 public:
 
     RectGraphicsResource(int id, std::string resourceName, float width, float height, uint8_t a, uint8_t r, uint8_t g, uint8_t b) : IGraphicsResource(id, resourceName)
@@ -30,9 +32,20 @@ public:
         this->r = r;
         this->g = g;
         this->b = b;
+
+        this->surface = SDL_CreateRGBSurface(0, (int) width, (int) height, 32, 0, 0, 0, 0);
+
+        if (surface == NULL) {
+            // TODO: error
+        }
     };
 
-    ~RectGraphicsResource() {}
+    ~RectGraphicsResource()
+    {
+        if (this->surface) {
+            SDL_FreeSurface(this->surface);
+        }
+    }
 
     virtual void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent)
     {
@@ -44,11 +57,15 @@ public:
                 (int)this->height
         };
 
-        SDL_Surface* surface = SDL_CreateRGBSurface(0, rect.w, rect.h, 32, 0, 0, 0, 0);
+
         SDL_FillRect(surface, NULL, SDL_MapRGBA(surface->format, this->r, this->g, this->b, this->a));
         SDL_Texture* texture = SDL_CreateTextureFromSurface(sdlRenderer, surface);
 
-        SDL_FreeSurface(surface);
+        if (texture == NULL) {
+            // TODO: error
+            return;
+        }
+
         SDL_RenderCopyEx(sdlRenderer, texture, NULL, &rect, (180.0f/PI)*transformComponent->orientation.Angle(), NULL, SDL_FLIP_NONE);
     }
 };
