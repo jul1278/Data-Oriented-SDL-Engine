@@ -19,13 +19,14 @@ set(SOURCE_FILES
         Source/Resources.cpp Headers/Resources.h
         Headers/GraphicsResources/TriangleGraphicsResource.h
         Headers/GraphicsResources/RectGraphicsResource.h
-        Headers/GraphicsResources/CircleGraphicsResource.h
+        Headers/GraphicsResources/CircleFillGraphicsResource.h
         Headers/GraphicsResources/SpriteGraphicsResource.h
         Headers/ComponentType.h
         Headers/Transforms/PlayerMoveTransform.h
         Headers/ComponentSpec.h
         Source/ComponentSpec.cpp
-        Headers/Utility.h)
+        Headers/Utility.h
+        Headers/GraphicsResources/CircleOutlineGraphicsResource.h)
 
 add_executable(SDLRTS ${SOURCE_FILES}
 
@@ -36,9 +37,10 @@ add_executable(SDLRTS ${SOURCE_FILES}
         Headers/Resources.h
         Headers/GraphicsResources/TriangleGraphicsResource.h
         Headers/GraphicsResources/RectGraphicsResource.h
-        Headers/GraphicsResources/CircleGraphicsResource.h
+        Headers/GraphicsResources/CircleFillGraphicsResource.h
         Headers/GraphicsResources/SpriteGraphicsResource.h
         Headers/ComponentType.h
         Headers/Transforms/PlayerMoveTransform.h
         Headers/ComponentSpec.h
-        Headers/Utility.h)
+        Headers/Utility.h
+        Headers/GraphicsResources/CircleOutlineGraphicsResource.h)

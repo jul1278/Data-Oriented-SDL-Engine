@@ -5,7 +5,8 @@
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Headers/ComponentSpec.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Headers/ComponentType.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Headers/GraphicsResources/CircleGraphicsResource.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Headers/GraphicsResources/CircleFIllGraphicsResource.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Headers/GraphicsResources/CircleOutlineGraphicsResource.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Headers/GraphicsResources/IGraphicsResource.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Headers/GraphicsResources/RectGraphicsResource.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Headers/GraphicsResources/SpriteGraphicsResource.h" isTestSource="false" />
@@ -417,22 +418,23 @@
         </SOURCES>
         <excluded>
           <root url="file:///Library/Frameworks/SDL2_image.framework" />
-          <root url="file:///Library/Frameworks/Maple.framework" />
+          <root url="file:///Library/Frameworks/Mono.framework" />
           <root url="file:///Library/Frameworks/SDL2.framework" />
           <root url="file:///Library/Frameworks/GHC.framework" />
           <root url="file:///Library/Frameworks/SDL2_image.framework/Frameworks/webp.framework" />
           <root url="file:///Library/Frameworks/SDL.framework" />
-          <root url="file:///Library/Frameworks/Mono.framework" />
           <root url="file:///Library/Frameworks/iTunesLibrary.framework" />
           <root url="file:///Library/Frameworks/NyxAudioAnalysis.framework" />
           <root url="file:///Library/Frameworks/PluginManager.framework" />
-          <root url="file://$MODULE_DIR$/Headers/GraphicsResources/CircleGraphicsResource.h" />
+          <root url="file:///Library/Frameworks/Maple.framework" />
+          <root url="file://$MODULE_DIR$/Headers/GraphicsResources/RectGraphicsResource.h" />
           <root url="file://$MODULE_DIR$/Headers/GraphicsResources/TriangleGraphicsResource.h" />
           <root url="file://$MODULE_DIR$/Headers/ComponentType.h" />
           <root url="file://$MODULE_DIR$/Headers/GraphicsResources/IGraphicsResource.h" />
-          <root url="file://$MODULE_DIR$/Headers/GraphicsResources/RectGraphicsResource.h" />
-          <root url="file://$MODULE_DIR$/Headers/Utility.h" />
           <root url="file://$MODULE_DIR$/Headers/GraphicsResources/SpriteGraphicsResource.h" />
+          <root url="file://$MODULE_DIR$/Headers/GraphicsResources/CircleFIllGraphicsResource.h" />
+          <root url="file://$MODULE_DIR$/Headers/GraphicsResources/CircleOutlineGraphicsResource.h" />
+          <root url="file://$MODULE_DIR$/Headers/Utility.h" />
           <root url="file://$MODULE_DIR$/Headers/Resources.h" />
           <root url="file://$MODULE_DIR$/Headers/ComponentSpec.h" />
           <root url="file://$MODULE_DIR$/Headers/Transforms/PlayerMoveTransform.h" />

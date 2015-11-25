@@ -4,7 +4,9 @@
 
 #include "../Headers/GameApp.h"
 #include "../Headers/Transforms/PlayerMoveTransform.h"
-#include "../Headers/GraphicsResources/CircleGraphicsResource.h"
+#include "../Headers/GraphicsResources/CircleFillGraphicsResource.h"
+#include "../Headers/GraphicsResources/CircleOutlineGraphicsResource.h"
+
 #include <time.h>
 #include <stdlib.h>
 //------------------------------------------------------------------------------------
@@ -29,7 +31,7 @@ GameApp::GameApp()
     this->entityTransforms.push_back(new PlayerMoveTransform(this->componentSpecs));
 
 
-    int id = this->graphics->AddGraphicsResource(new CircleGraphicsResource(0, "resource", 10.0f, 0xff, 0x8f, 0x00, 0x8f));
+    int id = this->graphics->AddGraphicsResource(new CircleOutlineGraphicsResource(0, "resource", 50.0f, 1.0f, 0xff, 0x8f, 0x00, 0x8f));
 
     this->graphicsComponents.push_back(GraphicsComponent(0,id,0));
     this->transformComponents.push_back(TransformComponent(0, Vector2D(100.0f, 100.0f), Vector2D(0.0f), Vector2D(1.0f, 1.0f)));
