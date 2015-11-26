@@ -49,7 +49,6 @@ public:
 
     virtual void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent)
     {
-
         SDL_Rect rect = {
                 (int)(transformComponent->position.x-0.5f*transformComponent->scale.x),
                 (int)(transformComponent->position.y-0.5*transformComponent->scale.y),

@@ -6,6 +6,7 @@
 #define SDLRTS_IENTITYTRANSFORM_H
 
 #include <vector>
+#include <SDL2/SDL_events.h>
 #include "Components/BaseComponent.h"
 #include "Entity.h"
 #include "ComponentSpec.h"

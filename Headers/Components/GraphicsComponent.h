@@ -12,13 +12,11 @@
 // GraphicsComponent
 struct GraphicsComponent : BaseComponent
 {
-    int id;
     int resourceId;
     int transformId;
 
-    GraphicsComponent(int id, int resourceId, int transformId)
+    GraphicsComponent(int resourceId, int transformId)
     {
-        this->id = id;
         this->resourceId = resourceId;
         this->transformId = transformId;
     }

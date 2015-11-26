@@ -12,6 +12,7 @@
       <sourceFolder url="file://$MODULE_DIR$/Headers/GraphicsResources/SpriteGraphicsResource.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Headers/GraphicsResources/TriangleGraphicsResource.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Headers/Resources.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Headers/Transforms/CollisionTransform.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Headers/Transforms/PlayerMoveTransform.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Headers/Utility.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Source/ComponentSpec.cpp" isTestSource="false" />
@@ -427,6 +428,7 @@
           <root url="file:///Library/Frameworks/NyxAudioAnalysis.framework" />
           <root url="file:///Library/Frameworks/PluginManager.framework" />
           <root url="file:///Library/Frameworks/Maple.framework" />
+          <root url="file://$MODULE_DIR$/Headers/Transforms/CollisionTransform.h" />
           <root url="file://$MODULE_DIR$/Headers/GraphicsResources/RectGraphicsResource.h" />
           <root url="file://$MODULE_DIR$/Headers/GraphicsResources/TriangleGraphicsResource.h" />
           <root url="file://$MODULE_DIR$/Headers/ComponentType.h" />

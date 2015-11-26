@@ -44,7 +44,7 @@ public:
     int LoadGraphicResource(std::string fileName, std::string resourceName);
     int AddGraphicsResource(IGraphicsResource* graphicsResource);
 
-    void UpdateGraphics(std::vector<GraphicsComponent> graphicsComponents, std::vector<TransformComponent> transformComponents);
+    void UpdateGraphics(std::vector<GraphicsComponent>* graphicsComponents, std::vector<TransformComponent>* transformComponents);
 };
 
 

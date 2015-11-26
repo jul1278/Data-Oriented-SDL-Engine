@@ -26,7 +26,7 @@ set(SOURCE_FILES
         Headers/ComponentSpec.h
         Source/ComponentSpec.cpp
         Headers/Utility.h
-        Headers/GraphicsResources/CircleOutlineGraphicsResource.h)
+        Headers/GraphicsResources/CircleOutlineGraphicsResource.h Headers/Transforms/CollisionTransform.h)
 
 add_executable(SDLRTS ${SOURCE_FILES}
 
@@ -43,4 +43,4 @@ add_executable(SDLRTS ${SOURCE_FILES}
         Headers/Transforms/PlayerMoveTransform.h
         Headers/ComponentSpec.h
         Headers/Utility.h
-        Headers/GraphicsResources/CircleOutlineGraphicsResource.h)
+        Headers/GraphicsResources/CircleOutlineGraphicsResource.h Headers/Transforms/CollisionTransform.h)

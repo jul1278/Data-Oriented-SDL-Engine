@@ -9,19 +9,12 @@
 
 struct TransformComponent : BaseComponent
 {
-    int id;
-
     Vector2D position;
     Vector2D scale;
     Vector2D orientation;
 
-    TransformComponent()
+    TransformComponent(Vector2D position, Vector2D orientation, Vector2D scale)
     {
-        this->id = 0;
-    }
-    TransformComponent(int id, Vector2D position, Vector2D orientation, Vector2D scale)
-    {
-        this->id = id;
         this->position = position;
         this->orientation = orientation;
         this->scale = scale;

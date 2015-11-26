@@ -12,6 +12,14 @@
 struct BaseComponent
 {
     int id;
+    int entityId;
+
+    BaseComponent()
+    {
+        this->id = 0;
+        this->entityId = 0;
+    }
+
 };
 
 

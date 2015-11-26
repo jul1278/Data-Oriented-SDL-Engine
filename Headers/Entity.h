@@ -14,6 +14,11 @@ struct Entity
     std::map<ComponentType, BaseComponent*> componentMap;
     int id;
 
+    Entity()
+    {
+        this->id = 0;
+    }
+
     void AddComponent(ComponentType componentType, BaseComponent* component)
     {
         this->componentMap.insert(std::pair<ComponentType , BaseComponent*>(componentType, component));

@@ -6,6 +6,7 @@
 #include "../Headers/Transforms/PlayerMoveTransform.h"
 #include "../Headers/GraphicsResources/CircleFillGraphicsResource.h"
 #include "../Headers/GraphicsResources/CircleOutlineGraphicsResource.h"
+#include "../Headers/GraphicsResources/TriangleGraphicsResource.h"
 
 #include <time.h>
 #include <stdlib.h>
@@ -31,10 +32,10 @@ GameApp::GameApp()
     this->entityTransforms.push_back(new PlayerMoveTransform(this->componentSpecs));
 
 
-    int id = this->graphics->AddGraphicsResource(new CircleOutlineGraphicsResource(0, "resource", 50.0f, 1.0f, 0xff, 0x8f, 0x00, 0x8f));
+    int id = this->graphics->AddGraphicsResource(new CircleFillGraphicsResource(0, "resource", 100.0f, 0xff, 0x8f, 0x00, 0x8f));
 
-    this->graphicsComponents.push_back(GraphicsComponent(0,id,0));
-    this->transformComponents.push_back(TransformComponent(0, Vector2D(100.0f, 100.0f), Vector2D(0.0f), Vector2D(1.0f, 1.0f)));
+    this->graphicsComponents.push_back(GraphicsComponent(id,0));
+    this->transformComponents.push_back(TransformComponent(Vector2D(100.0f, 100.0f), Vector2D(0.0f), Vector2D(1.0f, 1.0f)));
 
     playerEntity->AddComponent(TRANSFORM_COMPONENT, &this->transformComponents[0]);
     playerEntity->AddComponent(GRAPHICS_COMPONENT, &this->graphicsComponents[0]);
@@ -71,7 +72,7 @@ bool GameApp::Run()
         this->entityList = entityTransform->Transform(this->entityList, &event);
     }
 
-    this->graphics->UpdateGraphics(this->graphicsComponents, this->transformComponents);
+    this->graphics->UpdateGraphics(&this->graphicsComponents, &this->transformComponents);
 
     return false;
 }
