@@ -5,12 +5,12 @@
 #ifndef SDLRTS_TESTGRAPHICS_H
 #define SDLRTS_TESTGRAPHICS_H
 
-#include "../Headers/Graphics.h"
-#include "../Headers/Components/GraphicsComponent.h"
-#include "../Headers/Components/TransformComponent.h"
-#include "../Headers/GameApp.h"
-#include "../Headers/GraphicsResources/RectGraphicsResource.h"
-#include "../Headers/GraphicsResources/SpriteGraphicsResource.h"
+#include "Graphics.h"
+#include "Components/GraphicsComponent.h"
+#include "Components/TransformComponent.h"
+#include "GameApp.h"
+#include "GraphicsResources/RectGraphicsResource.h"
+#include "GraphicsResources/SpriteGraphicsResource.h"
 
 // TestGraphics
 class TestGraphics
@@ -20,7 +20,6 @@ private:
     Graphics* graphics;
 
     std::vector<IGraphicsResource*> graphicsResources;
-
     std::vector<GraphicsComponent> graphicsComponents;
     std::vector<TransformComponent> transformComponents;
 
@@ -56,13 +55,10 @@ public:
             this->transformComponents.push_back(TransformComponent(Vector2D(randX, randY), Vector2D(angle), Vector2D(scaleX,scaleY)));
         }
 
-
-
         this->graphics->UpdateGraphics(&this->graphicsComponents, &this->transformComponents);
 
         return true;
     }
-
 
     bool TestAddSpriteGraphicResource()
     {

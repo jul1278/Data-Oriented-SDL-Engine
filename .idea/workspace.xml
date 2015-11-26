@@ -33,59 +33,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="IEntityTransform.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Headers/Transforms/IEntityTransform.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="45" column="67" selection-start-line="45" selection-start-column="67" selection-end-line="45" selection-end-column="67" />
-              <folding>
-                <element signature="e#111#128#0" expanded="true" />
-                <element signature="e#715#947#0" expanded="true" />
-                <element signature="e#953#1170#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CollisionTransform.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Headers/Transforms/CollisionTransform.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="31" column="13" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
-              <folding>
-                <element signature="e#307#497#0" expanded="true" />
-                <element signature="e#769#863#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PlayerMoveTransform.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Headers/Transforms/PlayerMoveTransform.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="28" />
-              <folding>
-                <element signature="e#117#145#0" expanded="true" />
-                <element signature="e#426#637#0" expanded="true" />
-                <element signature="e#643#1835#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Graphics.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Headers/Graphics.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
-              <folding>
-                <element signature="e#97#116#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Graphics.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Source/Graphics.cpp">
           <provider selected="true" editor-type-id="text-editor">
@@ -99,16 +46,105 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestGraphics.h" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TestGraphics.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TestClasses/TestGraphics.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.47519085">
-              <caret line="80" column="5" selection-start-line="80" selection-start-column="5" selection-end-line="80" selection-end-column="5" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="84" column="9" selection-start-line="84" selection-start-column="9" selection-end-line="84" selection-end-column="9" />
               <folding>
-                <element signature="e#843#2100#0" expanded="true" />
-                <element signature="e#2107#2713#0" expanded="true" />
-                <element signature="e#2719#2903#0" expanded="true" />
+                <element signature="e#103#124#0" expanded="true" />
+                <element signature="e#591#770#0" expanded="true" />
+                <element signature="e#776#2031#0" expanded="true" />
+                <element signature="e#2037#2643#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EventMap.h" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Headers/Events/EventMap.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.2557252">
+              <caret line="52" column="4" selection-start-line="52" selection-start-column="4" selection-end-line="52" selection-end-column="4" />
+              <folding>
+                <element signature="e#95#109#0" expanded="true" />
+                <element signature="e#410#433#0" expanded="true" />
+                <element signature="e#439#463#0" expanded="true" />
+                <element signature="e#469#965#0" expanded="true" />
+                <element signature="e#975#1288#0" expanded="true" />
+                <element signature="e#1294#1402#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EventHandler.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Headers/Events/EventHandler.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="11" column="6" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
+              <folding>
+                <element signature="e#103#126#0" expanded="true" />
+                <element signature="e#296#411#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ITransform.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Headers/Events/ITransform.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="IEntityTransform.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Headers/Transforms/IEntityTransform.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="45" column="67" selection-start-line="45" selection-start-column="67" selection-end-line="45" selection-end-column="67" />
+              <folding>
+                <element signature="e#111#128#0" expanded="false" />
+                <element signature="e#715#947#0" expanded="false" />
+                <element signature="e#953#1170#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EventType.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Headers/Events/EventType.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+              <folding>
+                <marker date="1448542763000" expanded="true" signature="112:116" placeholder="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EventInfo.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Headers/Events/EventInfo.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+              <folding>
+                <marker date="1448542763000" expanded="true" signature="113:117" placeholder="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Event.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Headers/Events/Event.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -126,52 +162,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BaseComponent.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Headers/Components/BaseComponent.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="19" column="27" selection-start-line="19" selection-start-column="27" selection-end-line="19" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GameApp.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Headers/GameApp.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Entity.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Headers/Entity.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="18" column="21" selection-start-line="18" selection-start-column="21" selection-end-line="18" selection-end-column="21" />
-              <folding>
-                <element signature="e#93#130#0" expanded="true" />
-                <element signature="e#313#501#0" expanded="true" />
-                <element signature="e#507#783#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Source/IComponent.cpp" />
-        <option value="$PROJECT_DIR$/Source/TransformComponent.cpp" />
-        <option value="$PROJECT_DIR$/Headers/Vector.h" />
-        <option value="$PROJECT_DIR$/Source/TestGraphics.cpp" />
-        <option value="$PROJECT_DIR$/Source/TestGraphics.h" />
-        <option value="$PROJECT_DIR$/Headers/GraphicsResource.h" />
-        <option value="$PROJECT_DIR$/Source/Resources.cpp" />
         <option value="$PROJECT_DIR$/Headers/CircleGraphicsResource.h" />
         <option value="$PROJECT_DIR$/Headers/TriangleGraphicsResource.h" />
         <option value="$PROJECT_DIR$/Headers/SpriteGraphicsResource.h" />
@@ -216,6 +211,13 @@
         <option value="$PROJECT_DIR$/Source/Graphics.cpp" />
         <option value="$PROJECT_DIR$/Source/GameApp.cpp" />
         <option value="$PROJECT_DIR$/TestClasses/TestGraphics.h" />
+        <option value="$PROJECT_DIR$/Headers/Components/EventType.h" />
+        <option value="$PROJECT_DIR$/Headers/Components/EventInfo.h" />
+        <option value="$PROJECT_DIR$/Headers/Components/Event.h" />
+        <option value="$PROJECT_DIR$/Headers/Events/ITransform.h" />
+        <option value="$PROJECT_DIR$/Headers/Events/Event.h" />
+        <option value="$PROJECT_DIR$/Headers/Events/EventHandler.h" />
+        <option value="$PROJECT_DIR$/Headers/Events/EventMap.h" />
       </list>
     </option>
   </component>
@@ -281,7 +283,61 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Source" />
+              <option name="myItemId" value="Headers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SDL RTS" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.CidrFilesViewHelper$MyProjectTreeStructure$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Data Oriented SDL Engine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Headers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Transforms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SDL RTS" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.CidrFilesViewHelper$MyProjectTreeStructure$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Data Oriented SDL Engine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Headers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Events" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SDL RTS" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.CidrFilesViewHelper$MyProjectTreeStructure$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Data Oriented SDL Engine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Headers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Components" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -299,11 +355,11 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Headers/Events" />
       <recent name="$PROJECT_DIR$/Headers/Transforms" />
       <recent name="$PROJECT_DIR$/Headers/GraphicsResources" />
       <recent name="$PROJECT_DIR$/Headers/Components" />
       <recent name="$PROJECT_DIR$/Source" />
-      <recent name="$PROJECT_DIR$/TestClasses" />
     </key>
   </component>
   <component name="RunManager" selected="Application.SDLRTS">
@@ -426,57 +482,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Headers/Vector.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="18" column="30" selection-start-line="18" selection-start-column="30" selection-end-line="18" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Source/main.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#20#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TestClasses/TestGraphics.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="87" column="0" selection-start-line="87" selection-start-column="0" selection-end-line="87" selection-end-column="0" />
-          <folding>
-            <element signature="e#103#135#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Source/Resources.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="20" column="1" selection-start-line="20" selection-start-column="1" selection-end-line="20" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="60" selection-start-line="5" selection-start-column="60" selection-end-line="5" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Source/Graphics.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="10" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Headers/Transforms/PlayerMoveTransform.h">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -490,10 +495,10 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
           <folding>
-            <element signature="e#69#300#0" expanded="true" />
-            <element signature="e#301#795#0" expanded="true" />
-            <element signature="e#796#1187#0" expanded="true" />
-            <element signature="e#1188#1889#0" expanded="true" />
+            <element signature="e#69#300#0" expanded="false" />
+            <element signature="e#301#795#0" expanded="false" />
+            <element signature="e#796#1187#0" expanded="false" />
+            <element signature="e#1188#1889#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -670,10 +675,10 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="4" column="10" selection-start-line="4" selection-start-column="10" selection-end-line="4" selection-end-column="10" />
           <folding>
-            <element signature="e#69#300#0" expanded="true" />
-            <element signature="e#301#795#0" expanded="true" />
-            <element signature="e#796#1187#0" expanded="true" />
-            <element signature="e#1188#1889#0" expanded="true" />
+            <element signature="e#69#300#0" expanded="false" />
+            <element signature="e#301#795#0" expanded="false" />
+            <element signature="e#796#1187#0" expanded="false" />
+            <element signature="e#1188#1889#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -787,7 +792,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
           <folding>
-            <element signature="e#115#132#0" expanded="true" />
+            <element signature="e#115#132#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -813,9 +818,9 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="18" column="21" selection-start-line="18" selection-start-column="21" selection-end-line="18" selection-end-column="21" />
           <folding>
-            <element signature="e#93#130#0" expanded="true" />
-            <element signature="e#313#501#0" expanded="true" />
-            <element signature="e#507#783#0" expanded="true" />
+            <element signature="e#93#130#0" expanded="false" />
+            <element signature="e#313#501#0" expanded="false" />
+            <element signature="e#507#783#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -825,20 +830,8 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="31" column="13" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
           <folding>
-            <element signature="e#307#497#0" expanded="true" />
-            <element signature="e#769#863#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Headers/Transforms/IEntityTransform.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="45" column="67" selection-start-line="45" selection-start-column="67" selection-end-line="45" selection-end-column="67" />
-          <folding>
-            <element signature="e#111#128#0" expanded="true" />
-            <element signature="e#715#947#0" expanded="true" />
-            <element signature="e#953#1170#0" expanded="true" />
+            <element signature="e#307#497#0" expanded="false" />
+            <marker date="1448456854000" expanded="true" signature="-1:-1" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -848,9 +841,9 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="28" />
           <folding>
-            <element signature="e#117#145#0" expanded="true" />
-            <element signature="e#426#637#0" expanded="true" />
-            <element signature="e#643#1835#0" expanded="true" />
+            <element signature="e#117#145#0" expanded="false" />
+            <element signature="e#426#637#0" expanded="false" />
+            <element signature="e#643#1835#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -860,7 +853,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
           <folding>
-            <element signature="e#97#116#0" expanded="true" />
+            <element signature="e#97#116#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -889,12 +882,87 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/TestClasses/TestGraphics.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.47519085">
-          <caret line="80" column="5" selection-start-line="80" selection-start-column="5" selection-end-line="80" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="84" column="9" selection-start-line="84" selection-start-column="9" selection-end-line="84" selection-end-column="9" />
           <folding>
-            <element signature="e#843#2100#0" expanded="true" />
-            <element signature="e#2107#2713#0" expanded="true" />
-            <element signature="e#2719#2903#0" expanded="true" />
+            <element signature="e#103#124#0" expanded="true" />
+            <element signature="e#591#770#0" expanded="true" />
+            <element signature="e#776#2031#0" expanded="true" />
+            <element signature="e#2037#2643#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Headers/Events/EventType.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding>
+            <marker date="1448542763000" expanded="true" signature="112:116" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Headers/Events/EventInfo.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding>
+            <marker date="1448542763000" expanded="true" signature="113:117" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Headers/Transforms/IEntityTransform.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="45" column="67" selection-start-line="45" selection-start-column="67" selection-end-line="45" selection-end-column="67" />
+          <folding>
+            <element signature="e#111#128#0" expanded="false" />
+            <element signature="e#715#947#0" expanded="false" />
+            <element signature="e#953#1170#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Headers/Events/ITransform.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Headers/Events/Event.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Headers/Events/EventHandler.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="11" column="6" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
+          <folding>
+            <element signature="e#103#126#0" expanded="true" />
+            <element signature="e#296#411#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Headers/Events/EventMap.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2557252">
+          <caret line="52" column="4" selection-start-line="52" selection-start-column="4" selection-end-line="52" selection-end-column="4" />
+          <folding>
+            <element signature="e#95#109#0" expanded="true" />
+            <element signature="e#410#433#0" expanded="true" />
+            <element signature="e#439#463#0" expanded="true" />
+            <element signature="e#469#965#0" expanded="true" />
+            <element signature="e#975#1288#0" expanded="true" />
+            <element signature="e#1294#1402#0" expanded="true" />
           </folding>
         </state>
       </provider>
