@@ -24,8 +24,8 @@ private:
 
     std::vector<Entity*> entityList;
 
-    std::vector<GraphicsComponent> graphicsComponents;
-    std::vector<TransformComponent> transformComponents;
+    std::vector<BaseComponent*> graphicsComponents;
+    std::vector<BaseComponent*> transformComponents;
 
 public:
 

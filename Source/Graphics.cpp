@@ -165,19 +165,19 @@ int Graphics::AddGraphicsResource(IGraphicsResource* graphicsResource)
 // Name: UpdateGraphics
 // Desc:
 //------------------------------------------------------------------------------------
-void Graphics::UpdateGraphics(std::vector<GraphicsComponent>* graphicsComponents, std::vector<TransformComponent>* transformComponents)
+void Graphics::UpdateGraphics(std::vector<BaseComponent*> graphicsComponents, std::vector<BaseComponent*> transformComponents)
 {
     int w, h;
     SDL_GetWindowSize(this->window, &w, &h);
 
     SDL_RenderClear(this->renderer);
 
-    for (GraphicsComponent& graphicsComponent : *graphicsComponents) {
-        TransformComponent transformComponent = (*transformComponents)[graphicsComponent.transformId];
+    for (BaseComponent* graphicsComponent : graphicsComponents) {
+        TransformComponent* transformComponent =  (TransformComponent*) transformComponents[((GraphicsComponent*)graphicsComponent)->transformId];
 
         IGraphicsResource* graphicsResource;
-        graphicsResource = this->graphicsResourceMap[graphicsComponent.resourceId];
-        graphicsResource->Render(this->renderer, &transformComponent);
+        graphicsResource = this->graphicsResourceMap[((GraphicsComponent*)graphicsComponent)->resourceId];
+        graphicsResource->Render(this->renderer, transformComponent);
     }
     SDL_RenderPresent(this->renderer);
 }

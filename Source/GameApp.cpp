@@ -21,26 +21,6 @@ GameApp::GameApp()
     this->appName = "SDL RTS";
 
     this->graphics = new Graphics(this->windowWidth, this->windowHeight, this->appName);
-
-    // TODO: move most of this out somewhere else
-
-    Entity* playerEntity = new Entity;
-
-    this->componentSpecs = new ComponentSpecs;
-    this->componentSpecs->RegisterEntitySpec("BasicPlayer", std::vector<ComponentType>({TRANSFORM_COMPONENT, GRAPHICS_COMPONENT}));
-
-    this->entityTransforms.push_back(new PlayerMoveTransform(this->componentSpecs));
-
-
-    int id = this->graphics->AddGraphicsResource(new CircleFillGraphicsResource(0, "resource", 100.0f, 0xff, 0x8f, 0x00, 0x8f));
-
-    this->graphicsComponents.push_back(GraphicsComponent(id,0));
-    this->transformComponents.push_back(TransformComponent(Vector2D(100.0f, 100.0f), Vector2D(0.0f), Vector2D(1.0f, 1.0f)));
-
-    playerEntity->AddComponent(TRANSFORM_COMPONENT, &this->transformComponents[0]);
-    playerEntity->AddComponent(GRAPHICS_COMPONENT, &this->graphicsComponents[0]);
-
-    this->entityList.push_back(playerEntity);
 }
 //------------------------------------------------------------------------------------
 // Name: ~GameApp
@@ -72,7 +52,7 @@ bool GameApp::Run()
         this->entityList = entityTransform->Transform(this->entityList, &event);
     }
 
-    this->graphics->UpdateGraphics(&this->graphicsComponents, &this->transformComponents);
+    this->graphics->UpdateGraphics(graphicsComponents, transformComponents);
 
     return false;
 }

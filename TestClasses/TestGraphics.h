@@ -20,8 +20,8 @@ private:
     Graphics* graphics;
 
     std::vector<IGraphicsResource*> graphicsResources;
-    std::vector<GraphicsComponent> graphicsComponents;
-    std::vector<TransformComponent> transformComponents;
+    std::vector<BaseComponent*> graphicsComponents;
+    std::vector<BaseComponent*> transformComponents;
 
 public:
 
@@ -51,11 +51,11 @@ public:
 
             graphicsId = this->graphics->AddGraphicsResource(new RectGraphicsResource(i, "rectGraphicsResource", 10.0f, 10.0f, 0xff, 0x8f, 0x00, i*0x08));
 
-            this->graphicsComponents.push_back(GraphicsComponent(graphicsId, transformId));
-            this->transformComponents.push_back(TransformComponent(Vector2D(randX, randY), Vector2D(angle), Vector2D(scaleX,scaleY)));
+            this->graphicsComponents.push_back(new GraphicsComponent(graphicsId, transformId));
+            this->transformComponents.push_back(new TransformComponent(Vector2D(randX, randY), Vector2D(angle), Vector2D(scaleX,scaleY)));
         }
 
-        this->graphics->UpdateGraphics(&this->graphicsComponents, &this->transformComponents);
+        this->graphics->UpdateGraphics(graphicsComponents, transformComponents);
 
         return true;
     }
@@ -68,10 +68,10 @@ public:
 
         graphicsId = this->graphics->LoadGraphicResource("../Resources/tech_wall2.png", "TestSprite");
 
-        this->graphicsComponents.push_back(GraphicsComponent(graphicsId, transformId));
-        this->transformComponents.push_back(TransformComponent(Vector2D(100.0f, 100.0f), Vector2D(PI), Vector2D(1.0f, 1.0f)));
+        this->graphicsComponents.push_back(new GraphicsComponent(graphicsId, transformId));
+        this->transformComponents.push_back(new TransformComponent(Vector2D(100.0f, 100.0f), Vector2D(PI), Vector2D(1.0f, 1.0f)));
 
-        this->graphics->UpdateGraphics(&this->graphicsComponents, &this->transformComponents);
+        this->graphics->UpdateGraphics(graphicsComponents, transformComponents);
 
         return true;
     }

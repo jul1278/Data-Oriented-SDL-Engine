@@ -7,7 +7,8 @@
 
 enum EventType
 {
-
+    EVENT_MOUSECLICK,
+    EVENT_MESSAGE
 };
 
 #endif //SDLRTS_EVENTTYPE_H

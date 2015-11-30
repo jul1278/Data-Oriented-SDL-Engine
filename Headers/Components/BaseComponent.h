@@ -11,6 +11,7 @@
 
 struct BaseComponent
 {
+    // Has to be set by something, obviously we can't choose our own Id.
     int id;
     int entityId;
 

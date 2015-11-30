@@ -26,7 +26,16 @@ set(SOURCE_FILES
         Headers/ComponentSpec.h
         Source/ComponentSpec.cpp
         Headers/Utility.h
-        Headers/GraphicsResources/CircleOutlineGraphicsResource.h Headers/Transforms/CollisionTransform.h Headers/Events/EventMap.h Headers/Events/EventType.h Headers/Events/EventInfo.h Headers/Events/Event.h Headers/Events/EventHandler.h Headers/Events/ITransform.h)
+        Headers/GraphicsResources/CircleOutlineGraphicsResource.h
+        Headers/Transforms/CollisionTransform.h
+        Headers/Events/EventMap.h
+        Headers/Events/EventType.h
+        Headers/Events/EventInfo.h
+        Headers/Events/Event.h
+        Headers/Events/IEventHandler.h
+        Headers/Events/SimpleButtonClickEventHandler.h
+        Headers/Components/ClickableComponent.h
+        TestClasses/TestEvents.h)
 
 add_executable(SDLRTS ${SOURCE_FILES}
 
@@ -43,4 +52,13 @@ add_executable(SDLRTS ${SOURCE_FILES}
         Headers/Transforms/PlayerMoveTransform.h
         Headers/ComponentSpec.h
         Headers/Utility.h
-        Headers/GraphicsResources/CircleOutlineGraphicsResource.h Headers/Transforms/CollisionTransform.h Headers/Events/EventMap.h Headers/Events/EventType.h Headers/Events/EventInfo.h Headers/Events/Event.h Headers/Events/EventHandler.h)
+        Headers/GraphicsResources/CircleOutlineGraphicsResource.h
+        Headers/Transforms/CollisionTransform.h
+        Headers/Events/EventMap.h
+        Headers/Events/EventType.h
+        Headers/Events/EventInfo.h
+        Headers/Events/Event.h
+        Headers/Events/IEventHandler.h
+        Headers/Events/SimpleButtonClickEventHandler.h
+        Headers/Components/ClickableComponent.h
+        TestClasses/TestEvents.h)
