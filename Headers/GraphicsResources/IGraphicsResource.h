@@ -24,8 +24,8 @@ public:
         this->resourceName = resourceName;
     }
 
-    int Id() {return this->id;}
-    std::string ResourceName() { return this->resourceName;}
+    int Id() const { return this->id; }
+    std::string ResourceName() const { return this->resourceName;}
 
     virtual void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent) = 0;
 };
