@@ -33,9 +33,9 @@ public:
         this->g = g;
         this->b = b;
 
-        this->surface = SDL_CreateRGBSurface(0, (int) width, (int) height, 32, 0, 0, 0, 0);
+        this->surface = SDL_CreateRGBSurface(0, static_cast<int>(width), static_cast<int>(height), 32, 0, 0, 0, 0);
 
-        if (surface == NULL) {
+        if (surface == nullptr) {
             // TODO: error
         }
     };
@@ -49,23 +49,21 @@ public:
 
     virtual void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent)
     {
-        SDL_Rect rect = {
-                (int)(transformComponent->position.x-0.5f*transformComponent->scale.x),
-                (int)(transformComponent->position.y-0.5*transformComponent->scale.y),
-                (int)this->width,
-                (int)this->height
-        };
+        uint8_t x = static_cast<int>(transformComponent->position.x - 0.5f*transformComponent->scale.x);
+        uint8_t y = static_cast<int>(transformComponent->position.y - 0.5*transformComponent->scale.y);
+
+        SDL_Rect rect = { x, y, this->width, this->height}; 
 
 
-        SDL_FillRect(surface, NULL, SDL_MapRGBA(surface->format, this->r, this->g, this->b, this->a));
+        SDL_FillRect(surface, nullptr, SDL_MapRGBA(surface->format, this->r, this->g, this->b, this->a));
         SDL_Texture* texture = SDL_CreateTextureFromSurface(sdlRenderer, surface);
 
-        if (texture == NULL) {
+        if (texture == nullptr) {
             // TODO: error
             return;
         }
 
-        SDL_RenderCopyEx(sdlRenderer, texture, NULL, &rect, (180.0f/PI)*transformComponent->orientation.Angle(), NULL, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(sdlRenderer, texture, nullptr, &rect, (180.0f/PI)*transformComponent->orientation.Angle(), nullptr, SDL_FLIP_NONE);
     }
 };
 

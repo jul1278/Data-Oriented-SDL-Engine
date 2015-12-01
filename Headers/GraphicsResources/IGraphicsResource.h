@@ -5,8 +5,6 @@
 #ifndef SDLRTS_IGRAPHICSRESOURCE_H
 #define SDLRTS_IGRAPHICSRESOURCE_H
 
-#include <iosfwd>
-#include <string>
 #include "Components/TransformComponent.h"
 
 class IGraphicsResource

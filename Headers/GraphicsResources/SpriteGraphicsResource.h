@@ -21,11 +21,10 @@ private:
 
 public:
 
-    SpriteGraphicsResource(int id, std::string resourceName, SDL_Surface* surface)
-            : IGraphicsResource(id, resourceName)
+    SpriteGraphicsResource(int id, std::string resourceName, SDL_Surface* surface) : IGraphicsResource(id, resourceName)
     {
         this->spriteSurface = surface;
-        this->spriteTexture = NULL;
+        this->spriteTexture = nullptr;
 
         this->w = surface->w;
         this->h = surface->h;
@@ -38,17 +37,18 @@ public:
 
     virtual void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent)
     {
-        if (this->spriteTexture == NULL) {
+        if (this->spriteTexture == nullptr) {
             this->spriteTexture = SDL_CreateTextureFromSurface(sdlRenderer, this->spriteSurface);
             SDL_SetTextureBlendMode(this->spriteTexture, SDL_BLENDMODE_BLEND);
         }
 
-        SDL_Rect srcRect = {(int) (transformComponent->position.x - 0.5f*this->w),
-                            (int) (transformComponent->position.y - 0.5f*this->h),
-                            (this->w),
-                            (this->h) };
+        uint8_t x = static_cast<int>(transformComponent->position.x - 0.5f*this->w);
+        uint8_t y = static_cast<int>(transformComponent->position.y - 0.5f*this->h);
+
+        SDL_Rect srcRect = {x, y, this->w, this->h };
         SDL_Rect dstRect = srcRect;
 
+        // TODO: scale
 //        dstRect.x -= 0.5f*dstRect.x*transformComponent->scale.x;
 //        dstRect.y -= 0.5f*dstRect.y*transformComponent->scale.y;
 //        dstRect.w *= transformComponent->scale.x;

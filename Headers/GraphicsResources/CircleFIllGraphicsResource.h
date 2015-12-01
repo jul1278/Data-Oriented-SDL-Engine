@@ -51,10 +51,10 @@ public:
 
         SDL_Texture* circleTexture = SDL_CreateTextureFromSurface(sdlRenderer, this->circleSurface);
 
-        uint32_t w = static_cast<int>(transformComponent->position.x) - this->radius;
-        uint32_t h = static_cast<int>(transformComponent->position.y) - this->radius;
+        uint32_t x = static_cast<int>(transformComponent->position.x) - this->radius;
+        uint32_t y = static_cast<int>(transformComponent->position.y) - this->radius;
 
-        SDL_Rect dstRect = {w, h, 2*this->radius, 2*this->radius};
+        SDL_Rect dstRect = {x, y, 2*this->radius, 2*this->radius};
 
         SDL_RenderCopy(sdlRenderer, circleTexture, nullptr, &dstRect);
     }
