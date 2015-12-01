@@ -8,8 +8,8 @@
 #include <iostream>
 #include <vector>
 #include <map>
-#include "/Library/Frameworks/SDL2.framework/Headers/SDL.h"
-#include "/Library/Frameworks/SDL2_image.framework/Headers/SDL_image.h"
+#include "SDL.h"
+
 
 #include "GraphicsResources/IGraphicsResource.h"
 #include "Components/GraphicsComponent.h"

@@ -11,6 +11,7 @@
 #include "GameApp.h"
 #include "GraphicsResources/RectGraphicsResource.h"
 #include "GraphicsResources/SpriteGraphicsResource.h"
+#include <ctime>
 
 // TestGraphics
 class TestGraphics

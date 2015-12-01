@@ -4,6 +4,7 @@
 
 #include "Graphics.h"
 #include "GraphicsResources/SpriteGraphicsResource.h"
+#include "SDL_image.h"
 
 //------------------------------------------------------------------------------------
 // Name: LoadSurface

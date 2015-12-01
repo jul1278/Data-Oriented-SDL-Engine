@@ -5,7 +5,7 @@
 #ifndef SDLRTS_PLAYERMOVETRANSFORM_H
 #define SDLRTS_PLAYERMOVETRANSFORM_H
 
-#include <SDL2/SDL_events.h>
+#include "SDL_events.h"
 #include "Transforms/IEntityTransform.h"
 #include "ComponentSpec.h"
 #include "Components/TransformComponent.h"
