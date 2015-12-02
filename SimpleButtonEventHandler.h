@@ -1,16 +1,17 @@
 //
-// Created by Julian  on 28/11/15.
+// Created by Julian  on 2/12/15.
 //
 
-#ifndef SDLRTS_SIMPLEBUTTONCLICKEVENTHANDLER_H
-#define SDLRTS_SIMPLEBUTTONCLICKEVENTHANDLER_H
+#ifndef SDLRTS_SIMPLEBUTTONEVENTHANDLER_H
+#define SDLRTS_SIMPLEBUTTONEVENTHANDLER_H
 
 #include "Events/IEventHandler.h"
 #include "Components/ClickableComponent.h"
 #include "Components/TransformComponent.h"
 #include <algorithm>
+#include <ostream>
 
-class SimpleButtonClickEventHandler : public IEventHandler
+class SimpleButtonClickHandler : public IEventHandler
 {
 private:
 
@@ -23,15 +24,14 @@ private:
         }
 
         if (componentMap.find(CLICKABLE_COMPONENT) == componentMap.end()
-            || componentMap.find(TRANSFORM_COMPONENT) == componentMap.end() ) {
+            || componentMap.find(TRANSFORM_COMPONENT) == componentMap.end()) {
 
             return std::vector<Event*>();
         }
 
-        // get the component vector pointers
         std::vector<BaseComponent*> clickAbleComponents = componentMap[CLICKABLE_COMPONENT];
         std::vector<BaseComponent*> transformComponents = componentMap[TRANSFORM_COMPONENT];
-
+        
         for (BaseComponent* baseComponent : clickAbleComponents) {
 
             ClickAbleComponent* clickAbleComponent = static_cast<ClickAbleComponent*>(baseComponent);
@@ -43,7 +43,7 @@ private:
             int i = clickAbleComponent->transformId;
 
             auto transformComponentIt = std::find_if(transformComponents.begin(), transformComponents.end(),
-            [i](BaseComponent* item)->bool
+                [i](BaseComponent* item)->bool
             {
                 return item->id == i;
             });
@@ -55,8 +55,9 @@ private:
 
             if (dx > 0.0f && dy > 0.0f)
             {
-                if ( (dx < clickAbleComponent->clickArea.x) && (dy < clickAbleComponent->clickArea.y)) {
-                    std::cout << "Button was pressed." << std::endl;
+                if ((dx < clickAbleComponent->clickArea.x) && (dy < clickAbleComponent->clickArea.y)) {       
+                    transformComponent->scale.x += 1.0f; 
+                    transformComponent->scale.y += 1.0f; 
                 }
             }
         }
@@ -66,8 +67,9 @@ private:
 
 public:
 
-    SimpleButtonClickEventHandler() {}
-    ~SimpleButtonClickEventHandler() {}
+    SimpleButtonClickHandler(){}
+    ~SimpleButtonClickHandler(){}
 };
 
-#endif //SDLRTS_SIMPLEBUTTONCLICKEVENTHANDLER_H
+
+#endif // SDLRTS_SIMPLEBUTTONEVENTHANDLER_H

@@ -17,7 +17,7 @@ public:
     //----------------------------------------------------------------------------------
     static void OutlineCircle(SDL_Surface *surface, uint8_t radius, uint8_t thickness, uint32_t color)
     {
-        if (surface == NULL) {
+        if (surface == nullptr) {
             return;
         }
 
@@ -25,7 +25,7 @@ public:
             SDL_LockSurface(surface);
         }
 
-        Uint8* pixels = (Uint8*) surface->pixels;
+        Uint8* pixels = static_cast<Uint8*>(surface->pixels);
 
         for (int x = 0; x < radius; x++) {
 
@@ -43,7 +43,7 @@ public:
 
                 if (index >= 0) {
 
-                    uint32_t* addr = (uint32_t*)(pixels + index);
+                    uint32_t* addr = reinterpret_cast<uint32_t*>(pixels + index);
                     *addr = color;
                 }
 
@@ -52,7 +52,7 @@ public:
 
                 if (index >= 0) {
 
-                    uint32_t* addr = (uint32_t*)(pixels + index);
+                    uint32_t* addr = reinterpret_cast<uint32_t*>(pixels + index);
                     *addr = color;
                 }
 
@@ -60,7 +60,7 @@ public:
 
                 if (index >= 0) {
 
-                    uint32_t* addr = (uint32_t*)(pixels + index);
+                    uint32_t* addr = reinterpret_cast<uint32_t*>(pixels + index);
                     *addr = color;
                 }
 
@@ -68,7 +68,7 @@ public:
 
                 if (index >= 0) {
 
-                    uint32_t* addr = (uint32_t*) (pixels + index);
+                    uint32_t* addr = reinterpret_cast<uint32_t*>(pixels + index);
                     *addr = color;
                 }
             }
@@ -82,7 +82,7 @@ public:
     //----------------------------------------------------------------------------------
     static void FillCircle(SDL_Surface *surface, uint8_t radius, uint32_t color)
     {
-        if (surface == NULL) {
+        if (surface == nullptr) {
             return;
         }
 
@@ -90,7 +90,7 @@ public:
             SDL_LockSurface(surface);
         }
 
-        Uint8* pixels = (Uint8*) surface->pixels;
+        Uint8* pixels = static_cast<Uint8*>(surface->pixels);
 
         for (int x = 0; x < radius; x++) {
 
@@ -101,7 +101,7 @@ public:
                 Uint32 index = (y + radius - 1)* surface->pitch - 4*(x + radius);
                 if (index >= 0) {
 
-                    uint32_t* addr = (uint32_t*)(pixels + index);
+                    uint32_t* addr = reinterpret_cast<uint32_t*>(pixels + index);
                     *addr = color;
                 }
 
@@ -109,21 +109,21 @@ public:
                 index = (y + radius -2)* surface->pitch + 4*(x + radius);
                 if (index >= 0) {
 
-                    uint32_t* addr = (uint32_t*)(pixels + index);
+                    uint32_t* addr = reinterpret_cast<uint32_t*>(pixels + index);
                     *addr = color;
                 }
 
                 index = (-y + radius - 1)* surface->pitch + 4*(x + radius);
                 if (index >= 0) {
 
-                    uint32_t* addr = (uint32_t*)(pixels + index);
+                    uint32_t* addr = reinterpret_cast<uint32_t*>(pixels + index);
                     *addr = color;
                 }
 
                 index = (-y + radius)* surface->pitch - 4*(x + radius);
                 if (index >= 0) {
 
-                    uint32_t* addr = (uint32_t*) (pixels + index);
+                    uint32_t* addr = reinterpret_cast<uint32_t*>(pixels + index);
                     *addr = color;
                 }
             }
@@ -142,7 +142,7 @@ public:
             SDL_LockSurface(surface);
         }
 
-        Uint8* pixels = (Uint8*) surface->pixels;
+        Uint8* pixels = static_cast<Uint8*>(surface->pixels);
         uint32_t index = 0;
         float error = 0.0f;
 
@@ -156,7 +156,7 @@ public:
                 while ( error < 0.5f ) {
 
                     // accumulate error
-                    float dy = fabsf((float)y - x*slope);
+                    float dy = fabsf(static_cast<float>(y) - x*slope);
                     error += dy;
 
                     for (int j = 0; j < y; j++) {
@@ -164,13 +164,13 @@ public:
                         index = (height - j - 1)*surface->pitch + x*4;
 
                         // draw pixels
-                        uint32_t* addr = (uint32_t*) (pixels + index);
+                        uint32_t* addr = reinterpret_cast<uint32_t*>(pixels + index);
                         *(addr) = color;
 
                         index = (height - j - 1)*surface->pitch + (width - x)*4;
 
                         // draw pixels
-                        addr = (uint32_t*) (pixels + index);
+                        addr = reinterpret_cast<uint32_t*>(pixels + index);
                         *(addr) = color;
                     }
 

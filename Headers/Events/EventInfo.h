@@ -12,12 +12,24 @@ struct IEventInfo {};
 // MouseClickEvent
 struct MouseClickEvent : public IEventInfo
 {
+    Vector2D pos;
+
     MouseClickEvent(Vector2D pos)
     {
         this->pos = pos;
     }
+};
 
-    Vector2D pos;
+struct MouseMoveEvent : public IEventInfo
+{
+    Vector2D lastPos; 
+    Vector2D currPos; 
+
+    MouseMoveEvent(Vector2D lastPos, Vector2D currPos)
+    {
+        this->lastPos = lastPos;
+        this->currPos = currPos; 
+    }
 };
 
 // MessageEvent

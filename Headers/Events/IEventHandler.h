@@ -21,7 +21,8 @@ private:
 public:
 
     IEventHandler() {}
-    ~IEventHandler() {}
+
+    virtual ~IEventHandler() {}
 
     void InsertComponents(std::vector<BaseComponent*> components, ComponentType componentType)
     {

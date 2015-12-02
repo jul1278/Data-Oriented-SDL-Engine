@@ -57,6 +57,8 @@ public:
 
         eventMap.AddEventMap(EVENT_MOUSECLICK, simpleButtonClickEventHandler);
 
+        bool mouseIsDown = false; 
+
         while (1) {
 
             SDL_Event event;
@@ -66,11 +68,22 @@ public:
                 break;
             }
 
-            if (event.type == SDL_MOUSEBUTTONUP) {
+            if (event.type == SDL_MOUSEBUTTONDOWN)
+            {
+                mouseIsDown = true; 
+            }
+
+            if (event.type == SDL_MOUSEBUTTONUP && mouseIsDown) {
+                mouseIsDown = false; 
                 IEventInfo* mouseEventInfo = new MouseClickEvent(Vector2D(event.button.x, event.button.y));
                 Event mouseClickEvent(EVENT_MOUSECLICK, mouseEventInfo);
                 eventMap.RaiseEvent(&mouseClickEvent);
                 eventMap.ProcessEvents();
+            }
+
+            if (event.type == SDL_MOUSEMOTION)
+            {
+                event.motion.x
             }
 
             this->graphics->UpdateGraphics(graphicsComponents, transformComponents);
