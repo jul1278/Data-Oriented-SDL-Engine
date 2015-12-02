@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.3)
 cmake_minimum_required(VERSION 3.1)
 project(SDLRTS)
-include_directories("/Library/Frameworks/")
+include_directories("/Library/Frameworks/SDL2.framework/Headers/")
+include_directories("/Library/Frameworks/SDL2_image.framework/Headers/")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/Headers/")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/TestClasses")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bin")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -F/Library/Frameworks/ -framework SDL2 -framework SDL2_image")
 set(SOURCE_FILES
-
         Source/main.cpp
         Source/GameApp.cpp
         Source/Graphics.cpp

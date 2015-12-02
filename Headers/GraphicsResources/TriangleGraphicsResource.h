@@ -41,7 +41,10 @@ public:
         uint8_t x = static_cast<int>(transformComponent->position.x - 0.5f*transformComponent->scale.x);
         uint8_t y = static_cast<int>(transformComponent->position.y - 0.5f*transformComponent->scale.y); 
 
-        SDL_Rect rect = { x, y, this->width, this->height };
+        uint8_t w = this->width;
+        uint8_t h = this->height;
+
+        SDL_Rect rect = { x, y, w, h};
           
         SDL_Texture* texture = SDL_CreateTextureFromSurface(sdlRenderer, this->triangleSurface);
 

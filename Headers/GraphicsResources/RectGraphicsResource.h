@@ -21,6 +21,7 @@ private:
     uint8_t b;
 
     SDL_Surface* surface;
+    SDL_Texture* texture;
 
 public:
 
@@ -33,11 +34,15 @@ public:
         this->g = g;
         this->b = b;
 
+        this->texture = nullptr;
+
         this->surface = SDL_CreateRGBSurface(0, static_cast<int>(width), static_cast<int>(height), 32, 0, 0, 0, 0);
 
         if (surface == nullptr) {
             // TODO: error
         }
+
+        SDL_FillRect(surface, nullptr, SDL_MapRGBA(surface->format, this->r, this->g, this->b, this->a));
     };
 
     ~RectGraphicsResource()
@@ -54,11 +59,14 @@ public:
 
         uint8_t x = static_cast<int>(transformComponent->position.x - 0.5*transformComponent->position.x*(scaleX - 1.0));
         uint8_t y = static_cast<int>(transformComponent->position.y - 0.5*transformComponent->position.y*(scaleX - 1.0));
+        uint8_t w = this->width*scaleX;
+        uint8_t h = this->width*scaleY;
 
-        SDL_Rect rect = { x, y, this->width*scaleX, this->height*scaleY}; 
+        SDL_Rect rect = { x, y, w, h};
 
-        SDL_FillRect(surface, nullptr, SDL_MapRGBA(surface->format, this->r, this->g, this->b, this->a));
-        SDL_Texture* texture = SDL_CreateTextureFromSurface(sdlRenderer, surface);
+        if (this->texture == nullptr) {
+           this->texture = SDL_CreateTextureFromSurface(sdlRenderer, surface);
+        }
 
         if (texture == nullptr) {
             // TODO: error

@@ -5,6 +5,8 @@
 #ifndef SDLRTS_TESTEVENTS_H
 #define SDLRTS_TESTEVENTS_H
 
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_events.h"
 #include "Events/EventMap.h"
 #include "Events/SimpleButtonClickEventHandler.h"
 #include "Events/SimpleButtonEventHandler.h"
@@ -64,24 +66,19 @@ public:
         while (1) {
 
             SDL_Event event;
+
+//            event.type = SDL_MOUSEMOTION;
+//            event.motion.x = 110;
+//            event.motion.y = 110;
+//            event.motion.xrel = 0;
+//            event.motion.yrel = 0;
+
             SDL_PollEvent(&event);
 
             if (event.type == SDL_QUIT) {
                 break;
             }
 
-            if (event.type == SDL_MOUSEBUTTONDOWN)
-            {
-                mouseIsDown = true; 
-            }
-
-            if (event.type == SDL_MOUSEBUTTONUP && mouseIsDown) {
-                mouseIsDown = false; 
-                IEventInfo* mouseEventInfo = new MouseClickEvent(Vector2D(event.button.x, event.button.y));
-                Event mouseClickEvent(EVENT_MOUSECLICK, mouseEventInfo);
-                eventMap.RaiseEvent(&mouseClickEvent);
-                eventMap.ProcessEvents();
-            }
 
             if (event.type == SDL_MOUSEMOTION)
             {
@@ -92,7 +89,7 @@ public:
                 Event mouseMoveEvent(EVENT_MOUSEMOVE, mouseMoveEventInfo); 
 
                 eventMap.RaiseEvent(&mouseMoveEvent); 
-                eventMap.ProcessEvents(); 
+                eventMap.ProcessEvents();
             }
 
             this->graphics->UpdateGraphics(graphicsComponents, transformComponents);
