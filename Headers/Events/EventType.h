@@ -7,6 +7,7 @@
 
 enum EventType
 {
+    EVENT_MOUSEMOVE,
     EVENT_MOUSECLICK,
     EVENT_MESSAGE
 };

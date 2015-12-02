@@ -49,10 +49,13 @@ public:
 
     virtual void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent)
     {
-        uint8_t x = static_cast<int>(transformComponent->position.x);
-        uint8_t y = static_cast<int>(transformComponent->position.y);
+        float scaleX = transformComponent->scale.x; 
+        float scaleY = transformComponent->scale.y; 
 
-        SDL_Rect rect = { x, y, this->width, this->height}; 
+        uint8_t x = static_cast<int>(transformComponent->position.x - 0.5*transformComponent->position.x*(scaleX - 1.0));
+        uint8_t y = static_cast<int>(transformComponent->position.y - 0.5*transformComponent->position.y*(scaleX - 1.0));
+
+        SDL_Rect rect = { x, y, this->width*scaleX, this->height*scaleY}; 
 
         SDL_FillRect(surface, nullptr, SDL_MapRGBA(surface->format, this->r, this->g, this->b, this->a));
         SDL_Texture* texture = SDL_CreateTextureFromSurface(sdlRenderer, surface);

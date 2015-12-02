@@ -7,6 +7,7 @@
 
 #include "Events/EventMap.h"
 #include "Events/SimpleButtonClickEventHandler.h"
+#include "Events/SimpleButtonEventHandler.h"
 #include <vector>
 #include <string.h>
 #include <Components/GraphicsComponent.h>
@@ -49,13 +50,14 @@ public:
         this->graphics->AddGraphicsResource(new RectGraphicsResource(0, "ButtonGraphicResource", 100.0f, 80.0f, 0xff, 0x8f, 0x00, 0x8f ));
 
         // create the buttonEventHandler
-        SimpleButtonClickEventHandler* simpleButtonClickEventHandler = new SimpleButtonClickEventHandler();
+        SimpleButtonEventHandler* simpleButtonEventHandler = new SimpleButtonEventHandler();
 
         // insert the required components
-        simpleButtonClickEventHandler->InsertComponents(clickAbleComponents, CLICKABLE_COMPONENT);
-        simpleButtonClickEventHandler->InsertComponents(transformComponents, TRANSFORM_COMPONENT);
+        simpleButtonEventHandler->InsertComponents(clickAbleComponents, CLICKABLE_COMPONENT);
+        simpleButtonEventHandler->InsertComponents(transformComponents, TRANSFORM_COMPONENT);
 
-        eventMap.AddEventMap(EVENT_MOUSECLICK, simpleButtonClickEventHandler);
+        eventMap.AddEventMap(EVENT_MOUSEMOVE, simpleButtonEventHandler);
+        
 
         bool mouseIsDown = false; 
 
@@ -83,7 +85,14 @@ public:
 
             if (event.type == SDL_MOUSEMOTION)
             {
-                event.motion.x
+                Vector2D lastPos = Vector2D(event.motion.x, event.motion.y); 
+                Vector2D currPos = Vector2D(event.motion.x + event.motion.xrel, event.motion.y + event.motion.yrel); 
+
+                IEventInfo* mouseMoveEventInfo = new MouseMoveEvent(lastPos, currPos); 
+                Event mouseMoveEvent(EVENT_MOUSEMOVE, mouseMoveEventInfo); 
+
+                eventMap.RaiseEvent(&mouseMoveEvent); 
+                eventMap.ProcessEvents(); 
             }
 
             this->graphics->UpdateGraphics(graphicsComponents, transformComponents);

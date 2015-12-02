@@ -11,15 +11,15 @@
 #include <algorithm>
 #include <ostream>
 
-class SimpleButtonClickHandler : public IEventHandler
+class SimpleButtonEventHandler : public IEventHandler
 {
 private:
 
     virtual std::vector<Event*> ProcessEvent(std::map<ComponentType, std::vector<BaseComponent*>> componentMap, Event* event)
     {
-        MouseClickEvent* mouseClickEvent = static_cast<MouseClickEvent*>(event->eventInfo);
+        MouseMoveEvent* mouseMoveEvent = static_cast<MouseMoveEvent*>(event->eventInfo);
 
-        if (mouseClickEvent == nullptr) {
+        if (mouseMoveEvent == nullptr) {
             return std::vector<Event*>();
         }
 
@@ -50,15 +50,19 @@ private:
 
             TransformComponent* transformComponent = static_cast<TransformComponent*>(*transformComponentIt);
 
-            float dx = mouseClickEvent->pos.x - transformComponent->position.x;
-            float dy = mouseClickEvent->pos.y - transformComponent->position.y;
+            transformComponent->scale.x = 1.0f;
+            transformComponent->scale.y = 1.0f;
+
+            // if the mouse moves over the 
+            float dx = mouseMoveEvent->lastPos.x - transformComponent->position.x;
+            float dy = mouseMoveEvent->lastPos.y - transformComponent->position.y;
 
             if (dx > 0.0f && dy > 0.0f)
             {
                 if ((dx < clickAbleComponent->clickArea.x) && (dy < clickAbleComponent->clickArea.y)) {       
-                    transformComponent->scale.x += 1.0f; 
-                    transformComponent->scale.y += 1.0f; 
-                }
+                    transformComponent->scale.x = 1.1f; 
+                    transformComponent->scale.y = 1.1f; 
+                } 
             }
         }
 
@@ -67,8 +71,8 @@ private:
 
 public:
 
-    SimpleButtonClickHandler(){}
-    ~SimpleButtonClickHandler(){}
+    SimpleButtonEventHandler(){}
+    ~SimpleButtonEventHandler(){}
 };
 
 
