@@ -5,8 +5,14 @@
 #ifndef SDLRTS_TESTEVENTS_H
 #define SDLRTS_TESTEVENTS_H
 
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_events.h"
+#ifdef _WIN32
+    #include "SDL.h"
+    #include "SDL_events.h"
+#elif
+    #include "SDL2/SDL.h"
+    #include "SDL2/SDL_events.h"
+#endif
+
 #include "Events/EventMap.h"
 #include "Events/SimpleButtonClickEventHandler.h"
 #include "Events/SimpleButtonEventHandler.h"
