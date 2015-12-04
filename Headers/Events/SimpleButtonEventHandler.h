@@ -48,6 +48,10 @@ private:
                 return item->id == i;
             });
 
+            if (transformComponentIt == transformComponents.end()) {
+                continue; 
+            }
+
             TransformComponent* transformComponent = static_cast<TransformComponent*>(*transformComponentIt);
 
             transformComponent->scale.x = 1.0f;

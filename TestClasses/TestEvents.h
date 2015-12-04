@@ -50,12 +50,33 @@ public:
         std::vector<BaseComponent*> graphicsComponents;
         std::vector<BaseComponent*> transformComponents;
 
-        clickAbleComponents.push_back(new ClickAbleComponent(0, Vector2D(100.0f, 80.0f)));
-        transformComponents.push_back(new TransformComponent(Vector2D(100.0f, 100.0f), Vector2D(0.0f), Vector2D(1.0f, 1.0f)));
+        clickAbleComponents.push_back(new ClickAbleComponent(0, Vector2D(50.0f, 50.0f)));
+        transformComponents.push_back(new TransformComponent(Vector2D(5.0f, 5.0f), Vector2D(0.0f), Vector2D(1.0f, 1.0f)));
         graphicsComponents.push_back(new GraphicsComponent(0, 0));
 
+        clickAbleComponents.push_back(new ClickAbleComponent(1, Vector2D(50.0f, 50.0f)));
+        transformComponents.push_back(new TransformComponent(Vector2D(5.0f, 60.0f), Vector2D(0.0f), Vector2D(1.0f, 1.0f)));
+        graphicsComponents.push_back(new GraphicsComponent(1, 1));
+
+        clickAbleComponents.push_back(new ClickAbleComponent(2, Vector2D(50.0f, 50.0f)));
+        transformComponents.push_back(new TransformComponent(Vector2D(60.0f, 5.0f), Vector2D(0.0f), Vector2D(1.0f, 1.0f)));
+        graphicsComponents.push_back(new GraphicsComponent(2, 2));
+
+        clickAbleComponents.push_back(new ClickAbleComponent(3, Vector2D(50.0f, 50.0f)));
+        transformComponents.push_back(new TransformComponent(Vector2D(60.0f, 60.0f), Vector2D(0.0f), Vector2D(1.0f, 1.0f)));
+        graphicsComponents.push_back(new GraphicsComponent(3, 3));
+
+        transformComponents[1]->id = 1;
+        transformComponents[2]->id = 2;
+        transformComponents[3]->id = 3;
+
+        
         // graphics
-        this->graphics->AddGraphicsResource(new RectGraphicsResource(0, "ButtonGraphicResource", 100.0f, 80.0f, 0xff, 0x8f, 0x00, 0x8f ));
+        this->graphics->AddGraphicsResource(new RectGraphicsResource(0, "RedButtonGraphicResource", 50.0f, 50.0f, 0xff, 0xff, 0x00, 0x00 ));
+        this->graphics->AddGraphicsResource(new RectGraphicsResource(0, "GreenButtonGraphicResource", 50.0f, 50.0f, 0xff, 0x00, 0xff, 0x00));
+        this->graphics->AddGraphicsResource(new RectGraphicsResource(0, "BlueButtonGraphicResource", 50.0f, 50.0f, 0xff, 0x00, 0x00, 0xff));
+        this->graphics->AddGraphicsResource(new RectGraphicsResource(0, "PurpleButtonGraphicResource", 50.0f, 50.0f, 0xff, 0x8f, 0x00, 0x8f));
+
 
         // create the buttonEventHandler
         SimpleButtonEventHandler* simpleButtonEventHandler = new SimpleButtonEventHandler();
@@ -66,25 +87,16 @@ public:
 
         eventMap.AddEventMap(EVENT_MOUSEMOVE, simpleButtonEventHandler);
         
-
         bool mouseIsDown = false; 
 
         while (1) {
 
             SDL_Event event;
-
-//            event.type = SDL_MOUSEMOTION;
-//            event.motion.x = 110;
-//            event.motion.y = 110;
-//            event.motion.xrel = 0;
-//            event.motion.yrel = 0;
-
             SDL_PollEvent(&event);
 
             if (event.type == SDL_QUIT) {
                 break;
             }
-
 
             if (event.type == SDL_MOUSEMOTION)
             {
