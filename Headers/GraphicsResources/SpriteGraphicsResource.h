@@ -42,11 +42,10 @@ public:
             SDL_SetTextureBlendMode(this->spriteTexture, SDL_BLENDMODE_BLEND);
         }
 
-        uint8_t x = static_cast<int>(transformComponent->position.x - 0.5f*this->w);
-        uint8_t y = static_cast<int>(transformComponent->position.y - 0.5f*this->h);
+        uint16_t x = static_cast<uint16_t >(transformComponent->position.x - 0.5f*this->w);
+        uint16_t y = static_cast<uint16_t>(transformComponent->position.y - 0.5f*this->h);
 
-        SDL_Rect srcRect = {x, y, this->w, this->h };
-        SDL_Rect dstRect = srcRect;
+        SDL_Rect dstRect = {x, y, this->w, this->h };
 
         // TODO: scale
 //        dstRect.x -= 0.5f*dstRect.x*transformComponent->scale.x;
@@ -54,7 +53,7 @@ public:
 //        dstRect.w *= transformComponent->scale.x;
 //        dstRect.h *= transformComponent->scale.y;
 
-        SDL_RenderCopyEx(sdlRenderer, this->spriteTexture, &srcRect, &dstRect, transformComponent->orientation.Angle()*(180.0f/PI), NULL, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(sdlRenderer, this->spriteTexture, nullptr, &dstRect, transformComponent->orientation.Angle()*(180.0f/PI), NULL, SDL_FLIP_NONE);
     }
 };
 

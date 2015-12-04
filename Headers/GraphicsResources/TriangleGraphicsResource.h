@@ -38,11 +38,11 @@ public:
 
     virtual void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent)
     {
-        uint8_t x = static_cast<int>(transformComponent->position.x - 0.5f*transformComponent->scale.x);
-        uint8_t y = static_cast<int>(transformComponent->position.y - 0.5f*transformComponent->scale.y); 
+        uint16_t x = static_cast<uint16_t >(transformComponent->position.x - 0.5f*transformComponent->scale.x);
+        uint16_t y = static_cast<uint16_t>(transformComponent->position.y - 0.5f*transformComponent->scale.y);
 
-        uint8_t w = this->width;
-        uint8_t h = this->height;
+        uint16_t w = this->width;
+        uint16_t h = this->height;
 
         SDL_Rect rect = { x, y, w, h};
           

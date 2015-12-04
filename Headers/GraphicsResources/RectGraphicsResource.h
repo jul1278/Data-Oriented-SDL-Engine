@@ -57,10 +57,10 @@ public:
         float scaleX = transformComponent->scale.x; 
         float scaleY = transformComponent->scale.y; 
 
-        uint8_t x = static_cast<int>(transformComponent->position.x - 0.5*transformComponent->position.x*(scaleX - 1.0));
-        uint8_t y = static_cast<int>(transformComponent->position.y - 0.5*transformComponent->position.y*(scaleX - 1.0));
-        uint8_t w = this->width*scaleX;
-        uint8_t h = this->width*scaleY;
+        uint16_t x = static_cast<uint16_t>(transformComponent->position.x - 0.5*transformComponent->position.x*(scaleX - 1.0));
+        uint16_t y = static_cast<uint16_t>(transformComponent->position.y - 0.5*transformComponent->position.y*(scaleX - 1.0));
+        uint16_t w = this->width*scaleX;
+        uint16_t h = this->width*scaleY;
 
         SDL_Rect rect = { x, y, w, h};
 

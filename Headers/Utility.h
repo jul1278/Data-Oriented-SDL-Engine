@@ -15,7 +15,7 @@ public:
     // Name: FillCircle
     // Desc:
     //----------------------------------------------------------------------------------
-    static void OutlineCircle(SDL_Surface *surface, uint8_t radius, uint8_t thickness, uint32_t color)
+    static void OutlineCircle(SDL_Surface *surface, uint16_t radius, uint16_t thickness, uint32_t color)
     {
         if (surface == nullptr) {
             return;
@@ -80,7 +80,7 @@ public:
     // Name: FillCircle
     // Desc:
     //----------------------------------------------------------------------------------
-    static void FillCircle(SDL_Surface *surface, uint8_t radius, uint32_t color)
+    static void FillCircle(SDL_Surface *surface, uint16_t radius, uint32_t color)
     {
         if (surface == nullptr) {
             return;
