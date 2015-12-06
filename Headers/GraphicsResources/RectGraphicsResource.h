@@ -57,8 +57,11 @@ public:
         float scaleX = transformComponent->scale.x; 
         float scaleY = transformComponent->scale.y; 
 
-        uint16_t x = static_cast<uint16_t>(transformComponent->position.x - 0.5*transformComponent->position.x*(scaleX - 1.0));
-        uint16_t y = static_cast<uint16_t>(transformComponent->position.y - 0.5*transformComponent->position.y*(scaleX - 1.0));
+        float dx = scaleX*this->width - this->width; 
+        float dy = scaleY*this->height - this->height; 
+
+        uint16_t x = static_cast<uint16_t>(transformComponent->position.x - 0.5f*dx);
+        uint16_t y = static_cast<uint16_t>(transformComponent->position.y - 0.5f*dy);
         uint16_t w = this->width*scaleX;
         uint16_t h = this->width*scaleY;
 

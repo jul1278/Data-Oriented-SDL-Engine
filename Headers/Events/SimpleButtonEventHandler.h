@@ -64,8 +64,8 @@ private:
             if (dx > 0.0f && dy > 0.0f)
             {
                 if ((dx < clickAbleComponent->clickArea.x) && (dy < clickAbleComponent->clickArea.y)) {       
-                    transformComponent->scale.x = 1.1f; 
-                    transformComponent->scale.y = 1.1f; 
+                    transformComponent->scale.x = 1.5f; 
+                    transformComponent->scale.y = 1.5f; 
                 } 
             }
         }
