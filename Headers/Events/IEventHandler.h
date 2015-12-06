@@ -17,7 +17,7 @@ private:
 
     std::map<ComponentType, std::vector<BaseComponent*>> componentMap;
 
-    virtual std::vector<Event*> ProcessEvent(std::map<ComponentType, std::vector<BaseComponent*>> componentMap, Event* event) =0;
+    virtual std::vector<Event*> ProcessEvent(std::map<ComponentType, std::vector<BaseComponent*>>* componentMap, Event* event) =0;
 public:
 
     IEventHandler() {}
@@ -35,7 +35,6 @@ public:
         }
 
         if (components.size() != 0) {
-
             for ( BaseComponent* baseComponent : components) {
                 this->componentMap[componentType].push_back(baseComponent);
             }
@@ -59,7 +58,7 @@ public:
 
     std::vector<Event*> PassEvent(Event* event)
     {
-        return this->ProcessEvent(this->componentMap, event);
+        return this->ProcessEvent(&this->componentMap, event);
     }
 };
 

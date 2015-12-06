@@ -14,7 +14,7 @@ class SimpleButtonClickEventHandler : public IEventHandler
 {
 private:
 
-    virtual std::vector<Event*> ProcessEvent(std::map<ComponentType, std::vector<BaseComponent*>> componentMap, Event* event)
+    virtual std::vector<Event*> ProcessEvent(std::map<ComponentType, std::vector<BaseComponent*>>* componentMap, Event* event)
     {
         MouseClickEvent* mouseClickEvent = static_cast<MouseClickEvent*>(event->eventInfo);
 
@@ -22,15 +22,15 @@ private:
             return std::vector<Event*>();
         }
 
-        if (componentMap.find(CLICKABLE_COMPONENT) == componentMap.end()
-            || componentMap.find(TRANSFORM_COMPONENT) == componentMap.end() ) {
+        if (componentMap->find(CLICKABLE_COMPONENT) == componentMap->end()
+            || componentMap->find(TRANSFORM_COMPONENT) == componentMap->end() ) {
 
             return std::vector<Event*>();
         }
 
         // get the component vector pointers
-        std::vector<BaseComponent*> clickAbleComponents = componentMap[CLICKABLE_COMPONENT];
-        std::vector<BaseComponent*> transformComponents = componentMap[TRANSFORM_COMPONENT];
+        std::vector<BaseComponent*> clickAbleComponents = componentMap->at(CLICKABLE_COMPONENT);
+        std::vector<BaseComponent*> transformComponents = componentMap->at(TRANSFORM_COMPONENT);
 
         for (BaseComponent* baseComponent : clickAbleComponents) {
 
