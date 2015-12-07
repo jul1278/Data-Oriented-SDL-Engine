@@ -97,6 +97,10 @@ Graphics::~Graphics()
         SDL_FreeSurface(resourceSurfaceMapElement.second);
     }
 
+    for (std::pair<int, IGraphicsResource*> graphicsResourcePair : this->graphicsResourceMap) {
+        delete graphicsResourcePair.second; 
+    }
+
     SDL_DestroyWindow(this->window);
     SDL_FreeSurface(this->sdlSurface);
     SDL_DestroyRenderer(this->renderer);

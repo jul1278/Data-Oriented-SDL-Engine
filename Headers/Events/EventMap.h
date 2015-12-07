@@ -30,18 +30,11 @@ public:
 
     void ProcessEvents()
     {
-        std::queue<Event*> nextEventQueue;
-
         while (!events.empty()) {
-            Event* currEvent;
-            currEvent = events.front();
+            Event* currEvent = events.front();
 
             for ( IEventHandler* eventHandler : eventHandlerMap[currEvent->eventType] ) {
                 std::vector<Event*> newEvents = eventHandler->PassEvent(currEvent);
-
-                for (Event* newEvent : newEvents) {
-                    nextEventQueue.push(newEvent);
-                }
             }
 
             events.erase(events.begin()); 

@@ -9,6 +9,17 @@
 
     #include "SDL.h"
     #include "SDL_events.h"
+
+    #define _CRTDBG_MAP_ALLOC
+    #include <stdlib.h>
+    #include <crtdbg.h>
+
+    #ifdef _DEBUG
+        #ifndef DBG_NEW
+            #define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+            #define new DBG_NEW
+        #endif
+    #endif  // _DEBUG
 #else
 
     #include "SDL2/SDL.h"
@@ -36,6 +47,11 @@ public:
 
     TestEvents()
     {
+#ifdef _WIN32 
+#ifdef _DEBUG
+        _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
+#endif
         this->testName = "EventsTest";
         TestEventMap();
     }
@@ -135,6 +151,23 @@ public:
             this->graphics->UpdateGraphics(graphicsComponents, transformComponents);
         }
 
+        // delete stuff
+        delete simpleButtonEventHandler; 
+
+        for (BaseComponent* component : clickAbleComponents) {
+            delete component; 
+        }
+
+        for (BaseComponent* component : graphicsComponents) {
+            delete component; 
+        }
+
+        for (BaseComponent* component : transformComponents) {
+            delete component;
+        }
+        
+        delete this->graphics; 
+         
         return true;
     }
 };
