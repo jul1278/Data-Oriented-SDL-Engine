@@ -27,6 +27,9 @@ public:
 
         Uint8* pixels = static_cast<Uint8*>(surface->pixels);
 
+        // set all the pixels to have 0x00 alpha channel
+        memset(static_cast<void*>(pixels), 0xff000000, surface->w*surface->h);
+
         for (int x = 0; x < radius; x++) {
 
             float yTop = sqrtf(radius*radius - x*x);
@@ -92,6 +95,9 @@ public:
 
         Uint8* pixels = static_cast<Uint8*>(surface->pixels);
 
+        // set all the pixels to have 0x00 alpha channel
+        memset(static_cast<void*>(pixels), 0xff000000, surface->w*surface->h); 
+
         for (int x = 0; x < radius; x++) {
 
             float yTop = sqrtf(radius*radius - x*x);
@@ -143,6 +149,10 @@ public:
         }
 
         Uint8* pixels = static_cast<Uint8*>(surface->pixels);
+        
+        // set all the pixels to have 0x00 alpha channel
+        memset(static_cast<void*>(pixels), 0xff000000, surface->w*surface->h);
+        
         uint32_t index = 0;
         float error = 0.0f;
 

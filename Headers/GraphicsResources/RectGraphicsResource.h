@@ -40,6 +40,7 @@ public:
 
         if (surface == nullptr) {
             // TODO: error
+            return; 
         }
 
         SDL_FillRect(surface, nullptr, SDL_MapRGBA(surface->format, this->r, this->g, this->b, this->a));

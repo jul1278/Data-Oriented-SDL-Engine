@@ -23,6 +23,7 @@
 #include <string.h>
 #include <Components/GraphicsComponent.h>
 #include <GraphicsResources/RectGraphicsResource.h>
+#include <GraphicsResources/CircleFIllGraphicsResource.h>
 
 class TestEvents
 {
@@ -88,7 +89,7 @@ public:
                 uint8_t g = 0x8f;//distribution(generator);
                 uint8_t b = 0x8f;//distribution(generator);
 
-                this->graphics->AddGraphicsResource(new RectGraphicsResource(index, "SimpleButtonGraphicResource", buttonWidth - space, buttonHeight - space, 0xff, r, g, b));
+                this->graphics->AddGraphicsResource(new CircleFillGraphicsResource(index, "SimpleButtonGraphicResource", 0.5f*(buttonWidth - space), 0xff, r, g, b));
                 transformComponents[index]->id = index;
             }
         }

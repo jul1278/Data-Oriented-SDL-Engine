@@ -16,11 +16,15 @@ private:
     float height;
 
     SDL_Surface* triangleSurface;
+    SDL_Texture* texture; 
 
 public:
+
     IsoTriangleGraphicsResource(int id, std::string resourceName, float width, float height, uint8_t a, uint8_t r, uint8_t g, uint8_t b)
             : IGraphicsResource(id, resourceName)
     {
+        this->texture = nullptr;
+
         this->width = static_cast<float>(width);
         this->height = static_cast<float>(height);
 
@@ -37,7 +41,11 @@ public:
     }
 
     virtual void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent)
-    {
+    {        
+        if (texture == nullptr) {
+            texture = SDL_CreateTextureFromSurface(sdlRenderer, this->triangleSurface);
+        }
+
         uint16_t x = static_cast<uint16_t >(transformComponent->position.x - 0.5f*transformComponent->scale.x);
         uint16_t y = static_cast<uint16_t>(transformComponent->position.y - 0.5f*transformComponent->scale.y);
 
@@ -45,13 +53,6 @@ public:
         uint16_t h = this->height;
 
         SDL_Rect rect = { x, y, w, h};
-          
-        SDL_Texture* texture = SDL_CreateTextureFromSurface(sdlRenderer, this->triangleSurface);
-
-        if (texture == nullptr) {
-            // TODO: error
-            return;
-        }
 
         SDL_RenderCopyEx(sdlRenderer, texture, nullptr, &rect, (180.0f/PI)*transformComponent->orientation.Angle(), nullptr, SDL_FLIP_NONE);
     }
