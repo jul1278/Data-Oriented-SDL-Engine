@@ -84,9 +84,9 @@ public:
                 transformComponents.push_back(new TransformComponent(Vector2D(x, y), Vector2D(0.0f), Vector2D(1.0f, 1.0f)));
                 graphicsComponents.push_back(new GraphicsComponent(index, index));
 
-                uint8_t r = 0x3f;//distribution(generator);
-                uint8_t g = 0x3f;//distribution(generator);
-                uint8_t b = 0x3f;//distribution(generator);
+                uint8_t r = 0x8f;//distribution(generator);
+                uint8_t g = 0x8f;//distribution(generator);
+                uint8_t b = 0x8f;//distribution(generator);
 
                 this->graphics->AddGraphicsResource(new RectGraphicsResource(index, "SimpleButtonGraphicResource", buttonWidth - space, buttonHeight - space, 0xff, r, g, b));
                 transformComponents[index]->id = index;

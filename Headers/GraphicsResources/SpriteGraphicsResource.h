@@ -42,7 +42,7 @@ public:
             SDL_SetTextureBlendMode(this->spriteTexture, SDL_BLENDMODE_BLEND);
         }
 
-        uint16_t x = static_cast<uint16_t >(transformComponent->position.x - 0.5f*this->w);
+        uint16_t x = static_cast<uint16_t>(transformComponent->position.x - 0.5f*this->w);
         uint16_t y = static_cast<uint16_t>(transformComponent->position.y - 0.5f*this->h);
 
         SDL_Rect dstRect = {x, y, this->w, this->h };

@@ -17,7 +17,7 @@ class EventMap
 {
 private:
 
-    std::queue<Event*> eventQueue;
+    std::vector<Event*> events;
     std::map<EventType, std::vector<IEventHandler*>> eventHandlerMap;
 
 public:
@@ -32,9 +32,9 @@ public:
     {
         std::queue<Event*> nextEventQueue;
 
-        while (!eventQueue.empty()) {
+        while (!events.empty()) {
             Event* currEvent;
-            currEvent = eventQueue.front();
+            currEvent = events.front();
 
             for ( IEventHandler* eventHandler : eventHandlerMap[currEvent->eventType] ) {
                 std::vector<Event*> newEvents = eventHandler->PassEvent(currEvent);
@@ -44,10 +44,8 @@ public:
                 }
             }
 
-            eventQueue.pop();
+            events.erase(events.begin()); 
         }
-
-        eventQueue = nextEventQueue;
     }
 
     void AddEventMap(EventType eventType, IEventHandler* eventHandler )
@@ -60,13 +58,12 @@ public:
         if (eventHandler) {
             eventHandlerMap[eventType].push_back(eventHandler);
         }
-
     }
 
     void RaiseEvent(Event* event)
     {
         if (event) {
-            eventQueue.push(event);
+            events.push_back(event);
         }
     }
 };
