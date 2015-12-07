@@ -14,13 +14,16 @@ class CircleFillGraphicsResource : public IGraphicsResource
 {
 private:
 
+    SDL_Texture* circleTexture; 
     SDL_Surface* circleSurface;
     uint8_t radius;
+
 public:
 
     CircleFillGraphicsResource(int id, std::string resourceName, float radius, uint8_t a, uint8_t r, uint8_t g, uint8_t b) : IGraphicsResource(id, resourceName)
     {
         this->radius = static_cast<uint8_t>(floor(radius));
+        this->circleTexture = nullptr; 
 
         circleSurface = SDL_CreateRGBSurface(0, 2 * this->radius, 2 * this->radius, 32, 0, 0, 0, 0);
         uint32_t color = SDL_MapRGBA(this->circleSurface->format, r, g, b, a);
@@ -37,8 +40,7 @@ public:
     virtual void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent)
     {
         if (this->circleSurface == nullptr) {
-            // TODO: how do error/warnings? be nice to be able to print them somewhere, std::cout though lol
-            return;
+            circleTexture = SDL_CreateTextureFromSurface(sdlRenderer, this->circleSurface);
         }
 
         if (transformComponent == nullptr) {
@@ -49,13 +51,15 @@ public:
             return; 
         }
 
-        SDL_Texture* circleTexture = SDL_CreateTextureFromSurface(sdlRenderer, this->circleSurface);
+        float dx = this->radius*transformComponent->scale.x - this->radius; 
+        float dy = this->radius*transformComponent->scale.y - this->radius; 
 
-        uint16_t x = static_cast<uint8_t >(transformComponent->position.x - this->radius);
-        uint16_t y = static_cast<uint8_t>(transformComponent->position.y - this->radius);
-        uint16_t w = static_cast<uint8_t>(2.0f*this->radius);
+        uint16_t x = static_cast<uint8_t >(transformComponent->position.x - 0.5f*dx);
+        uint16_t y = static_cast<uint8_t>(transformComponent->position.y - 0.5f*dy);
+        uint16_t w = static_cast<uint8_t>(2.0f*this->radius*transformComponent->scale.x);
+        uint16_t h = static_cast<uint8_t>(2.0f*this->radius*transformComponent->scale.y);
 
-        SDL_Rect dstRect = {x, y, w, w};
+        SDL_Rect dstRect = {x, y, w, h};
 
         SDL_RenderCopy(sdlRenderer, circleTexture, nullptr, &dstRect);
     }

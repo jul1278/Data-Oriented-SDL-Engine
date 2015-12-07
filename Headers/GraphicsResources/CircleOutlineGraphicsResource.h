@@ -17,6 +17,7 @@ private:
     uint8_t thickness;
 
     SDL_Surface* circleSurface;
+    SDL_Texture* circleTexture; 
 
 public:
 
@@ -47,8 +48,7 @@ public:
     virtual void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent)
     {
         if (this->circleSurface == nullptr) {
-            // TODO: how do error/warnings? be nice to be able to print them somewhere, std::cout though lol
-            return;
+            this->circleTexture = SDL_CreateTextureFromSurface(sdlRenderer, this->circleSurface);
         }
 
         if (transformComponent == nullptr) {
@@ -59,12 +59,15 @@ public:
             return;
         }
 
-        SDL_Texture* circleTexture = SDL_CreateTextureFromSurface(sdlRenderer, this->circleSurface);
+        float dx = this->radius*transformComponent->scale.x - this->radius;
+        float dy = this->radius*transformComponent->scale.y - this->radius;
 
-        uint16_t x = static_cast<uint16_t>(transformComponent->position.y) - this->radius;
-        uint16_t y = static_cast<uint16_t>(transformComponent->position.x) - this->radius;
+        uint16_t x = static_cast<uint8_t >(transformComponent->position.x - 0.5f*dx);
+        uint16_t y = static_cast<uint8_t>(transformComponent->position.y - 0.5f*dy);
+        uint16_t w = static_cast<uint8_t>(2.0f*this->radius*transformComponent->scale.x);
+        uint16_t h = static_cast<uint8_t>(2.0f*this->radius*transformComponent->scale.y);
 
-        SDL_Rect dstRect = {x, y, 2*this->radius, 2*this->radius};
+        SDL_Rect dstRect = { x, y, w, h };
 
         SDL_RenderCopy(sdlRenderer, circleTexture, nullptr, &dstRect);
     }
