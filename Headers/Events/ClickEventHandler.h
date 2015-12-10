@@ -15,17 +15,10 @@ class ClickEventHandler
 {
 private:
 
-    unsigned int id;
-
 public:
 
-    ClickEventHandler(unsigned int id)
-    {
-        this->id = id; 
-    }
+    ClickEventHandler(){}
     ~ClickEventHandler() {} 
-
-    unsigned int Id()  { return this->id; }
 
     void Handle(Event* event, TransformComponent* transformComponent, ClickAbleComponent* clickAbleComponent)
     {
