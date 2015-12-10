@@ -120,7 +120,7 @@ public:
         while (1)
         {
             SDL_Event event;
-            SDL_WaitEventTimeout(&event, 1);
+            SDL_PollEvent(&event);
             
             if (event.type == SDL_QUIT) {
                 break;
