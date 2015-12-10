@@ -9,7 +9,7 @@
 #include "Components/BaseComponent.h"
 #include "Components/TransformComponent.h"
 #include "Components/ClickableComponent.h"
-#include "Events/ClickEventHandler.h"
+#include "Events/MouseEventHandler.h"
 #include <map>
 #include <vector>
 
@@ -20,16 +20,16 @@ private:
     int handlerId;
     int GetNextHandlerId() { return handlerId++; }
 
-    std::map<int, ClickEventHandler*> clickEventHandlerMap; 
+    std::map<int, MouseEventHandler*> clickEventHandlerMap; 
 
 public:
 
     Events() { this->handlerId = 0; }
 
-    int AddHandler(ClickEventHandler* clickEventHandler)
+    int AddHandler(MouseEventHandler* clickEventHandler)
     {
         int id = GetNextHandlerId(); 
-        this->clickEventHandlerMap.insert(std::pair<int, ClickEventHandler*>(id, clickEventHandler)); 
+        this->clickEventHandlerMap.insert(std::pair<int, MouseEventHandler*>(id, clickEventHandler));
         return id; 
     }
 
@@ -39,7 +39,7 @@ public:
         {
             ClickAbleComponent* clickableComponent = static_cast<ClickAbleComponent*>(component); 
             TransformComponent* transformComponent = static_cast<TransformComponent*>(transformComponents[clickableComponent->transformId]); 
-            ClickEventHandler* handler = this->clickEventHandlerMap[clickableComponent->eventHandlerId];
+            MouseEventHandler* handler = this->clickEventHandlerMap[clickableComponent->eventHandlerId];
             handler->Handle(event, transformComponent, clickableComponent); 
         }
     }    
