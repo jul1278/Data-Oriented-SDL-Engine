@@ -39,7 +39,6 @@ public:
         {
             ClickAbleComponent* clickableComponent = static_cast<ClickAbleComponent*>(component); 
             TransformComponent* transformComponent = static_cast<TransformComponent*>(transformComponents[clickableComponent->transformId]); 
-
             ClickEventHandler* handler = this->clickEventHandlerMap[clickableComponent->eventHandlerId];
             handler->Handle(event, transformComponent, clickableComponent); 
         }

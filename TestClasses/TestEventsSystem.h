@@ -44,6 +44,9 @@ private:
     Events* events; 
     std::string testName;
 
+    int windowWidth;
+    int windowHeight;
+
 public:
 
     TestEventsSystem()
@@ -55,8 +58,8 @@ public:
 #endif
         this->testName = "EventsTest";
 
-        int windowWidth = 604;
-        int windowHeight = 604;
+        this->windowWidth = 604;
+        this->windowHeight = 604;
 
         int numButtonsX = 30;
         int numButtonsY = 30;
@@ -76,14 +79,41 @@ public:
     {
         this->events = new Events(); 
 
+        int numButtonsX = 30;
+        int numButtonsY = 30;
+
         // create some components
         std::vector<BaseComponent*> clickAbleComponents;
         std::vector<BaseComponent*> graphicsComponents;
         std::vector<BaseComponent*> transformComponents;
 
-        clickAbleComponents.push_back(new ClickAbleComponent(0, 0, Vector2D(100.0f, 100.0f))); 
-        graphicsComponents.push_back(new GraphicsComponent(0, 0)); 
-        transformComponents.push_back(new TransformComponent(Vector2D(100.0f, 100.0f), Vector2D(0.0f), Vector2D(1.0f, 1.0f))); 
+        float space = 4.0f;
+        float buttonWidth = this->windowWidth / numButtonsX;
+        float buttonHeight = this->windowHeight / numButtonsY;
+
+        // build an array of buttons
+        for (int i = 0; i < numButtonsY; i++) {
+
+            for (int j = 0; j < numButtonsX; j++) {
+
+                int index = i*numButtonsX + j;
+
+                clickAbleComponents.push_back(new ClickAbleComponent(index, 0, Vector2D(buttonWidth - space, buttonHeight - space)));
+
+                float x = j*buttonWidth + space;
+                float y = i*buttonHeight + space;
+
+                transformComponents.push_back(new TransformComponent(Vector2D(x, y), Vector2D(0.0f), Vector2D(1.0f, 1.0f)));
+                graphicsComponents.push_back(new GraphicsComponent(index, index));
+
+                uint8_t r = 0x8f;
+                uint8_t g = 0x8f;
+                uint8_t b = 0x8f;
+
+                this->graphics->AddGraphicsResource(new RectGraphicsResource(index, "SimpleButtonGraphicResource", (buttonWidth - space), (buttonWidth - space), 0xff, r, g, b));
+                transformComponents[index]->id = index;
+            }
+        }
 
         this->graphics->AddGraphicsResource(new RectGraphicsResource(0, "RectGraphicResource", 100.0f, 100.0f, 0xff, 0x8f, 0x00, 0x8f));
         this->events->AddHandler(new ClickEventHandler());
