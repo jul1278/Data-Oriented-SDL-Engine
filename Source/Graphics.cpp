@@ -35,8 +35,8 @@ Graphics::Graphics(int windowWidth, int windowHeight, std::string appName)
 
     Uint32 rmask, gmask, bmask, amask;
 
-    /* SDL interprets each pixel as a 32-bit number, so our masks must depend
-       on the endianness (byte order) of the machine */
+    // SDL interprets each pixel as a 32-bit number, so our masks must depend
+    //  on the endianness (byte order) of the machine 
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
     rmask = 0xff000000;
     gmask = 0x00ff0000;
@@ -75,6 +75,7 @@ Graphics::Graphics(int windowWidth, int windowHeight, std::string appName)
         return;
     }
 
+    // init sdl image
     int imgFlags = IMG_INIT_PNG;
     if ( !(IMG_Init(imgFlags) & imgFlags) ) {
         SDL_DestroyWindow(window);
@@ -172,9 +173,6 @@ int Graphics::AddGraphicsResource(IGraphicsResource* graphicsResource)
 //------------------------------------------------------------------------------------
 void Graphics::UpdateGraphics(std::vector<BaseComponent*> graphicsComponents, std::vector<BaseComponent*> transformComponents)
 {
-    int w, h;
-    SDL_GetWindowSize(this->window, &w, &h);
-
     SDL_RenderClear(this->renderer);
 
     for (BaseComponent* graphicsComponent : graphicsComponents) {
@@ -184,5 +182,6 @@ void Graphics::UpdateGraphics(std::vector<BaseComponent*> graphicsComponents, st
         graphicsResource = this->graphicsResourceMap[((GraphicsComponent*)graphicsComponent)->resourceId];
         graphicsResource->Render(this->renderer, transformComponent);
     }
+
     SDL_RenderPresent(this->renderer);
 }

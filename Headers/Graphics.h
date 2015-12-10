@@ -38,8 +38,6 @@ public:
     Graphics(int windowWidth, int windowHeight, std::string appName);
     ~Graphics();
 
-    SDL_PixelFormat* GetPixelFormat() { return this->sdlSurface->format;}
-
     // Load a sprite resource and associate it with a string
     int LoadGraphicResource(std::string fileName, std::string resourceName);
     int AddGraphicsResource(IGraphicsResource* graphicsResource);

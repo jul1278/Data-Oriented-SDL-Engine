@@ -13,6 +13,7 @@ public:
 
     Vector2D() : x(0.0), y(0.0) {}
     Vector2D(float x, float y) : x(x), y(y) { }
+
     Vector2D(float angle)
     {
         this->y = sinf(angle);
@@ -22,26 +23,26 @@ public:
     float x;
     float y;
 
-    Vector2D operator+(const Vector2D& rhs)
+    Vector2D operator+(const Vector2D& rhs) const
     {
         Vector2D v(this->x + rhs.x, this->y + rhs.y);
         return v;
     }
 
-    Vector2D operator*(const float lhs)
+    Vector2D operator*(const float lhs) const
     {
         Vector2D v(lhs*this->x, lhs*this->y);
         return v;
     }
 
-    Vector2D operator-(const Vector2D& rhs)
+    Vector2D operator-(const Vector2D& rhs) const
     {
         Vector2D v(this->x - rhs.x, this->y - rhs.y);
         return v;
     }
 
-    float Length() { return sqrt( x*x + y*y );}
-    float Angle() { return atan2f(this->y, this->x); }
+    float Length() const { return sqrt( x*x + y*y );}
+    float Angle() const { return atan2f(this->y, this->x); }
 };
 
 #endif //SDL_RTS_VECTOR_H_H
