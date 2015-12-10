@@ -12,6 +12,8 @@
 //------------------------------------------------------------------------------------
 Graphics::Graphics(int windowWidth, int windowHeight, std::string appName)
 {
+	this->resourceId = 0;
+
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         return;
     }
@@ -76,14 +78,13 @@ Graphics::Graphics(int windowWidth, int windowHeight, std::string appName)
     // init sdl image
     int imgFlags = IMG_INIT_PNG;
     if ( !(IMG_Init(imgFlags) & imgFlags) ) {
+		std::cout << IMG_GetError() << std::endl; 
         SDL_DestroyWindow(window);
         SDL_DestroyRenderer(renderer);
         SDL_Quit();
 
         return;
-    }
-
-    this->resourceId = 0;
+    }  
 }
 //------------------------------------------------------------------------------------
 // Name: LoadSurface
@@ -169,17 +170,35 @@ int Graphics::AddGraphicsResource(IGraphicsResource* graphicsResource)
 // Name: UpdateGraphics
 // Desc:
 //------------------------------------------------------------------------------------
-void Graphics::UpdateGraphics(std::vector<BaseComponent*> graphicsComponents, std::vector<BaseComponent*> transformComponents)
+void Graphics::UpdateGraphics(SDL_Event* event, std::vector<BaseComponent*> graphicsComponents, std::vector<BaseComponent*> transformComponents)
 {
+	SDL_SetRenderDrawColor(this->renderer, 0x00, 0x00, 0x00, 0xff); 
     SDL_RenderClear(this->renderer);
+
+
 
     for (BaseComponent* graphicsComponent : graphicsComponents) {
         TransformComponent* transformComponent =  (TransformComponent*) transformComponents[((GraphicsComponent*)graphicsComponent)->transformId];
 
         IGraphicsResource* graphicsResource;
-        graphicsResource = this->graphicsResourceMap[((GraphicsComponent*)graphicsComponent)->resourceId];
+
+		int graphicsResourceId = ((GraphicsComponent*)graphicsComponent)->resourceId;
+        graphicsResource = this->graphicsResourceMap[graphicsResourceId];
         graphicsResource->Render(this->renderer, transformComponent);
     }
+
+	// Mouse debug stuff
+	if (event->type == SDL_MOUSEMOTION) {
+
+		SDL_Rect lastRect = {event->motion.x - 8, event->motion.y - 8, 16, 16};
+		SDL_Rect currRect = { event->motion.x + event->motion.xrel - 8, event->motion.y + event->motion.yrel - 8, 16, 16 }; 
+		SDL_SetRenderDrawColor(this->renderer, 0x00, 0x00, 0xff, 0xff); 
+		SDL_RenderDrawRect(this->renderer, &lastRect); 
+		SDL_RenderDrawRect(this->renderer, &currRect); 
+
+		SDL_SetRenderDrawColor(this->renderer, 0x00, 0xff, 0x00, 0xff); 
+		SDL_RenderDrawLine(this->renderer, lastRect.x + 8, lastRect.y + 8, currRect.x + 8, currRect.y + 8); 
+	}
 
     SDL_RenderPresent(this->renderer);
 }

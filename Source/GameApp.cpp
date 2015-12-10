@@ -52,7 +52,7 @@ bool GameApp::Run()
         this->entityList = entityTransform->Transform(this->entityList, &event);
     }
 
-    this->graphics->UpdateGraphics(graphicsComponents, transformComponents);
+    this->graphics->UpdateGraphics(nullptr, graphicsComponents, transformComponents);
 
     return false;
 }

@@ -56,7 +56,7 @@ public:
             this->transformComponents.push_back(new TransformComponent(Vector2D(randX, randY), Vector2D(angle), Vector2D(scaleX,scaleY)));
         }
 
-        this->graphics->UpdateGraphics(graphicsComponents, transformComponents);
+        //this->graphics->UpdateGraphics(event, graphicsComponents, transformComponents);
 
         return true;
     }
@@ -72,7 +72,7 @@ public:
         this->graphicsComponents.push_back(new GraphicsComponent(graphicsId, transformId));
         this->transformComponents.push_back(new TransformComponent(Vector2D(100.0f, 100.0f), Vector2D(PI), Vector2D(1.0f, 1.0f)));
 
-        this->graphics->UpdateGraphics(graphicsComponents, transformComponents);
+        this->graphics->UpdateGraphics(nullptr, graphicsComponents, transformComponents);
 
         return true;
     }

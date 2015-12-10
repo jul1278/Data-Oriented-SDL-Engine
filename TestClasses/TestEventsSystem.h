@@ -114,6 +114,10 @@ public:
         transformComponents.push_back(new TransformComponent(Vector2D(100.0f, 100.0f), Vector2D(0.0f), Vector2D(1.0f, 1.0f)));
         graphicsComponents.push_back(new GraphicsComponent(0, 0));
 
+		clickAbleComponents.push_back(new ClickAbleComponent(1, 0, Vector2D(100.0f, 100.0f)));
+		transformComponents.push_back(new TransformComponent(Vector2D(300.0f, 300.0f), Vector2D(0.0f), Vector2D(1.0f, 1.0f)));
+		graphicsComponents.push_back(new GraphicsComponent(0, 1));
+
         this->graphics->AddGraphicsResource(new RectGraphicsResource(0, "RectGraphicResource", 100.0f, 100.0f, 0xff, 0x8f, 0x00, 0x8f));
         this->events->AddHandler(new MouseEventHandler());
 
@@ -137,7 +141,7 @@ public:
                 events->Update(&mouseMoveEvent, transformComponents, clickAbleComponents); 
             }
 
-            this->graphics->UpdateGraphics(graphicsComponents, transformComponents);
+            this->graphics->UpdateGraphics(&event, graphicsComponents, transformComponents);
         }
 
         for (BaseComponent* component : clickAbleComponents) {

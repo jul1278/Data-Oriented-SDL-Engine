@@ -9,8 +9,6 @@
 #include <vector>
 #include <map>
 #include "SDL.h"
-
-
 #include "GraphicsResources/IGraphicsResource.h"
 #include "Components/GraphicsComponent.h"
 #include "Components/TransformComponent.h"
@@ -21,7 +19,7 @@ class Graphics
 {
 private:
 
-    SDL_Renderer *renderer;
+    SDL_Renderer* renderer;
     SDL_Surface* sdlSurface;
     SDL_Window* window;
 
@@ -42,7 +40,7 @@ public:
     int LoadGraphicResource(std::string fileName, std::string resourceName);
     int AddGraphicsResource(IGraphicsResource* graphicsResource);
 
-    void UpdateGraphics(std::vector<BaseComponent*> graphicsComponents, std::vector<BaseComponent*> transformComponents);
+    void UpdateGraphics(SDL_Event* event, std::vector<BaseComponent*> graphicsComponents, std::vector<BaseComponent*> transformComponents);
 };
 
 
