@@ -8,7 +8,7 @@
 #include "Components/BaseComponent.h"
 #include "Components/ClickableComponent.h"
 #include "Components/TransformComponent.h"
-#include "Headers/Events/Event.h"
+#include "Events/Event.h"
 #include <iostream>
 
 class ClickEventHandler

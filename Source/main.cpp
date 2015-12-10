@@ -1,6 +1,6 @@
 #include "GameApp.h"
 #include "TestGraphics.h"
-#include "TestEvents.h"
+#include "TestEventsSystem.h"
 #define SDL_MAIN_HANDLED
 
 //------------------------------------------------------------------------------------
@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------------
 int main(int argc, char** argv)
 {
-    TestEvents testEvents;
+    TestEventsSystem testEvents;
 
     //GameApp gameApp;
     //while (gameApp.Run() == false) {}

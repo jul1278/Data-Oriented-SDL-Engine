@@ -86,7 +86,46 @@ public:
         transformComponents.push_back(new TransformComponent(Vector2D(100.0f, 100.0f), Vector2D(0.0f), Vector2D(1.0f, 1.0f))); 
 
         this->graphics->AddGraphicsResource(new RectGraphicsResource(0, "RectGraphicResource", 100.0f, 100.0f, 0xff, 0x8f, 0x00, 0x8f));
-        this->events->AddHandler()
+        this->events->AddHandler(new ClickEventHandler());
+
+        while (1)
+        {
+            SDL_Event event;
+            SDL_WaitEventTimeout(&event, 1);
+            
+            if (event.type == SDL_QUIT) {
+                break;
+            }
+
+            if (event.type == SDL_MOUSEMOTION)
+            {
+                Vector2D lastPos = Vector2D(event.motion.x, event.motion.y);
+                Vector2D currPos = Vector2D(event.motion.x + event.motion.xrel, event.motion.y + event.motion.yrel);
+
+                IEventInfo* mouseMoveEventInfo = new MouseMoveEvent(lastPos, currPos);
+                Event mouseMoveEvent(EVENT_MOUSEMOVE, mouseMoveEventInfo);
+                
+                events->Update(&mouseMoveEvent, transformComponents, clickAbleComponents); 
+            }
+
+            this->graphics->UpdateGraphics(graphicsComponents, transformComponents);
+        }
+
+        for (BaseComponent* component : clickAbleComponents) {
+            delete component;
+        }
+
+        for (BaseComponent* component : graphicsComponents) {
+            delete component;
+        }
+
+        for (BaseComponent* component : transformComponents) {
+            delete component;
+        }
+
+        delete this->graphics;
+
+        return true; 
     }
 };
 

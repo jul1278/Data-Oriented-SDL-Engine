@@ -62,8 +62,6 @@ Graphics::Graphics(int windowWidth, int windowHeight, std::string appName)
         return;
     }
 
-    std::cout << sdlSurface->format->Amask << std::endl;
-
     // Create texture
     SDL_Texture* sdlTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, 20, 20);
 
