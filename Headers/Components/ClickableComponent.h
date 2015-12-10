@@ -5,14 +5,18 @@
 #ifndef SDLRTS_CLICKABLECOMPONENT_H
 #define SDLRTS_CLICKABLECOMPONENT_H
 
+#include "Vector.h"
+
 struct ClickAbleComponent : public BaseComponent
 {
     int transformId;
+    uint32_t eventHandlerId; 
     Vector2D clickArea;
 
-    ClickAbleComponent(int transformId, Vector2D clickArea)
+    ClickAbleComponent(int transformId, uint32_t eventHandlerId, Vector2D clickArea)
     {
         this->transformId = transformId;
+        this->eventHandlerId = eventHandlerId; 
         this->clickArea = clickArea;
     }
 };

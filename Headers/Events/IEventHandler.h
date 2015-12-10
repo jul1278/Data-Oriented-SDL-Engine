@@ -15,14 +15,17 @@ class IEventHandler
 {
 private:
 
+    uint32_t id; 
     std::map<ComponentType, std::vector<BaseComponent*>> componentMap;
 
-    virtual std::vector<Event*> ProcessEvent(std::map<ComponentType, std::vector<BaseComponent*>>* componentMap, Event* event) =0;
+    virtual std::vector<Event*> ProcessEvent(std::map<ComponentType, std::vector<BaseComponent*>>* componentMap, Event* event) = 0;
 public:
 
-    IEventHandler() {}
+    IEventHandler(uint32_t id) { this->id = id; }
 
     virtual ~IEventHandler() {}
+
+    uint32_t Id() { return this->id; }
 
     void InsertComponents(std::vector<BaseComponent*> components, ComponentType componentType)
     {
