@@ -5,6 +5,7 @@
 #include "Graphics.h"
 #include "GraphicsResources/SpriteGraphicsResource.h"
 #include "SDL_image.h"
+#include <algorithm>
 
 //------------------------------------------------------------------------------------
 // Name: LoadSurface
@@ -175,14 +176,14 @@ void Graphics::UpdateGraphics(SDL_Event* event, std::vector<BaseComponent*> grap
 	SDL_SetRenderDrawColor(this->renderer, 0x00, 0x00, 0x00, 0xff); 
     SDL_RenderClear(this->renderer);
 
-
-
     for (BaseComponent* graphicsComponent : graphicsComponents) {
-        TransformComponent* transformComponent =  (TransformComponent*) transformComponents[((GraphicsComponent*)graphicsComponent)->transformId];
+
+		int transformId = static_cast<GraphicsComponent*>(graphicsComponent)->transformId; 
+        TransformComponent* transformComponent =  static_cast<TransformComponent*>(transformComponents[transformId]);
 
         IGraphicsResource* graphicsResource;
+		int graphicsResourceId = static_cast<GraphicsComponent*>(graphicsComponent)->resourceId;
 
-		int graphicsResourceId = ((GraphicsComponent*)graphicsComponent)->resourceId;
         graphicsResource = this->graphicsResourceMap[graphicsResourceId];
         graphicsResource->Render(this->renderer, transformComponent);
     }

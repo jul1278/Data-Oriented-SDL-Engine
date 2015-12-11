@@ -28,7 +28,11 @@ public:
         if (mouseMoveEvent == nullptr) {
             return;
         }
+		
+		Vector2D lastPos = mouseMoveEvent->lastPos; 
+		Vector2D currPos = mouseMoveEvent->currPos; 
 
+		
         float prevDx = mouseMoveEvent->lastPos.x - transformComponent->position.x;
         float prevDy = mouseMoveEvent->lastPos.y - transformComponent->position.y;
 
@@ -48,7 +52,7 @@ public:
                 lastPosWasInside = false;
             }
         }
-
+		
         if (currDx > 0.0f && currDy > 0.0f) {
             if ((currDx < clickAbleComponent->clickArea.x) && (currDy < clickAbleComponent->clickArea.y)) {
                 currentPosInside = true; 
