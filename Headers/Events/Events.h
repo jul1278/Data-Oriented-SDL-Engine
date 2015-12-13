@@ -30,6 +30,9 @@ public:
     {
         int id = GetNextHandlerId(); 
         this->clickEventHandlerMap.insert(std::pair<int, MouseEventHandler*>(id, clickEventHandler));
+
+		// TODO: get the 'handler description' and put the correct components into it?
+
         return id; 
     }
 

@@ -6,63 +6,53 @@
 #define SDLRTS_EVENTHANDLER_H
 
 #include "Event.h"
+#include "Events.h"
 #include <vector>
 #include <map>
 #include <Components/BaseComponent.h>
 #include <Entity.h>
 
+
+using namespace std;
+
 class IEventHandler
 {
 private:
 
-    uint32_t id; 
-    std::map<ComponentType, std::vector<BaseComponent*>> componentMap;
+    uint32_t id;    
+	map<ComponentType, BaseComponent*> components; 
 
-    virtual std::vector<Event*> ProcessEvent(std::map<ComponentType, std::vector<BaseComponent*>>* componentMap, Event* event) = 0;
 public:
 
-    IEventHandler(uint32_t id) { this->id = id; }
+    IEventHandler(uint32_t id)
+    {
+	    this->id = id;
+    }
 
     virtual ~IEventHandler() {}
 
-    uint32_t Id() { return this->id; }
-
-    void InsertComponents(std::vector<BaseComponent*> components, ComponentType componentType)
+    uint32_t Id() const
     {
-        // check if this event type is already mapped
-        if (this->componentMap.find(componentType) == this->componentMap.end()) {
-            this->componentMap.insert(std::pair<ComponentType, std::vector<BaseComponent*>>(
-                    componentType,
-                    std::vector<BaseComponent*>())
-            );
-        }
-
-        if (components.size() != 0) {
-            for ( BaseComponent* baseComponent : components) {
-                this->componentMap[componentType].push_back(baseComponent);
-            }
-        }
+	    return this->id;
     }
 
     void InsertComponent(BaseComponent* component, ComponentType componentType)
     {
-        // check if this event type is already mapped
-        if (this->componentMap.find(componentType) == this->componentMap.end()) {
-            this->componentMap.insert(std::pair<ComponentType, std::vector<BaseComponent*>>(
-                    componentType,
-                    std::vector<BaseComponent*>())
-            );
-        }
-
-        if (component) {
-            this->componentMap[componentType].push_back(component);
-        }
+		if (components.find(componentType) == components.end()) {
+			components.insert(pair<ComponentType, BaseComponent*>(componentType, component)); 
+		}
     }
 
-    std::vector<Event*> PassEvent(Event* event)
+	template<typename T>
+	T* Component(ComponentType componentType)
     {
-        return this->ProcessEvent(&this->componentMap, event);
+		if (this->components.find(componentType) != this->components.end()) {
+			return static_cast<T*>(components[componentType]); 
+		}
+		return nullptr; 
     }
+
+	virtual std::vector<Event*> HandleEvent(Event* event) = 0;
 };
 
 
