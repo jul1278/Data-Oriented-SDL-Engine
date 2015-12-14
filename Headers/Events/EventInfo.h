@@ -32,6 +32,53 @@ struct MouseMoveEvent : public IEventInfo
     }
 };
 
+struct MouseOverEvent : public IEventInfo
+{
+	int targetId;
+	int sourceId; 
+	MouseOverEvent(int targetId, int sourceId)
+	{
+		this->targetId = targetId;
+		this->sourceId = sourceId; 
+	}
+};
+
+struct MouseOffEvent : public IEventInfo
+{
+	int targetId; 
+	int sourceId;
+
+	MouseOffEvent(int targetId, int sourceId)
+	{
+		this->targetId = targetId;
+		this->sourceId = sourceId; 
+	}
+};
+
+struct MouseUpEvent : public IEventInfo
+{
+	int targetId;
+	int sourceId;
+
+	MouseUpEvent(int targetId, int sourceId)
+	{
+		this->targetId = targetId;
+		this->sourceId = sourceId;
+	}
+};
+
+struct ShowEvent : public IEventInfo
+{
+	int targetId;
+	ShowEvent(int targetId) { this->targetId = targetId; }
+};
+
+struct HideEvent : public IEventInfo
+{
+	int targetId;
+	HideEvent(int targetId) { this->targetId = targetId; }
+};
+
 // MessageEvent
 struct MessageEvent : public IEventInfo
 {

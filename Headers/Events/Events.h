@@ -9,7 +9,7 @@
 #include "Components/BaseComponent.h"
 #include "Components/TransformComponent.h"
 #include "Components/ClickableComponent.h"
-#include "Events/MouseEventHandler.h"
+#include "Events/IEventHandler.h"
 #include <map>
 #include <vector>
 
@@ -20,39 +20,45 @@ private:
     int handlerId;
     int GetNextHandlerId() { return handlerId++; }
 
-    std::map<int, MouseEventHandler*> clickEventHandlerMap; 
+	map<int, IEventHandler*> eventHandlers; 
+	map<EventType, vector<int>> eventTypeMap; 
+	vector<Event*> events; 
 
 public:
 
     Events() { this->handlerId = 0; }
 
-    int AddHandler(MouseEventHandler* clickEventHandler)
+    int AddHandler(IEventHandler* eventHandler)
     {
+		if (eventHandler == nullptr) {
+			return -1; 
+		}
+
         int id = GetNextHandlerId(); 
-        this->clickEventHandlerMap.insert(std::pair<int, MouseEventHandler*>(id, clickEventHandler));
+       
+		eventHandlers.insert(pair<int, IEventHandler*>(id, eventHandler)); 
 
 		// TODO: get the 'handler description' and put the correct components into it?
-
         return id; 
     }
 
-    void Update(Event* event, std::vector<BaseComponent*> transformComponents, std::vector<BaseComponent*> clickableComponents)
+	void Update()
     {
-        for (BaseComponent* component : clickableComponents)
+	    for (auto eventIt = this->events.begin(); eventIt != this->events.end(); ++eventIt)
         {
-            ClickAbleComponent* clickableComponent = static_cast<ClickAbleComponent*>(component); 
-            TransformComponent* transformComponent = static_cast<TransformComponent*>(transformComponents[clickableComponent->transformId]); 
-            MouseEventHandler* handler = this->clickEventHandlerMap[clickableComponent->eventHandlerId];
-            handler->Handle(event, transformComponent, clickableComponent); 
+			for (auto* eventHandler : this->eventHandlers) {
+				eventHandler->HandleEvent(eventIt, this); 
+			}
         }
-    }    
-    
-    ~Events()
+
+		this->events.clear(); 
+    }
+
+	void PostEvent(Event* event)
     {
-        for (auto mappedPair : this->clickEventHandlerMap)
-        {
-            delete mappedPair.second;
-        }
+		if (event) {
+			this->events.push_back(event);
+		}
     }
 };
 
