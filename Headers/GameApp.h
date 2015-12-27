@@ -6,7 +6,7 @@
 #define SDL_RTS_GAMEAPP_H
 
 #include "Graphics.h"
-#include "Transforms/IEntityTransform.h"
+
 
 class GameApp
 {
@@ -18,14 +18,9 @@ private:
     std::string appName;
 
     Graphics* graphics;
-    ComponentSpecs* componentSpecs;
 
-    std::vector<IEntityTransform*> entityTransforms;
-
-    std::vector<Entity*> entityList;
-
-    std::vector<BaseComponent*> graphicsComponents;
-    std::vector<BaseComponent*> transformComponents;
+    std::vector<IBaseComponent*> graphicsComponents;
+    std::vector<IBaseComponent*> transformComponents;
 
 public:
 

@@ -49,9 +49,9 @@ bool ComponentSpecs::CheckEntityMeetsSpec(Entity *entity, std::string entityName
     // if we can find all the spec components then return true
     for(ComponentType componentType : spec) {
 
-        if (entity->componentMap.find(componentType) == entity->componentMap.end()) {
-            return false;
-        }
+        //if (entity->componentMap.find(componentType) == entity->componentMap.end()) {
+        //    return false;
+        //}
     }
 
     return true;

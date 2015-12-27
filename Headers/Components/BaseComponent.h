@@ -5,23 +5,41 @@
 #ifndef SDL_RTS_ICOMPONENT_H
 #define SDL_RTS_ICOMPONENT_H
 
-#include "Vector.h"
+#include <map>
 
-// NOTE: BaseComponent not IComponent
+using namespace std; 
+// NOTE: IBaseComponent not IComponent
 
-struct BaseComponent
+struct IBaseComponent
 {
     // Has to be set by something, obviously we can't choose our own Id.
     int id;
     int entityId;
 
-    BaseComponent()
+    IBaseComponent()
     {
         this->id = 0;
         this->entityId = 0;
     }
-
 };
 
+struct IBaseDependentComponent : public IBaseComponent
+{
+	IBaseComponent* dependency;
+
+	IBaseDependentComponent()
+	{
+		this->dependency = nullptr;
+	}
+};
+
+struct IBaseMultiDependentComponent : public IBaseComponent
+{
+	map<int, IBaseComponent*> dependentMap;
+
+	IBaseMultiDependentComponent()
+	{
+	}
+};
 
 #endif //SDL_RTS_ICOMPONENT_H

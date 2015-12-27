@@ -17,6 +17,8 @@
 class MouseEventHandler : public IEventHandler
 {
 public:
+	MouseEventHandler(int id) : IEventHandler(id) {};
+
 	void HandleEvent(Event* event, Events* events) override final
 	{
 		MouseMoveEvent* mouseMoveEvent = static_cast<MouseMoveEvent*>(event->eventInfo);

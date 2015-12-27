@@ -9,10 +9,8 @@
 #include "Events/Event.h"
 #include "Components/BaseComponent.h"
 #include "ComponentType.h"
-#include <vector>
 #include <map>
 
-class Events;
 using namespace std;
 
 class IEventHandler
@@ -20,7 +18,7 @@ class IEventHandler
 private:
 
     int id;    
-	map<ComponentType, map<int, BaseComponent*>> components; 
+	map<ComponentType, map<int, IBaseComponent*>> components; 
 
 public:
 
@@ -37,14 +35,14 @@ public:
 	    return this->id;
     }
 
-	map<ComponentType, map<int, BaseComponent*>> Components() const { return this->components; }
+	map<ComponentType, map<int, IBaseComponent*>> Components() const { return this->components; }
 		
-	void AddComponents(ComponentType componentType, BaseComponent* component)
+	void AddComponents(ComponentType componentType, IBaseComponent* component)
     {
 		if (this->components.find(componentType) == this->components.end()) {
-			this->components.insert(pair<ComponentType, map<int, BaseComponent*>>(componentType, map<int, BaseComponent*>()));
+			this->components.insert(pair<ComponentType, map<int, IBaseComponent*>>(componentType, map<int, IBaseComponent*>()));
 		}
-		this->components[componentType].insert(pair<int, BaseComponent*>(component->id, component));
+		this->components[componentType].insert(pair<int, IBaseComponent*>(component->id, component));
     }
 
 	virtual void HandleEvent(Event* event, Events* events) = 0;

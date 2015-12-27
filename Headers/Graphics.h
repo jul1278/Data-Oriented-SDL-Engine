@@ -12,6 +12,7 @@
 #include "GraphicsResources/IGraphicsResource.h"
 #include "Components/GraphicsComponent.h"
 #include "Components/TransformComponent.h"
+#include "Events/IEventHandler.h"
 #include "Utility.h"
 
 // Graphics
@@ -26,21 +27,21 @@ private:
     int resourceId;
     int GetNextResourceId() { return resourceId++; }
 
-    std::map<int, IGraphicsResource*> graphicsResourceMap;
-    std::map<std::string, SDL_Surface*> resourceSurfaceMap;
+    map<int, IGraphicsResource*> graphicsResourceMap;
+    map<string, SDL_Surface*> resourceSurfaceMap;
 
-    static SDL_Surface* LoadSurface(std::string filename, SDL_PixelFormat* format);
+    static SDL_Surface* LoadSurface(string filename, SDL_PixelFormat* format);
 
 public:
 
-    Graphics(int windowWidth, int windowHeight, std::string appName);
+    Graphics(int windowWidth, int windowHeight, string appName);
     ~Graphics();
 
     // Load a sprite resource and associate it with a string
-    int LoadGraphicResource(std::string fileName, std::string resourceName);
+    int LoadGraphicResource(string fileName, string resourceName);
     int AddGraphicsResource(IGraphicsResource* graphicsResource);
 
-    void UpdateGraphics(SDL_Event* event, std::vector<BaseComponent*> graphicsComponents, std::vector<BaseComponent*> transformComponents);
+    void UpdateGraphics(SDL_Event* event, map<int, IBaseComponent*> graphicsComponents, map<int, IBaseComponent*> transformComponents);
 };
 
 

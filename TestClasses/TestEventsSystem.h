@@ -26,7 +26,6 @@
 #include "SDL2/SDL_events.h"
 #endif
 
-#include "Events/Events.h"
 #include "Events/MouseEventHandler.h"
 #include "Components/GraphicsComponent.h"
 #include "GraphicsResources/RectGraphicsResource.h"
@@ -34,6 +33,7 @@
 #include <vector>
 #include <random>
 #include <string.h>
+#include <Events/SimpleButtonEventHandler.h>
 
 
 class TestEventsSystem
@@ -41,7 +41,7 @@ class TestEventsSystem
 private:
 
     Graphics* graphics;
-    Events* events; 
+    //Events* events; 
     std::string testName;
 
     int windowWidth;
@@ -58,108 +58,156 @@ public:
 #endif
         this->testName = "EventsTest";
 
-        this->windowWidth = 604;
-        this->windowHeight = 604;
+        this->windowWidth = 800;
+        this->windowHeight = 600;
 
         this->graphics = new Graphics(windowWidth, windowHeight, testName);
 
-       
-        
         TestEvents();
     }
 
     ~TestEventsSystem() {}
 
-    bool TestEvents()
+	void TestEvents()
     {
-        this->events = new Events(); 
+		// setup components and id's
+		TransformComponent parentButtonTransformComponent = TransformComponent(Vector2D(10.0f, 10.0f));
+		ClickAbleComponent parentButtonClickAbleComponent = ClickAbleComponent(0, 0, Vector2D(50.0f, 50.0f)); 
+		GraphicsComponent parentButtonGraphicsComponent = GraphicsComponent(0, 0); 
 
-        int numButtonsX = 2;
-        int numButtonsY = 2;
+		TransformComponent childButtonTransformComponent = TransformComponent(Vector2D(50.0f, 10.0f)); 
+		ClickAbleComponent childButtonClickAbleComponent = ClickAbleComponent(3, 1, Vector2D(50.0f, 50.0f));
+		GraphicsComponent childButtonGraphicsComponent = GraphicsComponent(1, 3); 
 
-        // create some components
-        std::vector<BaseComponent*> clickAbleComponents;
-        std::vector<BaseComponent*> graphicsComponents;
-        std::vector<BaseComponent*> transformComponents;
+		parentButtonTransformComponent.id = 0;
+		childButtonTransformComponent.id = 1;
 
-        float space = 30.0f;
-        float buttonWidth = this->windowWidth / numButtonsX;
-        float buttonHeight = this->windowHeight / numButtonsY;
+		parentButtonClickAbleComponent.id = 2;
+		childButtonClickAbleComponent.id = 3;
 
-        //// build an array of buttons
-        //for (int i = 0; i < numButtonsY; i++) {
+		parentButtonGraphicsComponent.id = 4; 
+		childButtonGraphicsComponent.id = 5; 
 
-        //    for (int j = 0; j < numButtonsX; j++) {
+		map<int, IBaseComponent*> graphicsComponents = map<int, IBaseComponent*>
+		{
+			pair<int, IBaseComponent*>(parentButtonGraphicsComponent.id, &parentButtonGraphicsComponent),
+				pair<int, IBaseComponent*>(childButtonGraphicsComponent.id, &childButtonGraphicsComponent)
+		};
 
-        //        int index = i*numButtonsX + j;
+		map<int, IBaseComponent*> transformComponents = map<int, IBaseComponent*>
+		{
+			pair<int, IBaseComponent*>(parentButtonTransformComponent.id, &parentButtonTransformComponent),
+				pair<int, IBaseComponent*>(childButtonTransformComponent.id, &childButtonTransformComponent)
+		};
 
-        //        clickAbleComponents.push_back(new ClickAbleComponent(index, 0, Vector2D(buttonWidth - space, buttonHeight - space)));
 
-        //        float x = j*buttonWidth + space;
-        //        float y = i*buttonHeight + space;
+		IEventHandler* mouseEventHandler = new MouseEventHandler(0); 
 
-        //        transformComponents.push_back(new TransformComponent(Vector2D(x, y), Vector2D(0.0f), Vector2D(1.0f, 1.0f)));
-        //        graphicsComponents.push_back(new GraphicsComponent(index, index));
+		// register with the mouse handler
+		mouseEventHandler->AddComponents(TRANSFORM_COMPONENT, &parentButtonTransformComponent); 
+		mouseEventHandler->AddComponents(CLICKABLE_COMPONENT, &parentButtonClickAbleComponent);
+		mouseEventHandler->AddComponents(TRANSFORM_COMPONENT, &childButtonTransformComponent); 
+		mouseEventHandler->AddComponents(CLICKABLE_COMPONENT, &childButtonClickAbleComponent); 
 
-        //        uint8_t r = 0x8f;
-        //        uint8_t g = 0x8f;
-        //        uint8_t b = 0x8f;
+		// graphics
+		this->graphics->AddGraphicsResource(new RectGraphicsResource(0, "", 50.0f, 50.0f, 0xff, 0xff, 0x00, 0x00)); 
+		this->graphics->AddGraphicsResource(new RectGraphicsResource(0, "", 50.0f, 50.0f, 0xff, 0x00, 0xff, 0x00));
 
-        //        this->graphics->AddGraphicsResource(new RectGraphicsResource(index, "SimpleButtonGraphicResource", (buttonWidth - space), (buttonWidth - space), 0xff, r, g, b));
-        //        transformComponents[index]->id = index;
-        //    }
-        //}
+		IEventHandler* simpleButtonEventHandler = new SimpleButtonEventHandler(1); 
 
-        clickAbleComponents.push_back(new ClickAbleComponent(0, 0, Vector2D(100.0f, 100.0f)));
-        transformComponents.push_back(new TransformComponent(Vector2D(100.0f, 100.0f), Vector2D(0.0f), Vector2D(1.0f, 1.0f)));
-        graphicsComponents.push_back(new GraphicsComponent(0, 0));
+		simpleButtonEventHandler->AddComponents(TRANSFORM_COMPONENT, &parentButtonTransformComponent);
+		simpleButtonEventHandler->AddComponents(CLICKABLE_COMPONENT, &parentButtonClickAbleComponent);
+		simpleButtonEventHandler->AddComponents(TRANSFORM_COMPONENT, &childButtonTransformComponent);
+		simpleButtonEventHandler->AddComponents(CLICKABLE_COMPONENT, &childButtonClickAbleComponent);
 
-		clickAbleComponents.push_back(new ClickAbleComponent(1, 0, Vector2D(100.0f, 100.0f)));
-		transformComponents.push_back(new TransformComponent(Vector2D(300.0f, 300.0f), Vector2D(0.0f), Vector2D(1.0f, 1.0f)));
-		graphicsComponents.push_back(new GraphicsComponent(0, 1));
+		
+		while (1)
+		{
+			SDL_Event event;
+			SDL_PollEvent(&event);
 
-        this->graphics->AddGraphicsResource(new RectGraphicsResource(0, "RectGraphicResource", 100.0f, 100.0f, 0xff, 0x8f, 0x00, 0x8f));
-        this->events->AddHandler(new MouseEventHandler());
+			if (event.type == SDL_QUIT) {
+				break;
+			}
 
-        while (1)
-        {
-            SDL_Event event;
-            SDL_PollEvent(&event);
-            
-            if (event.type == SDL_QUIT) {
-                break;
-            }
+			if (event.type == SDL_MOUSEMOTION)
+			{
+				Vector2D lastPos = Vector2D(event.motion.x, event.motion.y);
+				Vector2D currPos = Vector2D(event.motion.x + event.motion.xrel, event.motion.y + event.motion.yrel);
 
-            if (event.type == SDL_MOUSEMOTION)
-            {
-                Vector2D lastPos = Vector2D(event.motion.x, event.motion.y);
-                Vector2D currPos = Vector2D(event.motion.x + event.motion.xrel, event.motion.y + event.motion.yrel);
+				IEventInfo* mouseMoveEventInfo = new MouseMoveEvent(lastPos, currPos);
+				Event mouseMoveEvent(EVENT_MOUSEMOVE, mouseMoveEventInfo);
+				//events->PostEvent(&mouseMoveEvent); 
+				//events->Update();
+			}
 
-                IEventInfo* mouseMoveEventInfo = new MouseMoveEvent(lastPos, currPos);
-                Event mouseMoveEvent(EVENT_MOUSEMOVE, mouseMoveEventInfo);
-                
-                events->Update(&mouseMoveEvent, transformComponents, clickAbleComponents); 
-            }
-
-            this->graphics->UpdateGraphics(&event, graphicsComponents, transformComponents);
-        }
-
-        for (BaseComponent* component : clickAbleComponents) {
-            delete component;
-        }
-
-        for (BaseComponent* component : graphicsComponents) {
-            delete component;
-        }
-
-        for (BaseComponent* component : transformComponents) {
-            delete component;
-        }
-
-        delete this->graphics;
-
-        return true; 
+			this->graphics->UpdateGraphics(&event, graphicsComponents, transformComponents);
+		}
     }
+
+
+  //  bool TestEvents()
+  //  {
+  //      this->events = new Events(); 
+
+  //      int numButtonsX = 2;
+  //      int numButtonsY = 2;
+
+  //      // create some components
+  //      std::vector<BaseComponent*> clickAbleComponents;
+  //      std::vector<BaseComponent*> graphicsComponents;
+  //      std::vector<BaseComponent*> transformComponents;
+
+  //      clickAbleComponents.push_back(new ClickAbleComponent(0, 0, Vector2D(100.0f, 100.0f)));
+  //      transformComponents.push_back(new TransformComponent(Vector2D(100.0f, 100.0f), Vector2D(0.0f), Vector2D(1.0f, 1.0f)));
+  //      graphicsComponents.push_back(new GraphicsComponent(0, 0));
+
+		//clickAbleComponents.push_back(new ClickAbleComponent(1, 0, Vector2D(100.0f, 100.0f)));
+		//transformComponents.push_back(new TransformComponent(Vector2D(300.0f, 300.0f), Vector2D(0.0f), Vector2D(1.0f, 1.0f)));
+		//graphicsComponents.push_back(new GraphicsComponent(0, 1));
+
+  //      this->graphics->AddGraphicsResource(new RectGraphicsResource(0, "RectGraphicResource", 100.0f, 100.0f, 0xff, 0x8f, 0x00, 0x8f));
+  //      this->events->AddHandler(new MouseEventHandler());
+
+  //      while (1)
+  //      {
+  //          SDL_Event event;
+  //          SDL_PollEvent(&event);
+  //          
+  //          if (event.type == SDL_QUIT) {
+  //              break;
+  //          }
+
+  //          if (event.type == SDL_MOUSEMOTION)
+  //          {
+  //              Vector2D lastPos = Vector2D(event.motion.x, event.motion.y);
+  //              Vector2D currPos = Vector2D(event.motion.x + event.motion.xrel, event.motion.y + event.motion.yrel);
+
+  //              IEventInfo* mouseMoveEventInfo = new MouseMoveEvent(lastPos, currPos);
+  //              Event mouseMoveEvent(EVENT_MOUSEMOVE, mouseMoveEventInfo);
+  //              
+  //              events->Update(&mouseMoveEvent, transformComponents, clickAbleComponents); 
+  //          }
+
+  //          this->graphics->UpdateGraphics(&event, graphicsComponents, transformComponents);
+  //      }
+
+  //      for (BaseComponent* component : clickAbleComponents) {
+  //          delete component;
+  //      }
+
+  //      for (BaseComponent* component : graphicsComponents) {
+  //          delete component;
+  //      }
+
+  //      for (BaseComponent* component : transformComponents) {
+  //          delete component;
+  //      }
+
+  //      delete this->graphics;
+
+  //      return true; 
+  //  }
 };
 
 #endif //SDLRTS_TESTEVENTS_H

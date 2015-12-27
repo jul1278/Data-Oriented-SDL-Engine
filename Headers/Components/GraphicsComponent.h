@@ -10,7 +10,7 @@
 #include "Graphics.h"
 
 // GraphicsComponent
-struct GraphicsComponent : BaseComponent
+struct GraphicsComponent : public IBaseComponent
 {
     int resourceId;
     int transformId;

@@ -13,6 +13,8 @@ class SimpleButtonEventHandler : public IEventHandler
 {
 public:
 
+	SimpleButtonEventHandler(int id) : IEventHandler(id) {}; 
+
 	void HandleEvent(Event* event, Events* events) override final
 	{
 		switch (event->eventType) {

@@ -171,12 +171,14 @@ int Graphics::AddGraphicsResource(IGraphicsResource* graphicsResource)
 // Name: UpdateGraphics
 // Desc:
 //------------------------------------------------------------------------------------
-void Graphics::UpdateGraphics(SDL_Event* event, std::vector<BaseComponent*> graphicsComponents, std::vector<BaseComponent*> transformComponents)
+void Graphics::UpdateGraphics(SDL_Event* event, map<int, IBaseComponent*> graphicsComponents, map<int, IBaseComponent*> transformComponents)
 {
 	SDL_SetRenderDrawColor(this->renderer, 0x00, 0x00, 0x00, 0xff); 
     SDL_RenderClear(this->renderer);
 
-    for (BaseComponent* graphicsComponent : graphicsComponents) {
+    for (auto component : graphicsComponents) {
+
+		GraphicsComponent* graphicsComponent = static_cast<GraphicsComponent*>(component.second); 
 
 		int transformId = static_cast<GraphicsComponent*>(graphicsComponent)->transformId; 
         TransformComponent* transformComponent =  static_cast<TransformComponent*>(transformComponents[transformId]);

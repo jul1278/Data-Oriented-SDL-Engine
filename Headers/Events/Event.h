@@ -5,6 +5,7 @@
 #ifndef SDLRTS_EVENT_H
 #define SDLRTS_EVENT_H
 
+#include "Events/IEventHandler.h"
 #include "EventType.h"
 #include "EventInfo.h"
 

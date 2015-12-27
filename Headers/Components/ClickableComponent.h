@@ -7,7 +7,7 @@
 
 #include "Vector.h"
 
-struct ClickAbleComponent : public BaseComponent
+struct ClickAbleComponent : IBaseComponent
 {
     int transformId;
     int eventHandlerId; 

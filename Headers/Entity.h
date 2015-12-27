@@ -11,26 +11,44 @@
 
 struct Entity
 {
-    std::map<ComponentType, BaseComponent*> componentMap;
+private:
+
+    map<ComponentType, IBaseComponent*> componentMap;
+	map<int, IBaseComponent*> componentIdMap;
     int id;
 
-    Entity()
+public:
+
+    Entity(int id)
     {
-        this->id = 0;
+        this->id = id;
     }
 
-    void AddComponent(ComponentType componentType, BaseComponent* component)
+	int Id() const { return this->id; }
+
+    void AddComponent(ComponentType componentType, IBaseComponent* component)
     {
-        this->componentMap.insert(std::pair<ComponentType , BaseComponent*>(componentType, component));
+        this->componentMap.insert(std::pair<ComponentType , IBaseComponent*>(componentType, component));
     }
 
-    // Returns null if doesn't exist
-    BaseComponent* GetComponent(ComponentType componentType)
+	template<typename T> 
+	T GetComponent(ComponentType componentType)
     {
-        if (this->componentMap.find(componentType) == this->componentMap.end() ) {
-            return nullptr;
-        }
-        return this->componentMap[componentType];
+		auto component = this->componentMap[componentType]; 
+		if (component != nullptr) {
+			return static_cast<T>(component); 
+		}
+		return nullptr; 
+    }
+
+	template<typename T> 
+	T GetComponent(int id)
+    {
+		auto component = this->componentIdMap[id]; 
+		if (component != nullptr) {
+			return static_cast<T>(component);
+		}
+		return nullptr; 
     }
 };
 
