@@ -19,13 +19,13 @@ using namespace std;
 
 class TestComponentRelation
 {
-private:
-
 public:
 
 	TestComponentRelation()
 	{
 		ComponentRepository componentRepository;
+
+		long numComponents = 15000; 
 
 		vector<int> seedVector = { (int) time(0), (int) time(0) }; 
 
@@ -34,10 +34,10 @@ public:
 		generator.seed(seed); 
 		std::uniform_real_distribution<float> distribution(1.0f, 1000.0f);
 		std::uniform_real_distribution<float> radiusDistribution(1.0f, 5.0f);
-			
+		
 		vector<ComponentPairRelation> componentRelations; 
 		 
-		for (int i = 0; i < 5000; i++) {
+		for (int i = 0; i < numComponents; i++) {
 
 			float x = distribution(generator);
 			float y = distribution(generator);
@@ -75,18 +75,25 @@ public:
 					float diffY = currY - y; 
 
 					if ((diffX*diffX + diffY*diffY) < ((currR + r)*(currR + r))) {
+
 						// collision happen
 						//cout << componentRelation.Parent<CollisionComponent*>()->id << std::endl;
 						counter++; 
 					}
-
 				}
 			}
 		}
 
 		std::time_t diffTime = std::time(nullptr) - currTime;
 
-		cout << "vector test: " << diffTime << " sec" << std::endl;
+		long diffTimeSec = static_cast<long>(diffTime); 
+
+		cout << "vector test: " << diffTimeSec << " sec" << std::endl;
+
+		if (diffTimeSec != 0) {
+			cout << "vectors/sec : " << (static_cast<float>(numComponents / diffTimeSec)) << std::endl;
+		}
+		
 		cout << counter << " Collision(s)" << std::endl;
 		currTime = std::time(nullptr);
 
