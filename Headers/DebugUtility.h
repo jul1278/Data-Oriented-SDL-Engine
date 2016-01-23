@@ -1,5 +1,5 @@
-#ifndef SDLRTS_DEBUG_UTILITY_H
-#define SDLRTS_DEBUG_UTILITY_H
+#ifndef DEBUG_UTILITY_H
+#define DEBUG_UTILITY_H
 
 #ifdef _WIN32
 
@@ -9,4 +9,4 @@
 
 
 
-#endif //SDLRTS_UTILITY_H
+#endif //UTILITY_H

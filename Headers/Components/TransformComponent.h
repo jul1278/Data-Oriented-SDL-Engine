@@ -2,13 +2,13 @@
 // Created by Julian  on 22/11/15.
 //
 
-#ifndef SDL_RTS_TRANSFORMCOMPONENT_H
-#define SDL_RTS_TRANSFORMCOMPONENT_H
+#ifndef TRANSFORMCOMPONENT_H
+#define TRANSFORMCOMPONENT_H
 
 #include "Components/BaseComponent.h"
 #include <Vector.h>
 
-struct TransformComponent : IBaseComponent
+struct TransformComponent : BaseComponent
 {
     Vector2D position;
     Vector2D scale;
@@ -30,4 +30,4 @@ struct TransformComponent : IBaseComponent
 };
 
 
-#endif //SDL_RTS_TRANSFORMCOMPONENT_H
+#endif //TRANSFORMCOMPONENT_H

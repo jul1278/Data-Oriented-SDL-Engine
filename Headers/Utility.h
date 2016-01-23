@@ -2,8 +2,8 @@
 // Created by Julian  on 23/11/15.
 //
 
-#ifndef SDLRTS_UTILITY_H
-#define SDLRTS_UTILITY_H
+#ifndef UTILITY_H
+#define UTILITY_H
 
 #pragma once
 
@@ -233,5 +233,5 @@ const float PI = 3.1415927;
 
 
 
-#endif //SDLRTS_UTILITY_H
+#endif //UTILITY_H
 

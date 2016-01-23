@@ -1,45 +1,30 @@
 //
 // Created by Julian  on 17/11/15.
 //
-
-#ifndef SDL_RTS_ICOMPONENT_H
-#define SDL_RTS_ICOMPONENT_H
+#ifndef BASE_COMPONENT_H
+#define BASE_COMPONENT_H
 
 #include <map>
 
 using namespace std; 
-// NOTE: IBaseComponent not IComponent
 
-struct IBaseComponent
+struct BaseComponent
 {
     // Has to be set by something, obviously we can't choose our own Id.
     int id;
     int entityId;
 
-    IBaseComponent()
+    BaseComponent()
     {
         this->id = 0;
         this->entityId = 0;
     }
-};
 
-struct IBaseDependentComponent : public IBaseComponent
-{
-	IBaseComponent* dependency;
-
-	IBaseDependentComponent()
+	template <class T>
+	T As()
 	{
-		this->dependency = nullptr;
+		return static_cast<T>(this); 
 	}
 };
 
-struct IBaseMultiDependentComponent : public IBaseComponent
-{
-	map<int, IBaseComponent*> dependentMap;
-
-	IBaseMultiDependentComponent()
-	{
-	}
-};
-
-#endif //SDL_RTS_ICOMPONENT_H
+#endif //BASE_COMPONENT_H

@@ -2,8 +2,8 @@
 // Created by Julian  on 22/11/15.
 //
 
-#ifndef SDLRTS_RECTGRAPHICSRESOURCE_H
-#define SDLRTS_RECTGRAPHICSRESOURCE_H
+#ifndef RECTGRAPHICSRESOURCE_H
+#define RECTGRAPHICSRESOURCE_H
 
 #include "GraphicsResources/IGraphicsResource.h"
 #include "Graphics.h"
@@ -82,4 +82,4 @@ public:
 };
 
 
-#endif //SDLRTS_RECTGRAPHICSRESOURCE_H
+#endif //RECTGRAPHICSRESOURCE_H

@@ -2,10 +2,11 @@
 // Created by Julian  on 17/11/15.
 //
 
-#ifndef SDL_RTS_GAMEAPP_H
-#define SDL_RTS_GAMEAPP_H
+#ifndef GAMEAPP_H
+#define GAMEAPP_H
 
 #include "Graphics.h"
+#include "Components/ComponentRepository.h"
 
 
 class GameApp
@@ -17,10 +18,8 @@ private:
     int windowWidth;
     std::string appName;
 
-    Graphics* graphics;
-
-    std::vector<IBaseComponent*> graphicsComponents;
-    std::vector<IBaseComponent*> transformComponents;
+    Graphics* graphics;	
+	ComponentRepository* componentRepository; 
 
 public:
 
@@ -31,4 +30,4 @@ public:
 };
 
 
-#endif //SDL_RTS_GAMEAPP_H
+#endif //GAMEAPP_H

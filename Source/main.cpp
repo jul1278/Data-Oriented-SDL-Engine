@@ -1,6 +1,5 @@
 #include "GameApp.h"
-#include "TestComponentRepository.h"
-#include "TestComponentRelation.h"
+#include "TestDependentComponent.h"
 #define SDL_MAIN_HANDLED
 
 //------------------------------------------------------------------------------------
@@ -9,11 +8,8 @@
 //------------------------------------------------------------------------------------
 int main(int argc, char** argv)
 {
-	TestComponentRelation testComponentRelation; 
-
-	//TestComponentRepository testComponentRepository1;
-    //GameApp gameApp;
-    //while (gameApp.Run() == false) {}
+	GameApp gameApp;
+	gameApp.Run(); 
     return 0;
 }
 

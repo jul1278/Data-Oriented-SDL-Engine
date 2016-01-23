@@ -2,8 +2,8 @@
 // Created by Julian  on 22/11/15.
 //
 
-#ifndef SDLRTS_TRIANGLEGRAPHICSRESOURCE_H
-#define SDLRTS_TRIANGLEGRAPHICSRESOURCE_H
+#ifndef TRIANGLEGRAPHICSRESOURCE_H
+#define TRIANGLEGRAPHICSRESOURCE_H
 
 #include "GraphicsResources/IGraphicsResource.h"
 #include "Graphics.h"
@@ -58,4 +58,4 @@ public:
     }
 };
 
-#endif //SDLRTS_TRIANGLEGRAPHICSRESOURCE_H
+#endif //TRIANGLEGRAPHICSRESOURCE_H

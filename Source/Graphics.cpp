@@ -152,10 +152,9 @@ int Graphics::LoadGraphicResource(std::string fileName, std::string resourceName
         this->graphicsResourceMap.insert(std::pair<int, IGraphicsResource*>(id, spriteGraphicsResource));
         return id;
 
-    } else {
-
-        return -1;
     }
+
+    return -1;
 }
 //------------------------------------------------------------------------------------
 // Name: AddGraphicsResource
@@ -171,17 +170,15 @@ int Graphics::AddGraphicsResource(IGraphicsResource* graphicsResource)
 // Name: UpdateGraphics
 // Desc:
 //------------------------------------------------------------------------------------
-void Graphics::UpdateGraphics(SDL_Event* event, map<int, IBaseComponent*> graphicsComponents, map<int, IBaseComponent*> transformComponents)
+void Graphics::UpdateGraphics(SDL_Event* event, vector<BaseComponent*>* graphicsComponents, vector<BaseComponent*>* transformComponents)
 {
 	SDL_SetRenderDrawColor(this->renderer, 0x00, 0x00, 0x00, 0xff); 
     SDL_RenderClear(this->renderer);
 
-    for (auto component : graphicsComponents) {
+    for (auto component : *graphicsComponents) {
 
-		GraphicsComponent* graphicsComponent = static_cast<GraphicsComponent*>(component.second); 
-
-		int transformId = static_cast<GraphicsComponent*>(graphicsComponent)->transformId; 
-        TransformComponent* transformComponent =  static_cast<TransformComponent*>(transformComponents[transformId]);
+		GraphicsComponent* graphicsComponent = component->As<GraphicsComponent*>(); 
+		TransformComponent* transformComponent = static_cast<GraphicsComponent*>(graphicsComponent)->transformComponent; 
 
         IGraphicsResource* graphicsResource;
 		int graphicsResourceId = static_cast<GraphicsComponent*>(graphicsComponent)->resourceId;

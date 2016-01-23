@@ -2,17 +2,16 @@
 // Created by Julian  on 17/11/15.
 //
 
-#ifndef SDL_RTS_GRAPHICS_H
-#define SDL_RTS_GRAPHICS_H
+#ifndef GRAPHICS_H
+#define GRAPHICS_H
 
 #include <iostream>
 #include <vector>
-#include <map>
+#include <unordered_map>
 #include "SDL.h"
 #include "GraphicsResources/IGraphicsResource.h"
 #include "Components/GraphicsComponent.h"
 #include "Components/TransformComponent.h"
-#include "Events/IEventHandler.h"
 #include "Utility.h"
 
 // Graphics
@@ -27,8 +26,8 @@ private:
     int resourceId;
     int GetNextResourceId() { return resourceId++; }
 
-    map<int, IGraphicsResource*> graphicsResourceMap;
-    map<string, SDL_Surface*> resourceSurfaceMap;
+    unordered_map<int, IGraphicsResource*> graphicsResourceMap;
+    unordered_map<string, SDL_Surface*> resourceSurfaceMap;
 
     static SDL_Surface* LoadSurface(string filename, SDL_PixelFormat* format);
 
@@ -41,8 +40,8 @@ public:
     int LoadGraphicResource(string fileName, string resourceName);
     int AddGraphicsResource(IGraphicsResource* graphicsResource);
 
-    void UpdateGraphics(SDL_Event* event, map<int, IBaseComponent*> graphicsComponents, map<int, IBaseComponent*> transformComponents);
+    void UpdateGraphics(SDL_Event* event, vector<BaseComponent*>* graphicsComponents, vector<BaseComponent*>* transformComponents);
 };
 
 
-#endif //SDL_RTS_GRAPHICS_H
+#endif //GRAPHICS_H

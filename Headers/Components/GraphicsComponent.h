@@ -1,28 +1,25 @@
 //
 // Created by Julian  on 17/11/15.
 //
+#ifndef GRAPHICS_COMPONENT_H
+#define GRAPHICS_COMPONENT_H
 
-#ifndef SDL_RTS_GRAPHICSCOMPONENT_H
-#define SDL_RTS_GRAPHICSCOMPONENT_H
-
-#include <string>
-#include "Components/BaseComponent.h"
-#include "Graphics.h"
+#include "TransformComponent.h"
 
 // GraphicsComponent
-struct GraphicsComponent : public IBaseComponent
+struct GraphicsComponent : public BaseComponent
 {
     int resourceId;
-    int transformId;
+	TransformComponent* transformComponent; 
 
-    GraphicsComponent(int resourceId, int transformId)
+    GraphicsComponent(int resourceId, TransformComponent* transformComponent = nullptr)
     {
+		this->transformComponent = transformComponent; 
         this->resourceId = resourceId;
-        this->transformId = transformId;
     }
 };
 
 
 
 
-#endif //SDL_RTS_GRAPHICSCOMPONENT_H
+#endif //GRAPHICS_COMPONENT_H

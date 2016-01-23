@@ -2,8 +2,8 @@
 // Created by Julian  on 28/11/15.
 //
 
-#ifndef SDLRTS_TESTEVENTS_H
-#define SDLRTS_TESTEVENTS_H
+#ifndef TESTEVENTS_H
+#define TESTEVENTS_H
 
 #ifdef _WIN32
 
@@ -88,16 +88,16 @@ public:
 		parentButtonGraphicsComponent.id = 4; 
 		childButtonGraphicsComponent.id = 5; 
 
-		map<int, IBaseComponent*> graphicsComponents = map<int, IBaseComponent*>
+		map<int, BaseComponent*> graphicsComponents = map<int, BaseComponent*>
 		{
-			pair<int, IBaseComponent*>(parentButtonGraphicsComponent.id, &parentButtonGraphicsComponent),
-				pair<int, IBaseComponent*>(childButtonGraphicsComponent.id, &childButtonGraphicsComponent)
+			pair<int, BaseComponent*>(parentButtonGraphicsComponent.id, &parentButtonGraphicsComponent),
+				pair<int, BaseComponent*>(childButtonGraphicsComponent.id, &childButtonGraphicsComponent)
 		};
 
-		map<int, IBaseComponent*> transformComponents = map<int, IBaseComponent*>
+		map<int, BaseComponent*> transformComponents = map<int, BaseComponent*>
 		{
-			pair<int, IBaseComponent*>(parentButtonTransformComponent.id, &parentButtonTransformComponent),
-				pair<int, IBaseComponent*>(childButtonTransformComponent.id, &childButtonTransformComponent)
+			pair<int, BaseComponent*>(parentButtonTransformComponent.id, &parentButtonTransformComponent),
+				pair<int, BaseComponent*>(childButtonTransformComponent.id, &childButtonTransformComponent)
 		};
 
 
@@ -210,4 +210,4 @@ public:
   //  }
 };
 
-#endif //SDLRTS_TESTEVENTS_H
+#endif //TESTEVENTS_H

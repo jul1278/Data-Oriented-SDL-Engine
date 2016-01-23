@@ -2,8 +2,8 @@
 // Created by Julian  on 18/11/15.
 //
 
-#ifndef SDL_RTS_VECTOR_H
-#define SDL_RTS_VECTOR_H
+#ifndef VECTOR_H
+#define VECTOR_H
 
 #include <math.h>
 
@@ -45,4 +45,4 @@ public:
     float Angle() const { return atan2f(this->y, this->x); }
 };
 
-#endif //SDL_RTS_VECTOR_H_H
+#endif //VECTOR_H_H

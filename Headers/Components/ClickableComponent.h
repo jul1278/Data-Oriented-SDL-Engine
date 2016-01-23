@@ -2,24 +2,27 @@
 // Created by Julian  on 28/11/15.
 //
 
-#ifndef SDLRTS_CLICKABLECOMPONENT_H
-#define SDLRTS_CLICKABLECOMPONENT_H
+#ifndef CLICKABLECOMPONENT_H
+#define CLICKABLECOMPONENT_H
 
 #include "Vector.h"
+#include "BaseComponent.h"
 
-struct ClickAbleComponent : IBaseComponent
+struct ClickAbleComponent : BaseComponent
 {
-    int transformId;
+
     int eventHandlerId; 
     Vector2D clickArea;
+	
+	TransformComponent* transformComponent; 
 
-    ClickAbleComponent(int transformId, int eventHandlerId, Vector2D clickArea)
+	ClickAbleComponent(int eventHandlerId, Vector2D clickArea, TransformComponent* transformComponent = nullptr)
     {
-        this->transformId = transformId;
+		this->transformComponent = transformComponent; 
         this->eventHandlerId = eventHandlerId; 
         this->clickArea = clickArea;
     }
 };
 
-#endif //SDLRTS_CLICKABLECOMPONENT_H
+#endif //CLICKABLECOMPONENT_H
 

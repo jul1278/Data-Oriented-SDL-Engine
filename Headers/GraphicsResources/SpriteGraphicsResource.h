@@ -2,8 +2,8 @@
 // Created by Julian  on 22/11/15.
 //
 
-#ifndef SDLRTS_SPRITEGRAPHICSRESOURCE_H
-#define SDLRTS_SPRITEGRAPHICSRESOURCE_H
+#ifndef SPRITEGRAPHICSRESOURCE_H
+#define SPRITEGRAPHICSRESOURCE_H
 
 #include "GraphicsResources/IGraphicsResource.h"
 #include "Graphics.h"
@@ -56,4 +56,4 @@ public:
     }
 };
 
-#endif //SDLRTS_SPRITEGRAPHICSRESOURCE_H
+#endif //SPRITEGRAPHICSRESOURCE_H

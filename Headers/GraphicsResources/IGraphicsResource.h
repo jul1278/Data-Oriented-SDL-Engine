@@ -2,8 +2,8 @@
 // Created by Julian  on 22/11/15.
 //
 
-#ifndef SDLRTS_IGRAPHICSRESOURCE_H
-#define SDLRTS_IGRAPHICSRESOURCE_H
+#ifndef IGRAPHICSRESOURCE_H
+#define IGRAPHICSRESOURCE_H
 
 #include "Components/TransformComponent.h"
 
@@ -28,4 +28,4 @@ public:
     virtual void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent) = 0;
 };
 
-#endif //SDLRTS_GRAPHICSRESOURCE_H
+#endif //GRAPHICSRESOURCE_H

@@ -2,22 +2,22 @@
 // Created by Julian  on 18/12/15.
 //
 
-#ifndef SDLRTS_COLLISION_COMPONENT_H
-#define SDLRTS_COLLISION_COMPONENT_H
+#ifndef COLLISION_COMPONENT_H
+#define COLLISION_COMPONENT_H
 
 #include "Vector.h"
 #include "BaseComponent.h"
 
-struct CollisionComponent : IBaseComponent
+struct CollisionComponent : BaseComponent
 {
-	int transformId;
 	float radius; 
+	TransformComponent* transformComponent; 
 
-	CollisionComponent(int transformId, float radius)
+	CollisionComponent(float radius, TransformComponent* transformComponent = nullptr)
 	{
-		this->transformId = transformId;
+		this->transformComponent = transformComponent; 
 		this->radius = radius; 
 	}
 };
 
-#endif //SDLRTS_CLICKABLECOMPONENT_H
+#endif //CLICKABLECOMPONENT_H

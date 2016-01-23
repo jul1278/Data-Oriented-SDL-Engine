@@ -2,8 +2,8 @@
 // Created by Julian  on 17/11/15.
 //
 
-#ifndef SDL_RTS_ENTITY_H
-#define SDL_RTS_ENTITY_H
+#ifndef ENTITY_H
+#define ENTITY_H
 
 #include "Components/BaseComponent.h"
 #include <map>
@@ -13,8 +13,8 @@ struct Entity
 {
 private:
 
-    map<ComponentType, IBaseComponent*> componentMap;
-	map<int, IBaseComponent*> componentIdMap;
+    map<ComponentType, BaseComponent*> componentMap;
+	map<int, BaseComponent*> componentIdMap;
     int id;
 
 public:
@@ -26,9 +26,9 @@ public:
 
 	int Id() const { return this->id; }
 
-    void AddComponent(ComponentType componentType, IBaseComponent* component)
+    void AddComponent(ComponentType componentType, BaseComponent* component)
     {
-        this->componentMap.insert(std::pair<ComponentType , IBaseComponent*>(componentType, component));
+        this->componentMap.insert(std::pair<ComponentType , BaseComponent*>(componentType, component));
     }
 
 	template<typename T> 
@@ -53,4 +53,4 @@ public:
 };
 
 
-#endif //SDL_RTS_ENTITY_H
+#endif //ENTITY_H

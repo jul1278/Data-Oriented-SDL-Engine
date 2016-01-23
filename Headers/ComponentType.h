@@ -2,8 +2,8 @@
 // Created by Julian  on 22/11/15.
 //
 
-#ifndef SDLRTS_COMPONENTTYPE_H
-#define SDLRTS_COMPONENTTYPE_H
+#ifndef COMPONENTTYPE_H
+#define COMPONENTTYPE_H
 
 enum ComponentType
 {
@@ -13,4 +13,4 @@ enum ComponentType
     CLICKABLE_COMPONENT
 };
 
-#endif //SDLRTS_COMPONENTTYPE_H
+#endif //COMPONENTTYPE_H

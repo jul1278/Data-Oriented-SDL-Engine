@@ -2,8 +2,8 @@
 // Created by Julian  on 20/12/15.
 //
 
-#ifndef SDL_RTS_COMPONENT_REPOSITORY_H
-#define SDL_RTS_COMPONENT_REPOSITORY_H
+#ifndef COMPONENT_REPOSITORY_H
+#define COMPONENT_REPOSITORY_H
 
 #include "Components/BaseComponent.h"
 #include "ComponentType.h"
@@ -22,8 +22,8 @@ private:
 	int GetNextId() { return currId++; }
 	int GetNextEntityId() { return currEntityId++; }
 
-	map<ComponentType, vector<IBaseComponent*>> componentTypeAddressMap;
-	map<int, IBaseComponent*> componentIdMap; 
+	map<ComponentType, vector<BaseComponent*>> componentTypeAddressMap;
+	map<int, BaseComponent*> componentIdMap; 
 
 public:
 
@@ -41,13 +41,13 @@ public:
 		}
 	}
 
-	int InsertComponent(ComponentType componentType, IBaseComponent* baseComponent)
+	int InsertComponent(ComponentType componentType, BaseComponent* baseComponent)
 	{
 		baseComponent->id = GetNextId(); 
 
 
 		if (componentTypeAddressMap.find(componentType) == componentTypeAddressMap.end()) {
-			componentTypeAddressMap.insert(pair<ComponentType, vector<IBaseComponent*>>(componentType, vector<IBaseComponent*>()));
+			componentTypeAddressMap.insert(pair<ComponentType, vector<BaseComponent*>>(componentType, vector<BaseComponent*>()));
 		}
 
 		componentTypeAddressMap[componentType].push_back(baseComponent);
@@ -56,7 +56,7 @@ public:
 		return baseComponent->id; 
 	}
 	
-	vector<IBaseComponent*>* Select(ComponentType componentType)
+	vector<BaseComponent*>* Select(ComponentType componentType)
 	{
 		if (componentTypeAddressMap.find(componentType) != componentTypeAddressMap.end()) {
 			return &componentTypeAddressMap[componentType]; 
@@ -66,7 +66,7 @@ public:
 
 	template<typename T> T Select(int id)
 	{
-		IBaseComponent* component = this->componentIdMap[id];
+		BaseComponent* component = this->componentIdMap[id];
 		return static_cast<T>(component);  
 	}
 
