@@ -113,10 +113,10 @@ Graphics::~Graphics()
 //------------------------------------------------------------------------------------
 SDL_Surface* Graphics::LoadSurface(std::string filename, SDL_PixelFormat* format)
 {
-    //The final optimized image
+    // The final optimized image
     SDL_Surface* optimizedSurface = NULL;
 
-    //Load image at specified path
+    // Load image at specified path
     SDL_Surface* loadedSurface = IMG_Load(filename.c_str());
     if( loadedSurface == NULL )
     {
@@ -124,7 +124,7 @@ SDL_Surface* Graphics::LoadSurface(std::string filename, SDL_PixelFormat* format
     }
     else
     {
-        //Convert surface to screen format
+        // Convert surface to screen format
         optimizedSurface = SDL_ConvertSurface(loadedSurface, format, NULL);
         if( optimizedSurface == NULL )
         {

@@ -5,12 +5,10 @@
 #ifndef TEST_DEPENDENT_COMPONENT_H
 #define TEST_DEPENDENT_COMPONENT_H
 
-#include "Components/ComponentRepository.h"
+#include "ComponentRepository.h"
 #include "Components/BaseComponent.h"
 #include "Components/GraphicsComponent.h"
-#include "Components/ClickableComponent.h"
 #include "Components/TransformComponent.h"
-#include "Components/CollisionComponent.h"
 
 #include <chrono>
 #include <random>

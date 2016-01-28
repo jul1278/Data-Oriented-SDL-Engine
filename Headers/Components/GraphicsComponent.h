@@ -12,6 +12,12 @@ struct GraphicsComponent : public BaseComponent
     int resourceId;
 	TransformComponent* transformComponent; 
 
+	GraphicsComponent()
+	{
+		this->resourceId = 0;
+		this->transformComponent = nullptr; 
+	}
+
     GraphicsComponent(int resourceId, TransformComponent* transformComponent = nullptr)
     {
 		this->transformComponent = transformComponent; 

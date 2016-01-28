@@ -1,5 +1,4 @@
 #include "GameApp.h"
-#include "TestDependentComponent.h"
 #define SDL_MAIN_HANDLED
 
 //------------------------------------------------------------------------------------

@@ -6,7 +6,7 @@
 #define GAMEAPP_H
 
 #include "Graphics.h"
-#include "Components/ComponentRepository.h"
+#include "ComponentRepository.h"
 
 
 class GameApp

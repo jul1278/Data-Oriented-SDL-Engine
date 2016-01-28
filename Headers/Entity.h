@@ -6,15 +6,15 @@
 #define ENTITY_H
 
 #include "Components/BaseComponent.h"
-#include <map>
+#include <unordered_map>
 #include "ComponentType.h"
 
 struct Entity
 {
 private:
 
-    map<ComponentType, BaseComponent*> componentMap;
-	map<int, BaseComponent*> componentIdMap;
+    unordered_map<ComponentType, BaseComponent*> componentMap;
+	unordered_map<int, BaseComponent*> componentIdMap;
     int id;
 
 public:
@@ -29,6 +29,12 @@ public:
     void AddComponent(ComponentType componentType, BaseComponent* component)
     {
         this->componentMap.insert(std::pair<ComponentType , BaseComponent*>(componentType, component));
+		this->componentIdMap.insert(pair<int, BaseComponent*>(component->id, component)); 
+    }
+
+	unordered_map<ComponentType, BaseComponent*>* ComponentMap()
+    {
+		return &this->componentMap; 
     }
 
 	template<typename T> 

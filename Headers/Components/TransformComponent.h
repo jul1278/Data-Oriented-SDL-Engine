@@ -14,6 +14,13 @@ struct TransformComponent : BaseComponent
     Vector2D scale;
     Vector2D orientation;
 
+	TransformComponent()
+	{
+		this->position = Vector2D(0.0f, 0.0f); 
+		this->scale = Vector2D(0.0f, 0.0f); 
+		this->orientation = Vector2D(0.0f, 0.0f);
+	}
+
 	TransformComponent(Vector2D position)
 	{
 		this->position = position; 
