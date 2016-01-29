@@ -36,6 +36,7 @@ private:
 	int InsertComponent(BaseComponent* baseComponent)
 	{
 		baseComponent->id = GetNextId();
+		baseComponent->entityId = 0; // don't get assigned to an entity by default
 
 		if (componentTypeAddressMap.find(type_index(typeid(T))) == componentTypeAddressMap.end()) {
 			componentTypeAddressMap.insert(pair<type_index, vector<BaseComponent*>>(type_index(typeid(T)), vector<BaseComponent*>()));
@@ -43,8 +44,9 @@ private:
 
 		componentTypeAddressMap[typeid(T)].push_back(baseComponent);
 		componentIdMap[baseComponent->id] = baseComponent;
+
+		this->idToTypeMap.emplace(baseComponent->id, new type_index(type_index(typeid(T))));
 		
-		//this->idToTypeMap.emplace(baseComponent->id, type_index(typeid(T))); 
 		return baseComponent->id;
 	}
 
@@ -52,8 +54,8 @@ public:
 
 	ComponentRepository()
 	{
-		this->currId = 0; 
-		this->currEntityId = 0; 
+		this->currId = 1; 
+		this->currEntityId = 1; 
 	}
 
 	~ComponentRepository()
@@ -76,6 +78,7 @@ public:
 
 			// probably ok if we dont check for this?
 			this->componentSize[typeid(T)] = sizeof(T);
+
 		}
 	}
 
@@ -97,6 +100,19 @@ public:
 		BaseComponent* newComponent = reinterpret_cast<BaseComponent*>(this->componentPool[typeid(T)]->malloc()); 
 		
 		int id = this->InsertComponent<T>(newComponent); 
+		return static_cast<T*>(newComponent); 
+	}
+
+	template<class T>
+	T* NewComponent(int parentEntityId)
+	{
+		auto newComponent = this->NewComponent<T>();
+
+		// fails silently if
+		if (this->entityMap.find(parentEntityId) != this->entityMap.end()) {
+			this->entityMap[parentEntityId]->AddComponent<T>(newComponent); 
+		}
+
 		return static_cast<T*>(newComponent); 
 	}
 
@@ -145,6 +161,17 @@ public:
 
 		this->componentPool[deleteType]->free(reinterpret_cast<void*>(deleteAddr));
 	}
+
+	void DeleteEntity(int entityId)
+	{
+			
+	}
+
+	void Release()
+	{
+		// What do??
+	}
+
 };
 
 #endif // 

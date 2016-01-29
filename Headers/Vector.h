@@ -41,6 +41,11 @@ public:
         return v;
     }
 
+	bool operator==(const Vector2D& rhs) const
+	{
+		return ((this->x == rhs.x) && (this->y == rhs.y)); 
+	}
+
     float Length() const { return sqrt( x*x + y*y );}
     float Angle() const { return atan2f(this->y, this->x); }
 };
