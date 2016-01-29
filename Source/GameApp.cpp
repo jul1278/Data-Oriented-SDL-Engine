@@ -8,6 +8,7 @@
 #include <GraphicsResources/CircleFIllGraphicsResource.h>
 #include <ComponentRepository.h>
 #include <EntityConstructor.h>
+#include <Components/SimplePhysicsComponent.h>
 
 //------------------------------------------------------------------------------------
 // Name: GameApp
@@ -21,6 +22,10 @@ GameApp::GameApp()
 	
 	this->componentRepository = new ComponentRepository; 
 	this->graphics = new Graphics(this->windowWidth, this->windowHeight, this->appName); 
+
+	this->componentRepository->RegisterComponentType<TransformComponent>();
+	this->componentRepository->RegisterComponentType<GraphicsComponent>(); 
+	this->componentRepository->RegisterComponentType<SimplePhysicsComponent>(); 
 
 	EntityConstructor::ConstructBasicGraphicEntity(this->componentRepository, 0, Vector2D(315.0, 235.0), 10.0f); 
 	this->graphics->AddGraphicsResource(new CircleFillGraphicsResource(0, "", 10.0f, 0xff, 0x8f, 0x0, 0x8f)); 
@@ -56,8 +61,8 @@ bool GameApp::Run()
 			break;
 		}
 
-		auto graphicsComponents = this->componentRepository->Select(GRAPHICS_COMPONENT); 
-		auto transformComponents = this->componentRepository->Select(GRAPHICS_COMPONENT); 
+		auto graphicsComponents = this->componentRepository->Select<GraphicsComponent>(); 
+		auto transformComponents = this->componentRepository->Select<TransformComponent>(); 
 
 		this->graphics->UpdateGraphics(&event, graphicsComponents, transformComponents);
 	}

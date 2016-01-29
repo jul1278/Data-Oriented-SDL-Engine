@@ -1,11 +1,29 @@
 //
 // Created by Julian  on 23/11/15.
 //
-
 #ifndef UTILITY_H
 #define UTILITY_H
 
-#pragma once
+#include <typeinfo>
+
+// from http://en.cppreference.com/w/cpp/types/type_info/hash_code
+using TypeInfoRef = reference_wrapper<const type_info>;
+
+struct Hasher
+{
+	std::size_t operator()(TypeInfoRef code) const
+	{
+		return code.get().hash_code();
+	}
+};
+
+struct EqualTo
+{
+	bool operator()(TypeInfoRef lhs, TypeInfoRef rhs) const
+	{
+		return lhs.get() == rhs.get();
+	}
+};
 
 class GraphicsUtility
 {

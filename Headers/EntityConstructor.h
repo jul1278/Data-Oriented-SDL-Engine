@@ -27,15 +27,18 @@ public:
 
 		auto newEntity = componentRepository->NewEntity(); 
 
-		TransformComponent* transformComponent = componentRepository->NewComponent<TransformComponent*>(TRANSFORM_COMPONENT);
-		GraphicsComponent* graphicsComponent = componentRepository->NewComponent<GraphicsComponent*>(GRAPHICS_COMPONENT); 
+		auto transformComponent = componentRepository->NewComponent<TransformComponent>();
+		auto graphicsComponent = componentRepository->NewComponent<GraphicsComponent>();
 		
-		transformComponent->position = position; 
-		graphicsComponent->transformComponent = transformComponent; 
+		transformComponent->position = position;
+		transformComponent->orientation = Vector2D(0.0f); 
+		transformComponent->scale = Vector2D(1.0f, 1.0f); 
+
+		graphicsComponent->transformComponent = transformComponent;  
 		graphicsComponent->resourceId = graphicResourceId; 
 
-		newEntity->AddComponent(TRANSFORM_COMPONENT, transformComponent);
-		newEntity->AddComponent(GRAPHICS_COMPONENT, graphicsComponent); 
+		newEntity->AddComponent<TransformComponent>(transformComponent);
+		newEntity->AddComponent<GraphicsComponent>(graphicsComponent); 
 		
 		return newEntity->Id();
 	}

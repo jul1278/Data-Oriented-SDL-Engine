@@ -6,14 +6,11 @@
 #define COMPONENT_REPOSITORY_H
 
 #include "Components/BaseComponent.h"
-#include "ComponentType.h"
 #include "Entity.h"
-#include "Components/SimplePhysicsComponent.h"
-
 #include <unordered_map>
 #include <vector>
-
 #include <boost/pool/object_pool.hpp>
+#include <typeindex>
 
 using namespace std; 
 
@@ -27,28 +24,29 @@ private:
 	int GetNextId() { return currId++; }
 	int GetNextEntityId() { return currEntityId++; }
 
-	unordered_map<ComponentType, vector<BaseComponent*>> componentTypeAddressMap;
-	unordered_map<int, BaseComponent*> componentIdMap; 
-	unordered_map<int, Entity*> entityMap; 
-	
-	unordered_map<ComponentType, uint8_t> componentSize; 
+	unordered_map<type_index, vector<BaseComponent*>> componentTypeAddressMap;
+	unordered_map<int, BaseComponent*> componentIdMap;
+	unordered_map<int, Entity*> entityMap;
+	unordered_map<type_index, uint16_t> componentSize;
+	unordered_map<type_index, boost::pool<>*> componentPool;
 
-	 
+	unordered_map<int, type_index*> idToTypeMap; 
 
-	int InsertComponent(ComponentType componentType, BaseComponent* baseComponent)
+	template<class T>
+	int InsertComponent(BaseComponent* baseComponent)
 	{
 		baseComponent->id = GetNextId();
 
-		if (componentTypeAddressMap.find(componentType) == componentTypeAddressMap.end()) {
-			componentTypeAddressMap.insert(pair<ComponentType, vector<BaseComponent*>>(componentType, vector<BaseComponent*>()));
+		if (componentTypeAddressMap.find(type_index(typeid(T))) == componentTypeAddressMap.end()) {
+			componentTypeAddressMap.insert(pair<type_index, vector<BaseComponent*>>(type_index(typeid(T)), vector<BaseComponent*>()));
 		}
 
-		componentTypeAddressMap[componentType].push_back(baseComponent);
+		componentTypeAddressMap[typeid(T)].push_back(baseComponent);
 		componentIdMap[baseComponent->id] = baseComponent;
-
+		
+		//this->idToTypeMap.emplace(baseComponent->id, type_index(typeid(T))); 
 		return baseComponent->id;
 	}
-
 
 public:
 
@@ -56,20 +54,28 @@ public:
 	{
 		this->currId = 0; 
 		this->currEntityId = 0; 
-
-		this->componentSize[TRANSFORM_COMPONENT] = sizeof(TransformComponent); 
-		this->componentSize[GRAPHICS_COMPONENT] = sizeof(GraphicsComponent); 
-		this->componentSize[SIMPLE_PHYSICS_COMPONENT] = sizeof(SimplePhysicsComponent); 
-
-		boost::pool<> p(sizeof(int)); 
 	}
 
 	~ComponentRepository()
 	{
-		// TODO: datablock needs to handle deleting components
+		for (auto pool : this->componentPool) {
+			delete pool.second; 
+		}
+	}
 
-		for (auto component : this->componentIdMap) {
-			delete component.second; 
+	int Count() const
+	{
+		return this->componentIdMap.size(); 
+	}
+
+	template<class T>
+	void RegisterComponentType()
+	{
+		if (this->componentPool.find(typeid(T)) == this->componentPool.end()) {
+			this->componentPool[typeid(T)] = new boost::pool<>(sizeof(T));
+
+			// probably ok if we dont check for this?
+			this->componentSize[typeid(T)] = sizeof(T);
 		}
 	}
 
@@ -82,22 +88,25 @@ public:
 	}
 
 	template<class T>
-	T NewComponent(ComponentType componentType)
+	T* NewComponent()
 	{
-		// TODO: allocate here in a pool of memory
-		//
-		uint8_t allocSize = this->componentSize[componentType]; 
-		BaseComponent* newComponent = reinterpret_cast<BaseComponent*>(new uint8_t[allocSize]); 
+		if (this->componentPool.find(typeid(T)) == this->componentPool.end()) {
+			return nullptr; 
+		}
+
+		BaseComponent* newComponent = reinterpret_cast<BaseComponent*>(this->componentPool[typeid(T)]->malloc()); 
 		
-		int id = this->InsertComponent(componentType, newComponent); 
-		return static_cast<T>(newComponent); 
+		int id = this->InsertComponent<T>(newComponent); 
+		return static_cast<T*>(newComponent); 
 	}
 
-	vector<BaseComponent*>* Select(ComponentType componentType)
+	template<class T>
+	vector<BaseComponent*>* Select()
 	{
-		if (componentTypeAddressMap.find(componentType) != componentTypeAddressMap.end()) {
-			return &componentTypeAddressMap[componentType]; 
+		if (componentTypeAddressMap.find(typeid(T)) != componentTypeAddressMap.end()) {
+			return &componentTypeAddressMap[typeid(T)]; 
 		}
+
 		return nullptr; 
 	}
 
@@ -108,6 +117,34 @@ public:
 		return static_cast<T>(component);  
 	}
 
+	void DeleteComponent(int id)
+	{
+		auto deleteType = *this->idToTypeMap[id];
+		auto deleteAddr = this->componentIdMap[id]; 
+
+		// If I belong to an entity, remove me from it
+		if (this->entityMap.find(deleteAddr->entityId) != this->entityMap.end()) {
+			this->entityMap[deleteAddr->entityId]->RemoveComponentId(id); 
+		}
+
+		// remove from id map
+		if (this->componentIdMap.find(id) != this->componentIdMap.end()) {
+			this->componentIdMap.erase(id); 
+		}
+
+		// remove from type vector address map
+		if (this->componentTypeAddressMap.find(deleteType) != this->componentTypeAddressMap.end()) {
+			auto components = &this->componentTypeAddressMap[deleteType];
+
+			auto result = find_if(components->begin(), components->end(), [id](BaseComponent* c) {return (c->id == id); });
+
+			if (result != components->end()) {
+				components->erase(result); 
+			}
+		}
+
+		this->componentPool[deleteType]->free(reinterpret_cast<void*>(deleteAddr));
+	}
 };
 
 #endif // 
