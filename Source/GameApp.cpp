@@ -27,16 +27,13 @@ GameApp::GameApp()
 	this->componentRepository->RegisterComponentType<GraphicsComponent>(); 
 	this->componentRepository->RegisterComponentType<SimplePhysicsComponent>(); 
 
-	EntityConstructor::ConstructBasicGraphicEntity(this->componentRepository, 0, Vector2D(315.0, 235.0), 10.0f); 
-	this->graphics->AddGraphicsResource(new CircleFillGraphicsResource(0, "", 10.0f, 0xff, 0x8f, 0x0, 0x8f)); 
-
-
-	EntityConstructor::ConstructBasicGraphicEntity(this->componentRepository, 1, Vector2D(100.0, 235.0), 10.0f);
+	this->graphics->AddGraphicsResource(new CircleFillGraphicsResource(0, "", 10.0f, 0xff, 0x8f, 0x0, 0x8f));
 	this->graphics->AddGraphicsResource(new CircleFillGraphicsResource(1, "", 10.0f, 0xff, 0x8f, 0x0, 0x8f));
-
-
-	EntityConstructor::ConstructBasicGraphicEntity(this->componentRepository, 2, Vector2D(200.0, 420.0), 10.0f);
 	this->graphics->AddGraphicsResource(new CircleFillGraphicsResource(2, "", 10.0f, 0xff, 0x8f, 0x8f, 0x00));
+
+	EntityConstructor::ConstructBasicGraphicEntity(this->componentRepository, 0, Vector2D(315.0, 235.0), 10.0f); 
+	EntityConstructor::ConstructBasicGraphicEntity(this->componentRepository, 1, Vector2D(100.0, 235.0), 10.0f);
+	EntityConstructor::ConstructBasicGraphicEntity(this->componentRepository, 2, Vector2D(200.0, 420.0), 10.0f);
 }
 //------------------------------------------------------------------------------------
 // Name: ~GameApp
@@ -44,6 +41,13 @@ GameApp::GameApp()
 //------------------------------------------------------------------------------------
 GameApp::~GameApp()
 {
+	if (this->graphics) {
+		delete this->graphics; 
+	}
+
+	if (this->componentRepository) {
+		delete this->componentRepository; 
+	}
 }
 //------------------------------------------------------------------------------------
 // Name: Run
@@ -51,7 +55,6 @@ GameApp::~GameApp()
 //------------------------------------------------------------------------------------
 bool GameApp::Run()
 {
-
 	while (1)
 	{
 		SDL_Event event;

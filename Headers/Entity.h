@@ -23,7 +23,7 @@ private:
 
 public:
 
-    Entity(int id)
+	explicit Entity(int id)
     {
         this->id = id;
     }

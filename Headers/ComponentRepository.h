@@ -9,7 +9,7 @@
 #include "Entity.h"
 #include <unordered_map>
 #include <vector>
-#include <boost/pool/object_pool.hpp>
+#include <boost/pool/pool.hpp>
 #include <typeindex>
 
 using namespace std; 
@@ -28,8 +28,7 @@ private:
 	unordered_map<int, BaseComponent*> componentIdMap;
 	unordered_map<int, Entity*> entityMap;
 	unordered_map<type_index, uint16_t> componentSize;
-	unordered_map<type_index, boost::pool<>*> componentPool;
-
+	//unordered_map<type_index, boost::pool<>*> componentPool;
 	unordered_map<int, type_index*> idToTypeMap; 
 
 	template<class T>
@@ -60,8 +59,12 @@ public:
 
 	~ComponentRepository()
 	{
-		for (auto pool : this->componentPool) {
+		/*for (auto pool : this->componentPool) {
 			delete pool.second; 
+		}
+*/
+		for (auto pair : this->componentIdMap) {
+			delete pair.second; 
 		}
 	}
 
@@ -73,13 +76,15 @@ public:
 	template<class T>
 	void RegisterComponentType()
 	{
-		if (this->componentPool.find(typeid(T)) == this->componentPool.end()) {
-			this->componentPool[typeid(T)] = new boost::pool<>(sizeof(T));
+		// possibly obselete
 
-			// probably ok if we dont check for this?
-			this->componentSize[typeid(T)] = sizeof(T);
+		//if (this->componentPool.find(typeid(T)) == this->componentPool.end()) {
+		//	this->componentPool[typeid(T)] = new boost::pool<>(sizeof(T));
 
-		}
+		//	// probably ok if we dont check for this?
+		//	this->componentSize[typeid(T)] = sizeof(T);
+
+		//}
 	}
 
 	Entity* NewEntity()
@@ -93,12 +98,14 @@ public:
 	template<class T>
 	T* NewComponent()
 	{
-		if (this->componentPool.find(typeid(T)) == this->componentPool.end()) {
+		/*if (this->componentPool.find(typeid(T)) == this->componentPool.end()) {
 			return nullptr; 
-		}
+		}*/
 
-		BaseComponent* newComponent = reinterpret_cast<BaseComponent*>(this->componentPool[typeid(T)]->malloc()); 
+		//BaseComponent* newComponent = reinterpret_cast<BaseComponent*>(this->componentPool[typeid(T)]->malloc()); 
 		
+		BaseComponent* newComponent = reinterpret_cast<BaseComponent*>(new T); 
+
 		int id = this->InsertComponent<T>(newComponent); 
 		return static_cast<T*>(newComponent); 
 	}
@@ -159,7 +166,7 @@ public:
 			}
 		}
 
-		this->componentPool[deleteType]->free(reinterpret_cast<void*>(deleteAddr));
+		//this->componentPool[deleteType]->free(reinterpret_cast<void*>(deleteAddr));
 	}
 
 	void DeleteEntity(int entityId)
