@@ -29,10 +29,7 @@
     <ClCompile Include="ComponentRepositoryTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DataBlockTreeTests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ComponentPoolTests.cpp">
+    <ClCompile Include="MemoryPoolTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

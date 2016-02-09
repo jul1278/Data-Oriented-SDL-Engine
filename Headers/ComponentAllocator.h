@@ -5,13 +5,11 @@
 #ifndef COMPONENT_ALLOCATOR_H
 #define COMPONENT_ALLOCATOR_H
 
-#include "BinarySortTree.h"
-
 #include <cstddef>
 #include <cstdint>
 #include <limits>
-#include <queue>
 #include <unordered_map>
+#include <vector>
 
 using namespace std; 
 
@@ -21,32 +19,9 @@ template<class T>
 class ComponentAllocator
 {
 private:
-	uint16_t nextBlockIndex = 0; 
-	const uint32_t maxNumBlocks = 256; 
-	const uint32_t blockSize = 512;
 
-	unordered_map<uint16_t, DataBlock*> blockMap;
-	unordered_map<T*, DataBlockIndex> ptrToBlockIndexMap; 
-	
-	unordered_map<uint16_t, vector<DataBlockIndex*>> freeBlocks; 
+	vector<T> pool; 
 
-	void NewBlock()
-	{
-		uint16_t blockIndex = nextBlockIndex; 
-
-		blockMap[blockIndex] = new DataBlock; 
-		
-		DataBlockIndex* dataBlockIndex = new DataBlockIndex; 
-
-		dataBlockIndex->blockIndex = blockIndex;
-		dataBlockIndex->offset = 0; 
-		dataBlockIndex->len = blockSize; 
-
-		freeBlocks[dataBlockIndex->len].push_back(dataBlockIndex);
-	}
-
-
- 
 public:
 
 	typedef T* pointer; 
@@ -66,16 +41,7 @@ public:
 	template<class U>
 	ComponentAllocator(const ComponentAllocator<U>&) throw() {}
 
-	~ComponentAllocator() throw()
-	{
-		for (auto dataBlockIndex : this->freeBlocks) {
-			delete dataBlockIndex; 
-		}
-
-		for (auto pair : this->blockMap) {
-			delete pair.second; 
-		}
-	}
+	~ComponentAllocator() throw() { }
 
 	template<class U>
 	struct rebind
@@ -95,16 +61,8 @@ public:
 
 	pointer allocate(size_type n, const void* hint = nullptr)
 	{
-		if (freeBlocks.size() > 0) {
-			
-			auto dataBlockIndex = freeBlocks.front(); 
-
-
-		}
-
-
-		pointer ret = static_cast<pointer>(::operator new(n*sizeof(T))); 
-		return ret; 
+		this->pool.push_back(T); 
+		return &this->pool.back(); 
 	}
 
 	void construct(pointer p, const T& value)
@@ -114,7 +72,13 @@ public:
 
 	void destroy(pointer p)
 	{
-		p->~T(); 
+		auto result = std::find_first_of(this->pool.begin(), this->pool.back(), 
+		[p](T obj) 
+		{ 
+			if (p == &obj) return true; 
+		} );
+
+		this->pool.erase(result); 
 	}
 
 	void deallocate(void* ptr, size_type n)
@@ -126,9 +90,6 @@ public:
 	{
 		return std::numeric_limits<size_t>::max() / sizeof(T); 
 	}
-
-
-
 };
 
 template<class T1, class T2>

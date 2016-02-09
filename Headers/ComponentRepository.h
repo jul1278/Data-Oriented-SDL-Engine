@@ -140,6 +140,15 @@ public:
 		return static_cast<T>(component);  
 	}
 
+	Entity* SelectEntity(int id)
+	{
+		if (this->entityMap.find(id) != this->entityMap.end()) {
+			return this->entityMap[id]; 
+		}
+
+		return nullptr; 
+	}
+
 	void DeleteComponent(int id)
 	{
 		auto deleteType = *this->idToTypeMap[id];

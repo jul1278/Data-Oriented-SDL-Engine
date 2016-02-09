@@ -188,7 +188,7 @@ void Graphics::UpdateGraphics(SDL_Event* event, vector<BaseComponent*>* graphics
     }
 
 	// Mouse debug stuff
-	if (event->type == SDL_MOUSEMOTION) {
+	if (event!= nullptr && event->type == SDL_MOUSEMOTION) {
 
 		SDL_Rect lastRect = {event->motion.x - 8, event->motion.y - 8, 16, 16};
 		SDL_Rect currRect = { event->motion.x + event->motion.xrel - 8, event->motion.y + event->motion.yrel - 8, 16, 16 }; 

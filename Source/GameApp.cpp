@@ -9,6 +9,8 @@
 #include <ComponentRepository.h>
 #include <EntityConstructor.h>
 #include <Components/SimplePhysicsComponent.h>
+#include "Events\ButtonEventArgs.h"
+#include "PlayerActions.h"
 
 //------------------------------------------------------------------------------------
 // Name: GameApp
@@ -23,17 +25,18 @@ GameApp::GameApp()
 	this->componentRepository = new ComponentRepository; 
 	this->graphics = new Graphics(this->windowWidth, this->windowHeight, this->appName); 
 
+	this->sdlEventCollector = new SDLEventCollector(); 
+
 	this->componentRepository->RegisterComponentType<TransformComponent>();
 	this->componentRepository->RegisterComponentType<GraphicsComponent>(); 
 	this->componentRepository->RegisterComponentType<SimplePhysicsComponent>(); 
 
 	this->graphics->AddGraphicsResource(new CircleFillGraphicsResource(0, "", 10.0f, 0xff, 0x8f, 0x0, 0x8f));
-	this->graphics->AddGraphicsResource(new CircleFillGraphicsResource(1, "", 10.0f, 0xff, 0x8f, 0x0, 0x8f));
-	this->graphics->AddGraphicsResource(new CircleFillGraphicsResource(2, "", 10.0f, 0xff, 0x8f, 0x8f, 0x00));
+	
+	auto entityId = EntityConstructor::ConstructBasicPlayerEntity(this->componentRepository, 0, Vector2D(400, 320), 10.0f); 
+	auto entity = this->componentRepository->SelectEntity(entityId); 
 
-	EntityConstructor::ConstructBasicGraphicEntity(this->componentRepository, 0, Vector2D(315.0, 235.0), 10.0f); 
-	EntityConstructor::ConstructBasicGraphicEntity(this->componentRepository, 1, Vector2D(100.0, 235.0), 10.0f);
-	EntityConstructor::ConstructBasicGraphicEntity(this->componentRepository, 2, Vector2D(200.0, 420.0), 10.0f);
+	this->eventMap[type_index(typeid(ButtonEventArgs))] = new PlayerActions(entity); 
 }
 //------------------------------------------------------------------------------------
 // Name: ~GameApp
@@ -57,17 +60,27 @@ bool GameApp::Run()
 {
 	while (1)
 	{
-		SDL_Event event;
-		SDL_PollEvent(&event);
-
-		if (event.type == SDL_QUIT) {
-			break;
+		IEventArgs* event = this->sdlEventCollector->PollEvents(); 
+		
+		if (this->sdlEventCollector->QuitEvent()) {
+			break; 
 		}
 
 		auto graphicsComponents = this->componentRepository->Select<GraphicsComponent>(); 
 		auto transformComponents = this->componentRepository->Select<TransformComponent>(); 
+		auto physicsComponents = this->componentRepository->Select<SimplePhysicsComponent>(); 
 
-		this->graphics->UpdateGraphics(&event, graphicsComponents, transformComponents);
+		if (event != nullptr) {
+			this->eventMap[type_index(typeid(ButtonEventArgs))]->Update(event);
+		}
+
+		for (auto component : *physicsComponents) {
+			auto simplePhysicsComponent = component->As<SimplePhysicsComponent*>();
+			simplePhysicsComponent->transformComponent->position.x += simplePhysicsComponent->velocity.x; 
+			simplePhysicsComponent->transformComponent->position.y += simplePhysicsComponent->velocity.y;
+		}
+
+		this->graphics->UpdateGraphics(nullptr, graphicsComponents, transformComponents);
 	}
 
 	return false; 
