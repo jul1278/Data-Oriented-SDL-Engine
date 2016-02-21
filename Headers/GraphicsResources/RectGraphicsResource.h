@@ -64,7 +64,7 @@ public:
         uint16_t x = static_cast<uint16_t>(transformComponent->position.x - 0.5f*dx);
         uint16_t y = static_cast<uint16_t>(transformComponent->position.y - 0.5f*dy);
         uint16_t w = this->width*scaleX;
-        uint16_t h = this->width*scaleY;
+        uint16_t h = this->height*scaleY;
 
         SDL_Rect rect = { x, y, w, h};
 
@@ -77,7 +77,7 @@ public:
             return;
         }
 
-        SDL_RenderCopyEx(sdlRenderer, texture, nullptr, &rect, (180.0f/PI)*transformComponent->orientation.Angle(), nullptr, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(sdlRenderer, texture, nullptr, &rect, 0.25f*PI/*(180.0f/PI)*transformComponent->orientation.Angle()*/, nullptr, SDL_FLIP_NONE);
     }
 };
 

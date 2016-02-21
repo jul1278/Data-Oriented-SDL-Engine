@@ -176,7 +176,7 @@ public:
 
         if (width/2 > height) {
 
-            int x;
+            int x = 0;
             float slope = (float) height/(0.5f*width);
 
             for ( int y = 0; y < height; y++) {

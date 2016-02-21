@@ -120,6 +120,7 @@ SDL_Surface* Graphics::LoadSurface(std::string filename, SDL_PixelFormat* format
     SDL_Surface* loadedSurface = IMG_Load(filename.c_str());
     if( loadedSurface == NULL )
     {
+		system("dir"); 
         printf("Unable to load image %s! SDL_image Error: %s\n", filename.c_str(), IMG_GetError());
     }
     else

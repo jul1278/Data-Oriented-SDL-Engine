@@ -45,6 +45,9 @@ public:
 			case SDLK_RIGHT:
 				buttonEventArgs = new ButtonEventArgs(RIGHT_ARROW, released);
 				break;
+			case SDLK_UP:
+				buttonEventArgs = new ButtonEventArgs(UP_ARROW, released); 
+				break;
 			default:
 				break;
 			}

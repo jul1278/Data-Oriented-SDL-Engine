@@ -4,8 +4,13 @@
 
 #include <time.h>
 #include <stdlib.h>
+#include <memory>
 #include <GameApp.h>
+#include <typeinfo>
+#include <typeindex>
 #include <GraphicsResources/CircleFIllGraphicsResource.h>
+#include <GraphicsResources/RectGraphicsResource.h>
+#include <GraphicsResources/TriangleGraphicsResource.h>
 #include <ComponentRepository.h>
 #include <EntityConstructor.h>
 #include <Components/SimplePhysicsComponent.h>
@@ -31,12 +36,14 @@ GameApp::GameApp()
 	this->componentRepository->RegisterComponentType<GraphicsComponent>(); 
 	this->componentRepository->RegisterComponentType<SimplePhysicsComponent>(); 
 
-	this->graphics->AddGraphicsResource(new CircleFillGraphicsResource(0, "", 10.0f, 0xff, 0x8f, 0x0, 0x8f));
-	
-	auto entityId = EntityConstructor::ConstructBasicPlayerEntity(this->componentRepository, 0, Vector2D(400, 320), 10.0f); 
+	auto spaceShipGraphicResId = this->graphics->LoadGraphicResource("Resources//space_ship.png", "spaceShip"); 
+	this->graphics->AddGraphicsResource(new RectGraphicsResource(1, "", 2.0f, 12.0f, 0xff, 0xff, 0x00, 0x00)); 
+	auto skullGraphicResId = this->graphics->LoadGraphicResource("Resources//skull_1.png", "skull1");
+
+	auto entityId = EntityConstructor::ConstructBasicPlayerEntity(this->componentRepository, spaceShipGraphicResId, Vector2D(320, 420), 10.0f);
 	auto entity = this->componentRepository->SelectEntity(entityId); 
 
-	this->eventMap[type_index(typeid(ButtonEventArgs))] = new PlayerActions(entity); 
+	this->InsertEventMapAction(new PlayerActions(entity, this->componentRepository), type_index(typeid(ButtonEventArgs))); 
 }
 //------------------------------------------------------------------------------------
 // Name: ~GameApp
@@ -50,6 +57,10 @@ GameApp::~GameApp()
 
 	if (this->componentRepository) {
 		delete this->componentRepository; 
+	}
+
+	for (auto eventActionsPair : this->eventMap) {
+		eventActionsPair.second.remove_if([](IAction* action) {delete action; return true; });
 	}
 }
 //------------------------------------------------------------------------------------
@@ -71,7 +82,14 @@ bool GameApp::Run()
 		auto physicsComponents = this->componentRepository->Select<SimplePhysicsComponent>(); 
 
 		if (event != nullptr) {
-			this->eventMap[type_index(typeid(ButtonEventArgs))]->Update(event);
+
+			if (typeid(*event) == typeid(ButtonEventArgs)) {
+				for (auto actions : this->eventMap[type_index(typeid(ButtonEventArgs))]) {
+					actions->Update(event); 
+				}
+			}
+
+
 		}
 
 		for (auto component : *physicsComponents) {

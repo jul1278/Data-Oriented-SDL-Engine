@@ -13,12 +13,13 @@ class PlayerActions : public IAction
 {
 private:
 
-	IEventArgs* HandleButtonEvent(ButtonEventArgs* buttonEventArgs, Entity* entity)
+	IEventArgs* HandleButtonEvent(ButtonEventArgs* buttonEventArgs)
 	{
+		Entity* entity = this->GetEntity(); 
 		auto transform = entity->GetComponent<TransformComponent>(); 
-
-
-		if (buttonEventArgs->Released()) {
+		
+		if ((buttonEventArgs->Key() == LEFT_ARROW || buttonEventArgs->Key() == RIGHT_ARROW) 
+			&& buttonEventArgs->Released()) {
 			auto physics = entity->GetComponent<SimplePhysicsComponent>();
 			physics->velocity = Vector2D(0.0f, 0.0f);
 			return nullptr;
@@ -36,19 +37,31 @@ private:
 			return nullptr;
 		}
 
+		if (buttonEventArgs->Key() == UP_ARROW && buttonEventArgs->Released()) {
+
+			auto componentRepository = this->GetComponentRepository();
+			auto physics = entity->GetComponent<SimplePhysicsComponent>();
+			auto xVel = physics->velocity.x; 
+
+			EntityConstructor::ConstructBasicProjectile(componentRepository, 1, transform->position, Vector2D(xVel, -1.0f));
+		}
+
 		return nullptr; 
 	}
 	
 public:
 
-	PlayerActions(Entity* entity) : IAction(entity) {}
+	PlayerActions(Entity* entity, ComponentRepository* componentRepository) 
+		: IAction(entity, componentRepository) {}
 
 	IEventArgs* Update(IEventArgs* event) 
 	{
 		ButtonEventArgs* buttonEventArgs = static_cast<ButtonEventArgs*>(event);
+		
+		if (event != nullptr) {
+			this->HandleButtonEvent(buttonEventArgs);
+			return nullptr; 
 
-		if (buttonEventArgs != nullptr) {
-			this->HandleButtonEvent(buttonEventArgs, this->GetEntity()); 
 		}
 
 		return nullptr; 

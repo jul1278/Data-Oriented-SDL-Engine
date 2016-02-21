@@ -3,6 +3,7 @@
 
 #include "Events\IEventArgs.h"
 #include "Entity.h"
+#include "ComponentRepository.h"
 #include <list>
 
 class IAction
@@ -10,15 +11,25 @@ class IAction
 private:
 
 	Entity* entity; 
+	ComponentRepository* componentRepository; 
 
 public:
 
-	IAction(Entity* entity)
+	IAction(Entity* entity, ComponentRepository* componentRepository)
 	{
 		this->entity = entity; 
+		this->componentRepository = componentRepository; 
 	}
 
-	Entity* GetEntity() { return this->entity; }
+	Entity* GetEntity() 
+	{ 
+		return this->entity; 
+	}
+
+	ComponentRepository* GetComponentRepository() 
+	{ 
+		return this->componentRepository; 
+	}
 
 	virtual IEventArgs* Update(IEventArgs* events) = 0; 
 };

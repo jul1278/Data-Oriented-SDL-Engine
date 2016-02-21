@@ -31,6 +31,8 @@ public:
 
 	bool Released() { return this->released; }
 	Key Key() { return this->key; }
+
+	virtual ~ButtonEventArgs() {}; 
 };
 
 #endif // BUTTON_EVENT_ARGS_H
