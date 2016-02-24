@@ -1,6 +1,7 @@
 #ifndef PLAYER_ACTIONS_H
 #define PLAYER_ACTIONS_H
 
+#include "GameEntityConstructor.h"
 #include "IAction.h"
 #include "Events\IEventArgs.h"
 #include "Events\ButtonEventArgs.h"

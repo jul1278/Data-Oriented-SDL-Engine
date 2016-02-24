@@ -1,4 +1,4 @@
-#include "GameApp.h"
+#include <SpaceGame\SpaceGameApp.h>
 #define SDL_MAIN_HANDLED
 
 //------------------------------------------------------------------------------------
@@ -7,8 +7,12 @@
 //------------------------------------------------------------------------------------
 int main(int argc, char** argv)
 {
-	GameApp gameApp;
-	gameApp.Run(); 
+	//GameApp gameApp;
+	//gameApp.Run(); 
+
+	SpaceGameApp spaceGameApp; 
+	spaceGameApp.Run(); 
+
     return 0;
 }
 

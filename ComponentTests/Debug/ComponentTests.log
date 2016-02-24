@@ -1,13 +1,16 @@
-﻿Build started 9/02/2016 8:51:54 PM.
-     1>Project "C:\Projects\Data-Oriented-SDL-Engine\ComponentTests\ComponentTests.vcxproj" on node 2 (Build target(s)).
-     1>Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Projects\Data-Oriented-SDL-Engine\Debug\ComponentTests.dll" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\UnitTest\lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Projects\Data-Oriented-SDL-Engine\Debug\ComponentTests.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Projects\Data-Oriented-SDL-Engine\Debug\ComponentTests.lib" /MACHINE:X86 /DLL Debug\MemoryPoolTests.obj
+﻿Build started 24/02/2016 9:18:40 PM.
+     1>Project "C:\Projects\Data-Oriented-SDL-Engine\ComponentTests\ComponentTests.vcxproj" on node 3 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\UnitTest\include" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDLL /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\ComponentTests.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /FC /errorReport:prompt ComponentCollectionRepositoryTests.cpp
+         ComponentCollectionRepositoryTests.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Projects\Data-Oriented-SDL-Engine\Debug\ComponentTests.dll" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\UnitTest\lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Projects\Data-Oriented-SDL-Engine\Debug\ComponentTests.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Projects\Data-Oriented-SDL-Engine\Debug\ComponentTests.lib" /MACHINE:X86 /DLL Debug\ComponentCollectionRepositoryTests.obj
+         Debug\MemoryPoolTests.obj
          Debug\stdafx.obj
          Debug\ComponentRepositoryTests.obj
-            Creating library C:\Projects\Data-Oriented-SDL-Engine\Debug\ComponentTests.lib and object C:\Projects\Data-Oriented-SDL-Engine\Debug\ComponentTests.exp
          ComponentTests.vcxproj -> C:\Projects\Data-Oriented-SDL-Engine\Debug\ComponentTests.dll
      1>Done Building Project "C:\Projects\Data-Oriented-SDL-Engine\ComponentTests\ComponentTests.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:04.83
+Time Elapsed 00:00:04.89

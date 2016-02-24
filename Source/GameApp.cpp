@@ -12,7 +12,7 @@
 #include <GraphicsResources/RectGraphicsResource.h>
 #include <GraphicsResources/TriangleGraphicsResource.h>
 #include <ComponentRepository.h>
-#include <EntityConstructor.h>
+#include <GameEntityConstructor.h>
 #include <Components/SimplePhysicsComponent.h>
 #include "Events\ButtonEventArgs.h"
 #include "PlayerActions.h"
