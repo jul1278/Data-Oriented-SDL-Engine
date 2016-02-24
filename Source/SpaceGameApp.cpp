@@ -25,9 +25,8 @@ SpaceGameApp::SpaceGameApp()
 {
 	this->windowHeight = 480;
 	this->windowWidth = 640;
-	this->appName = "Game";
+	this->appName = "Space Game";
 
-	//this->componentRepository = new ComponentRepository;
 	this->componentCollectionRepository = new ComponentCollectionRepository; 
 	this->graphics = new Graphics(this->windowWidth, this->windowHeight, this->appName);
 

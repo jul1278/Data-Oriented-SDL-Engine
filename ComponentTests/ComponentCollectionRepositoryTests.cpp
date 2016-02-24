@@ -20,25 +20,12 @@ namespace ComponentTests
 		// Name: 
 		// Desc: 		
 		//-----------------------------------------------------------------------------
-		TEST_METHOD(ComponentCollectionTest)
+		TEST_METHOD(NewComponentTest)
 		{
 			ComponentCollectionRepository componentCollectionRepository; 
-			
-			auto transformComponentContainer = new VectorContainer<TransformComponent>();
-
-			transformComponentContainer->vec.push_back(TransformComponent(Vector2D(3.0f, 2.0f))); 
-
-			auto componentCollection = new ComponentCollection(); 
-			componentCollection->componentCollection[type_index(typeid(TransformComponent))] = transformComponentContainer; 
-			componentCollectionRepository.componentCollectionMap["TransformComponents"] = componentCollection; 
-			
-			auto collection = componentCollectionRepository.componentCollectionMap["TransformComponents"]; 
-			auto componentContainer = static_cast<VectorContainer<TransformComponent>*>(collection->componentCollection[type_index(typeid(TransformComponent))]); 
-
-			auto component = componentContainer->vec.front();
-
-			Assert::AreEqual(component.position.x, 3.0f); 
-			Assert::AreEqual(component.position.y, 2.0f); 
+ 
+			auto component = componentCollectionRepository.NewComponent<TransformComponent>();
+			Assert::IsNotNull(component); 
 		}
 
 	};
