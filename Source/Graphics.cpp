@@ -170,6 +170,28 @@ int Graphics::AddGraphicsResource(IGraphicsResource* graphicsResource)
 // Name: UpdateGraphics
 // Desc:
 //------------------------------------------------------------------------------------
+void Graphics::UpdateGraphics(vector<GraphicsComponent>* graphicsComponents, vector<TransformComponent>* transformComponents)
+{
+	SDL_SetRenderDrawColor(this->renderer, 0x00, 0x00, 0x00, 0xff);
+	SDL_RenderClear(this->renderer);
+
+	for (auto graphicsComponent : *graphicsComponents) {
+
+		TransformComponent* transformComponent = graphicsComponent.transformComponent;
+
+		IGraphicsResource* graphicsResource;
+		int graphicsResourceId = graphicsComponent.resourceId;
+
+		graphicsResource = this->graphicsResourceMap[graphicsResourceId];
+		graphicsResource->Render(this->renderer, transformComponent);
+	}
+
+	SDL_RenderPresent(this->renderer);
+}
+//------------------------------------------------------------------------------------
+// Name: UpdateGraphics
+// Desc:
+//------------------------------------------------------------------------------------
 void Graphics::UpdateGraphics(SDL_Event* event, vector<BaseComponent*>* graphicsComponents, vector<BaseComponent*>* transformComponents)
 {
 	SDL_SetRenderDrawColor(this->renderer, 0x00, 0x00, 0x00, 0xff); 

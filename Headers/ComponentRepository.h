@@ -7,9 +7,10 @@
 
 #include "Components/BaseComponent.h"
 #include "Entity.h"
+#include <cstdint>
 #include <unordered_map>
 #include <vector>
-#include <../lib/boost_1_60_0/boost/pool/pool.hpp>
+//#include <../lib/boost_1_60_0/boost/pool/pool.hpp>
 #include <typeindex>
 
 using namespace std; 

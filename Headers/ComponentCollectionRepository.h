@@ -74,7 +74,7 @@ public:
 	{
 		auto iContainer = static_cast<IVectorContainer*>(componentCollection[type_index(typeid(T))]); 		
 		auto container = static_cast<VectorContainer<T>*>(iContainer); 
-		return &(container.vec); 
+		return &(container->vec); 
 	}
 
 };
@@ -98,7 +98,7 @@ public:
 	ComponentCollectionRepository()
 	{
 		// default collection so there is always somewhere to add to
-        this->componentCollectionMap[defaultCollectionName] = new ComponentCollection(this);
+        this->componentCollectionMap[defaultCollectionName] = new ComponentCollection();
         this->nextId = 0; 
 	}
 
@@ -137,12 +137,12 @@ public:
 		}
 
 		if (componentCollectionMap.find(collectionName) == componentCollectionMap.end()) {
-			componentCollectionMap[collectionName] = new ComponentCollection(this); 
+			componentCollectionMap[collectionName] = new ComponentCollection(); 
 		}
 	}
 
     template<typename T>
-    vector<T>* SelectFromCollection(string collectionName)
+    vector<T>* SelectFromCollection(string collectionName = defaultCollectionName)
 	{
         if (this->componentCollectionMap.find(collectionName) != this->componentCollectionMap.end())
         {

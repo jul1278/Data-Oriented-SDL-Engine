@@ -41,6 +41,7 @@ public:
     int AddGraphicsResource(IGraphicsResource* graphicsResource);
 
     void UpdateGraphics(SDL_Event* event, vector<BaseComponent*>* graphicsComponents, vector<BaseComponent*>* transformComponents);
+	void UpdateGraphics(vector<GraphicsComponent>* graphicsComponents, vector<TransformComponent>* transformComponents);
 };
 
 

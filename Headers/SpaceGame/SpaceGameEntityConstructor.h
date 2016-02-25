@@ -13,15 +13,39 @@
 #include "Components/SimplePhysicsComponent.h"
 #include "GraphicsResources/CircleFIllGraphicsResource.h"
 
-const float defaultProjectileSpeed = 4.0f;
+//const float defaultProjectileSpeed = 4.0f;
 
-class EntityConstructor
+class SpaceGameEntityConstructor
 {
-
+public:
 
 	int static ConstructBasicGraphicEntity(ComponentCollectionRepository* componentCollectionRepository, int graphicResourceId, Vector2D position, float size)
 	{
 
+	}
+
+	void static ConstructBackgroundStars(ComponentCollectionRepository* componentCollectionRepository, int graphicResourceId, int width, int height, int num)
+	{
+		const string collectionName = "ScrollingBackgroundStars";
+		const float starScrollVelocity = 1.0f; 
+
+		componentCollectionRepository->NewCollection(collectionName); 
+
+		for (auto i = 0; i < num; i++) {
+			auto transformComponent = componentCollectionRepository->NewComponent<TransformComponent>(collectionName);
+			auto graphicsComponent = componentCollectionRepository->NewComponent<GraphicsComponent>(collectionName); 
+			auto physicsComponent = componentCollectionRepository->NewComponent<SimplePhysicsComponent>(collectionName); 
+
+			transformComponent->scale = Vector2D(1.0f, 1.0f); 
+			transformComponent->position.x = i*(width / num); 
+			transformComponent->position.y = ((int)expf(i)) % height; 
+
+			graphicsComponent->resourceId = graphicResourceId; 
+			graphicsComponent->transformComponent = transformComponent;
+
+			physicsComponent->transformComponent = transformComponent; 
+			physicsComponent->velocity.y = starScrollVelocity; 
+		}
 	}
 
 };

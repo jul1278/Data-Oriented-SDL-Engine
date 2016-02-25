@@ -51,8 +51,8 @@ public:
             return; 
         }
 
-        float dx = this->radius*transformComponent->scale.x - this->radius; 
-        float dy = this->radius*transformComponent->scale.y - this->radius; 
+        float dx = this->radius*transformComponent->scale.x; 
+        float dy = this->radius*transformComponent->scale.y; 
 
         uint16_t x = static_cast<uint16_t>(transformComponent->position.x - dx);
         uint16_t y = static_cast<uint16_t>(transformComponent->position.y - dy);

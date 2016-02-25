@@ -38,8 +38,8 @@ public:
 		this->radiusInner = static_cast<uint16_t>(floor(radiusInner));
 		this->radiusOuter = static_cast<uint16_t>(floor(radiusOuter)); 
 
-		starCircle = new CircleOutlineGraphicsResource(0, "", radiusInner, 2.0f, a, r, g, b); 
-		starFill = new CircleFillGraphicsResource(0, "", radiusOuter, a, r, g, b); 
+		starCircle = new CircleOutlineGraphicsResource(0, "", 0.5f*radiusOuter, 1.0f, a, r, g, b); 
+		starFill = new CircleFillGraphicsResource(0, "", 0.5f*radiusInner, a, r, g, b); 
 	};
 
 	~StarGraphicsResource()
@@ -51,23 +51,31 @@ public:
 	virtual void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent)
 	{
 		if (this->starCircle != nullptr) {
-			this->starCircle->Render(sdlRenderer, transformComponent); 
+			//this->starCircle->Render(sdlRenderer, transformComponent); 
 		}
 
 		if (this->starFill != nullptr) {
-			this->starFill->Render(sdlRenderer, transformComponent); 
+			//this->starFill->Render(sdlRenderer, transformComponent); 
 		}
 
-		int x1, x2, y1, y2; 
+		int vx1, vx2, vy1, vy2;
+		int hx1, hx2, hy1, hy2; 
 
-		x1 = transformComponent->position.x - this->radiusOuter; 
-		x2 = transformComponent->position.x + this->radiusOuter; 
+		vx1 = transformComponent->position.x; 
+		vx2 = transformComponent->position.x; 
 
-		y1 = transformComponent->position.y - this->radiusOuter; 
-		y2 = transformComponent->position.y + this->radiusOuter; 
+		vy1 = transformComponent->scale.y*(transformComponent->position.y - this->radiusOuter); 
+		vy2 = transformComponent->scale.y*transformComponent->position.y + this->radiusOuter;
+
+		hx1 = transformComponent->scale.x*(transformComponent->position.x - this->radiusOuter);
+		hx2 = transformComponent->scale.x*(transformComponent->position.x + this->radiusOuter);
+
+		hy1 = transformComponent->position.y;
+		hy2 = transformComponent->position.y;
 
 		SDL_SetRenderDrawColor(sdlRenderer, this->r, this->g, this->b, this->a); 
-		SDL_RenderDrawLine(sdlRenderer, x1, y1, x2, y2); 
+		SDL_RenderDrawLine(sdlRenderer, vx1, vy1, vx2, vy2);
+		SDL_RenderDrawLine(sdlRenderer, hx1, hy1, hx2, hy2);
 	}
 };
 
