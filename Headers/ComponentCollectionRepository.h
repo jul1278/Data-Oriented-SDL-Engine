@@ -18,6 +18,8 @@ const int collectionNameMinLength = 4;
 const string defaultCollectionName = "defaultCollection";
 const unsigned int vectorContainerReserveSize = 100; 
 
+class ComponentCollectionRepository; 
+
 struct IVectorContainer {};
 
 template <typename T>
@@ -43,6 +45,14 @@ public:
 
 	ComponentCollection() {}; 
 
+    ~ComponentCollection()
+    {
+        for (const auto& pair : this->componentCollection)
+        {
+            delete pair.second; 
+        }
+    }
+
 	template <typename T>
 	T* NewComponent()
 	{
@@ -64,7 +74,6 @@ public:
 	{
 		auto iContainer = static_cast<IVectorContainer*>(componentCollection[type_index(typeid(T))]); 		
 		auto container = static_cast<VectorContainer<T>*>(iContainer); 
-
 		return &(container.vec); 
 	}
 
@@ -74,8 +83,6 @@ public:
 class ComponentCollectionRepository
 {
 private:
-
-    
 
     unsigned int nextId; 
     unsigned int GetNextId() { return nextId++; }
@@ -91,8 +98,16 @@ public:
 	ComponentCollectionRepository()
 	{
 		// default collection so there is always somewhere to add to
-        this->componentCollectionMap[defaultCollectionName] = new ComponentCollection();
+        this->componentCollectionMap[defaultCollectionName] = new ComponentCollection(this);
         this->nextId = 0; 
+	}
+
+    ~ComponentCollectionRepository()
+	{
+        for (const auto& pair : this->componentCollectionMap)
+        {
+            delete pair.second; 
+        }
 	}
 
 	template<typename T>
@@ -102,7 +117,9 @@ public:
         {
             return nullptr; 
         }
+
         BaseComponent* newComponent = nullptr; 
+
 		if (componentCollectionMap.find(collectionName) == componentCollectionMap.end()) {
             newComponent = componentCollectionMap[defaultCollectionName]->NewComponent<T>();
         } else {
@@ -120,10 +137,20 @@ public:
 		}
 
 		if (componentCollectionMap.find(collectionName) == componentCollectionMap.end()) {
-			componentCollectionMap[collectionName] = new ComponentCollection(); 
+			componentCollectionMap[collectionName] = new ComponentCollection(this); 
 		}
 	}
 
+    template<typename T>
+    vector<T>* SelectFromCollection(string collectionName)
+	{
+        if (this->componentCollectionMap.find(collectionName) != this->componentCollectionMap.end())
+        {
+            return this->componentCollectionMap[collectionName]->Select<T>(); 
+        }
+
+        return nullptr; 
+	}
 };
 
 #endif // COMPONENT_COLLECTION_REPOSITORY_H
