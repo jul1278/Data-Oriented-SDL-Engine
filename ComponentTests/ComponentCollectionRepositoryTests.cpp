@@ -23,10 +23,63 @@ namespace ComponentTests
 		TEST_METHOD(NewComponentTest)
 		{
 			ComponentCollectionRepository componentCollectionRepository; 
- 
-			auto component = componentCollectionRepository.NewComponent<TransformComponent>();
-			Assert::IsNotNull(component); 
+            vector<BaseComponent*> components; 
+
+            for (auto i = 0; i < 10; i++)
+            {
+                auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>();
+                components.push_back(transformComponent);
+                Assert::AreEqual(transformComponent->id, i);
+            }
 		}
+        //-----------------------------------------------------------------------------
+        // Name: 
+        // Desc: 		
+        //-----------------------------------------------------------------------------
+        TEST_METHOD(ComponentPointersAreCorrect)
+        {
+            ComponentCollectionRepository componentCollectionRepository;
+            vector<TransformComponent*> transformComponents;
+            vector<SimplePhysicsComponent*> physicsComponents; 
+
+            for (auto i = 0; i < 100; i++)
+            {
+                auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>();
+                auto physicsComponent = componentCollectionRepository.NewComponent<SimplePhysicsComponent>(); 
+
+                physicsComponent->transformComponent = transformComponent; 
+
+                transformComponents.push_back(transformComponent); 
+                physicsComponents.push_back(physicsComponent); 
+            }
+
+            for (auto i = 0; i < 100; i++)
+            {
+                Assert::AreEqual(static_cast<void*>(physicsComponents[i]->transformComponent), static_cast<void*>(transformComponents[i])); 
+            }
+        }
+
+        //-----------------------------------------------------------------------------
+        // Name: 
+        // Desc: 		
+        //-----------------------------------------------------------------------------
+        TEST_METHOD(ComponentPointersAreContiguous)
+        {
+            ComponentCollectionRepository componentCollectionRepository;
+            vector<TransformComponent*> transformComponents;
+
+            for (auto i = 0; i < 100; i++)
+            {
+                auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>();          
+                transformComponents.push_back(transformComponent);
+            }
+
+            for (auto i = 0; i < 99; i++)
+            {
+                auto diff = reinterpret_cast<uint8_t*>(transformComponents[i + 1]) - reinterpret_cast<uint8_t*>(transformComponents[i]); 
+                Assert::AreEqual(static_cast<unsigned int>(diff), sizeof(TransformComponent));
+            }
+        }
 
 	};
 

@@ -9,7 +9,7 @@
 #include "Entity.h"
 #include <unordered_map>
 #include <vector>
-#include <boost/pool/pool.hpp>
+#include <../lib/boost_1_60_0/boost/pool/pool.hpp>
 #include <typeindex>
 
 using namespace std; 
@@ -63,7 +63,7 @@ public:
 			delete pool.second; 
 		}
 */
-		for (auto pair : this->componentIdMap) {
+		for (const auto& pair : componentIdMap) {
 			delete pair.second; 
 		}
 	}

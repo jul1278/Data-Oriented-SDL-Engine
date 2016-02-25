@@ -8,7 +8,6 @@
 #include "Entity.h"
 #include <unordered_map>
 #include <vector>
-#include <boost/pool/pool.hpp>
 #include <typeindex>
 #include <type_traits>
 #include <assert.h>
@@ -16,6 +15,8 @@
 using namespace std;
 
 const int collectionNameMinLength = 4; 
+const string defaultCollectionName = "defaultCollection";
+const unsigned int vectorContainerReserveSize = 100; 
 
 struct IVectorContainer {};
 
@@ -26,8 +27,8 @@ struct VectorContainer : IVectorContainer
 
 	VectorContainer()
 	{
-		assert((bool)(is_base_of<BaseComponent, T>::value) == true); 
-		vec.reserve(100); 
+		assert(static_cast<bool>(is_base_of<BaseComponent, T>::value) == true); 
+        vec.reserve(vectorContainerReserveSize);
 	}
 };
 
@@ -52,9 +53,10 @@ public:
 			this->componentCollection[type_index(typeid(T))] = vectorContainer;
 		}
 		
-		auto container = static_cast<VectorContainer<T>*>(this->componentCollection[type_index(typeid(T))]); 
-		container->vec.resize(container->vec.size() + 1); 
-		return &(container->vec.back()); 
+		auto container = static_cast<VectorContainer<T>*>(this->componentCollection[type_index(typeid(T))]); 		
+        container->vec.resize(container->vec.size() + 1); 
+
+        return new (&(container->vec.back())) T();
 	}
 
 	template<typename T>
@@ -73,6 +75,11 @@ class ComponentCollectionRepository
 {
 private:
 
+    
+
+    unsigned int nextId; 
+    unsigned int GetNextId() { return nextId++; }
+
 	// map string to component collection
 	unordered_map<string, ComponentCollection*> componentCollectionMap; 
 
@@ -84,17 +91,26 @@ public:
 	ComponentCollectionRepository()
 	{
 		// default collection so there is always somewhere to add to
-		componentCollectionMap["defaultCollection"] = new ComponentCollection(); 
+        this->componentCollectionMap[defaultCollectionName] = new ComponentCollection();
+        this->nextId = 0; 
 	}
 
 	template<typename T>
 	T* NewComponent(string collectionName = "")
 	{
+        if (static_cast<bool>(is_base_of<BaseComponent, T>::value) == false)
+        {
+            return nullptr; 
+        }
+        BaseComponent* newComponent = nullptr; 
 		if (componentCollectionMap.find(collectionName) == componentCollectionMap.end()) {
-			return componentCollectionMap["defaultCollection"]->NewComponent<T>(); 
-		}
+            newComponent = componentCollectionMap[defaultCollectionName]->NewComponent<T>();
+        } else {
+            newComponent = componentCollectionMap[collectionName]->NewComponent<T>();
+        }
 
-		return componentCollectionMap[collectionName]->NewComponent<T>();
+        newComponent->id = this->GetNextId(); 
+        return static_cast<T*>(newComponent); 
 	}
 
 	void NewCollection(string collectionName)
