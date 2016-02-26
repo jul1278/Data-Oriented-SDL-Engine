@@ -5,7 +5,6 @@
 #include "Headers/Components/BaseComponent.h"
 #include "Headers/Components/TransformComponent.h"
 #include "Headers/Components/SimplePhysicsComponent.h"
-
 #include <vector>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -17,7 +16,7 @@ namespace ComponentTests
 	public:
 
 		//-----------------------------------------------------------------------------
-		// Name: 
+		// Name: NewComponentTest
 		// Desc: 		
 		//-----------------------------------------------------------------------------
 		TEST_METHOD(NewComponentTest)
@@ -33,7 +32,7 @@ namespace ComponentTests
             }
 		}
         //-----------------------------------------------------------------------------
-        // Name: 
+        // Name: ComponentPointersAreCorrect
         // Desc: 		
         //-----------------------------------------------------------------------------
         TEST_METHOD(ComponentPointersAreCorrect)
@@ -60,7 +59,7 @@ namespace ComponentTests
         }
 
         //-----------------------------------------------------------------------------
-        // Name: 
+        // Name: ComponentPointersAreContiguous
         // Desc: 		
         //-----------------------------------------------------------------------------
         TEST_METHOD(ComponentPointersAreContiguous)
@@ -80,8 +79,5 @@ namespace ComponentTests
                 Assert::AreEqual(static_cast<unsigned int>(diff), sizeof(TransformComponent));
             }
         }
-
 	};
-
-
 }
