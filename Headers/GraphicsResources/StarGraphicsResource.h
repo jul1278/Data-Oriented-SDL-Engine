@@ -64,11 +64,11 @@ public:
 		vx1 = transformComponent->position.x; 
 		vx2 = transformComponent->position.x; 
 
-		vy1 = transformComponent->scale.y*(transformComponent->position.y - this->radiusOuter); 
-		vy2 = transformComponent->scale.y*transformComponent->position.y + this->radiusOuter;
+		vy1 = transformComponent->position.y - transformComponent->scale.y*this->radiusOuter; 
+		vy2 = transformComponent->position.y + transformComponent->scale.y*this->radiusOuter;
 
-		hx1 = transformComponent->scale.x*(transformComponent->position.x - this->radiusOuter);
-		hx2 = transformComponent->scale.x*(transformComponent->position.x + this->radiusOuter);
+		hx1 = transformComponent->position.x - transformComponent->scale.x*this->radiusOuter;
+		hx2 = transformComponent->position.x + transformComponent->scale.x*this->radiusOuter;
 
 		hy1 = transformComponent->position.y;
 		hy2 = transformComponent->position.y;

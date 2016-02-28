@@ -1,6 +1,7 @@
 //
 // Created by Julian  on 24/02/16.
 //
+
 #ifndef COMPONENT_COLLECTION_REPOSITORY_H
 #define COMPONENT_COLLECTION_REPOSITORY_H
 
@@ -11,6 +12,7 @@
 #include <typeindex>
 #include <type_traits>
 #include <assert.h>
+#include <list>
 
 using namespace std;
 
@@ -174,6 +176,17 @@ public:
         {
             this->componentTypeMap[type_index(typeid(T))].push_back(vectorContainer); 
         }
+	}
+
+	list<string> GetCollections()
+	{
+		list<string> collectionNames; 
+
+		for (auto name : this->componentCollectionMap) {
+			collectionNames.push_back(name.first); 
+		}
+
+		return collectionNames; 
 	}
 };
 

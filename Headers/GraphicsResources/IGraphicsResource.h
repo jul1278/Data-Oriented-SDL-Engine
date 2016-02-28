@@ -5,6 +5,7 @@
 #ifndef IGRAPHICSRESOURCE_H
 #define IGRAPHICSRESOURCE_H
 
+#include <GraphicsUtility.h>
 #include "Components/TransformComponent.h"
 
 class IGraphicsResource

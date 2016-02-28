@@ -7,7 +7,7 @@
 
 #include "GraphicsResources/IGraphicsResource.h"
 #include "Graphics.h"
-#include "Utility.h"
+#include "GraphicsUtility.h"
 
 // CircleGraphicsResource
 class CircleFillGraphicsResource : public IGraphicsResource

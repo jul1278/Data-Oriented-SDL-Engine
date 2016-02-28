@@ -98,7 +98,7 @@ bool GameApp::Run()
 			simplePhysicsComponent->transformComponent->position.y += simplePhysicsComponent->velocity.y;
 		}
 
-		this->graphics->UpdateGraphics(nullptr, graphicsComponents, transformComponents);
+		this->graphics->UpdateGraphicsPresentAndClear(nullptr, graphicsComponents, transformComponents);
 	}
 
 	return false; 

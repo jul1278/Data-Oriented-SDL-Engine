@@ -167,14 +167,28 @@ int Graphics::AddGraphicsResource(IGraphicsResource* graphicsResource)
     return resourceId;
 }
 //------------------------------------------------------------------------------------
+// Name: Present
+// Desc:
+//------------------------------------------------------------------------------------
+void Graphics::Present()
+{
+	SDL_RenderPresent(this->renderer);
+}
+//------------------------------------------------------------------------------------
+// Name: Clear
+// Desc:
+//------------------------------------------------------------------------------------
+void Graphics::Clear()
+{
+	SDL_SetRenderDrawColor(this->renderer, 0x00, 0x00, 0x00, 0xff);
+	SDL_RenderClear(this->renderer);
+}
+//------------------------------------------------------------------------------------
 // Name: UpdateGraphics
 // Desc:
 //------------------------------------------------------------------------------------
 void Graphics::UpdateGraphics(vector<GraphicsComponent>* graphicsComponents, vector<TransformComponent>* transformComponents)
 {
-	SDL_SetRenderDrawColor(this->renderer, 0x00, 0x00, 0x00, 0xff);
-	SDL_RenderClear(this->renderer);
-
 	for (auto graphicsComponent : *graphicsComponents) {
 
 		TransformComponent* transformComponent = graphicsComponent.transformComponent;
@@ -185,15 +199,15 @@ void Graphics::UpdateGraphics(vector<GraphicsComponent>* graphicsComponents, vec
 		graphicsResource = this->graphicsResourceMap[graphicsResourceId];
 		graphicsResource->Render(this->renderer, transformComponent);
 	}
-
-	SDL_RenderPresent(this->renderer);
 }
 //------------------------------------------------------------------------------------
 // Name: UpdateGraphics
 // Desc:
 //------------------------------------------------------------------------------------
-void Graphics::UpdateGraphics(SDL_Event* event, vector<BaseComponent*>* graphicsComponents, vector<BaseComponent*>* transformComponents)
+void Graphics::UpdateGraphicsPresentAndClear(SDL_Event* event, vector<BaseComponent*>* graphicsComponents, vector<BaseComponent*>* transformComponents)
 {
+#pragma message ("WARNING: "__FUNCTION__" is deprecated.")
+
 	SDL_SetRenderDrawColor(this->renderer, 0x00, 0x00, 0x00, 0xff); 
     SDL_RenderClear(this->renderer);
 

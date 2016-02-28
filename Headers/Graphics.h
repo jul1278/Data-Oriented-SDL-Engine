@@ -8,11 +8,10 @@
 #include <iostream>
 #include <vector>
 #include <unordered_map>
-#include "SDL.h"
 #include "GraphicsResources/IGraphicsResource.h"
 #include "Components/GraphicsComponent.h"
 #include "Components/TransformComponent.h"
-#include "Utility.h"
+#include "GraphicsUtility.h"
 
 // Graphics
 class Graphics
@@ -40,7 +39,10 @@ public:
     int LoadGraphicResource(string fileName, string resourceName);
     int AddGraphicsResource(IGraphicsResource* graphicsResource);
 
-    void UpdateGraphics(SDL_Event* event, vector<BaseComponent*>* graphicsComponents, vector<BaseComponent*>* transformComponents);
+	void Clear();
+	void Present();
+
+	void UpdateGraphicsPresentAndClear(SDL_Event* event, vector<BaseComponent*>* graphicsComponents, vector<BaseComponent*>* transformComponents);
 	void UpdateGraphics(vector<GraphicsComponent>* graphicsComponents, vector<TransformComponent>* transformComponents);
 };
 

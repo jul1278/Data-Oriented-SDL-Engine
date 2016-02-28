@@ -1,34 +1,13 @@
 //
 // Created by Julian  on 23/11/15.
 //
-#ifndef UTILITY_H
-#define UTILITY_H
+#ifndef GRAPHICS_UTILITY_H
+#define GRAPHICS_UTILITY_H
 
-#include <typeinfo>
+#include "SDL.h"
 
-// from http://en.cppreference.com/w/cpp/types/type_info/hash_code
-using TypeInfoRef = reference_wrapper<const type_info>;
-
-struct Hasher
+namespace GraphicsUtility
 {
-	std::size_t operator()(TypeInfoRef code) const
-	{
-		return code.get().hash_code();
-	}
-};
-
-struct EqualTo
-{
-	bool operator()(TypeInfoRef lhs, TypeInfoRef rhs) const
-	{
-		return lhs.get() == rhs.get();
-	}
-};
-
-class GraphicsUtility
-{
-public:
-
     //----------------------------------------------------------------------------------
     // Name: FillCircle
     // Desc:
@@ -247,9 +226,9 @@ public:
     }
 };
 
-const float PI = 3.1415927;
+//const float PI = 3.1415927;
 
 
 
-#endif //UTILITY_H
+#endif //GRAPHICS_UTILITY_H
 
