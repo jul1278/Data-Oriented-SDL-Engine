@@ -52,7 +52,7 @@ public:
 
         SDL_Rect dstRect = { x - 0.5f*w, y - 0.5f*h, w, h};
 
-        SDL_RenderCopyEx(sdlRenderer, this->spriteTexture, nullptr, &dstRect, transformComponent->orientation.Angle()*(180.0f/PI), NULL, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(sdlRenderer, this->spriteTexture, nullptr, &dstRect, transformComponent->orientation.Angle()*(180.0f/M_PI), NULL, SDL_FLIP_NONE);
     }
 };
 

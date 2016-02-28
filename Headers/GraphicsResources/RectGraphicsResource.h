@@ -77,7 +77,7 @@ public:
             return;
         }
 
-        SDL_RenderCopyEx(sdlRenderer, texture, nullptr, &rect, 0.25f*PI/*(180.0f/PI)*transformComponent->orientation.Angle()*/, nullptr, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(sdlRenderer, texture, nullptr, &rect, 0.25f*M_PI/*(180.0f/PI)*transformComponent->orientation.Angle()*/, nullptr, SDL_FLIP_NONE);
     }
 };
 

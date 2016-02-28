@@ -54,7 +54,7 @@ public:
 
         SDL_Rect rect = { x, y, w, h};
 
-        SDL_RenderCopyEx(sdlRenderer, texture, nullptr, &rect, (180.0f/PI)*transformComponent->orientation.Angle(), nullptr, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(sdlRenderer, texture, nullptr, &rect, (180.0f/M_PI)*transformComponent->orientation.Angle(), nullptr, SDL_FLIP_NONE);
     }
 };
 
