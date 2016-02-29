@@ -12,19 +12,19 @@ class IGraphicsResource
 {
 private:
 
-    int id;
+    /*int id;
     std::string resourceName;
-
+*/
 public:
 
-    IGraphicsResource(int id, std::string resourceName)
-    {
-        this->id = id;
-        this->resourceName = resourceName;
-    }
+    //IGraphicsResource(int id, std::string resourceName)
+    //{
+    //    this->id = id;
+    //    this->resourceName = resourceName;
+    //}
 
-    int Id() const { return this->id; }
-    std::string ResourceName() const { return this->resourceName;}
+    //int Id() const { return this->id; }
+    //std::string ResourceName() const { return this->resourceName;}
 
     virtual void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent) = 0;
 };

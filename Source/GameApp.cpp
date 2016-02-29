@@ -37,7 +37,7 @@ GameApp::GameApp()
 	this->componentRepository->RegisterComponentType<SimplePhysicsComponent>(); 
 
 	auto spaceShipGraphicResId = this->graphics->LoadGraphicResource("Resources//space_ship.png", "spaceShip"); 
-	this->graphics->AddGraphicsResource(new RectGraphicsResource(1, "", 2.0f, 12.0f, 0xff, 0xff, 0x00, 0x00)); 
+	this->graphics->AddGraphicsResource(new RectGraphicsResource(2.0f, 12.0f, 0xff, 0xff, 0x00, 0x00)); 
 	auto skullGraphicResId = this->graphics->LoadGraphicResource("Resources//skull_1.png", "skull1");
 
 	auto entityId = EntityConstructor::ConstructBasicPlayerEntity(this->componentRepository, spaceShipGraphicResId, Vector2D(320, 420), 10.0f);

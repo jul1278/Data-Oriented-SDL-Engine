@@ -20,8 +20,7 @@ private:
 
 public:
 
-    IsoTriangleGraphicsResource(int id, std::string resourceName, float width, float height, uint8_t a, uint8_t r, uint8_t g, uint8_t b)
-            : IGraphicsResource(id, resourceName)
+    IsoTriangleGraphicsResource(float width, float height, uint8_t a, uint8_t r, uint8_t g, uint8_t b)
     {
         this->texture = nullptr;
 

@@ -7,6 +7,7 @@
 #include "Headers/Components/SimplePhysicsComponent.h"
 
 #include <vector>
+#include <map>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

@@ -4,8 +4,6 @@
 #ifndef BASE_COMPONENT_H
 #define BASE_COMPONENT_H
 
-#include <map>
-
 using namespace std; 
 
 struct BaseComponent

@@ -148,7 +148,7 @@ int Graphics::LoadGraphicResource(std::string fileName, std::string resourceName
 
         int id = GetNextResourceId();
 
-        IGraphicsResource* spriteGraphicsResource = new SpriteGraphicsResource(id, resourceName, surface);
+        IGraphicsResource* spriteGraphicsResource = new SpriteGraphicsResource(surface);
         this->graphicsResourceMap.insert(std::pair<int, IGraphicsResource*>(id, spriteGraphicsResource));
         return id;
 
@@ -163,7 +163,7 @@ int Graphics::LoadGraphicResource(std::string fileName, std::string resourceName
 int Graphics::AddGraphicsResource(IGraphicsResource* graphicsResource)
 {
     int resourceId = this->GetNextResourceId();
-    this->graphicsResourceMap.insert(std::pair<int, IGraphicsResource*>(resourceId, graphicsResource));
+    this->graphicsResourceMap.insert(pair<int, IGraphicsResource*>(resourceId, graphicsResource));
     return resourceId;
 }
 //------------------------------------------------------------------------------------

@@ -28,7 +28,7 @@ private:
 
 public:
 
-	StarGraphicsResource(int id, string resourceName, float radiusOuter, float radiusInner, uint8_t a, uint8_t r, uint8_t g, uint8_t b) : IGraphicsResource(id, resourceName)
+	StarGraphicsResource(float radiusOuter, float radiusInner, uint8_t a, uint8_t r, uint8_t g, uint8_t b)
 	{
 		this->a = a; 
 		this->r = r; 
@@ -38,8 +38,8 @@ public:
 		this->radiusInner = static_cast<uint16_t>(floor(radiusInner));
 		this->radiusOuter = static_cast<uint16_t>(floor(radiusOuter)); 
 
-		starCircle = new CircleOutlineGraphicsResource(0, "", 0.5f*radiusOuter, 1.0f, a, r, g, b); 
-		starFill = new CircleFillGraphicsResource(0, "", 0.5f*radiusInner, a, r, g, b); 
+		starCircle = new CircleOutlineGraphicsResource(0.5f*radiusOuter, 1.0f, a, r, g, b); 
+		starFill = new CircleFillGraphicsResource(0.5f*radiusInner, a, r, g, b); 
 	};
 
 	~StarGraphicsResource()

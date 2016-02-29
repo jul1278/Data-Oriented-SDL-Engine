@@ -21,7 +21,7 @@ private:
 
 public:
 
-    SpriteGraphicsResource(int id, std::string resourceName, SDL_Surface* surface) : IGraphicsResource(id, resourceName)
+    SpriteGraphicsResource(SDL_Surface* surface)
     {
         this->spriteSurface = surface;
         this->spriteTexture = nullptr;

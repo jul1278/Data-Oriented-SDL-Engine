@@ -34,10 +34,8 @@ SpaceGameApp::SpaceGameApp()
 	this->sdlEventCollector = new SDLEventCollector();
 
 	auto spaceShipGraphicResId = this->graphics->LoadGraphicResource("Resources//space_ship.png", "spaceShip");
-	this->graphics->AddGraphicsResource(new RectGraphicsResource(1, "", 2.0f, 12.0f, 0xff, 0xff, 0x00, 0x00));
-	auto skullGraphicResId = this->graphics->LoadGraphicResource("Resources//skull_1.png", "skull1");
-
-	auto starGraphicResId = this->graphics->AddGraphicsResource(new StarGraphicsResource(3, "", 5.0f, 2.5f, 0xff, 0x5f, 0x5f, 0x5f)); 
+	auto projectileGraphicResId = this->graphics->AddGraphicsResource(new RectGraphicsResource(2.0f, 12.0f, 0xff, 0xff, 0x00, 0x00));
+	auto starGraphicResId = this->graphics->AddGraphicsResource(new StarGraphicsResource(5.0f, 2.5f, 0xff, 0x5f, 0x5f, 0x5f)); 
 
 	SpaceGameEntityConstructor::ConstructBackgroundStars(this->componentCollectionRepository, starGraphicResId, this->windowWidth, this->windowHeight, 20); 
 	SpaceGameEntityConstructor::ConstructPlayerSpaceShip(this->componentCollectionRepository, spaceShipGraphicResId, Vector2D(this->windowWidth/2.0f, this->windowHeight - 60)); 

@@ -110,6 +110,9 @@ private:
 	// all component types
 	unordered_map<type_index, list<IVectorContainer*>> componentTypeMap; 
 
+	// id to parent collection
+	unordered_map<unsigned int, ComponentCollection*> idToCollectionMap; 
+
 public:
 
 	ComponentCollectionRepository()
@@ -135,15 +138,18 @@ public:
             return nullptr; 
         }
 
+		string collectionNameTemp = this->componentCollectionMap.find(collectionName) == 
+									this->componentCollectionMap.end() 
+			? defaultCollectionName : collectionName; 
+
         BaseComponent* newComponent = nullptr; 
 
-		if (componentCollectionMap.find(collectionName) == componentCollectionMap.end()) {
-            newComponent = componentCollectionMap[defaultCollectionName]->NewComponent<T>();
-        } else {
-            newComponent = componentCollectionMap[collectionName]->NewComponent<T>();
-        }
-
+		newComponent = this->componentCollectionMap[collectionNameTemp]->NewComponent<T>();
         newComponent->id = this->GetNextId(); 
+
+		auto collection = componentCollectionMap[collectionNameTemp]; 
+		this->idToCollectionMap[newComponent->id] = collection; 
+
         return static_cast<T*>(newComponent); 
 	}
 
@@ -167,6 +173,16 @@ public:
         }
 
         return nullptr; 
+	}
+
+	template<typename T>
+	list<vector<T>*>* Select()
+	{
+		if (this->componentTypeMap.find(type_index(typeid(T)) != this->componentTypeMap.end())) {
+			return this->componentTypeMap[type_index(typeid(T))];
+		}
+
+		return nullptr; 
 	}
 
     template<typename T>

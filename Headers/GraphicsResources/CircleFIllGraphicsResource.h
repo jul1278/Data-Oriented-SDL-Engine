@@ -20,7 +20,7 @@ private:
 
 public:
 
-    CircleFillGraphicsResource(int id, std::string resourceName, float radius, uint8_t a, uint8_t r, uint8_t g, uint8_t b) : IGraphicsResource(id, resourceName)
+    CircleFillGraphicsResource(float radius, uint8_t a, uint8_t r, uint8_t g, uint8_t b)
     {
         this->radius = static_cast<uint16_t>(floor(radius));
         this->circleTexture = nullptr; 

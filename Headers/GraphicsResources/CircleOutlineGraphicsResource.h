@@ -21,7 +21,7 @@ private:
 
 public:
 
-    CircleOutlineGraphicsResource(int id, std::string resourceName, float radius, float thickness, uint8_t a, uint8_t r, uint8_t g, uint8_t b) : IGraphicsResource(id, resourceName)
+    CircleOutlineGraphicsResource(float radius, float thickness, uint8_t a, uint8_t r, uint8_t g, uint8_t b)
     {
         this->radius = static_cast<uint16_t>(floor(radius));
 
