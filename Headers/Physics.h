@@ -4,6 +4,7 @@
 #include "Events\IEventArgs.h"
 #include "Events\CollisionEventArgs.h"
 #include "Components\SimplePhysicsComponent.h"
+#include "Components\PhysicsComponent.h"
 #include "Components\TransformComponent.h"
 #include "ComponentCollectionRepository.h"
 
@@ -11,57 +12,43 @@ class Physics
 {
 private:
 
-	unsigned int width; 
-	unsigned int height; 
-	unsigned int quadFactor = 10; 
-
-	list<IEventArgs> events; 
-
 public:
 
-	Physics(unsigned int width, unsigned int height)
+	//-------------------------------------------------------------------------------
+	// Name: SolvePhysics
+	// Desc: 
+	//-------------------------------------------------------------------------------
+	void SolvePhysics(ComponentCollectionRepository* componentCollectionRepository, const string& collectionName)
 	{
-		this->width = width; 
-		this->height = height;
-	}
+		auto physicsComponents = componentCollectionRepository->SelectFromCollection<PhysicsComponent>(collectionName); 
 
-	void Update(ComponentCollectionRepository* componentCollectionRepository)
-	{
-		auto physicsComponents = componentCollectionRepository->Select<SimplePhysicsComponent>();
+		if (physicsComponents == nullptr) {
+			return; 
+		}
 
-		for (auto physicsComponentList : *physicsComponents) {
-			for (auto physicsComponent : *physicsComponentList) {
-
-				float x = physicsComponent.transformComponent->position.x; 
-				float y = physicsComponent.transformComponent->position.y;
-				float r = physicsComponent.radius; 
-
-				for (auto currentPhysicsComponentList : *physicsComponents) {
-					for (auto currentPhysicsComponent : *currentPhysicsComponentList) {
-
-						if (currentPhysicsComponent.id == physicsComponent.id) {
-							continue; 
-						}
-
-						float dx = x - currentPhysicsComponent.transformComponent->position.x;	
-						float dy = y - currentPhysicsComponent.transformComponent->position.y;
-
-						float dr = r + currentPhysicsComponent.radius; 
-						
-						if ((dx*dx + dy*dy) < (dr*dr)) {
-							this->events.push_back(CollisionEventArgs(&physicsComponent, &currentPhysicsComponent));
-						}
-					}
-				}
-			}
+		for (auto component : *physicsComponents) {
+			component.transformComponent->orientation = Vector2D(component.angularVelocity) + component.transformComponent->orientation;
+			component.transformComponent->position.x += component.velocity.x; 
+			component.transformComponent->position.y += component.velocity.y; 
 		}
 	}
-
-	list<IEventArgs>* GetEvents()
+	//-------------------------------------------------------------------------------
+	// Name: SolveSimplePhysics
+	// Desc: 
+	//-------------------------------------------------------------------------------
+	void SolveSimplePhysics(ComponentCollectionRepository* componentCollectionRepository, const string& collectionName)
 	{
-		return &this->events; 
-	}
+		auto physicsComponents = componentCollectionRepository->SelectFromCollection<SimplePhysicsComponent>(collectionName);
 
+		if (physicsComponents == nullptr) {
+			return; 
+		}
+
+		for (auto component : *physicsComponents) {
+			component.transformComponent->position.x += component.velocity.x;
+			component.transformComponent->position.y += component.velocity.y;
+		}
+	}
 };
 
 #endif // PHYSICS_H

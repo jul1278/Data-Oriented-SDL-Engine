@@ -34,6 +34,11 @@ struct TransformComponent : BaseComponent
         this->orientation = orientation;
         this->scale = scale;
     }
+
+	float Angle()
+	{
+		return atan2f(this->orientation.y, this->orientation.x); 
+	}
 };
 
 

@@ -17,6 +17,7 @@
 #include <Events\ButtonEventArgs.h>
 #include <PlayerActions.h>
 #include <SpaceGame\SpaceGameEntityConstructor.h>
+#include <Utility\MathUtility.h>
 
 //------------------------------------------------------------------------------------
 // Name: SpaceGameApp
@@ -127,6 +128,7 @@ bool SpaceGameApp::Run()
 
 			if (physicsComponent.transformComponent->position.y > this->windowHeight) {
 				physicsComponent.transformComponent->position.y = 0.0f; 
+				physicsComponent.transformComponent->position.x = this->windowWidth * MathUtility::RandomFloatUniformDist(); 
 			}
 		}
 

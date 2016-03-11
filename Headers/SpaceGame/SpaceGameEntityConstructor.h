@@ -11,7 +11,10 @@
 #include "Components/TransformComponent.h"
 #include "Components/GraphicsComponent.h"
 #include "Components/SimplePhysicsComponent.h"
+#include "Components/PhysicsComponent.h"
 #include "GraphicsResources/CircleFIllGraphicsResource.h"
+
+#include <Utility\MathUtility.h>
 
 #include <random>
 
@@ -74,6 +77,36 @@ public:
 			
 			physicsComponent->velocity.y = 0.5f*starScrollVelocity*scale;
 			physicsComponent->transformComponent = transformComponent;  
+		}
+	}
+	//---------------------------------------------------------------------------
+	// Name: ConstructEnemyAsteroids
+	// Desc:
+	//---------------------------------------------------------------------------
+	static void ConstructEnemyAsteroids(ComponentCollectionRepository* componentCollectionRepository, int graphicResourceId, int width, int height, int num)
+	{
+		const string collectionName = "EnemyAsteroids"; 
+
+		componentCollectionRepository->NewCollection(collectionName); 
+
+		for (auto i = 0; i < num; i++) {
+
+			auto transformComponent = componentCollectionRepository->NewComponent<TransformComponent>(collectionName);
+			auto graphicsComponent = componentCollectionRepository->NewComponent<GraphicsComponent>(collectionName);
+			auto physicsComponent = componentCollectionRepository->NewComponent<PhysicsComponent>(collectionName);
+
+			physicsComponent->velocity.y = 0.25f*MathUtility::RandomFloatUniformDist(); 
+			physicsComponent->velocity.x = 0.25f*MathUtility::RandomFloatUniformDist(); 
+			physicsComponent->angularVelocity = 0.25f*MathUtility::RandomFloatUniformDist(); 
+			physicsComponent->mass = MathUtility::RandomFloatUniformDist(); 
+			physicsComponent->transformComponent = transformComponent;
+
+			transformComponent->position.x = height*MathUtility::RandomFloatUniformDist(); 
+			transformComponent->position.y = width*MathUtility::RandomFloatUniformDist(); 
+			transformComponent->scale = Vector2D(2.0f*MathUtility::RandomFloatUniformDist()); 
+
+			graphicsComponent->resourceId = graphicResourceId;
+			graphicsComponent->transformComponent = transformComponent;
 		}
 	}
 

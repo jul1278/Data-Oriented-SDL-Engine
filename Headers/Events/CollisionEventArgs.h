@@ -1,7 +1,7 @@
 #ifndef COLLISION_EVENT_ARGS_H
 #define COLLISION_EVENT_ARGS_H
 
-#include <Components\SimplePhysicsComponent.h>
+#include "Components\SimplePhysicsComponent.h"
 #include "IEventArgs.h"
 
 class CollisionEventArgs : public IEventArgs
