@@ -6,7 +6,6 @@
 
 #include "IAction.h"
 #include "Graphics.h"
-#include "Physics.h"
 #include "ComponentCollectionRepository.h"
 #include "Events\SDLEventCollector.h"
 
@@ -22,8 +21,6 @@ private:
 
 	ComponentCollectionRepository* componentCollectionRepository; 
 	Graphics* graphics; 
-
-	Physics* physics; 
 
 	SDLEventCollector* sdlEventCollector;
 

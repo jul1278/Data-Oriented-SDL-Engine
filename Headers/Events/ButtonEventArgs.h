@@ -23,7 +23,7 @@ private:
 
 public:
 
-	ButtonEventArgs(Key key, bool released)
+	ButtonEventArgs(Key key, bool released) : IEventArgs(ButtonEvent)
 	{
 		this->key = key; 
 		this->released = released; 

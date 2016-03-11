@@ -176,10 +176,10 @@ public:
 	}
 
 	template<typename T>
-	list<vector<T>*>* Select()
+	list<IVectorContainer*>* Select()
 	{
-		if (this->componentTypeMap.find(type_index(typeid(T)) != this->componentTypeMap.end())) {
-			return this->componentTypeMap[type_index(typeid(T))];
+		if (this->componentTypeMap.find(type_index(typeid(T))) != this->componentTypeMap.end()) {
+			return &this->componentTypeMap[type_index(typeid(T))];
 		}
 
 		return nullptr; 

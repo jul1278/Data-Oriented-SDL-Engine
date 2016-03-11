@@ -2,6 +2,7 @@
 #define PHYSICS_H
 
 #include "Events\IEventArgs.h"
+#include "Events\CollisionEventArgs.h"
 #include "Components\SimplePhysicsComponent.h"
 #include "Components\TransformComponent.h"
 #include "ComponentCollectionRepository.h"
@@ -16,8 +17,6 @@ private:
 
 	list<IEventArgs> events; 
 
-	unordered_map<unsigned int, vector<SimplePhysicsComponent*>> quadTree; 
-
 public:
 
 	Physics(unsigned int width, unsigned int height)
@@ -25,7 +24,6 @@ public:
 		this->width = width; 
 		this->height = height;
 	}
-
 
 	void Update(ComponentCollectionRepository* componentCollectionRepository)
 	{
@@ -51,9 +49,8 @@ public:
 						float dr = r + currentPhysicsComponent.radius; 
 						
 						if ((dx*dx + dy*dy) < (dr*dr)) {
-
+							this->events.push_back(CollisionEventArgs(&physicsComponent, &currentPhysicsComponent));
 						}
-
 					}
 				}
 			}
