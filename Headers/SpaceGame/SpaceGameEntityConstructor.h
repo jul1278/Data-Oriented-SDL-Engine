@@ -95,15 +95,15 @@ public:
 			auto graphicsComponent = componentCollectionRepository->NewComponent<GraphicsComponent>(collectionName);
 			auto physicsComponent = componentCollectionRepository->NewComponent<PhysicsComponent>(collectionName);
 
-			physicsComponent->velocity.y = 0.25f*MathUtility::RandomFloatUniformDist(); 
-			physicsComponent->velocity.x = 0.25f*MathUtility::RandomFloatUniformDist(); 
+			physicsComponent->velocity.y = 5.0f*(MathUtility::RandomFloatUniformDist() - 0.5f);
+			physicsComponent->velocity.x = 5.0f*(MathUtility::RandomFloatUniformDist() - 0.5f); 
 			physicsComponent->angularVelocity = 0.25f*MathUtility::RandomFloatUniformDist(); 
 			physicsComponent->mass = MathUtility::RandomFloatUniformDist(); 
 			physicsComponent->transformComponent = transformComponent;
 
 			transformComponent->position.x = height*MathUtility::RandomFloatUniformDist(); 
 			transformComponent->position.y = width*MathUtility::RandomFloatUniformDist(); 
-			transformComponent->scale = Vector2D(2.0f*MathUtility::RandomFloatUniformDist()); 
+			transformComponent->scale = Vector2D(1.0f, 1.0f);
 
 			graphicsComponent->resourceId = graphicResourceId;
 			graphicsComponent->transformComponent = transformComponent;

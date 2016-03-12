@@ -12,7 +12,16 @@ class Physics
 {
 private:
 
+	int width; 
+	int height; 
+
 public:
+
+	Physics(int width, int height) 
+	{
+		this->width = width; 
+		this->height = height;
+	}
 
 	//-------------------------------------------------------------------------------
 	// Name: SolvePhysics

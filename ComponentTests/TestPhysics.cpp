@@ -18,12 +18,16 @@ namespace PhysicsTest
 	{
 	public:
 
+		//------------------------------------------------------------------------------------
+		// Name: SolveSimplePhysicsTest
+		// Desc:
+		//------------------------------------------------------------------------------------
 		TEST_METHOD(SolveSimplePhysicsTest)
 		{
 			const string testCollectionName = "TestCollection";
 
 			ComponentCollectionRepository componentCollectionRepository; 
-			Physics physics; 
+			Physics physics(10.0f, 10.0f); 
 
 			componentCollectionRepository.NewCollection(testCollectionName); 
 			
@@ -40,13 +44,16 @@ namespace PhysicsTest
 			Assert::AreEqual(transformComponent->position.x, 2.0f); 
 			Assert::AreEqual(transformComponent->position.y, 2.0f); 
 		}
-
+		//------------------------------------------------------------------------------------
+		// Name: SolvePhysicsTest
+		// Desc:
+		//------------------------------------------------------------------------------------
 		TEST_METHOD(SolvePhysicsTest)
 		{
 			const string testCollectionName = "TestCollection";
 
 			ComponentCollectionRepository componentCollectionRepository;
-			Physics physics;
+			Physics physics(10.0f,10.0f);
 
 			componentCollectionRepository.NewCollection(testCollectionName);
 

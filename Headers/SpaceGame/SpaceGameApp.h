@@ -8,6 +8,7 @@
 #include "Graphics.h"
 #include "ComponentCollectionRepository.h"
 #include "Events\SDLEventCollector.h"
+#include "Physics.h"
 
 #include <typeindex>
 
@@ -20,7 +21,9 @@ private:
 	std::string appName;
 
 	ComponentCollectionRepository* componentCollectionRepository; 
+	
 	Graphics* graphics; 
+	Physics* physics; 
 
 	SDLEventCollector* sdlEventCollector;
 

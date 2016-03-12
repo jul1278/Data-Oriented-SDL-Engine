@@ -68,8 +68,6 @@ public:
 		graphicsComponent->resourceId = graphicResourceId;
 
 		simplePhysicsComponent->transformComponent = transformComponent; 
-		simplePhysicsComponent->acceleration = Vector2D(0.0f, 0.0f); 
-		simplePhysicsComponent->mass = 0.0f; 
 		simplePhysicsComponent->velocity = Vector2D(0.0f, 0.0f); 
 
 		newEntity->AddComponent<SimplePhysicsComponent>(simplePhysicsComponent); 

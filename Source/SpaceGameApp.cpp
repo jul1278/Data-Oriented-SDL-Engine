@@ -12,6 +12,8 @@
 #include <GraphicsResources\RectGraphicsResource.h>
 #include <GraphicsResources\TriangleGraphicsResource.h>
 #include <GraphicsResources\StarGraphicsResource.h>
+#include <GraphicsResources\BubbleGraphicsResources.h>
+
 #include <ComponentCollectionRepository.h>
 #include <Components\SimplePhysicsComponent.h>
 #include <Events\ButtonEventArgs.h>
@@ -30,7 +32,9 @@ SpaceGameApp::SpaceGameApp()
 	this->appName = "Space Game";
 
 	this->componentCollectionRepository = new ComponentCollectionRepository; 
+
 	this->graphics = new Graphics(this->windowWidth, this->windowHeight, this->appName);
+	this->physics = new Physics(this->windowWidth, this->windowHeight); 
 
 	this->sdlEventCollector = new SDLEventCollector();
 
@@ -38,9 +42,11 @@ SpaceGameApp::SpaceGameApp()
 	auto projectileGraphicResId = this->graphics->AddGraphicsResource(new RectGraphicsResource(2.0f, 12.0f, 0xff, 0xff, 0x00, 0x00));
 	auto starGraphicResId = this->graphics->AddGraphicsResource(new StarGraphicsResource(5.0f, 2.5f, 0xff, 0x5f, 0x5f, 0x5f)); 
 	auto enemyTriangleResId = this->graphics->LoadGraphicResource("Resources//enemy_triangle.png", "enemyTriangle");
+	auto enemyAsteroidResId = this->graphics->AddGraphicsResource(new BubbleGraphicsResource(20.0f)); 
 
 	SpaceGameEntityConstructor::ConstructBackgroundStars(this->componentCollectionRepository, starGraphicResId, this->windowWidth, this->windowHeight, 20); 
 	SpaceGameEntityConstructor::ConstructPlayerSpaceShip(this->componentCollectionRepository, spaceShipGraphicResId, Vector2D(this->windowWidth/2.0f, this->windowHeight - 60)); 
+	SpaceGameEntityConstructor::ConstructEnemyAsteroids(this->componentCollectionRepository, enemyAsteroidResId, this->windowWidth, this->windowHeight, 5); 
 }
 //------------------------------------------------------------------------------------
 // Name: ~SpaceGameApp
@@ -74,6 +80,10 @@ bool SpaceGameApp::Run()
 		auto playerTransformComponents = this->componentCollectionRepository->SelectFromCollection<TransformComponent>("PlayerSpaceShip");
 		auto playerGraphicsComponents = this->componentCollectionRepository->SelectFromCollection<GraphicsComponent>("PlayerSpaceShip");
 		auto playerPhysicsComponents = this->componentCollectionRepository->SelectFromCollection<SimplePhysicsComponent>("PlayerSpaceShip");
+
+		auto asteroidTransformComponents = this->componentCollectionRepository->SelectFromCollection<TransformComponent>("EnemyAsteroids"); 
+		auto asteroidGraphicsComponents = this->componentCollectionRepository->SelectFromCollection<GraphicsComponent>("EnemyAsteroids"); 
+
 
 		// player loop
 		// TODO: move this out of here
@@ -122,6 +132,9 @@ bool SpaceGameApp::Run()
 			}
 		}
 
+		// asteroids
+		this->physics->SolvePhysics(this->componentCollectionRepository, "EnemyAsteroids");
+
 		// star background loop
 		for (auto physicsComponent : *starPhysicsComponents) {
 			physicsComponent.transformComponent->position.y += physicsComponent.velocity.y; 
@@ -135,6 +148,7 @@ bool SpaceGameApp::Run()
 		this->graphics->Clear();
 
 		this->graphics->UpdateGraphics(starGraphicsComponents, starTransformComponents); 
+		this->graphics->UpdateGraphics(asteroidGraphicsComponents, asteroidTransformComponents); 
 		this->graphics->UpdateGraphics(playerGraphicsComponents, playerTransformComponents);
 		
 		this->graphics->Present(); 

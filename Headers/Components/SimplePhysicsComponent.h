@@ -10,28 +10,18 @@
 
 struct SimplePhysicsComponent : BaseComponent
 {
-	float mass;
-	float radius;
-
 	Vector2D velocity; 
-	Vector2D acceleration; 
-
+	
 	TransformComponent* transformComponent;
 
 	SimplePhysicsComponent()
 	{
-		this->mass = 0.0f; 
-		this->radius = 0.0f; 
 		this->transformComponent = nullptr; 
 	}
 
-	SimplePhysicsComponent(float mass, float radius, Vector2D velocity, Vector2D acceleration, TransformComponent* transformComponent = nullptr)
+	SimplePhysicsComponent(Vector2D velocity, TransformComponent* transformComponent = nullptr)
 	{
 		this->transformComponent = transformComponent;
-		this->mass = mass;
-		this->radius = radius; 
-
-		this->acceleration = acceleration; 
 		this->velocity = velocity; 
 	}
 };

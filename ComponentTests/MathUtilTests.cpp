@@ -15,7 +15,7 @@ namespace ComponentTests
 	public:
 	
 		//-----------------------------------------------------------------------------
-		// Name: 
+		// Name: StdNormalDistHasZeroMean
 		// Desc: 
 		//-----------------------------------------------------------------------------
 		TEST_METHOD(StdNormalDistHasZeroMean)
