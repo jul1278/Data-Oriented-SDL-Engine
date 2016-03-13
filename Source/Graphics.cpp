@@ -3,9 +3,8 @@
 //
 
 #include "Graphics.h"
-#include "GraphicsResources/SpriteGraphicsResource.h"
+#include "GraphicsResources/SpriteGraphicsResource.h"	
 #include "SDL_image.h"
-#include <algorithm>
 
 //------------------------------------------------------------------------------------
 // Name: LoadSurface
@@ -86,6 +85,20 @@ Graphics::Graphics(int windowWidth, int windowHeight, std::string appName)
 
         return;
     }  
+
+
+	// init sdl ttf
+	if (TTF_Init() == -1) {
+		auto error = TTF_GetError(); 
+		SDL_DestroyWindow(window); 
+		SDL_DestroyRenderer(renderer); 
+		SDL_Quit(); 
+
+		return; 
+	}
+
+	this->consoleFont = TTF_OpenFont("Resources//Anonymous_Pro.ttf", 10);
+
 }
 //------------------------------------------------------------------------------------
 // Name: LoadSurface
@@ -172,7 +185,37 @@ int Graphics::AddGraphicsResource(IGraphicsResource* graphicsResource)
 //------------------------------------------------------------------------------------
 void Graphics::Present()
 {
+	auto yOffset = 5; 
+
+	for (auto message : this->consoleMessages) {
+		
+		SDL_Color textColor = { 255, 255, 255 };
+		SDL_Surface* surfaceText = TTF_RenderText_Solid(this->consoleFont, message.c_str(), textColor);
+		SDL_Texture* textureText = SDL_CreateTextureFromSurface(this->renderer, surfaceText);
+
+		SDL_Rect textRect = { 5, yOffset, surfaceText->w, surfaceText->h };
+
+		yOffset += surfaceText->h + 2; 
+
+		SDL_RenderCopy(this->renderer, textureText, NULL, &textRect);
+
+		SDL_FreeSurface(surfaceText);
+		SDL_DestroyTexture(textureText);
+	}
+
 	SDL_RenderPresent(this->renderer);
+}
+//------------------------------------------------------------------------------------
+// Name: PrintConsoleText
+// Desc:
+//------------------------------------------------------------------------------------
+void Graphics::PrintConsoleText(const string& message)
+{
+	this->consoleMessages.push_front(message); 
+
+	while (this->consoleMessages.size() > maxConsoleMessages) {
+		this->consoleMessages.pop_back();
+	}
 }
 //------------------------------------------------------------------------------------
 // Name: Clear

@@ -28,7 +28,7 @@ public:
 	//---------------------------------------------------------------------------
 	static void ConstructPlayerSpaceShip(ComponentCollectionRepository* componentCollectionRepository, int graphicResourceId, Vector2D position)
 	{
-		const string playerSpaceShipCollectionName = "PlayerSpaceShip"; 
+		const auto playerSpaceShipCollectionName = "PlayerSpaceShip"; 
 		componentCollectionRepository->NewCollection(playerSpaceShipCollectionName); 
 
 		auto transformComponent = componentCollectionRepository->NewComponent<TransformComponent>(playerSpaceShipCollectionName);
@@ -54,8 +54,8 @@ public:
 		uniform_int_distribution<int> yUniformIntDistribution(0, height); 
 		uniform_real_distribution<float> scaleUniformDist(1.0f, 2.0f); 
 
-		const string collectionName = "ScrollingBackgroundStars";
-		const float starScrollVelocity = 1.0f; 
+		const auto collectionName = "ScrollingBackgroundStars";
+		const auto starScrollVelocity = 0.5f; 
 
 		componentCollectionRepository->NewCollection(collectionName); 
 
@@ -65,7 +65,8 @@ public:
 			auto graphicsComponent = componentCollectionRepository->NewComponent<GraphicsComponent>(collectionName); 
 			auto physicsComponent = componentCollectionRepository->NewComponent<SimplePhysicsComponent>(collectionName); 
 
-			float scale = scaleUniformDist(defaultRandomEngine); 
+			auto scale = scaleUniformDist(defaultRandomEngine); 
+
 			transformComponent->scale = Vector2D(scale, scale); 
 			transformComponent->position.x = (i+1)*(width / num); 
 			transformComponent->position.y = 2.0f*yUniformIntDistribution(defaultRandomEngine); 
@@ -83,7 +84,7 @@ public:
 	//---------------------------------------------------------------------------
 	static void ConstructEnemyAsteroids(ComponentCollectionRepository* componentCollectionRepository, vector<int>& graphicResourceIds, int width, int height, int num)
 	{
-		const string collectionName = "EnemyAsteroids"; 
+		const auto collectionName = "EnemyAsteroids"; 
 
 		componentCollectionRepository->NewCollection(collectionName); 
 
@@ -93,10 +94,6 @@ public:
 			auto graphicsComponent = componentCollectionRepository->NewComponent<GraphicsComponent>(collectionName);
 			auto physicsComponent = componentCollectionRepository->NewComponent<PhysicsComponent>(collectionName);
 
-			//physicsComponent->velocity.y = 2.0f*(MathUtility::RandomFloatUniformDist() - 0.5f);
-			//physicsComponent->velocity.x = 2.0f*(MathUtility::RandomFloatUniformDist() - 0.5f); 
-			
-			//physicsComponent->angularVelocity = 0.25f*MathUtility::RandomFloatUniformDist(); 
 			physicsComponent->mass = MathUtility::RandomFloatUniformDist(); 
 			physicsComponent->transformComponent = transformComponent;
 			physicsComponent->angularVelocity = 0.01f; 
