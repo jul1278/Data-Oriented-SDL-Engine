@@ -13,6 +13,7 @@
 #include <GraphicsResources\TriangleGraphicsResource.h>
 #include <GraphicsResources\StarGraphicsResource.h>
 #include <GraphicsResources\BubbleGraphicsResources.h>
+#include <GraphicsResources/ProceduralAsteroidGraphicsResource.h>
 
 #include <ComponentCollectionRepository.h>
 #include <Components\SimplePhysicsComponent.h>
@@ -42,11 +43,16 @@ SpaceGameApp::SpaceGameApp()
 	auto projectileGraphicResId = this->graphics->AddGraphicsResource(new RectGraphicsResource(2.0f, 12.0f, 0xff, 0xff, 0x00, 0x00));
 	auto starGraphicResId = this->graphics->AddGraphicsResource(new StarGraphicsResource(5.0f, 2.5f, 0xff, 0x5f, 0x5f, 0x5f)); 
 	auto enemyTriangleResId = this->graphics->LoadGraphicResource("Resources//enemy_triangle.png", "enemyTriangle");
-	auto enemyAsteroidResId = this->graphics->AddGraphicsResource(new BubbleGraphicsResource(20.0f)); 
 
+	vector<int> asteroidGraphicsResIds;
+
+	for (int i = 0; i < 5; i++) {
+		asteroidGraphicsResIds.push_back(this->graphics->AddGraphicsResource(new ProceduralAsteroidGraphicsResource(20.0f, 10)));
+	}
+	
 	SpaceGameEntityConstructor::ConstructBackgroundStars(this->componentCollectionRepository, starGraphicResId, this->windowWidth, this->windowHeight, 20); 
 	SpaceGameEntityConstructor::ConstructPlayerSpaceShip(this->componentCollectionRepository, spaceShipGraphicResId, Vector2D(this->windowWidth/2.0f, this->windowHeight - 60)); 
-	SpaceGameEntityConstructor::ConstructEnemyAsteroids(this->componentCollectionRepository, enemyAsteroidResId, this->windowWidth, this->windowHeight, 2); 
+	SpaceGameEntityConstructor::ConstructEnemyAsteroids(this->componentCollectionRepository, asteroidGraphicsResIds, this->windowWidth, this->windowHeight, 5); 
 }
 //------------------------------------------------------------------------------------
 // Name: ~SpaceGameApp

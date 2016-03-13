@@ -81,7 +81,7 @@ public:
 	// Name: ConstructEnemyAsteroids
 	// Desc:
 	//---------------------------------------------------------------------------
-	static void ConstructEnemyAsteroids(ComponentCollectionRepository* componentCollectionRepository, int graphicResourceId, int width, int height, int num)
+	static void ConstructEnemyAsteroids(ComponentCollectionRepository* componentCollectionRepository, vector<int>& graphicResourceIds, int width, int height, int num)
 	{
 		const string collectionName = "EnemyAsteroids"; 
 
@@ -104,7 +104,7 @@ public:
 			transformComponent->position.y = width*MathUtility::RandomFloatUniformDist(); 
 			transformComponent->scale = Vector2D(1.0f, 1.0f);
 
-			graphicsComponent->resourceId = graphicResourceId;
+			graphicsComponent->resourceId = graphicResourceIds[i];
 			graphicsComponent->transformComponent = transformComponent;
 		}
 	}
