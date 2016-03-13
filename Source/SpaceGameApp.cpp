@@ -46,7 +46,7 @@ SpaceGameApp::SpaceGameApp()
 
 	SpaceGameEntityConstructor::ConstructBackgroundStars(this->componentCollectionRepository, starGraphicResId, this->windowWidth, this->windowHeight, 20); 
 	SpaceGameEntityConstructor::ConstructPlayerSpaceShip(this->componentCollectionRepository, spaceShipGraphicResId, Vector2D(this->windowWidth/2.0f, this->windowHeight - 60)); 
-	SpaceGameEntityConstructor::ConstructEnemyAsteroids(this->componentCollectionRepository, enemyAsteroidResId, this->windowWidth, this->windowHeight, 5); 
+	SpaceGameEntityConstructor::ConstructEnemyAsteroids(this->componentCollectionRepository, enemyAsteroidResId, this->windowWidth, this->windowHeight, 2); 
 }
 //------------------------------------------------------------------------------------
 // Name: ~SpaceGameApp
@@ -79,7 +79,7 @@ bool SpaceGameApp::Run()
 
 		auto playerTransformComponents = this->componentCollectionRepository->SelectFromCollection<TransformComponent>("PlayerSpaceShip");
 		auto playerGraphicsComponents = this->componentCollectionRepository->SelectFromCollection<GraphicsComponent>("PlayerSpaceShip");
-		auto playerPhysicsComponents = this->componentCollectionRepository->SelectFromCollection<SimplePhysicsComponent>("PlayerSpaceShip");
+		auto playerPhysicsComponents = this->componentCollectionRepository->SelectFromCollection<PhysicsComponent>("PlayerSpaceShip");
 
 		auto asteroidTransformComponents = this->componentCollectionRepository->SelectFromCollection<TransformComponent>("EnemyAsteroids"); 
 		auto asteroidGraphicsComponents = this->componentCollectionRepository->SelectFromCollection<GraphicsComponent>("EnemyAsteroids"); 
@@ -133,7 +133,7 @@ bool SpaceGameApp::Run()
 		}
 
 		// asteroids
-		this->physics->SolvePhysics(this->componentCollectionRepository, "EnemyAsteroids");
+		this->physics->SolveAsteroidPhysics(this->componentCollectionRepository);
 
 		// star background loop
 		for (auto physicsComponent : *starPhysicsComponents) {

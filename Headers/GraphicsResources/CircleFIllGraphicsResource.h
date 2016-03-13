@@ -2,8 +2,8 @@
 // Created by Julian  on 22/11/15.
 //
 
-#ifndef CIRCLEGRAPHICSRESOURCE_H
-#define CIRCLEGRAPHICSRESOURCE_H
+#ifndef CIRCLE_GRAPHICS_RESOURCE_H
+#define CIRCLE_GRAPHICS_RESOURCE_H
 
 #include "GraphicsResources/IGraphicsResource.h"
 #include "Graphics.h"
@@ -65,4 +65,4 @@ public:
     }
 };
 
-#endif //CIRCLEGRAPHICSRESOURCE_H
+#endif //CIRCLE_GRAPHICS_RESOURCE_H

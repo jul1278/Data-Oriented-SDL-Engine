@@ -18,8 +18,6 @@
 
 #include <random>
 
-//const float defaultProjectileSpeed = 4.0f;
-
 class SpaceGameEntityConstructor
 {
 public:
@@ -35,7 +33,7 @@ public:
 
 		auto transformComponent = componentCollectionRepository->NewComponent<TransformComponent>(playerSpaceShipCollectionName);
 		auto graphicsComponent = componentCollectionRepository->NewComponent<GraphicsComponent>(playerSpaceShipCollectionName);
-		auto physicsComponent = componentCollectionRepository->NewComponent<SimplePhysicsComponent>(playerSpaceShipCollectionName);
+		auto physicsComponent = componentCollectionRepository->NewComponent<PhysicsComponent>(playerSpaceShipCollectionName);
 
 		transformComponent->position = position; 
 		transformComponent->scale = Vector2D(0.5f, 0.5f); 
@@ -95,9 +93,10 @@ public:
 			auto graphicsComponent = componentCollectionRepository->NewComponent<GraphicsComponent>(collectionName);
 			auto physicsComponent = componentCollectionRepository->NewComponent<PhysicsComponent>(collectionName);
 
-			physicsComponent->velocity.y = 5.0f*(MathUtility::RandomFloatUniformDist() - 0.5f);
-			physicsComponent->velocity.x = 5.0f*(MathUtility::RandomFloatUniformDist() - 0.5f); 
-			physicsComponent->angularVelocity = 0.25f*MathUtility::RandomFloatUniformDist(); 
+			//physicsComponent->velocity.y = 2.0f*(MathUtility::RandomFloatUniformDist() - 0.5f);
+			//physicsComponent->velocity.x = 2.0f*(MathUtility::RandomFloatUniformDist() - 0.5f); 
+			
+			//physicsComponent->angularVelocity = 0.25f*MathUtility::RandomFloatUniformDist(); 
 			physicsComponent->mass = MathUtility::RandomFloatUniformDist(); 
 			physicsComponent->transformComponent = transformComponent;
 
@@ -109,7 +108,6 @@ public:
 			graphicsComponent->transformComponent = transformComponent;
 		}
 	}
-
 };
 
 

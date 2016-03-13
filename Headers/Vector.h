@@ -29,6 +29,12 @@ public:
         return v;
     }
 
+	Vector2D operator+=(const Vector2D& rhs) const
+	{
+		Vector2D v = *this + rhs; 
+		return v; 
+	}
+
     Vector2D operator*(const float lhs) const
     {
         Vector2D v(lhs*this->x, lhs*this->y);

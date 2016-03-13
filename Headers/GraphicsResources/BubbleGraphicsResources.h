@@ -24,8 +24,8 @@ public:
 	{
 		this->radius = radius; 
 
-		bubbleCircle = new CircleOutlineGraphicsResource(radius, 1.0f, 0xff, 0x8f, 0x8f, 0x8f); 
-		bubbleHighlight = new CircleFillGraphicsResource(radius / 6.0f, 0xff, 0xff, 0xff, 0xff);
+		bubbleCircle = new CircleOutlineGraphicsResource(radius, 1.0f, 0xff, 0xff, 0xff, 0xff); 
+		bubbleHighlight = new CircleFillGraphicsResource(radius / 5.0f, 0xff, 0x8f, 0x8f, 0x8f);
 	}
 
 	~BubbleGraphicsResource()

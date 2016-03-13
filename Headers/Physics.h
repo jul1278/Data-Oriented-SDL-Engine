@@ -7,6 +7,7 @@
 #include "Components\PhysicsComponent.h"
 #include "Components\TransformComponent.h"
 #include "ComponentCollectionRepository.h"
+#include "Utility\MathUtility.h"
 
 class Physics
 {
@@ -23,6 +24,53 @@ public:
 		this->height = height;
 	}
 
+	//-------------------------------------------------------------------------------
+	// Name: SolveAsteroidPhysics
+	// Desc: temp function to do logic/physics for the enemy asteroids 
+	//-------------------------------------------------------------------------------
+	void SolveAsteroidPhysics(ComponentCollectionRepository* componentCollectionRepository)
+	{
+		auto asteroidPhysicsComponents = componentCollectionRepository->SelectFromCollection<PhysicsComponent>("EnemyAsteroids"); 
+		auto playerPhysicsComponents = componentCollectionRepository->SelectFromCollection<PhysicsComponent>("PlayerSpaceShip"); 
+
+		if (asteroidPhysicsComponents == nullptr || asteroidPhysicsComponents->size() == 0) {
+			return; 
+		}
+
+		if (playerPhysicsComponents == nullptr || playerPhysicsComponents->size() == 0) {
+			return; 
+		}
+
+		auto playerPhysicsComponent = playerPhysicsComponents->front(); 
+
+		for (auto physicsComponent : *asteroidPhysicsComponents) {
+
+			if (physicsComponent.transformComponent->position.x > this->width || physicsComponent.transformComponent->position.x <= 0 ||
+				physicsComponent.transformComponent->position.y > this->height || physicsComponent.transformComponent->position.y <= 0) {
+
+				physicsComponent.transformComponent->position.x = MathUtility::RandomFloatUniformDist()*this->width; 
+				physicsComponent.transformComponent->position.y = MathUtility::RandomFloatUniformDist()*this->height; 
+				
+				continue; 
+			}
+
+			// 
+			auto distVector = playerPhysicsComponent.transformComponent->position - physicsComponent.transformComponent->position;
+
+			// calculate acceleration on asteroids
+			auto accel = 10000.0f * physicsComponent.mass / (distVector.Length()*distVector.Length()); 
+			auto angle = distVector.Angle(); 
+
+			physicsComponent.velocity.x += accel*cosf(angle); 
+			physicsComponent.velocity.y += accel*sinf(angle); 
+
+			physicsComponent.transformComponent->position.x += physicsComponent.velocity.x;
+			physicsComponent.transformComponent->position.y += physicsComponent.velocity.y; 
+
+
+
+		}
+	}
 	//-------------------------------------------------------------------------------
 	// Name: SolvePhysics
 	// Desc: 
