@@ -99,6 +99,7 @@ public:
 			//physicsComponent->angularVelocity = 0.25f*MathUtility::RandomFloatUniformDist(); 
 			physicsComponent->mass = MathUtility::RandomFloatUniformDist(); 
 			physicsComponent->transformComponent = transformComponent;
+			physicsComponent->angularVelocity = 0.01f; 
 
 			transformComponent->position.x = height*MathUtility::RandomFloatUniformDist(); 
 			transformComponent->position.y = width*MathUtility::RandomFloatUniformDist(); 

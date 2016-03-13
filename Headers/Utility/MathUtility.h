@@ -7,6 +7,7 @@
 
 #include <math.h>
 #include <random>
+#include <Vector.h>
 
 using namespace std;
 
@@ -38,7 +39,15 @@ namespace MathUtility
 
 		return stdNormalDistribution(defaultRandomEngine); 
 	}
-
+	//---------------------------------------------------------------------------
+	// Name: RotateVector
+	// Desc: 
+	//---------------------------------------------------------------------------
+	static Vector2D RotateVector(const Vector2D& vector, const float angle)
+	{
+		Vector2D v = Vector2D(vector.x*cosf(angle) + vector.y*sinf(angle), -vector.x*sinf(angle) + vector.y*cosf(angle)); 
+		return v; 
+	}
 };
 
 #endif // MATH_UTILITY_H

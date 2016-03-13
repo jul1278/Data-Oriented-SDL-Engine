@@ -47,12 +47,12 @@ SpaceGameApp::SpaceGameApp()
 	vector<int> asteroidGraphicsResIds;
 
 	for (int i = 0; i < 5; i++) {
-		asteroidGraphicsResIds.push_back(this->graphics->AddGraphicsResource(new ProceduralAsteroidGraphicsResource(20.0f, 10)));
+		asteroidGraphicsResIds.push_back(this->graphics->AddGraphicsResource(new ProceduralAsteroidGraphicsResource(20.0f, 1.2f, 10)));
 	}
 	
 	SpaceGameEntityConstructor::ConstructBackgroundStars(this->componentCollectionRepository, starGraphicResId, this->windowWidth, this->windowHeight, 20); 
 	SpaceGameEntityConstructor::ConstructPlayerSpaceShip(this->componentCollectionRepository, spaceShipGraphicResId, Vector2D(this->windowWidth/2.0f, this->windowHeight - 60)); 
-	SpaceGameEntityConstructor::ConstructEnemyAsteroids(this->componentCollectionRepository, asteroidGraphicsResIds, this->windowWidth, this->windowHeight, 5); 
+	SpaceGameEntityConstructor::ConstructEnemyAsteroids(this->componentCollectionRepository, asteroidGraphicsResIds, this->windowWidth, this->windowHeight, 4); 
 }
 //------------------------------------------------------------------------------------
 // Name: ~SpaceGameApp
@@ -68,7 +68,7 @@ SpaceGameApp::~SpaceGameApp()
 // Name: SpaceGameApp
 // Desc:
 //------------------------------------------------------------------------------------
-bool SpaceGameApp::Run()
+bool SpaceGameApp::Run() 
 {
 	while (1)
 	{

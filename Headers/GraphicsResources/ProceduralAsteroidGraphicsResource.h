@@ -20,7 +20,7 @@ private:
 
 public:
 
-	ProceduralAsteroidGraphicsResource(const float radius, const unsigned int points)
+	ProceduralAsteroidGraphicsResource(const float radius, const float eccentricity, const unsigned int points)
 	{
 		const auto angleInc = (2 * M_PI) / points;
 		auto angle = 0.0f;
@@ -28,7 +28,7 @@ public:
 		for (auto i = 0; i < points; i++) {
 			auto d = radius + 0.5f*radius*MathUtility::RandomFloatUniformDist();
 			auto x = d*cosf(angle);
-			auto y = d*sinf(angle);
+			auto y = eccentricity*d*sinf(angle);
 
 			this->points.push_back(Vector2D(x, y));
 
@@ -43,19 +43,19 @@ public:
 		}
 
 		SDL_SetRenderDrawColor(sdlRenderer, 0xff, 0xff, 0xff, 0xff);
+		
+		auto angle = transformComponent->orientation.Angle();
 
 		for (auto i = 0; i < (this->points.size() - 1); i++) {
 
-			auto point1 = this->points[i] + transformComponent->position; 
-			auto point2 = this->points[i + 1]+ transformComponent->position; 
-
-			//SDL_RenderDrawPoint(sdlRenderer, point1.x, point1.y); 
+			auto point1 = MathUtility::RotateVector(this->points[i], angle) + transformComponent->position; 
+			auto point2 = MathUtility::RotateVector(this->points[i + 1], angle) + transformComponent->position;
 
 			SDL_RenderDrawLine(sdlRenderer, point1.x, point1.y, point2.x, point2.y); 
 		}
 
-		auto startPoint = this->points.front() + transformComponent->position; 
-		auto endPoint = this->points.back() + transformComponent->position; 
+		auto startPoint = MathUtility::RotateVector(this->points.front(), angle) + transformComponent->position;
+		auto endPoint = MathUtility::RotateVector(this->points.back(), angle) + transformComponent->position;
 
 		SDL_RenderDrawLine(sdlRenderer, startPoint.x, startPoint.y, endPoint.x, endPoint.y); 
 	}

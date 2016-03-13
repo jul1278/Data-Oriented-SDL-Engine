@@ -67,8 +67,8 @@ public:
 			physicsComponent.transformComponent->position.x += physicsComponent.velocity.x;
 			physicsComponent.transformComponent->position.y += physicsComponent.velocity.y; 
 
-
-
+			auto currentAngle = physicsComponent.transformComponent->orientation.Angle(); 
+			physicsComponent.transformComponent->orientation = Vector2D(currentAngle + physicsComponent.angularVelocity); 
 		}
 	}
 	//-------------------------------------------------------------------------------
