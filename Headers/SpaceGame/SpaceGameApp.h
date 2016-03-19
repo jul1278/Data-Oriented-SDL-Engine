@@ -25,6 +25,8 @@ private:
 	Graphics* graphics; 
 	Physics* physics; 
 
+	list<IAction*> actions; 
+
 	SDLEventCollector* sdlEventCollector;
 
 public:

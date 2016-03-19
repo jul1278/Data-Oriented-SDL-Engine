@@ -36,7 +36,7 @@ public:
 		}
 	}
 
-	virtual void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent) final
+	void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent) override final
 	{
 		if (sdlRenderer == nullptr) {
 			return; 

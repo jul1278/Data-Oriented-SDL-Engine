@@ -6,8 +6,6 @@
 #define SPRITEGRAPHICSRESOURCE_H
 
 #include "GraphicsResources/IGraphicsResource.h"
-#include "Graphics.h"
-#include "GameApp.h"
 
 class SpriteGraphicsResource : public IGraphicsResource
 {

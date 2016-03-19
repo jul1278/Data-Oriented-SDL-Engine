@@ -16,6 +16,8 @@ public:
 		this->simplePhysicsComponent2 = simplePhysicsComponent2; 
 	}
 
+	string collectionName; 
+
 	SimplePhysicsComponent* simplePhysicsComponent1; 
 	SimplePhysicsComponent* simplePhysicsComponent2;
 };

@@ -6,21 +6,17 @@
 #include <stdlib.h>
 #include <memory>
 #include <SpaceGame\SpaceGameApp.h>
-#include <typeinfo>
-#include <typeindex>
-#include <GraphicsResources\CircleFIllGraphicsResource.h>
 #include <GraphicsResources\RectGraphicsResource.h>
-#include <GraphicsResources\TriangleGraphicsResource.h>
 #include <GraphicsResources\StarGraphicsResource.h>
-#include <GraphicsResources\BubbleGraphicsResources.h>
-#include <GraphicsResources/ProceduralAsteroidGraphicsResource.h>
+#include <GraphicsResources\ProceduralAsteroidGraphicsResource.h>
 
 #include <ComponentCollectionRepository.h>
 #include <Components\SimplePhysicsComponent.h>
-#include <Events\ButtonEventArgs.h>
-#include <PlayerActions.h>
 #include <SpaceGame\SpaceGameEntityConstructor.h>
 #include <Utility\MathUtility.h>
+#include <Actions/AsteroidAction.h>
+#include <Actions/PlayerSpaceshipAction.h>
+#include <Actions/BackgroundStarsAction.h>
 
 //------------------------------------------------------------------------------------
 // Name: SpaceGameApp
@@ -54,6 +50,11 @@ SpaceGameApp::SpaceGameApp()
 	SpaceGameEntityConstructor::ConstructPlayerSpaceShip(this->componentCollectionRepository, spaceShipGraphicResId, Vector2D(this->windowWidth/2.0f, this->windowHeight - 60)); 
 	SpaceGameEntityConstructor::ConstructEnemyAsteroids(this->componentCollectionRepository, asteroidGraphicsResIds, this->windowWidth, this->windowHeight, 4); 
 	
+	// Actions
+	this->actions.push_back(new AsteroidAction(this->windowWidth, this->windowHeight)); 
+	this->actions.push_back(new PlayerSpaceshipAction(this->windowHeight, this->windowWidth, this->sdlEventCollector)); 
+	this->actions.push_back(new BackgroundStarsAction(this->windowWidth, this->windowHeight)); 
+
 	this->graphics->PrintConsoleText("Hello! Welcome to " + this->appName);
 }
 //------------------------------------------------------------------------------------
@@ -65,6 +66,10 @@ SpaceGameApp::~SpaceGameApp()
 	// delet
 	delete this->componentCollectionRepository; 
 	delete this->graphics; 
+
+	for (auto action : this->actions) {
+		delete action; 
+	}
 }
 //------------------------------------------------------------------------------------
 // Name: SpaceGameApp
@@ -75,83 +80,26 @@ bool SpaceGameApp::Run()
 	while (1)
 	{
 		SDL_Event event;
-		SDL_PollEvent(&event);
+		//SDL_Event(&event);
 
-		if (event.type == SDL_QUIT) {
-			break;
-		}
+		//if (event.type == SDL_QUIT) {
+		//	break;
+		//}
 
 		auto starTransformComponents = this->componentCollectionRepository->SelectFromCollection<TransformComponent>("ScrollingBackgroundStars");
 		auto starGraphicsComponents = this->componentCollectionRepository->SelectFromCollection<GraphicsComponent>("ScrollingBackgroundStars");
-		auto starPhysicsComponents = this->componentCollectionRepository->SelectFromCollection<SimplePhysicsComponent>("ScrollingBackgroundStars");
-
+		
 		auto playerTransformComponents = this->componentCollectionRepository->SelectFromCollection<TransformComponent>("PlayerSpaceShip");
 		auto playerGraphicsComponents = this->componentCollectionRepository->SelectFromCollection<GraphicsComponent>("PlayerSpaceShip");
-		auto playerPhysicsComponents = this->componentCollectionRepository->SelectFromCollection<PhysicsComponent>("PlayerSpaceShip");
-
+		
 		auto asteroidTransformComponents = this->componentCollectionRepository->SelectFromCollection<TransformComponent>("EnemyAsteroids"); 
 		auto asteroidGraphicsComponents = this->componentCollectionRepository->SelectFromCollection<GraphicsComponent>("EnemyAsteroids"); 
 
-
-		// player loop
-		// TODO: move this out of here
-		if (((event.type == SDL_KEYDOWN) || (event.type == SDL_KEYUP))) {
-
-			for (auto physicsComponent : *playerPhysicsComponents) {
-				
-				if (physicsComponent.transformComponent->position.y < (this->windowHeight - 60)) {
-					physicsComponent.velocity.y = 1.0f; 
-				} else {
-					physicsComponent.velocity.y = 0.0f; 
-				}
-
-				if ((event.key.keysym.sym == SDLK_LEFT) && (event.type == SDL_KEYDOWN)) {
-
-					if (physicsComponent.transformComponent->position.x > 25) {
-						physicsComponent.velocity = Vector2D(-4.0f, 0.0f);
-					}
-
-				} else if ((event.key.keysym.sym == SDLK_RIGHT) && (event.type == SDL_KEYDOWN)) {
-					
-					if (physicsComponent.transformComponent->position.x < (this->windowWidth - 50)) {
-						physicsComponent.velocity = Vector2D(4.0f, 0.0f);
-					}
-
-				} else if ((event.key.keysym.sym == SDLK_UP) && (event.type == SDL_KEYDOWN)) {
-					
-					if (physicsComponent.transformComponent->position.y > 25) {
-						physicsComponent.velocity = Vector2D(0.0f, -4.0f); 
-					}
-				} else if ((event.key.keysym.sym == SDLK_DOWN) && (event.type == SDL_KEYDOWN)) {
-					
-					if (physicsComponent.transformComponent->position.y < (this->windowHeight - 60)) {
-						physicsComponent.velocity = Vector2D(0.0f, 4.0f);
-					}
-				}
-				
-				
-				if (event.type == SDL_KEYUP) {
-					
-					physicsComponent.velocity.x = 0.0f;
-				}
-
-				physicsComponent.transformComponent->position.x += physicsComponent.velocity.x;
-				physicsComponent.transformComponent->position.y += physicsComponent.velocity.y;
-			}
+		for (auto action : this->actions) {
+			action->Update(this->componentCollectionRepository); 
 		}
 
-		// asteroids
-		this->physics->SolveAsteroidPhysics(this->componentCollectionRepository);
-
-		// star background loop
-		for (auto physicsComponent : *starPhysicsComponents) {
-			physicsComponent.transformComponent->position.y += physicsComponent.velocity.y; 
-
-			if (physicsComponent.transformComponent->position.y > this->windowHeight) {
-				physicsComponent.transformComponent->position.y = 0.0f; 
-				physicsComponent.transformComponent->position.x = this->windowWidth * MathUtility::RandomFloatUniformDist(); 
-			}
-		}
+		//for_each(this->actions.begin(), this->actions.end(), [this](IAction* action){action->Update(this->componentCollectionRepository); });
 
 		this->graphics->Clear();
 
