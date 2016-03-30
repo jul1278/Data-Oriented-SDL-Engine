@@ -2,6 +2,7 @@
 #define IACTION_H
 
 #include <ComponentCollectionRepository.h>
+#include <functional>
 
 class IAction
 {

@@ -7,7 +7,6 @@
 
 class BackgroundStarsAction : public IAction
 {
-
 private:
 
 	unsigned int width; 

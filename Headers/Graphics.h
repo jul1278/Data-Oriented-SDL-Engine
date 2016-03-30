@@ -53,6 +53,9 @@ public:
 
 	void UpdateGraphicsPresentAndClear(SDL_Event* event, vector<BaseComponent*>* graphicsComponents, vector<BaseComponent*>* transformComponents);
 	void UpdateGraphics(vector<GraphicsComponent>* graphicsComponents, vector<TransformComponent>* transformComponents);
+	
+	int WindowHeight() const;
+	int WindowWidth() const;
 };
 
 

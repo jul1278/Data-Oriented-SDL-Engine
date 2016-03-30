@@ -7,9 +7,6 @@
 //------------------------------------------------------------------------------------
 int main(int argc, char** argv)
 {
-	//GameApp gameApp;
-	//gameApp.Run(); 
-
 	SpaceGameApp spaceGameApp; 
 	spaceGameApp.Run(); 
 

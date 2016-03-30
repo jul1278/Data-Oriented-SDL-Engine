@@ -4,16 +4,11 @@
 #ifndef SPACE_GAME_APP_H
 #define SPACE_GAME_APP_H
 
-#include "IAction.h"
-#include "Graphics.h"
-#include "ComponentCollectionRepository.h"
-#include "Events\SDLEventCollector.h"
-#include "Physics.h"
+#include <Game\IGameApp.h>
 
-#include <typeindex>
-
-class SpaceGameApp
+class SpaceGameApp : public IGameApp
 {
+
 private:
 
 	int windowHeight;
@@ -25,17 +20,16 @@ private:
 	Graphics* graphics; 
 	Physics* physics; 
 
-	list<IAction*> actions; 
-
-	SDLEventCollector* sdlEventCollector;
+	IStage* spaceGameStage; 
 
 public:
 
 	SpaceGameApp();
 	~SpaceGameApp();
 
-	bool Run();
-
+	Graphics* GetGraphics() override;
+	Physics* GetPhysics() override;
+	ComponentCollectionRepository* GetComponentCollectionRepository() override;
 };
 
 #endif 

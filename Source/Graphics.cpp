@@ -244,6 +244,32 @@ void Graphics::UpdateGraphics(vector<GraphicsComponent>* graphicsComponents, vec
 	}
 }
 //------------------------------------------------------------------------------------
+// Name: WindowWidth
+// Desc:
+//------------------------------------------------------------------------------------
+int Graphics::WindowWidth() const
+{
+	auto w = 0; 
+	auto h = 0;
+
+	SDL_GetWindowSize(this->window, &w, &h); 
+
+	return w; 
+}
+//------------------------------------------------------------------------------------
+// Name: WindowWidth
+// Desc:
+//------------------------------------------------------------------------------------
+int Graphics::WindowHeight() const
+{
+	auto w = 0;
+	auto h = 0;
+
+	SDL_GetWindowSize(this->window, &w, &h);
+
+	return h;
+}
+//------------------------------------------------------------------------------------
 // Name: UpdateGraphics
 // Desc:
 //------------------------------------------------------------------------------------

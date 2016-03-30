@@ -13,16 +13,40 @@ private:
 	unsigned int height; 
 	SDLEventCollector* sdlEventCollector;
 
+	unsigned int moveCounter; 
+
+
+
 public:
 
 	PlayerSpaceshipAction(unsigned int height, unsigned int width, SDLEventCollector* slEventCollector)
 	{
 		this->width = width;
 		this->height = height; 
-		this->sdlEventCollector = sdlEventCollector; 
+		this->sdlEventCollector = sdlEventCollector;
+
+		this->moveCounter = 0; 
+	}
+
+	
+	template<typename T>
+	void RegisterEventListener(function<void(const T&)>)
+	{
+			
 	}
 
 	void Update(ComponentCollectionRepository* componentCollectionRepository) override final
+	{
+		
+		if (this->CheckAsteroidCollision(componentCollectionRepository)) {
+			// end game
+		} else {
+			this->PlayerControlSpaceship(componentCollectionRepository);
+		}
+
+	}
+
+	void PlayerControlSpaceship(ComponentCollectionRepository* componentCollectionRepository) const 
 	{
 		auto playerPhysicsComponents = componentCollectionRepository->SelectFromCollection<PhysicsComponent>("PlayerSpaceShip");
 
@@ -30,7 +54,7 @@ public:
 		SDL_Event event;
 		SDL_PollEvent(&event);
 
-		if (((event.type == SDL_KEYDOWN) || (event.type == SDL_KEYUP))) {
+		if (((event.type == SDL_KEYDOWN) || (event.type == SDL_KEYUP)  )) {
 
 			for (auto physicsComponent : *playerPhysicsComponents) {
 
@@ -76,6 +100,26 @@ public:
 			}
 		}
 	}
+	
+	static bool CheckAsteroidCollision(ComponentCollectionRepository* componentCollectionRepository)
+	{
+		auto asteroidPhysicsComponents = componentCollectionRepository->SelectFromCollection<PhysicsComponent>("EnemyAsteroids"); 
+		auto playerPhysicsComponent = componentCollectionRepository->SelectFromCollection<PhysicsComponent>("PlayerSpaceShip");
+
+		auto playerVector = playerPhysicsComponent->front().transformComponent->position; 
+		auto playerSize = playerPhysicsComponent->front().radius; 
+
+		for (auto asteroid : *asteroidPhysicsComponents) {
+			
+			auto diff = playerVector - asteroid.transformComponent->position; 
+			auto r = playerSize + asteroid.radius; 
+
+			if (diff.Length() < r) {
+				return true; 
+			}
+		}
+	}
+
 };
 
 #endif // PLAYER_SPACE_SHIP_ACTION_H

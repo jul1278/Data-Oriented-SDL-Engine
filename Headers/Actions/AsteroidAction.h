@@ -5,6 +5,7 @@
 #include <Vector.h>
 #include <Utility/MathUtility.h>
 #include <Components/PhysicsComponent.h>
+#include <functional>
 
 class AsteroidAction : public IAction
 {
@@ -53,20 +54,11 @@ public:
 
 		for (auto physicsComponent : *asteroidPhysicsComponents) {
 
-			if (physicsComponent.transformComponent->position.x > this->width || physicsComponent.transformComponent->position.x <= 0 ||
-				physicsComponent.transformComponent->position.y > this->height || physicsComponent.transformComponent->position.y <= 0) {
-
-				physicsComponent.transformComponent->position.x = MathUtility::RandomFloatUniformDist()*this->width;
-				physicsComponent.transformComponent->position.y = MathUtility::RandomFloatUniformDist()*this->height;
-
-				continue;
-			}
-
 			// 
 			auto distVector = playerPhysicsComponent.transformComponent->position - physicsComponent.transformComponent->position;
 
 			// calculate acceleration on asteroids
-			auto accel = 10000.0f * physicsComponent.mass / (distVector.Length()*distVector.Length());
+			auto accel = 10000.0f * physicsComponent.mass / powf(distVector.Length(), 2.0f);
 			auto angle = distVector.Angle();
 
 			physicsComponent.velocity.x += accel*cosf(angle);

@@ -7,24 +7,14 @@
 
 #include <GraphicsUtility.h>
 #include "Components/TransformComponent.h"
+#include <SDL_ttf.h>
 
 class IGraphicsResource
 {
-private:
-
-    /*int id;
-    std::string resourceName;
-*/
 public:
-
-    //IGraphicsResource(int id, std::string resourceName)
-    //{
-    //    this->id = id;
-    //    this->resourceName = resourceName;
-    //}
-
-    //int Id() const { return this->id; }
-    //std::string ResourceName() const { return this->resourceName;}
+	virtual ~IGraphicsResource()
+	{
+	}
 
     virtual void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent) = 0;
 };
