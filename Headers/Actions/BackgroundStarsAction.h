@@ -3,7 +3,7 @@
 
 #include "IAction.h"
 #include <Utility/MathUtility.h>
-#include <Components/SimplePhysicsComponent.h>
+#include <Components/VelocityComponent.h>
 
 class BackgroundStarsAction : public IAction
 {
@@ -22,7 +22,7 @@ public:
 
 	void Update(ComponentCollectionRepository* componentCollectionRepository) override final
 	{
-		auto starPhysicsComponents = componentCollectionRepository->SelectFromCollection<SimplePhysicsComponent>("ScrollingBackgroundStars");
+		auto starPhysicsComponents = componentCollectionRepository->SelectFromCollection<VelocityComponent>("ScrollingBackgroundStars");
 
 		// star background loop
 		for (auto physicsComponent : *starPhysicsComponents) {

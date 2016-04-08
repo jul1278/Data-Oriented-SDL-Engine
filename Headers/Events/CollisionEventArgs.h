@@ -1,25 +1,25 @@
 #ifndef COLLISION_EVENT_ARGS_H
 #define COLLISION_EVENT_ARGS_H
 
-#include "Components\SimplePhysicsComponent.h"
 #include "IEventArgs.h"
+#include "Components/PhysicsComponent.h"
 
 class CollisionEventArgs : public IEventArgs
 {
 public:
 	
-	CollisionEventArgs(SimplePhysicsComponent* simplePhysicsComponent1, 
-		SimplePhysicsComponent* simplePhysicsComponent2) 
+	CollisionEventArgs(PhysicsComponent* simplePhysicsComponent1, 
+		PhysicsComponent* simplePhysicsComponent2) 
 		: IEventArgs(CollisionEvent) 
 	{
-		this->simplePhysicsComponent1 = simplePhysicsComponent1; 
-		this->simplePhysicsComponent2 = simplePhysicsComponent2; 
+		this->physicsComponent1 = simplePhysicsComponent1; 
+		this->physicsComponent2 = simplePhysicsComponent2; 
 	}
 
 	string collectionName; 
 
-	SimplePhysicsComponent* simplePhysicsComponent1; 
-	SimplePhysicsComponent* simplePhysicsComponent2;
+	PhysicsComponent* physicsComponent1; 
+	PhysicsComponent* physicsComponent2;
 };
 
 #endif // COLLISION_EVENT_ARGS_H

@@ -5,7 +5,6 @@
 #ifndef TRANSFORMCOMPONENT_H
 #define TRANSFORMCOMPONENT_H
 
-#include "../Vector.h"
 #include "BaseComponent.h"
 
 struct TransformComponent : BaseComponent

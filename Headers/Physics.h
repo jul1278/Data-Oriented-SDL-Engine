@@ -3,18 +3,62 @@
 
 #include "Events\IEventArgs.h"
 #include "Events\CollisionEventArgs.h"
-#include "Components\SimplePhysicsComponent.h"
+#include "Components\VelocityComponent.h"
 #include "Components\PhysicsComponent.h"
 #include "Components\TransformComponent.h"
 #include "ComponentCollectionRepository.h"
 #include "Utility\MathUtility.h"
+#include <map>
+#include "Events/TaskEvent.h"
+#include <memory>
+
+struct PhysicsTask
+{
+	PhysicsTask(string collection1, string collection2)
+		: collection1(collection1), collection2(collection2) {}
+
+	string collection1; 
+	string collection2; 
+	TaskEvent<CollisionEventArgs> taskEvent; 
+};
 
 class Physics
 {
 private:
 
+	list<PhysicsTask> tasks; 
+
 	int width; 
-	int height; 
+	int height;
+
+	static void ExecuteTask(PhysicsTask task, ComponentCollectionRepository* componentCollectionRepository)
+	{
+		auto physCollection1 = componentCollectionRepository->SelectFromCollection<PhysicsComponent>(task.collection1); 
+		auto physCollection2 = componentCollectionRepository->SelectFromCollection<PhysicsComponent>(task.collection2); 
+
+		if (physCollection1 == nullptr || physCollection2 == nullptr) {
+			return; 
+		}
+
+		if (physCollection1->empty() || physCollection2->empty()) {
+			return; 
+		}
+
+		for (auto physComponent1 : *physCollection1) {
+			
+			auto pos1 = physComponent1.transformComponent->position; 
+			
+			for (auto physComponent2 : *physCollection2) {
+				
+				auto diff = pos1 - physComponent2.transformComponent->position;
+				auto rad = physComponent1.radius + physComponent2.radius; 
+
+				if (diff.Length() < rad) {
+					task.taskEvent.Invoke(CollisionEventArgs(&physComponent1, &physComponent2)); 
+				}
+			}
+		}
+	}
 
 public:
 
@@ -23,7 +67,35 @@ public:
 		this->width = width; 
 		this->height = height;
 	}
+	//-------------------------------------------------------------------------------
+	// Name: AddSolveCollsionTask
+	// Desc:
+	//-------------------------------------------------------------------------------
+	TaskEvent<CollisionEventArgs>* AddSolveCollisionTask(string collection1, string collection2)
+	{
+		// TODO: check if we already have this task
 
+		this->tasks.push_back(PhysicsTask(collection1, collection2));
+		return &(this->tasks.front().taskEvent); 
+	}
+	//-------------------------------------------------------------------------------
+	// Name: AddSolveForcesTask
+	// Desc: Only two collections can interact currently
+	//-------------------------------------------------------------------------------
+	void AddSolveForcesTask(string collection1, string collection2)
+	{
+		
+	}
+	//-------------------------------------------------------------------------------
+	// Name: Exectute
+	// Desc:
+	//-------------------------------------------------------------------------------
+	void ExecuteTasks(ComponentCollectionRepository* componentCollectionRepository)
+	{
+		for (auto task : tasks) {
+			this->ExecuteTask(task, componentCollectionRepository); 
+		}
+	}
 	//-------------------------------------------------------------------------------
 	// Name: SolveAsteroidPhysics
 	// Desc: temp function to do logic/physics for the enemy asteroids 
@@ -95,7 +167,7 @@ public:
 	//-------------------------------------------------------------------------------
 	void SolveSimplePhysics(ComponentCollectionRepository* componentCollectionRepository, const string& collectionName)
 	{
-		auto physicsComponents = componentCollectionRepository->SelectFromCollection<SimplePhysicsComponent>(collectionName);
+		auto physicsComponents = componentCollectionRepository->SelectFromCollection<VelocityComponent>(collectionName);
 
 		if (physicsComponents == nullptr) {
 			return; 

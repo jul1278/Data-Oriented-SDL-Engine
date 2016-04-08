@@ -58,7 +58,7 @@ public:
 
     ~ComponentCollection()
     {
-        for (const auto& pair : this->componentCollection)
+        for (auto pair : this->componentCollection)
         {
             delete pair.second; 
         }

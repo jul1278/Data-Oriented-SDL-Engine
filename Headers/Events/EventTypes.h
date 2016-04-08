@@ -4,6 +4,7 @@
 enum EventType
 {
 	ButtonEvent,
+	MouseButtonEvent,
 	MouseMotionEvent,
 	CollisionEvent
 };

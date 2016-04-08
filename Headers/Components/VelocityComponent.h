@@ -2,28 +2,28 @@
 // Created by Julian  on 18/12/15.
 //
 
-#ifndef SIMPLE_PHYSICS_COMPONENT_H
-#define SIMPLE_PHYSICS_COMPONENT_H
+#ifndef VELOCITY_COMPONENT_H
+#define VELOCITY_COMPONENT_H
 
 #include "BaseComponent.h"
 #include "TransformComponent.h"
 
-struct SimplePhysicsComponent : BaseComponent
+struct VelocityComponent : BaseComponent
 {
 	Vector2D velocity; 
 	
 	TransformComponent* transformComponent;
 
-	SimplePhysicsComponent()
+	VelocityComponent()
 	{
 		this->transformComponent = nullptr; 
 	}
 
-	SimplePhysicsComponent(Vector2D velocity, TransformComponent* transformComponent = nullptr)
+	VelocityComponent(Vector2D velocity, TransformComponent* transformComponent = nullptr)
 	{
 		this->transformComponent = transformComponent;
 		this->velocity = velocity; 
 	}
 };
 
-#endif //SIMPLE_PHYSICS_COMPONENT
+#endif // VELOCITY_COMPONENT_H

@@ -10,7 +10,7 @@ using namespace std;
 
 namespace ComponentTests
 {
-	TEST_CLASS(ComponentRepositoryTests)
+	TEST_CLASS(MathUtilTests)
 	{
 	public:
 	
@@ -33,8 +33,5 @@ namespace ComponentTests
 			cumulativeSum /= numSamples; 
 			Assert::IsTrue(cumulativeSum < threshold); 
 		}
-
 	};
-
-
 }

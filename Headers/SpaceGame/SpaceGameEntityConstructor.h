@@ -10,7 +10,7 @@
 #include "Vector.h"
 #include "Components/TransformComponent.h"
 #include "Components/GraphicsComponent.h"
-#include "Components/SimplePhysicsComponent.h"
+#include "Components/VelocityComponent.h"
 #include "Components/PhysicsComponent.h"
 #include "GraphicsResources/CircleFIllGraphicsResource.h"
 
@@ -63,7 +63,7 @@ public:
 
 			auto transformComponent = componentCollectionRepository->NewComponent<TransformComponent>(collectionName);
 			auto graphicsComponent = componentCollectionRepository->NewComponent<GraphicsComponent>(collectionName); 
-			auto physicsComponent = componentCollectionRepository->NewComponent<SimplePhysicsComponent>(collectionName); 
+			auto physicsComponent = componentCollectionRepository->NewComponent<VelocityComponent>(collectionName); 
 
 			auto scale = scaleUniformDist(defaultRandomEngine); 
 

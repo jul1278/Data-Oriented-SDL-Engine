@@ -9,8 +9,6 @@ enum Key
 	RIGHT_ARROW,
 	UP_ARROW,
 	DOWN_ARROW,
-	MOUSE_LEFT,
-	MOUSE_RIGHT
 };
 
 // ButtonEventArgs 
@@ -29,8 +27,15 @@ public:
 		this->released = released; 
 	}
 
-	bool Released() { return this->released; }
-	Key Key() { return this->key; }
+	bool Released() const
+	{
+		return this->released;
+	}
+
+	Key Key() const
+	{
+		return this->key;
+	}
 
 	virtual ~ButtonEventArgs() {}; 
 };

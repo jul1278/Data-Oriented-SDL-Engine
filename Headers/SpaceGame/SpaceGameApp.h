@@ -5,6 +5,7 @@
 #define SPACE_GAME_APP_H
 
 #include <Game\IGameApp.h>
+#include "SpaceGameMenuStage.h"
 
 class SpaceGameApp : public IGameApp
 {
@@ -20,7 +21,8 @@ private:
 	Graphics* graphics; 
 	Physics* physics; 
 
-	IStage* spaceGameStage; 
+	IStage* spaceGameStage;
+	IStage* spaceGameMenu;
 
 public:
 

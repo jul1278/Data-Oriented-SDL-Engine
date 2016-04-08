@@ -11,13 +11,14 @@
 #include <GraphicsResources\ProceduralAsteroidGraphicsResource.h>
 
 #include <ComponentCollectionRepository.h>
-#include <Components\SimplePhysicsComponent.h>
+#include <Components\VelocityComponent.h>
 #include <SpaceGame\SpaceGameEntityConstructor.h>
 #include <Utility\MathUtility.h>
 #include <Actions/AsteroidAction.h>
 #include <Actions/PlayerSpaceshipAction.h>
 #include <Actions/BackgroundStarsAction.h>
 #include <SpaceGame/SpaceGameStage.h>
+#include <SpaceGame/SpaceGameMenuStage.h>
 
 //------------------------------------------------------------------------------------
 // Name: SpaceGameApp
@@ -35,7 +36,10 @@ SpaceGameApp::SpaceGameApp()
 	this->physics = new Physics(this->windowWidth, this->windowHeight); 
 
 	this->spaceGameStage = new SpaceGameStage(this); 
-	this->PushStage(this->spaceGameStage); 
+	this->spaceGameMenu = new SpaceGameMenuStage(this); 
+
+	this->PushStage(this->spaceGameMenu); 
+	this->PushStage(this->spaceGameStage);
 }
 //------------------------------------------------------------------------------------
 // Name: ~SpaceGameApp
