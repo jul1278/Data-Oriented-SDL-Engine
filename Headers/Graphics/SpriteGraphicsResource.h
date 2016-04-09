@@ -2,10 +2,10 @@
 // Created by Julian  on 22/11/15.
 //
 
-#ifndef SPRITEGRAPHICSRESOURCE_H
-#define SPRITEGRAPHICSRESOURCE_H
+#ifndef SPRITE_GRAPHICS_RESOURCE_H
+#define SPRITE_GRAPHICS_RESOURCE_H
 
-#include "GraphicsResources/IGraphicsResource.h"
+#include "Graphics/IGraphicsResource.h"
 
 class SpriteGraphicsResource : public IGraphicsResource
 {
@@ -33,20 +33,20 @@ public:
         SDL_FreeSurface(this->spriteSurface);
     }
 
-    virtual void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent)
+	void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent) override final
     {
         if (this->spriteTexture == nullptr) {
             this->spriteTexture = SDL_CreateTextureFromSurface(sdlRenderer, this->spriteSurface);
             SDL_SetTextureBlendMode(this->spriteTexture, SDL_BLENDMODE_BLEND);
         }
 
-        float dx = transformComponent->scale.x*this->w - this->w; 
-        float dy = transformComponent->scale.x*this->h - this->h;
+        auto dx = transformComponent->scale.x*this->w - this->w; 
+        auto dy = transformComponent->scale.x*this->h - this->h;
 
-        uint16_t x = static_cast<uint16_t>(transformComponent->position.x - 0.5f*dx);
-        uint16_t y = static_cast<uint16_t>(transformComponent->position.y - 0.5f*dy);
-        uint16_t w = static_cast<uint16_t>(this->w*transformComponent->scale.x);
-        uint16_t h = static_cast<uint16_t>(this->h*transformComponent->scale.y);
+        auto x = static_cast<uint16_t>(transformComponent->position.x - 0.5f*dx);
+        auto y = static_cast<uint16_t>(transformComponent->position.y - 0.5f*dy);
+        auto w = static_cast<uint16_t>(this->w*transformComponent->scale.x);
+        auto h = static_cast<uint16_t>(this->h*transformComponent->scale.y);
 
         SDL_Rect dstRect = { x - 0.5f*w, y - 0.5f*h, w, h};
 
@@ -54,4 +54,4 @@ public:
     }
 };
 
-#endif //SPRITEGRAPHICSRESOURCE_H
+#endif // SPRITE_GRAPHICS_RESOURCE_H

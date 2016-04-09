@@ -1,9 +1,9 @@
 #ifndef PLAYER_SPACE_SHIP_ACTION_H
 #define PLAYER_SPACE_SHIP_ACTION_H
 
-#include "IAction.h"
-#include  "Events/SDLEventCollector.h"
-#include <Components/PhysicsComponent.h>
+#include "Actions/IAction.h"
+#include "Events/SDLEventCollector.h"
+#include "Components/PhysicsComponent.h"
 
 class PlayerSpaceshipAction : public IAction
 {
@@ -15,8 +15,6 @@ private:
 
 	unsigned int moveCounter; 
 
-
-
 public:
 
 	PlayerSpaceshipAction(unsigned int height, unsigned int width, SDLEventCollector* slEventCollector)
@@ -27,12 +25,11 @@ public:
 
 		this->moveCounter = 0; 
 	}
-
 	
 	template<typename T>
 	void RegisterEventListener(function<void(const T&)>)
 	{
-			
+		// TODO: 		
 	}
 
 	void Update(ComponentCollectionRepository* componentCollectionRepository) override final

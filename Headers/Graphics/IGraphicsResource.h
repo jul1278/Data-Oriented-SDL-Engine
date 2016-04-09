@@ -5,17 +5,16 @@
 #ifndef IGRAPHICSRESOURCE_H
 #define IGRAPHICSRESOURCE_H
 
-#include <GraphicsUtility.h>
+#include "Graphics/GraphicsUtility.h"
 #include "Components/TransformComponent.h"
+
 #include <SDL_ttf.h>
 
 class IGraphicsResource
 {
 public:
-	virtual ~IGraphicsResource()
-	{
-	}
 
+	virtual ~IGraphicsResource() {}
     virtual void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent) = 0;
 };
 

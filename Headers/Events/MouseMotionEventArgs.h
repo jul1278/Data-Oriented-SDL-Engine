@@ -1,8 +1,8 @@
 #ifndef MOUSE_MOTION_EVENT_ARGS
 #define MOUSE_MOTION_EVENT_ARGS
 
-#include "IEventArgs.h"
-#include "Vector.h"
+#include "Events/IEventArgs.h"
+#include "Utility/Vector.h"
 
 class MouseMotionEventArgs : public IEventArgs
 {

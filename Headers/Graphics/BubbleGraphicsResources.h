@@ -34,11 +34,11 @@ public:
 		delete this->bubbleHighlight; 
 	}
 
-	virtual void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent) final
+	void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent) override final
 	{
 		bubbleCircle->Render(sdlRenderer, transformComponent);
 
-		TransformComponent highlightTransformComponent = *transformComponent; 
+		auto highlightTransformComponent = *transformComponent; 
 
 		highlightTransformComponent.position.x += 0.4f*this->radius; 
 		highlightTransformComponent.position.y -= 0.4f*this->radius; 

@@ -1,7 +1,8 @@
 #ifndef IACTION_H
 #define IACTION_H
 
-#include <ComponentCollectionRepository.h>
+#include "Components/ComponentCollectionRepository.h"
+
 #include <functional>
 
 class IAction

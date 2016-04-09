@@ -2,11 +2,10 @@
 // Created by Julian  on 22/11/15.
 //
 
-#ifndef TRIANGLEGRAPHICSRESOURCE_H
-#define TRIANGLEGRAPHICSRESOURCE_H
+#ifndef TRIANGLE_GRAPHICS_RESOURCE_H
+#define TRIANGLE_GRAPHICS_RESOURCE_H
 
-#include "GraphicsResources/IGraphicsResource.h"
-#include "Graphics.h"
+#include "Graphics/IGraphicsResource.h"
 
 class IsoTriangleGraphicsResource : public IGraphicsResource
 {
@@ -28,7 +27,7 @@ public:
         this->height = static_cast<float>(height);
 
         this->triangleSurface = SDL_CreateRGBSurface(0, this->width, this->height, 32, 0, 0, 0, 0);
-        uint32_t color = SDL_MapRGBA(this->triangleSurface->format, r, g, b, a);
+        auto color = SDL_MapRGBA(this->triangleSurface->format, r, g, b, a);
         GraphicsUtility::FillIsoTriangle(this->triangleSurface, this->width, this->height, color);
     }
 
@@ -39,17 +38,17 @@ public:
         }
     }
 
-    virtual void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent)
+	void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent) override final 
     {        
         if (texture == nullptr) {
             texture = SDL_CreateTextureFromSurface(sdlRenderer, this->triangleSurface);
         }
 
-        uint16_t x = static_cast<uint16_t >(transformComponent->position.x - 0.5f*transformComponent->scale.x);
-        uint16_t y = static_cast<uint16_t>(transformComponent->position.y - 0.5f*transformComponent->scale.y);
-
-        uint16_t w = this->width;
-        uint16_t h = this->height;
+        auto x = static_cast<uint16_t >(transformComponent->position.x - 0.5f*transformComponent->scale.x);
+        auto y = static_cast<uint16_t>(transformComponent->position.y - 0.5f*transformComponent->scale.y);
+		
+        auto w = this->width;
+        auto h = this->height;
 
         SDL_Rect rect = { x, y, w, h};
 
@@ -57,4 +56,4 @@ public:
     }
 };
 
-#endif //TRIANGLEGRAPHICSRESOURCE_H
+#endif // TRIANGLE_GRAPHICS_RESOURCE_H

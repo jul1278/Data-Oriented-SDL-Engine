@@ -1,16 +1,13 @@
 #ifndef PHYSICS_H
 #define PHYSICS_H
 
-#include "Events\IEventArgs.h"
 #include "Events\CollisionEventArgs.h"
 #include "Components\VelocityComponent.h"
 #include "Components\PhysicsComponent.h"
 #include "Components\TransformComponent.h"
-#include "ComponentCollectionRepository.h"
+#include "Components\ComponentCollectionRepository.h"
 #include "Utility\MathUtility.h"
-#include <map>
-#include "Events/TaskEvent.h"
-#include <memory>
+#include "Events\TaskEvent.h"
 
 struct PhysicsTask
 {

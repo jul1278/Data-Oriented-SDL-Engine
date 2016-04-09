@@ -4,7 +4,7 @@
 #ifndef BASE_COMPONENT_H
 #define BASE_COMPONENT_H
 
-#include "Vector.h"
+#include "Utility/Vector.h"
 
 using namespace std; 
 

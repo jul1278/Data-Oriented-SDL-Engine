@@ -6,6 +6,9 @@
 
 #include "SDL.h"
 
+#include <cstring>
+#include <cmath>
+
 namespace GraphicsUtility
 {
     //----------------------------------------------------------------------------------
@@ -22,18 +25,18 @@ namespace GraphicsUtility
             SDL_LockSurface(surface);
         }
 
-        Uint8* pixels = static_cast<Uint8*>(surface->pixels);
+        auto pixels = static_cast<Uint8*>(surface->pixels);
 
         // set all the pixels to have 0x00 alpha channel
         memset(static_cast<void*>(pixels), 0xff000000, surface->w*surface->h);
 
-        for (int x = 0; x < radius; x++) {
+        for (auto x = 0; x < radius; x++) {
 
-            float yTop = sqrtf(radius*radius - x*x);
+            auto yTop = sqrtf(radius*radius - x*x);
 
-            for (int y = 0; y < yTop; y++) {
+            for (auto y = 0; y < yTop; y++) {
 
-                int innerRadiusSqr = (radius - thickness)*(radius - thickness);
+                auto innerRadiusSqr = (radius - thickness)*(radius - thickness);
 
                 if ((x*x + y*y ) < innerRadiusSqr ) {
                     continue;
@@ -43,7 +46,7 @@ namespace GraphicsUtility
 
                 if (index >= 0) {
 
-                    uint32_t* addr = reinterpret_cast<uint32_t*>(pixels + index);
+                    auto addr = reinterpret_cast<uint32_t*>(pixels + index);
                     *addr = color;
                 }
 
@@ -52,7 +55,7 @@ namespace GraphicsUtility
 
                 if (index >= 0) {
 
-                    uint32_t* addr = reinterpret_cast<uint32_t*>(pixels + index);
+                    auto addr = reinterpret_cast<uint32_t*>(pixels + index);
                     *addr = color;
                 }
 
@@ -60,7 +63,7 @@ namespace GraphicsUtility
 
                 if (index >= 0) {
 
-                    uint32_t* addr = reinterpret_cast<uint32_t*>(pixels + index);
+                    auto addr = reinterpret_cast<uint32_t*>(pixels + index);
                     *addr = color;
                 }
 
@@ -68,7 +71,7 @@ namespace GraphicsUtility
 
                 if (index >= 0) {
 
-                    uint32_t* addr = reinterpret_cast<uint32_t*>(pixels + index);
+                    auto addr = reinterpret_cast<uint32_t*>(pixels + index);
                     *addr = color;
                 }
             }
@@ -90,21 +93,21 @@ namespace GraphicsUtility
             SDL_LockSurface(surface);
         }
 
-        Uint8* pixels = static_cast<Uint8*>(surface->pixels);
+        auto pixels = static_cast<Uint8*>(surface->pixels);
 
         // set all the pixels to have 0x00 alpha channel
         memset(static_cast<void*>(pixels), 0xff000000, surface->w*surface->h); 
 
-        for (int x = 0; x < radius; x++) {
+        for (auto x = 0; x < radius; x++) {
 
-            float yTop = sqrtf(radius*radius - x*x);
+	        auto yTop = sqrtf(radius*radius - x*x);
 
-            for (int y = 0; y < yTop; y++) {
+            for (auto y = 0; y < yTop; y++) {
 
                 Uint32 index = (y + radius - 1)* surface->pitch - 4*(x + radius);
                 if (index >= 0) {
 
-                    uint32_t* addr = reinterpret_cast<uint32_t*>(pixels + index);
+	                auto addr = reinterpret_cast<uint32_t*>(pixels + index);
                     *addr = color;
                 }
 
@@ -112,21 +115,21 @@ namespace GraphicsUtility
                 index = (y + radius -2)* surface->pitch + 4*(x + radius);
                 if (index >= 0) {
 
-                    uint32_t* addr = reinterpret_cast<uint32_t*>(pixels + index);
+	                auto addr = reinterpret_cast<uint32_t*>(pixels + index);
                     *addr = color;
                 }
 
                 index = (-y + radius - 1)* surface->pitch + 4*(x + radius);
                 if (index >= 0) {
 
-                    uint32_t* addr = reinterpret_cast<uint32_t*>(pixels + index);
+	                auto addr = reinterpret_cast<uint32_t*>(pixels + index);
                     *addr = color;
                 }
 
                 index = (-y + radius)* surface->pitch - 4*(x + radius);
                 if (index >= 0) {
 
-                    uint32_t* addr = reinterpret_cast<uint32_t*>(pixels + index);
+	                auto addr = reinterpret_cast<uint32_t*>(pixels + index);
                     *addr = color;
                 }
             }
@@ -137,7 +140,7 @@ namespace GraphicsUtility
 
     static void FillIsoTriangle(SDL_Surface* surface, int width, int height, uint32_t color)
     {
-        if (surface == NULL) {
+        if (surface == nullptr) {
             return;
         }
 
@@ -145,33 +148,33 @@ namespace GraphicsUtility
             SDL_LockSurface(surface);
         }
 
-        Uint8* pixels = static_cast<Uint8*>(surface->pixels);
+	    auto pixels = static_cast<Uint8*>(surface->pixels);
         
         // set all the pixels to have 0x00 alpha channel
         memset(static_cast<void*>(pixels), 0xff000000, surface->w*surface->h);
         
         uint32_t index = 0;
-        float error = 0.0f;
+	    auto error = 0.0f;
 
         if (width/2 > height) {
 
-            int x = 0;
-            float slope = (float) height/(0.5f*width);
+	        auto x = 0;
+	        auto slope = static_cast<float>(height)/(0.5f*width);
 
-            for ( int y = 0; y < height; y++) {
+            for (auto y = 0; y < height; y++) {
 
                 while ( error < 0.5f ) {
 
                     // accumulate error
-                    float dy = fabsf(static_cast<float>(y) - x*slope);
+	                auto dy = fabsf(static_cast<float>(y) - x*slope);
                     error += dy;
 
-                    for (int j = 0; j < y; j++) {
+                    for (auto j = 0; j < y; j++) {
 
                         index = (height - j - 1)*surface->pitch + x*4;
 
                         // draw pixels
-                        uint32_t* addr = reinterpret_cast<uint32_t*>(pixels + index);
+	                    auto addr = reinterpret_cast<uint32_t*>(pixels + index);
                         *(addr) = color;
 
                         index = (height - j - 1)*surface->pitch + (width - x)*4;
@@ -189,15 +192,15 @@ namespace GraphicsUtility
 
         } else {
 
-            int y = 0;
-            float slope = (0.5f*width) / height;
+	        auto y = 0;
+	        auto slope = (0.5f*width) / height;
 
             for ( int x = floor(0.5f*width); x < width; x++) {
 
                 while ( error < 0.5f ) {
 
                     // accumulate error
-                    float dx = fabsf( (float)( x - floor(0.5f*width) ) - y*slope);
+	                auto dx = fabsf( static_cast<float>(x - floor(0.5f*width)) - y*slope);
                     error += dx;
 
                     for (int j = floor(0.5f*width); j < x; j++) {
@@ -205,7 +208,7 @@ namespace GraphicsUtility
                         index = y*surface->pitch + (x - j)*4;
 
                         // draw pixels
-                        uint32_t* addr = (uint32_t*) (pixels + index);
+	                    auto addr = reinterpret_cast<uint32_t*>(pixels + index);
                         *(addr) = color;
 
 //                        index = y*surface->pitch - (x - j)*4;

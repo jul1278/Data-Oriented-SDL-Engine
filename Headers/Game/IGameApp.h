@@ -4,15 +4,12 @@
 #ifndef I_GAME_APP_H
 #define I_GAME_APP_H
 
-#include "IAction.h"
-#include "Graphics.h"
-#include "ComponentCollectionRepository.h"
-#include "Events\SDLEventCollector.h"
-#include "Physics.h"
+#include "Graphics/Graphics.h"
+#include "Components/ComponentCollectionRepository.h"
+#include "Physics/Physics.h"
+#include "Game/IStage.h"
 
 #include <typeindex>
-
-#include "IStage.h"
 #include <queue>
 
 using namespace std;
@@ -23,11 +20,13 @@ private:
 
 	queue<IStage*> stageQueue; 
 
+	// TODO: use smart pointer
 	ComponentCollectionRepository* componentCollectionRepository;
 	Graphics* graphics;	
 	Physics* physics;
 
 public:
+	
 
 	IGameApp() : componentCollectionRepository(nullptr), graphics(nullptr), physics(nullptr) {} 
 

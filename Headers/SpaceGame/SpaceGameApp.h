@@ -4,8 +4,7 @@
 #ifndef SPACE_GAME_APP_H
 #define SPACE_GAME_APP_H
 
-#include <Game\IGameApp.h>
-#include "SpaceGameMenuStage.h"
+#include "Game\IGameApp.h"
 
 class SpaceGameApp : public IGameApp
 {

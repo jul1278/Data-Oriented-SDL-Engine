@@ -5,7 +5,7 @@
 #ifndef PROCEDURAL_ASTEROID_GRAPHICS_RESOURCE_H
 #define PROCEDURAL_ASTEROID_GRAPHICS_RESOURCE_H
 
-#include "GraphicsResources/IGraphicsResource.h"
+#include "Graphics/IGraphicsResource.h"
 #include "Graphics.h"
 #include "GraphicsUtility.h"
 

@@ -40,7 +40,8 @@ public:
 	void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent) override final
 	{
 		if (this->fontTexture == nullptr || this->fontSurface == nullptr) {
-			// NOTE: don't need to do this e
+			
+			// NOTE: don't need to do this every time?
 			SDL_Color textColor = { 255, 255, 255 };
 			this->fontSurface = TTF_RenderText_Solid(this->font, this->text.c_str(), textColor);
 

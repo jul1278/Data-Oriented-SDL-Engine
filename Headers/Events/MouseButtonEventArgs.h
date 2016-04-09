@@ -1,9 +1,9 @@
 #ifndef MOUSE_BUTTON_EVENT_ARGS
 #define MOUSE_BUTTON_EVENT_ARGS
 
-#include "IEventArgs.h"
-#include "EventTypes.h"
-#include "Vector.h"
+#include "Events/IEventArgs.h"
+#include "Events/EventTypes.h"
+#include "Utility/Vector.h"
 
 enum MouseButton
 {

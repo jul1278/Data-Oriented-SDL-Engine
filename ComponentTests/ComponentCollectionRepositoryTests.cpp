@@ -1,10 +1,9 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include "Headers/Vector.h"
-#include "Headers/ComponentCollectionRepository.h"
+#include "Headers/Components/ComponentCollectionRepository.h"
 #include "Headers/Components/BaseComponent.h"
 #include "Headers/Components/TransformComponent.h"
-#include "Headers/Components/SimplePhysicsComponent.h"
+#include "Headers/Components/VelocityComponent.h"
 #include <vector>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -39,12 +38,12 @@ namespace ComponentTests
         {
             ComponentCollectionRepository componentCollectionRepository;
             vector<TransformComponent*> transformComponents;
-            vector<SimplePhysicsComponent*> physicsComponents; 
+            vector<VelocityComponent*> physicsComponents; 
 
             for (auto i = 0; i < 100; i++)
             {
                 auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>();
-                auto physicsComponent = componentCollectionRepository.NewComponent<SimplePhysicsComponent>(); 
+				auto physicsComponent = componentCollectionRepository.NewComponent<VelocityComponent>();
 
                 physicsComponent->transformComponent = transformComponent; 
 

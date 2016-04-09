@@ -2,11 +2,10 @@
 // Created by Julian  on 22/11/15.
 //
 
-#ifndef RECTGRAPHICSRESOURCE_H
-#define RECTGRAPHICSRESOURCE_H
+#ifndef RECT_GRAPHICS_RESOURCE_H
+#define RECT_GRAPHICS_RESOURCE_H
 
-#include "GraphicsResources/IGraphicsResource.h"
-#include "Graphics.h"
+#include "Graphics/IGraphicsResource.h"
 
 // RectGraphicsResource
 class RectGraphicsResource : public IGraphicsResource
@@ -53,18 +52,18 @@ public:
         }
     }
 
-    virtual void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent)
+	void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent) override final
     {
-        float scaleX = transformComponent->scale.x; 
-        float scaleY = transformComponent->scale.y; 
-
-        float dx = scaleX*this->width - this->width; 
-        float dy = scaleY*this->height - this->height; 
-
-        uint16_t x = static_cast<uint16_t>(transformComponent->position.x - 0.5f*dx);
-        uint16_t y = static_cast<uint16_t>(transformComponent->position.y - 0.5f*dy);
-        uint16_t w = this->width*scaleX;
-        uint16_t h = this->height*scaleY;
+        auto scaleX = transformComponent->scale.x; 
+        auto scaleY = transformComponent->scale.y; 
+		
+        auto dx = scaleX*this->width - this->width; 
+        auto dy = scaleY*this->height - this->height; 
+		
+        auto  x = static_cast<uint16_t>(transformComponent->position.x - 0.5f*dx);
+        auto  y = static_cast<uint16_t>(transformComponent->position.y - 0.5f*dy);
+        auto  w = this->width*scaleX;
+        auto  h = this->height*scaleY;
 
         SDL_Rect rect = { x, y, w, h};
 

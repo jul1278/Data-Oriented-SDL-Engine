@@ -2,8 +2,8 @@
 // Created by Julian  on 17/11/15.
 //
 
-#include "Graphics.h"
-#include "GraphicsResources/SpriteGraphicsResource.h"	
+#include "Graphics/Graphics.h"
+#include "Graphics/SpriteGraphicsResource.h"
 #include "SDL_image.h"
 
 //------------------------------------------------------------------------------------

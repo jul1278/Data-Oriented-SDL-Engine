@@ -5,16 +5,13 @@
 #ifndef SPACE_GAME_ENTITY_CONSTRUCTOR_H
 #define SPACE_GAME_ENTITY_CONSTRUCTOR_H
 
-#include "Entity.h"
-#include "ComponentCollectionRepository.h"
-#include "Vector.h"
+#include "Components/ComponentCollectionRepository.h"
+#include "Utility/Vector.h"
 #include "Components/TransformComponent.h"
 #include "Components/GraphicsComponent.h"
 #include "Components/VelocityComponent.h"
 #include "Components/PhysicsComponent.h"
-#include "GraphicsResources/CircleFIllGraphicsResource.h"
-
-#include <Utility\MathUtility.h>
+#include "Utility/MathUtility.h"
 
 #include <random>
 

@@ -2,11 +2,10 @@
 // Created by Julian  on 25/11/15.
 //
 
-#ifndef CIRCLEOUTLINEGRAPHICSRESOURCE_H
-#define CIRCLEOUTLINEGRAPHICSRESOURCE_H
+#ifndef CIRCLE_OUTLINE_GRAPHICS_RESOURCE_H
+#define CIRCLE_OUTLINE_GRAPHICS_RESOURCE_H
 
-#include "GraphicsResources/IGraphicsResource.h"
-#include "Graphics.h"
+#include "Graphics/IGraphicsResource.h"
 
 // CircleGraphicsResource
 class CircleOutlineGraphicsResource : public IGraphicsResource
@@ -21,7 +20,7 @@ private:
 
 public:
 
-    CircleOutlineGraphicsResource(float radius, float thickness, uint8_t a, uint8_t r, uint8_t g, uint8_t b)
+    CircleOutlineGraphicsResource(float radius, float thickness, uint8_t a, uint8_t r, uint8_t g, uint8_t b): circleTexture(nullptr)
     {
         this->radius = static_cast<uint16_t>(floor(radius));
 
@@ -33,7 +32,7 @@ public:
 
         circleSurface = SDL_CreateRGBSurface(0, 2*this->radius, 2*this->radius, 32, 0, 0, 0, 0);
 
-        uint32_t color = SDL_MapRGBA(this->circleSurface->format, r, g, b, a);
+        auto color = SDL_MapRGBA(this->circleSurface->format, r, g, b, a);
         GraphicsUtility::OutlineCircle(circleSurface, this->radius, this->thickness, color);
 
     };
@@ -45,7 +44,7 @@ public:
         }
     }
 
-    virtual void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent)
+    void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent) override final
     {
         if (this->circleTexture == nullptr) {
             this->circleTexture = SDL_CreateTextureFromSurface(sdlRenderer, this->circleSurface);
@@ -59,13 +58,13 @@ public:
             return;
         }
 
-        float dx = this->radius*transformComponent->scale.x;
-        float dy = this->radius*transformComponent->scale.y;
+        auto dx = this->radius*transformComponent->scale.x;
+        auto dy = this->radius*transformComponent->scale.y;
 
-        uint16_t x = static_cast<uint16_t>(transformComponent->position.x - dx);
-        uint16_t y = static_cast<uint16_t>(transformComponent->position.y - dy);
-        uint16_t w = static_cast<uint16_t>(2.0f*this->radius*transformComponent->scale.x);
-        uint16_t h = static_cast<uint16_t>(2.0f*this->radius*transformComponent->scale.y);
+        auto x = static_cast<uint16_t>(transformComponent->position.x - dx);
+        auto y = static_cast<uint16_t>(transformComponent->position.y - dy);
+        auto w = static_cast<uint16_t>(2.0f*this->radius*transformComponent->scale.x);
+        auto h = static_cast<uint16_t>(2.0f*this->radius*transformComponent->scale.y);
 
         SDL_Rect dstRect = { x, y, w, h };
 
@@ -73,4 +72,4 @@ public:
     }
 };
 
-#endif //CIRCLEOUTLINEGRAPHICSRESOURCE_H
+#endif //CIRCLE_OUTLINE_GRAPHICS_RESOURCE_H

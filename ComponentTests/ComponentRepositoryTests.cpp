@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include "Headers/Vector.h"
-#include "Headers/ComponentRepository.h"
-#include "Headers/Components/BaseComponent.h"
-#include "Headers/Components/TransformComponent.h"
-#include "Headers/Components/SimplePhysicsComponent.h"
+#include "Utility/Vector.h"
+#include "Components/ComponentRepository.h"
+#include "Components/BaseComponent.h"
+#include "Components/TransformComponent.h"
+#include "Components/VelocityComponent.h"
 
 #include <vector>
 #include <map>
@@ -27,12 +27,12 @@ namespace ComponentTests
 			vector<int> ids;
 
 			componentRepository.RegisterComponentType<TransformComponent>();
-			componentRepository.RegisterComponentType<SimplePhysicsComponent>();
+			componentRepository.RegisterComponentType<VelocityComponent>();
 
-			for (int i = 0; i < 10; i++) {
+			for (auto i = 0; i < 10; i++) {
 
 				auto newTransformComponent = componentRepository.NewComponent<TransformComponent>();
-				auto newPhysicsComponent = componentRepository.NewComponent<SimplePhysicsComponent>();
+				auto newPhysicsComponent = componentRepository.NewComponent<VelocityComponent>();
 
 				ids.push_back(newTransformComponent->id);
 				ids.push_back(newPhysicsComponent->id);
@@ -67,7 +67,7 @@ namespace ComponentTests
 			map<int, Vector2D> idVectorMap; 
 			componentRepository.RegisterComponentType<TransformComponent>();
 
-			for (int i = 0; i < 10; i++) {
+			for (auto i = 0; i < 10; i++) {
 				auto newTransformComponent = componentRepository.NewComponent<TransformComponent>(); 
 				newTransformComponent->position = Vector2D(static_cast<float>(i), static_cast<float>(i)); 
 
@@ -94,14 +94,14 @@ namespace ComponentTests
 			ComponentRepository componentRepository;
 
 			componentRepository.RegisterComponentType<TransformComponent>();
-			componentRepository.RegisterComponentType<SimplePhysicsComponent>();
+			componentRepository.RegisterComponentType<VelocityComponent>();
 			
 			auto entity = componentRepository.NewEntity(); 
 			
 			auto transformComponent = componentRepository.NewComponent<TransformComponent>(entity->Id()); 
-			auto simplePhysicsComponent = componentRepository.NewComponent<SimplePhysicsComponent>(entity->Id()); 
+			auto velocityComponent = componentRepository.NewComponent<VelocityComponent>(entity->Id()); 
 
-			simplePhysicsComponent->transformComponent = transformComponent; 
+			velocityComponent->transformComponent = transformComponent; 
 
 			auto retrievedTransformComponent = entity->GetComponent<TransformComponent*>(transformComponent->id); 
 			
@@ -119,7 +119,7 @@ namespace ComponentTests
 			
 			vector<int> ids; 
 
-			for (int i = 0; i < 100; i++) {
+			for (auto i = 0; i < 100; i++) {
 				
 				auto newTransformComponent = componentRepository.NewComponent<TransformComponent>();
 				newTransformComponent->position = Vector2D(i, 0.0f); 

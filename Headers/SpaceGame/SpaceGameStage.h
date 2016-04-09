@@ -2,13 +2,14 @@
 #define SPACE_GAME_STAGE_H
 
 #include "Game/IStage.h"
-#include <Actions/BackgroundStarsAction.h>
-#include <Actions/PlayerSpaceshipAction.h>
-#include <Actions/AsteroidAction.h>
+#include "SpaceGame/BackgroundStarsAction.h"
+#include "SpaceGame/PlayerSpaceshipAction.h"
+#include "SpaceGame/AsteroidAction.h"
 #include "SpaceGameEntityConstructor.h"
-#include <GraphicsResources/ProceduralAsteroidGraphicsResource.h>
-#include <GraphicsResources/StarGraphicsResource.h>
-#include <GraphicsResources/RectGraphicsResource.h>
+#include "Graphics/ProceduralAsteroidGraphicsResource.h"
+#include "Graphics/StarGraphicsResource.h"
+#include "Graphics/RectGraphicsResource.h"
+#include "Actions/IAction.h"
 
 class SpaceGameStage : public IStage
 {

@@ -5,9 +5,10 @@
 #ifndef MATH_UTILITY_H
 #define MATH_UTILITY_H
 
+#include "Utility/Vector.h"
+
 #include <math.h>
 #include <random>
-#include "../Headers/Vector.h"
 
 using namespace std;
 

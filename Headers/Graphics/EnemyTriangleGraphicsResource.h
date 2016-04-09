@@ -31,7 +31,7 @@ public:
 		this->b = b; 
 	}
 
-	virtual void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent)
+	void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent) override final
 	{
 		int topX = transformComponent->position.x;
 		int topY = transformComponent->position.y - 0.5f*this->height;

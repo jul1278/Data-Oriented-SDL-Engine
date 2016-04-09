@@ -2,23 +2,15 @@
 // Created by Julian  on 17/11/15.
 //
 
+
+#include "SpaceGame/SpaceGameApp.h"
+#include "Components/ComponentCollectionRepository.h"
+#include "SpaceGame/SpaceGameStage.h"
+#include "SpaceGame/SpaceGameMenuStage.h"
+
 #include <time.h>
 #include <stdlib.h>
 #include <memory>
-#include <SpaceGame\SpaceGameApp.h>
-#include <GraphicsResources\RectGraphicsResource.h>
-#include <GraphicsResources\StarGraphicsResource.h>
-#include <GraphicsResources\ProceduralAsteroidGraphicsResource.h>
-
-#include <ComponentCollectionRepository.h>
-#include <Components\VelocityComponent.h>
-#include <SpaceGame\SpaceGameEntityConstructor.h>
-#include <Utility\MathUtility.h>
-#include <Actions/AsteroidAction.h>
-#include <Actions/PlayerSpaceshipAction.h>
-#include <Actions/BackgroundStarsAction.h>
-#include <SpaceGame/SpaceGameStage.h>
-#include <SpaceGame/SpaceGameMenuStage.h>
 
 //------------------------------------------------------------------------------------
 // Name: SpaceGameApp

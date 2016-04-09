@@ -5,9 +5,8 @@
 #ifndef STAR_GRAPHICS_RESOURCE_H
 #define STAR_GRAPHICS_RESOURCE_H
 
-#include <GraphicsResources\CircleOutlineGraphicsResource.h>
-#include <GraphicsResources\CircleFIllGraphicsResource.h>
-#include <Graphics.h>
+#include "Graphics\CircleOutlineGraphicsResource.h"
+#include "Graphics\CircleFIllGraphicsResource.h"
 
 // CircleGraphicsResource
 class StarGraphicsResource : public IGraphicsResource
@@ -48,7 +47,7 @@ public:
 		delete this->starFill; 
 	}
 
-	virtual void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent)
+	void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent) override final
 	{
 		if (this->starCircle != nullptr) {
 			//this->starCircle->Render(sdlRenderer, transformComponent); 

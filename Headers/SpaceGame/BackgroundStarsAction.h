@@ -1,9 +1,9 @@
 #ifndef BACKGROUND_STARS_ACTION_H
 #define BACKGROUND_STARS_ACTION_H
 
-#include "IAction.h"
-#include <Utility/MathUtility.h>
-#include <Components/VelocityComponent.h>
+#include "Actions/IAction.h"
+#include "Utility/MathUtility.h"
+#include "Components/VelocityComponent.h"
 
 class BackgroundStarsAction : public IAction
 {

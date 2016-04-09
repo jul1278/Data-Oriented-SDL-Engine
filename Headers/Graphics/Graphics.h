@@ -5,15 +5,17 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
+#include "Graphics/IGraphicsResource.h"
+#include "Components/GraphicsComponent.h"
+#include "Components/TransformComponent.h"
+#include "Graphics/GraphicsUtility.h"
+
+#include <SDL_ttf.h>
 #include <iostream>
 #include <vector>
 #include <unordered_map>
-#include "GraphicsResources/IGraphicsResource.h"
-#include "Components/GraphicsComponent.h"
-#include "Components/TransformComponent.h"
-#include "GraphicsUtility.h"
-#include <SDL_ttf.h>
 
+// TODO: remove, use TextGraphicsResource for console
 const int maxConsoleMessages = 10; 
 
 // Graphics

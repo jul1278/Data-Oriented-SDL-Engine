@@ -1,11 +1,8 @@
 #ifndef ASTEROID_ACTION_H
 #define ASTEROID_ACTION_H
 
-#include "IAction.h"
-#include <Vector.h>
-#include <Utility/MathUtility.h>
-#include <Components/PhysicsComponent.h>
-#include <functional>
+#include "Actions/IAction.h"
+#include "Components/PhysicsComponent.h"
 
 class AsteroidAction : public IAction
 {
@@ -37,7 +34,7 @@ public:
 	// Name: SolveAsteroidPhysics
 	// Desc: do logic/physics for the enemy asteroids 
 	//-------------------------------------------------------------------------------
-	void SolveAsteroidPhysics(ComponentCollectionRepository* componentCollectionRepository) const
+	static void SolveAsteroidPhysics(ComponentCollectionRepository* componentCollectionRepository) 
 	{
 		auto asteroidPhysicsComponents = componentCollectionRepository->SelectFromCollection<PhysicsComponent>("EnemyAsteroids");
 		auto playerPhysicsComponents = componentCollectionRepository->SelectFromCollection<PhysicsComponent>("PlayerSpaceShip");
@@ -54,7 +51,6 @@ public:
 
 		for (auto physicsComponent : *asteroidPhysicsComponents) {
 
-			// 
 			auto distVector = playerPhysicsComponent.transformComponent->position - physicsComponent.transformComponent->position;
 
 			// calculate acceleration on asteroids

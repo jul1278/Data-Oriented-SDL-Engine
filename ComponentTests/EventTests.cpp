@@ -1,12 +1,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include "Headers/Vector.h"
-#include "Headers/ComponentCollectionRepository.h"
-#include "Headers/Physics.h"
-#include "Headers/Components/BaseComponent.h"
-#include "Headers/Components/TransformComponent.h"
-#include "Headers/Components/VelocityComponent.h"
-#include <vector>
+
+#include "Physics/Physics.h"
 #include <Headers/Events/EventObserveable.h>
 #include <Headers/Events/ButtonEventArgs.h>
 
