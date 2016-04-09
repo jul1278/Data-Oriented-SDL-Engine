@@ -2,26 +2,32 @@
 #define MOUSE_BUTTON_EVENT_ARGS
 
 #include "IEventArgs.h"
-#include <Vector.h>
-#include "ButtonEventArgs.h"
+#include "EventTypes.h"
+#include "Vector.h"
+
+enum MouseButton
+{
+	LEFT_BUTTON,
+	RIGHT_BUTTON
+};
 
 class MouseButtonEventArgs : public IEventArgs
 {
 private:
 
-	Key key;
+	MouseButton mouseButton;
 	bool released;
 	Vector2D mousePosition; 
 
 public:
 
-	explicit MouseButtonEventArgs(Key key, bool released, Vector2D mousePosition)
-		: IEventArgs(MouseButtonEvent), key(key), released(released), mousePosition(mousePosition)
+	explicit MouseButtonEventArgs(MouseButton mouseButton, bool released, Vector2D mousePosition)
+		: IEventArgs(MouseButtonEvent), mouseButton(mouseButton), released(released), mousePosition(mousePosition)
 	{}
 
-	Key Key() const
+	MouseButton MouseButton() const
 	{
-		return this->key; 
+		return this->mouseButton; 
 	}
 
 	bool Released() const

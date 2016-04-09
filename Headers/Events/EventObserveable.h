@@ -10,11 +10,25 @@ class EventObservable
 {
 private:
 
-	map<type_index, ITaskEvent*> listenerMap; 
+	map<type_index, ITaskEvent*> listenerMap;
+	map<type_index, map<string, ITaskEvent*>> namedListenerMap; 
 
 public:
 
 	EventObservable() {}
+
+	~EventObservable()
+	{
+		for (auto pair : this->listenerMap) {
+			delete pair.second; 
+		}
+
+		for (auto map : this->namedListenerMap) {
+			for (auto pair : map.second) {
+				delete pair.second; 
+			}
+		}
+	}
 
 	template<typename T>
 	void RegisterListener(function<void(const T&)> listener)
@@ -28,14 +42,26 @@ public:
 	}
 
 	template<typename T>
-	void Invoke(T event)
+	void RegisterGroupListener(string groupName, function<void(const T&)>)
+	{
+		// TODO:  
+	}
+
+	template<typename T>
+	void InvokeGroup(string groupName, T eventArgs)
+	{
+		// TODO: 
+	}
+
+	template<typename T>
+	void Invoke(T eventArgs)
 	{
 		if (listenerMap.find(type_index(typeid(T))) == listenerMap.end()) {
 			return; 
 		}
 
 		TaskEvent<T>* taskEvent = dynamic_cast<TaskEvent<T>*>(listenerMap[type_index(typeid(T))]);
-		taskEvent->Invoke(event); 
+		taskEvent->Invoke(eventArgs);
 	}
 
 };

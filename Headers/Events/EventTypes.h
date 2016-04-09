@@ -6,7 +6,8 @@ enum EventType
 	ButtonEvent,
 	MouseButtonEvent,
 	MouseMotionEvent,
-	CollisionEvent
+	CollisionEvent,
+	QuitEvent
 };
 
 #endif // EVENT_TYPES_H
