@@ -40,6 +40,9 @@ namespace ComponentTests
             vector<TransformComponent*> transformComponents;
             vector<VelocityComponent*> physicsComponents; 
 
+			transformComponents.reserve(100);
+			physicsComponents.reserve(100); 
+
             for (auto i = 0; i < 100; i++)
             {
                 auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>();
@@ -65,6 +68,8 @@ namespace ComponentTests
         {
             ComponentCollectionRepository componentCollectionRepository;
             vector<TransformComponent*> transformComponents;
+
+			transformComponents.reserve(100); 
 
             for (auto i = 0; i < 100; i++)
             {

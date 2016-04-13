@@ -34,7 +34,7 @@ namespace EventTest
 		bool testButtonEventCalled;
 
 	public:
-
+		
 		TEST_METHOD(EventObservableTest)
 		{
 			this->testEventWasCalledFirst = false;

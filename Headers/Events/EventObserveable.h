@@ -42,15 +42,27 @@ public:
 	}
 
 	template<typename T>
-	void RegisterGroupListener(string groupName, function<void(const T&)>)
+	void RegisterGroupListener(string groupName, function<void(const T&)> handler)
 	{
-		// TODO:  
+		auto& group = this->namedListenerMap[type_index(typeid(T))];
+		auto result = group.find(groupName); 
+
+		if (result == group.end()) {
+			group[groupName] = new TaskEvent<T>(); 
+		}
+
+		TaskEvent<T>* taskEvent = dynamic_cast<TaskEvent<T>*>(group[groupName]); 
+		taskEvent->operator+=(handler); 
 	}
 
 	template<typename T>
 	void InvokeGroup(string groupName, T eventArgs)
 	{
-		// TODO: 
+		auto group = this->namedListenerMap[type_index(typeid(T))]; 
+
+		ITaskEvent* task = group[groupName]; 
+		TaskEvent<T>* taskEvent = dynamic_cast<TaskEvent<T>*>(task); 
+		taskEvent->Invoke(eventArgs); 		
 	}
 
 	template<typename T>

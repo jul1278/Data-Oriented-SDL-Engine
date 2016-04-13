@@ -13,6 +13,9 @@ namespace SDLEventTest
 	TEST_CLASS(SDLEventTests)
 	{
 		bool leftMouseButtonPressed = false; 
+		bool mouseMotionEvent = false; 
+		bool mouseOverRect = false; 
+		bool mouseClickRect = false; 
 
 		TEST_CLASS_INITIALIZE(SDLInitialise)
 		{
@@ -24,8 +27,11 @@ namespace SDLEventTest
 		{
 			SDL_Quit(); 
 		}
-
-		TEST_METHOD(SDLMouseButtonEventTest)
+		//-----------------------------------------------------------------------------
+		// Name: SDL_MouseButtonEventTest
+		// Desc: 		
+		//-----------------------------------------------------------------------------
+		TEST_METHOD(SDL_MouseButtonEventTest)
 		{
 			SDL_Event mouseButtonEvent; 
 			SDLEventCollector sdlEventCollector;
@@ -51,5 +57,98 @@ namespace SDLEventTest
 				}
 			}
 		}
+		//-----------------------------------------------------------------------------
+		// Name: SDL_MouseMotionEventTest
+		// Desc: 		
+		//-----------------------------------------------------------------------------
+		TEST_METHOD(SDL_MouseMotionEventTest)
+		{
+			SDL_Event mouseMotionEvent; 
+			SDLEventCollector sdlEventCollector; 
+
+			mouseMotionEvent.type = SDL_MOUSEMOTION; 
+			mouseMotionEvent.motion.x = 10; 
+			mouseMotionEvent.motion.y = 10; 
+			mouseMotionEvent.motion.xrel = 5; 
+			mouseMotionEvent.motion.yrel = 5; 
+
+			SDL_PushEvent(&mouseMotionEvent); 
+
+			sdlEventCollector.RegisterListener<MouseMotionEventArgs>(bind(&SDLEventTests::MouseMotionHandler, this, placeholders::_1)); 
+			sdlEventCollector.Update(); 
+
+			Assert::IsTrue(this->mouseMotionEvent); 
+		}
+
+		void MouseMotionHandler(const MouseMotionEventArgs& mouseMotionEventArgs)
+		{
+			if (mouseMotionEventArgs.CurrentPosition().x == 15.0f && mouseMotionEventArgs.CurrentPosition().y == 15.0f)
+			{
+				if (mouseMotionEventArgs.Delta().x == 5.0f && mouseMotionEventArgs.Delta().y == 5.0f) {
+					this->mouseMotionEvent = true; 
+				}
+			}
+		}
+
+		//-----------------------------------------------------------------------------
+		// Name: SDL_MouseButtonOverEvent
+		// Desc: 		
+		//-----------------------------------------------------------------------------
+		TEST_METHOD(SDL_MouseButtonOverEvent)
+		{
+			this->mouseClickRect = false; 
+
+			SDL_Event mouseButtonEvent;
+			SDLEventCollector sdlEventCollector; 
+			
+			mouseButtonEvent.type = SDL_MOUSEBUTTONDOWN;
+			mouseButtonEvent.motion.x = 12;
+			mouseButtonEvent.motion.y = 12;
+			mouseButtonEvent.motion.xrel = 0;
+			mouseButtonEvent.motion.yrel = 0; 
+
+			SDL_PushEvent(&mouseButtonEvent);
+
+			sdlEventCollector.RegisterMouseClickHandler(Vector2D(10.0, 10.0), Vector2D(5.0, 5.0), bind(&SDLEventTests::MouseClickOverHandler, this, placeholders::_1));
+			sdlEventCollector.Update(); 
+
+			Assert::IsTrue(this->mouseClickRect);
+		}
+
+		void MouseClickOverHandler(const MouseButtonEventArgs& mouseButtonEventArgs)
+		{
+			this->mouseClickRect = true; 
+		}
+
+		//-----------------------------------------------------------------------------
+		// Name: SDL_MouseOverEvent
+		// Desc: 		
+		//-----------------------------------------------------------------------------
+		TEST_METHOD(SDL_MouseOverEvent)
+		{
+			this->mouseOverRect = false;
+
+			SDL_Event mouseMotionEvent;
+			SDLEventCollector sdlEventCollector;
+
+			mouseMotionEvent.type = SDL_MOUSEMOTION;
+			mouseMotionEvent.motion.x = 10;
+			mouseMotionEvent.motion.y = 10;
+			mouseMotionEvent.motion.xrel = 5;
+			mouseMotionEvent.motion.yrel = 5;
+
+			SDL_PushEvent(&mouseMotionEvent);
+
+			sdlEventCollector.RegisterMouseOverHandler(Vector2D(12.0, 12.0), Vector2D(5.0, 5.0), bind(&SDLEventTests::MouseOverHandler, this, placeholders::_1));
+			sdlEventCollector.Update();
+
+			Assert::IsTrue(this->mouseOverRect);
+		}
+
+		void MouseOverHandler(const MouseMotionEventArgs& mouseMotionEventArgs)
+		{
+			this->mouseOverRect = true;
+		}
+
 	};
 }
