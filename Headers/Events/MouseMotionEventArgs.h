@@ -8,13 +8,13 @@ class MouseMotionEventArgs : public IEventArgs
 {
 	Vector2D currentPosition;
 	Vector2D lastPosition; 
+	bool mouseOver; 
 
 public:
 
-	explicit MouseMotionEventArgs(Vector2D currentPosition, Vector2D lastPosition)
-		: IEventArgs(MouseMotionEvent), currentPosition(currentPosition), lastPosition(lastPosition)
-	{
-	}
+	explicit MouseMotionEventArgs(Vector2D currentPosition, Vector2D lastPosition, bool mouseOver = false)
+		: IEventArgs(MouseMotionEvent), currentPosition(currentPosition), lastPosition(lastPosition), mouseOver(mouseOver)
+	{}
 
 	Vector2D CurrentPosition() const
 	{
@@ -31,6 +31,10 @@ public:
 		return (this->currentPosition - this->lastPosition);
 	}
 
+	bool MouseOver() const
+	{
+		return this->mouseOver; 
+	}
 };
 
 #endif // MOUSE_EVENT_ARGS

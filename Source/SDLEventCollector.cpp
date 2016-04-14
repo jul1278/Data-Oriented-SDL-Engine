@@ -30,6 +30,8 @@ void SDLEventCollector::Update()
 			this->MouseButtonEvent(event);
 		}
 	}
+
+	this->sdlEvents.clear(); 
 }
 //-----------------------------------------------------------------------------------------------
 // Name: RegisterMouseOverHandler
@@ -120,10 +122,15 @@ void SDLEventCollector::MouseMotionEvent(const SDL_Event& sdlEvent)
 
 			if (this->mouseOverNameState[name] == false) {
 				this->mouseOverNameState[name] = true;
-				this->InvokeGroup<MouseMotionEventArgs>(name, MouseMotionEventArgs(currentPosition, lastPosition)); 
+				this->InvokeGroup<MouseMotionEventArgs>(name, MouseMotionEventArgs(currentPosition, lastPosition, true)); 
 			}
 
 		} else {
+
+			// if we exit
+			if (this->mouseOverNameState[name]) {
+				this->InvokeGroup<MouseMotionEventArgs>(name, MouseMotionEventArgs(currentPosition, lastPosition, false));
+			}
 
 			this->mouseOverNameState[name] = false;
 		}

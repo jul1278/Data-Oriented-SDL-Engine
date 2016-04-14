@@ -26,12 +26,6 @@ public:
 		this->moveCounter = 0; 
 	}
 	
-	template<typename T>
-	void RegisterEventListener(function<void(const T&)>)
-	{
-		// TODO: 		
-	}
-
 	void Update(ComponentCollectionRepository* componentCollectionRepository) override final
 	{
 		
@@ -40,7 +34,6 @@ public:
 		} else {
 			this->PlayerControlSpaceship(componentCollectionRepository);
 		}
-
 	}
 
 	void PlayerControlSpaceship(ComponentCollectionRepository* componentCollectionRepository) const 
