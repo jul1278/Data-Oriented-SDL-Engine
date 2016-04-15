@@ -49,6 +49,17 @@ void SDLEventCollector::RegisterMouseOverHandler(Vector2D topLeft, Vector2D size
 	this->RegisterGroupListener<MouseMotionEventArgs>(name, handler);
 }
 //-----------------------------------------------------------------------------------------------
+// Name: RegisterMouseOverHandler
+// Desc: 
+//-----------------------------------------------------------------------------------------------
+void SDLEventCollector::RegisterMouseOverHandler(SimpleButtonComponent* simpleButtonComponent, function<void(const MouseMotionEventArgs&)> handler)
+{
+	auto size = Vector2D(simpleButtonComponent->size.x * simpleButtonComponent->transformComponent->scale.x, simpleButtonComponent->size.y * simpleButtonComponent->transformComponent->scale.y);
+	auto topLeft = Vector2D(simpleButtonComponent->transformComponent->position.x - 0.5f*size.x, simpleButtonComponent->transformComponent->position.y - 0.5f*size.y);
+
+	this->RegisterMouseOverHandler(topLeft, size, handler); 
+}
+//-----------------------------------------------------------------------------------------------
 // Name: RegisterMouseClickHandler
 // Desc: 
 //-----------------------------------------------------------------------------------------------
@@ -59,6 +70,17 @@ void SDLEventCollector::RegisterMouseClickHandler(Vector2D topLeft, Vector2D siz
 	auto name = to_string(this->mouseClickNames.size());
 	this->mouseClickNames.push_back(tuple<SDL_Rect, string>(rect, name));
 	this->RegisterGroupListener<MouseButtonEventArgs>(name, handler);
+}
+//-----------------------------------------------------------------------------------------------
+// Name: RegisterMouseClickHandler
+// Desc: 
+//-----------------------------------------------------------------------------------------------
+void SDLEventCollector::RegisterMouseClickHandler(SimpleButtonComponent* simpleButtonComponent, function<void(const MouseButtonEventArgs&)> handler)
+{
+	auto size = Vector2D(simpleButtonComponent->size.x * simpleButtonComponent->transformComponent->scale.x, simpleButtonComponent->size.y * simpleButtonComponent->transformComponent->scale.y);
+	auto topLeft = Vector2D(simpleButtonComponent->transformComponent->position.x - 0.5f*size.x, simpleButtonComponent->transformComponent->position.y - 0.5f*size.y);
+
+	this->RegisterMouseClickHandler(topLeft, size, handler); 
 }
 //-----------------------------------------------------------------------------------------------
 // Name: ButtonEvent
@@ -74,17 +96,14 @@ void SDLEventCollector::ButtonEvent(const SDL_Event& sdlEvent)
 
 	switch (sdlEvent.key.keysym.sym) {
 		case SDLK_LEFT:
-
 			this->Invoke<ButtonEventArgs>(ButtonEventArgs(LEFT_ARROW, released));
 			break;
 
 		case SDLK_RIGHT:
-
 			this->Invoke<ButtonEventArgs>(ButtonEventArgs(RIGHT_ARROW, released));
 			break;
 
 		case SDLK_UP:
-
 			this->Invoke<ButtonEventArgs>(ButtonEventArgs(UP_ARROW, released));
 			break;
 
@@ -146,8 +165,17 @@ void SDLEventCollector::MouseButtonEvent(const SDL_Event& sdlEvent)
 		return;
 	}
 
-	auto released = (sdlEvent.type == SDL_MOUSEBUTTONUP);
-	auto currentPosition = Vector2D(sdlEvent.motion.x + sdlEvent.motion.xrel, sdlEvent.motion.y + sdlEvent.motion.yrel);
+	Vector2D currentPosition; 
+
+	// HACK: y number seems to be missing on SDL_RELEASED
+	if (sdlEvent.button.state != SDL_RELEASED) {
+		this->lastMouseY = sdlEvent.button.y; 
+		currentPosition = Vector2D(sdlEvent.button.x, sdlEvent.button.y);
+	} else {
+		currentPosition = Vector2D(sdlEvent.button.x, this->lastMouseY);
+	}
+	
+	auto released = (sdlEvent.button.state == SDL_RELEASED);
 	auto button = (sdlEvent.button.button == SDL_BUTTON_LEFT) ? LEFT_BUTTON : RIGHT_BUTTON;
 
 	// need to invoke listeners who dont care where the mouse is

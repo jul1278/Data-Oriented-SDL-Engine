@@ -10,6 +10,7 @@
 #include "EventObserveable.h"
 #include "QuitApplicationEventArgs.h"
 #include "MouseMotionEventArgs.h"
+#include "Components\SimpleButtonComponent.h"
 
 #include <string>
 #include <queue>
@@ -23,6 +24,8 @@ using namespace std;
 class SDLEventCollector : public EventObservable
 {
 private:
+
+	int lastMouseY; 
 
 	bool quitEvent;   
 
@@ -46,8 +49,10 @@ public:
 	void Update(); 
 
 	void RegisterMouseOverHandler(Vector2D topLeft, Vector2D size, function<void(const MouseMotionEventArgs&)> handler); 
+	void RegisterMouseOverHandler(SimpleButtonComponent* simpleButtonComponent, function<void(const MouseMotionEventArgs&)> handler);
 
 	void RegisterMouseClickHandler(Vector2D topLeft, Vector2D size, function<void(const MouseButtonEventArgs&)> handler); 
+	void RegisterMouseClickHandler(SimpleButtonComponent* simpleButtonComponent, function<void(const MouseButtonEventArgs&)> handler);
 
 	bool QuitEvent() const
 	{

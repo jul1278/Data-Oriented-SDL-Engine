@@ -16,6 +16,12 @@ private:
 	SDL_Texture* fontTexture; 
 	SDL_Surface* fontSurface; 
 
+	void UpdateFontSurface()
+	{
+		SDL_Color textColor = { 255, 255, 255 };
+		this->fontSurface = TTF_RenderText_Solid(this->font, this->text.c_str(), textColor);
+	}
+	
 public:
 
 	TextGraphicsResource(string text, string fontName, unsigned short fontSize)
@@ -23,13 +29,16 @@ public:
 		this->font = TTF_OpenFont("Resources//Anonymous_Pro.ttf", fontSize);
 		this->fontName = fontName; 
 		this->text = text; 
+
+		this->UpdateFontSurface(); 
 	}
 	
 	// NOTE: this is a bit bad, consider a RenderText(SDL_Renderer*, TransformComponent*, string&) function?
 	//   
 	void SetText(string text)
 	{
-		this->text = text; 
+		this->text = text;
+		this->UpdateFontSurface(); 
 	}
 
 	string GetText(string text) const
@@ -37,30 +46,34 @@ public:
 		return this->text; 
 	}
 
-	void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent) override final
+	Vector2D GetSize()
 	{
-		if (this->fontTexture == nullptr || this->fontSurface == nullptr) {
-			
-			// NOTE: don't need to do this every time?
-			SDL_Color textColor = { 255, 255, 255 };
-			this->fontSurface = TTF_RenderText_Solid(this->font, this->text.c_str(), textColor);
-
-			if (this->fontSurface == nullptr) {
-				return; 
-			}
-
-			this->fontTexture = SDL_CreateTextureFromSurface(sdlRenderer, this->fontSurface);
+		if (this->fontSurface == nullptr) {
+			return Vector2D(0.0f, 0.0f);
 		}
 
-		int width = transformComponent->scale.x * this->fontSurface->w; 
-		int height = transformComponent->scale.y * this->fontSurface->h;
-		
+		return Vector2D(this->fontSurface->w, this->fontSurface->h); 
+	}
 
-		int x = transformComponent->position.x - width / 2;
-		int y = transformComponent->position.y - height / 2; 
+	void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent) override final
+	{
+		if (this->fontSurface == nullptr) {
+			this->UpdateFontSurface(); 
+		}
+
+		this->fontTexture = SDL_CreateTextureFromSurface(sdlRenderer, this->fontSurface);
+		
+		auto width = transformComponent->scale.x * this->fontSurface->w; 
+		auto height = transformComponent->scale.y * this->fontSurface->h;
+		
+		auto x = transformComponent->position.x - width / 2;
+		auto y = transformComponent->position.y - height / 2; 
 
 		SDL_Rect textRect = { x, y, width, height };
-		SDL_RenderCopy(sdlRenderer, this->fontTexture, nullptr, &textRect);
+
+		auto angleDeg = (180.0f / M_PI)*transformComponent->orientation.Angle(); 
+
+		SDL_RenderCopyEx(sdlRenderer, this->fontTexture, nullptr, &textRect, angleDeg, nullptr, SDL_FLIP_NONE);
 	}
 
 	~TextGraphicsResource() override
