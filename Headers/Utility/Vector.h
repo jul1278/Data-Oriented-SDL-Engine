@@ -29,10 +29,10 @@ public:
         return v;
     }
 
-	Vector2D operator+=(const Vector2D& rhs) const
+	void operator+=(const Vector2D& rhs)
 	{
-		Vector2D v = *this + rhs; 
-		return v; 
+		this->x += rhs.x; 
+		this->y += rhs.y; 
 	}
 
     Vector2D operator*(const float lhs) const
@@ -41,15 +41,32 @@ public:
         return v;
     }
 
+	void operator*=(const float lhs)
+	{
+		this->x *= lhs; 
+		this->y *= lhs; 
+	}
+
     Vector2D operator-(const Vector2D& rhs) const
     {
         Vector2D v(this->x - rhs.x, this->y - rhs.y);
         return v;
     }
 
+	void operator-=(const Vector2D& rhs)
+	{
+		this->x -= rhs.x; 
+		this->y -= rhs.y; 
+	}
+
 	bool operator==(const Vector2D& rhs) const
 	{
 		return ((this->x == rhs.x) && (this->y == rhs.y)); 
+	}
+
+	bool operator!=(const Vector2D& rhs) const
+	{
+		return !((*this) == rhs); 
 	}
 
     float Length() const { return sqrt( x*x + y*y );}
