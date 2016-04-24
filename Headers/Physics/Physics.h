@@ -76,14 +76,6 @@ public:
 		return &(this->tasks.front().taskEvent); 
 	}
 	//-------------------------------------------------------------------------------
-	// Name: AddSolveForcesTask
-	// Desc: Only two collections can interact currently
-	//-------------------------------------------------------------------------------
-	void AddSolveForcesTask(string collection1, string collection2)
-	{
-		
-	}
-	//-------------------------------------------------------------------------------
 	// Name: Exectute
 	// Desc:
 	//-------------------------------------------------------------------------------

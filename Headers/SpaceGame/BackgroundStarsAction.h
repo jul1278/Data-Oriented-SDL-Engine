@@ -4,6 +4,7 @@
 #include "Actions/IAction.h"
 #include "Utility/MathUtility.h"
 #include "Components/VelocityComponent.h"
+#include "Game/IGameApp.h"
 
 class BackgroundStarsAction : public IAction
 {
@@ -20,8 +21,10 @@ public:
 		this->height = height; 
 	}
 
-	void Update(ComponentCollectionRepository* componentCollectionRepository) override final
+	void Update(IGameApp* gameApp) override final
 	{
+		auto componentCollectionRepository = gameApp->GetComponentCollectionRepository(); 
+
 		auto starPhysicsComponents = componentCollectionRepository->SelectFromCollection<VelocityComponent>("ScrollingBackgroundStars");
 
 		// star background loop

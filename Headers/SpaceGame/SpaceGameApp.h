@@ -28,9 +28,9 @@ public:
 	SpaceGameApp();
 	~SpaceGameApp();
 
-	Graphics* GetGraphics() override;
-	Physics* GetPhysics() override;
-	ComponentCollectionRepository* GetComponentCollectionRepository() override;
+	Graphics* GetGraphics() override final;
+	Physics* GetPhysics() override final;
+	ComponentCollectionRepository* GetComponentCollectionRepository() override final;
 };
 
 #endif 

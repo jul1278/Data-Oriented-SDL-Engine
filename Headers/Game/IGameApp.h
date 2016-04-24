@@ -20,30 +20,21 @@ private:
 
 	queue<IStage*> stageQueue; 
 
-	// TODO: use smart pointer
-	ComponentCollectionRepository* componentCollectionRepository;
-	Graphics* graphics;	
-	Physics* physics;
-
 public:
 	
 
-	IGameApp() : componentCollectionRepository(nullptr), graphics(nullptr), physics(nullptr) {} 
+	IGameApp() {}
+
+	~IGameApp()
+	{
+		while (!stageQueue.empty()) {
+			delete stageQueue.front(); 
+			stageQueue.pop(); 
+		}
+	}
 
 	void Run()
 	{
-		if (this->graphics == nullptr) {
-			this->graphics = this->GetGraphics();
-		}
-
-		if (this->physics == nullptr) {
-			this->physics = this->GetPhysics();
-		}
-
-		if (this->componentCollectionRepository = nullptr) {
-			this->componentCollectionRepository = this->GetComponentCollectionRepository(); 
-		}
-
 		while (!stageQueue.empty()) {
 			stageQueue.front()->Update(this); 
 		}

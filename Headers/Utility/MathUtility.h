@@ -41,6 +41,19 @@ namespace MathUtility
 		return stdNormalDistribution(defaultRandomEngine); 
 	}
 	//---------------------------------------------------------------------------
+	// Name: RandomIntUniformDist
+	// Desc: returns a random integer
+	//---------------------------------------------------------------------------
+	static int RandomIntUniformDist()
+	{
+		static random_device randomDevice;
+		static default_random_engine defaultRandomEngine(randomDevice()); 
+
+		uniform_int_distribution<int> uniformIntDistribution(0, INT_MAX); 
+
+		return uniformIntDistribution(defaultRandomEngine); 
+	}
+	//---------------------------------------------------------------------------
 	// Name: RotateVector
 	// Desc: 
 	//---------------------------------------------------------------------------

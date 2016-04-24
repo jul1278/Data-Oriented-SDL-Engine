@@ -26,8 +26,9 @@ public:
 	// Name: Update
 	// Desc: 
 	//-------------------------------------------------------------------------------
-	void Update(ComponentCollectionRepository* componentCollectionRepository) override final
+	void Update(IGameApp* gameApp) override final
 	{
+		auto componentCollectionRepository = gameApp->GetComponentCollectionRepository(); 
 		this->SolveAsteroidPhysics(componentCollectionRepository); 
 	}
 	//-------------------------------------------------------------------------------

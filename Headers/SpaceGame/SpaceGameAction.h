@@ -2,10 +2,11 @@
 #define SPACE_GAME_ACTION_H
 
 #include <Game\IStage.h>
-#include "IAction.h"
+#include "Actions/IAction.h"
 
 class SpaceGameAction : public IAction
 {
+
 private:
 
 public:
@@ -13,6 +14,11 @@ public:
 	SpaceGameAction(const IStage& stage)
 	{
 		
+	}
+
+	void Update(IGameApp* gameApp) override final
+	{
+
 	}
 
 };

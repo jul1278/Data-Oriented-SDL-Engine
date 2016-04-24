@@ -55,6 +55,15 @@ public:
 		this->actions.push_back(new BackgroundStarsAction(this->stageWidth, this->stageHeight));
 	}
 
+	~SpaceGameStage()
+	{
+		for (auto action : this->actions) {
+			delete action; 
+		}
+
+		delete this->sdlEventCollector; 
+	}
+
 	void Update(IGameApp* gameApp) override final
 	{
 		auto graphics = gameApp->GetGraphics();
@@ -81,6 +90,8 @@ public:
 
 		graphics->Present();
 	}
+
+
 };
 
 #endif // SPACE_GAME_STAGE_H

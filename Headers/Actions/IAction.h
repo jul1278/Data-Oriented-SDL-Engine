@@ -1,9 +1,7 @@
 #ifndef IACTION_H
 #define IACTION_H
 
-#include "Components/ComponentCollectionRepository.h"
-
-#include <functional>
+class IGameApp; 
 
 class IAction
 {
@@ -14,7 +12,7 @@ public:
 	IAction() {}; 
 	virtual ~IAction() {};
 
-	virtual void Update(ComponentCollectionRepository* componentCollectionRepository) = 0; 
+	virtual void Update(IGameApp* gameApp) = 0; 
 };
 
 #endif // IACTION_H

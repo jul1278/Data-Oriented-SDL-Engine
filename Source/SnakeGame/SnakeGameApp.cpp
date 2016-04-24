@@ -1,62 +1,53 @@
-//
-// Created by Julian  on 17/11/15.
-//
+#include "SnakeGame\SnakeGameApp.h"
 
-
-#include "SpaceGame/SpaceGameApp.h"
-#include "Components/ComponentCollectionRepository.h"
-#include "SpaceGame/SpaceGameStage.h"
-#include "SpaceGame/SpaceGameMenuStage.h"
-
-#include <time.h>
-#include <stdlib.h>
-#include <memory>
 
 //------------------------------------------------------------------------------------
-// Name: SpaceGameApp
+// Name: SnakeGameApp
 // Desc:
 //------------------------------------------------------------------------------------
-SpaceGameApp::SpaceGameApp()
+SnakeGameApp::SnakeGameApp()
 {
 	this->windowHeight = 480;
 	this->windowWidth = 640;
-	this->appName = "Space Game";
+	this->appName = "Snake";
 
-	this->componentCollectionRepository = new ComponentCollectionRepository; 
+	this->componentCollectionRepository = new ComponentCollectionRepository;
 
 	this->graphics = new Graphics(this->windowWidth, this->windowHeight, this->appName);
-	this->physics = new Physics(this->windowWidth, this->windowHeight); 
+	this->physics = new Physics(this->windowWidth, this->windowHeight);
 
-	this->spaceGameStage = new SpaceGameStage(this); 
-	this->spaceGameMenu = new SpaceGameMenuStage(this); 
+	this->snakeGameStage = new SnakeGameStage(this);
+	this->snakeGameMenu = new SnakeGameMenuStage(this);
 
-	this->PushStage(this->spaceGameMenu); 
-	this->PushStage(this->spaceGameStage);
+	this->PushStage(this->snakeGameMenu);
+	this->PushStage(this->snakeGameStage);
 }
 //------------------------------------------------------------------------------------
-// Name: ~SpaceGameApp
+// Name: SnakeGameApp
 // Desc:
 //------------------------------------------------------------------------------------
-SpaceGameApp::~SpaceGameApp()
+SnakeGameApp::~SnakeGameApp()
 {
-	// delete
-	delete this->componentCollectionRepository; 
 	delete this->graphics; 
-	delete this->physics;
+	delete this->componentCollectionRepository;
+	delete this->physics; 
+
+	delete this->snakeGameMenu; 
+	delete this->snakeGameStage; 
 }
 //------------------------------------------------------------------------------------
 // Name: GetGraphics
 // Desc:
 //------------------------------------------------------------------------------------
-Graphics* SpaceGameApp::GetGraphics()
+Graphics* SnakeGameApp::GetGraphics()
 {
-	return this->graphics; 
+	return this->graphics;
 }
 //------------------------------------------------------------------------------------
 // Name: GetPhysics
 // Desc:
 //------------------------------------------------------------------------------------
-Physics* SpaceGameApp::GetPhysics()
+Physics* SnakeGameApp::GetPhysics()
 {
 	return this->physics;
 }
@@ -64,7 +55,7 @@ Physics* SpaceGameApp::GetPhysics()
 // Name: GetComponentCollectionRepository
 // Desc:
 //------------------------------------------------------------------------------------
-ComponentCollectionRepository* SpaceGameApp::GetComponentCollectionRepository()
+ComponentCollectionRepository* SnakeGameApp::GetComponentCollectionRepository()
 {
-	return this->componentCollectionRepository; 
+	return this->componentCollectionRepository;
 }

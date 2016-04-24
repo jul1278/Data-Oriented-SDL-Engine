@@ -2,6 +2,7 @@
 #define PLAYER_SPACE_SHIP_ACTION_H
 
 #include "Actions/IAction.h"
+#include "Game/IGameApp.h"
 #include "Events/SDLEventCollector.h"
 #include "Components/PhysicsComponent.h"
 
@@ -26,9 +27,10 @@ public:
 		this->moveCounter = 0; 
 	}
 	
-	void Update(ComponentCollectionRepository* componentCollectionRepository) override final
+	void Update(IGameApp* gameApp) override final
 	{
-		
+		auto componentCollectionRepository = gameApp->GetComponentCollectionRepository(); 
+
 		if (this->CheckAsteroidCollision(componentCollectionRepository)) {
 			// end game
 		} else {
