@@ -1,8 +1,9 @@
 #ifndef TEXT_GRAPHICS_RESOURCE_H
 #define TEXT_GRAPHICS_RESOURCE_H
 
-#include "IGraphicsResource.h"
-#include <string>
+#include "SDL_ttf.h"
+#include "Graphics/IGraphicsResource.h"
+#include "Components/TransformComponent.h"
 
 class TextGraphicsResource : public IGraphicsResource
 {
@@ -19,6 +20,7 @@ private:
 	void UpdateFontSurface()
 	{
 		SDL_Color textColor = { 255, 255, 255 };
+
 		this->fontSurface = TTF_RenderText_Solid(this->font, this->text.c_str(), textColor);
 	}
 	

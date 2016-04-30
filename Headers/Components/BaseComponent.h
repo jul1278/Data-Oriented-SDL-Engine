@@ -4,13 +4,8 @@
 #ifndef BASE_COMPONENT_H
 #define BASE_COMPONENT_H
 
-#include "Utility/Vector.h"
-
-using namespace std; 
-
 struct BaseComponent
 {
-    // Has to be set by something, obviously we can't choose our own Id.
     int id;
     int entityId;
 

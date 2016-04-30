@@ -2,10 +2,11 @@
 // Created by Julian  on 22/11/15.
 //
 
-#ifndef TRANSFORMCOMPONENT_H
-#define TRANSFORMCOMPONENT_H
+#ifndef TRANSFORM_COMPONENT_H
+#define TRANSFORM_COMPONENT_H
 
 #include "BaseComponent.h"
+#include "Utility/Vector.h"
 
 struct TransformComponent : BaseComponent
 {
@@ -34,7 +35,7 @@ struct TransformComponent : BaseComponent
         this->scale = scale;
     }
 
-	float Angle()
+	float Angle() const
 	{
 		return atan2f(this->orientation.y, this->orientation.x); 
 	}

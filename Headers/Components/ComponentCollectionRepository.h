@@ -5,96 +5,17 @@
 #ifndef COMPONENT_COLLECTION_REPOSITORY_H
 #define COMPONENT_COLLECTION_REPOSITORY_H
 
-#include "Components/BaseComponent.h"
-#include "Entity.h"
+#include "Components/ComponentCollection.h"
 #include <unordered_map>  
 #include <vector>
 #include <typeindex>
 #include <type_traits>
-#include <assert.h>
 #include <list>
 
 using namespace std;
 
 const int collectionNameMinLength = 4; 
 const string defaultCollectionName = "defaultCollection";
-const unsigned int vectorContainerReserveSize = 100; 
-
-class ComponentCollectionRepository; 
-
-struct IVectorContainer {};
-
-template <typename T>
-struct VectorContainer : IVectorContainer
-{
-	vector<T> vec;
-
-	VectorContainer()
-	{
-		assert(static_cast<bool>(is_base_of<BaseComponent, T>::value) == true); 
-        vec.reserve(vectorContainerReserveSize);
-	}
-};
-
-// ComponentCollection
-class ComponentCollection
-{
-    ComponentCollectionRepository* parent; 
-
-	unordered_map<type_index, IVectorContainer*> componentCollection; 
-	list<type_index> typeIndices; 
-
-public:
-
-    ComponentCollection()
-    {
-        this->parent = nullptr;
-    }
-
-    ComponentCollection(ComponentCollectionRepository* parent)
-    {
-        this->parent = parent; 
-    }
-
-    ~ComponentCollection()
-    {
-        for (auto pair : this->componentCollection)
-        {
-            delete pair.second; 
-        }
-    }
-
-	template <typename T>
-	T* NewComponent()
-	{
-		T* newComponent = nullptr; 
-
-
-		if (this->componentCollection.find(type_index(typeid(T))) == this->componentCollection.end()) {
-			auto vectorContainer = new VectorContainer<T>();	 
-			this->componentCollection[type_index(typeid(T))] = vectorContainer;
-
-            if (this->parent != nullptr)
-            {
-                this->parent->InsertCollection<T>(vectorContainer); 
-            }
-		}
-		
-		auto container = static_cast<VectorContainer<T>*>(this->componentCollection[type_index(typeid(T))]); 		        
-        container->vec.resize(container->vec.size() + 1); 
-
-        return new (&(container->vec.back())) T();
-	}
-
-	template<typename T>
-	vector<T>* Select()
-	{
-		auto iContainer = static_cast<IVectorContainer*>(componentCollection[type_index(typeid(T))]); 		
-		auto container = static_cast<VectorContainer<T>*>(iContainer); 
-		return &(container->vec); 
-	}
-
-};
 
 // ComponentCollectionRepository
 class ComponentCollectionRepository
@@ -118,7 +39,7 @@ public:
 	ComponentCollectionRepository()
 	{
 		// default collection so there is always somewhere to add to
-        this->componentCollectionMap[defaultCollectionName] = new ComponentCollection(this);
+        this->componentCollectionMap[defaultCollectionName] = new ComponentCollection();
         this->nextId = 0; 
 	}
 
@@ -130,27 +51,20 @@ public:
         }
 	}
 
-	template<typename T>
-	T* NewComponent(const string collectionName = "")
+	template<typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
+	T* NewComponent(const string collectionName = defaultCollectionName)
 	{
-        if (static_cast<bool>(is_base_of<BaseComponent, T>::value) == false)
-        {
-            return nullptr; 
-        }
+		auto collectionNameTemp = collectionName;
 
-		string collectionNameTemp = this->componentCollectionMap.find(collectionName) == 
-									this->componentCollectionMap.end() 
-			? defaultCollectionName : collectionName; 
-
-        BaseComponent* newComponent = nullptr; 
+		BaseComponent* newComponent = nullptr;
 
 		newComponent = this->componentCollectionMap[collectionNameTemp]->NewComponent<T>();
-        newComponent->id = this->GetNextId(); 
+		newComponent->id = this->GetNextId();
 
-		auto collection = componentCollectionMap[collectionNameTemp]; 
-		this->idToCollectionMap[newComponent->id] = collection; 
+		//auto collection = componentCollectionMap[collectionNameTemp]; 
+		//this->idToCollectionMap[newComponent->id] = collection; 
 
-        return static_cast<T*>(newComponent); 
+		return static_cast<T*>(newComponent);
 	}
 
 	void NewCollection(const string collectionName)
@@ -160,11 +74,11 @@ public:
 		}
 
 		if (componentCollectionMap.find(collectionName) == componentCollectionMap.end()) {
-            componentCollectionMap[collectionName] = new ComponentCollection(this);
+            componentCollectionMap[collectionName] = new ComponentCollection();
 		}
 	}
 
-    template<typename T>
+	template<typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
     vector<T>* SelectFromCollection(const string collectionName = defaultCollectionName)
 	{
         if (this->componentCollectionMap.find(collectionName) != this->componentCollectionMap.end())
@@ -175,7 +89,7 @@ public:
         return nullptr; 
 	}
 
-	template<typename T>
+	template<typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
 	list<IVectorContainer*>* Select()
 	{
 		if (this->componentTypeMap.find(type_index(typeid(T))) != this->componentTypeMap.end()) {
@@ -185,13 +99,10 @@ public:
 		return nullptr; 
 	}
 
-    template<typename T>
+	template<typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
     void InsertCollection(IVectorContainer* vectorContainer)
 	{
-        if (static_cast<bool>(is_base_of<BaseComponent, T>::value) == true)
-        {
-            this->componentTypeMap[type_index(typeid(T))].push_back(vectorContainer); 
-        }
+        this->componentTypeMap[type_index(typeid(T))].push_back(vectorContainer); 
 	}
 
 	list<string> GetCollections()

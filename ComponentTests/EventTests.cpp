@@ -2,8 +2,8 @@
 #include "CppUnitTest.h"
 
 #include "Physics/Physics.h"
-#include <Headers/Events/EventObserveable.h>
-#include <Headers/Events/ButtonEventArgs.h>
+#include "Events/EventObserveable.h"
+#include "Events/ButtonEventArgs.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

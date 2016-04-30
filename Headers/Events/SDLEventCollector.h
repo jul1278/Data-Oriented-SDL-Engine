@@ -1,25 +1,17 @@
 #ifndef SDL_EVENT_COLLECTOR_H
 #define SDL_EVENT_COLLECTOR_H
 
-#include "SDL.h"
-#include "IEventArgs.h"
-#include "ButtonEventArgs.h"
-#include "ITaskEvent.h"
-#include "MouseButtonEventArgs.h"
-#include "TaskEvent.h"
-#include "EventObserveable.h"
-#include "QuitApplicationEventArgs.h"
-#include "MouseMotionEventArgs.h"
-#include "Components\SimpleButtonComponent.h"
+#include "Events/EventObserveable.h"
 
-#include <string>
-#include <queue>
-#include <unordered_map>
-#include <list>
-#include <tuple>
+union SDL_Event;
+struct SDL_Rect;
+
+struct Vector2D;
+struct SimpleButtonComponent;
+class MouseMotionEventArgs;
+class MouseButtonEventArgs;
 
 using namespace std; 
-
 
 class SDLEventCollector : public EventObservable
 {

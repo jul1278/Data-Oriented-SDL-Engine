@@ -3,6 +3,9 @@
 
 #include "IEventArgs.h"
 #include "Components/PhysicsComponent.h"
+#include <string>
+
+using namespace std; 
 
 class CollisionEventArgs : public IEventArgs
 {

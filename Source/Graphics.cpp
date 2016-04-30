@@ -1,10 +1,16 @@
 //
 // Created by Julian  on 17/11/15.
 //
-
+#include "Graphics/IGraphicsResource.h"
+#include "Components/GraphicsComponent.h"
+#include "Components/TransformComponent.h"
+#include "Graphics/GraphicsUtility.h"
 #include "Graphics/Graphics.h"
 #include "Graphics/SpriteGraphicsResource.h"
-#include "SDL_image.h"
+
+#include <iostream>
+#include <vector>
+#include <unordered_map>
 
 //------------------------------------------------------------------------------------
 // Name: LoadSurface
@@ -18,6 +24,8 @@ Graphics::Graphics(int windowWidth, int windowHeight, std::string appName)
         return;
     }
 
+	cout << "SDL_Init() success." << endl; 
+
     // Create window
     this->window = SDL_CreateWindow(appName.c_str(), 100, 100, windowWidth, windowHeight, SDL_WINDOW_SHOWN);
 
@@ -25,6 +33,8 @@ Graphics::Graphics(int windowWidth, int windowHeight, std::string appName)
         SDL_Quit();
         return;
     }
+
+	cout << "SDL_CreateWindow() success." << endl; 
 
     // Create renderer
     this->renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
@@ -34,6 +44,8 @@ Graphics::Graphics(int windowWidth, int windowHeight, std::string appName)
         SDL_Quit();
         return;
     }
+
+	cout << "SDL_CreateRenderer() success." << endl; 
 
     Uint32 rmask, gmask, bmask, amask;
 
@@ -51,7 +63,6 @@ Graphics::Graphics(int windowWidth, int windowHeight, std::string appName)
     amask = 0xff000000;
 #endif
 
-
     // Create surface
     this->sdlSurface = SDL_CreateRGBSurface(0, 20, 20, 32, rmask, gmask, bmask, amask);
 
@@ -64,6 +75,8 @@ Graphics::Graphics(int windowWidth, int windowHeight, std::string appName)
         return;
     }
 
+	cout << "SDL_CreateRGBSurface() success." << endl;
+
     // Create texture
     SDL_Texture* sdlTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, 20, 20);
 
@@ -74,6 +87,8 @@ Graphics::Graphics(int windowWidth, int windowHeight, std::string appName)
 
         return;
     }
+
+	cout << "SDL_CreateTexture() success." << endl; 
 
     // init sdl image
     int imgFlags = IMG_INIT_PNG;
@@ -86,6 +101,7 @@ Graphics::Graphics(int windowWidth, int windowHeight, std::string appName)
         return;
     }  
 
+	cout << "IMG_Init() success." << endl; 
 
 	// init sdl ttf
 	if (TTF_Init() == -1) {
@@ -97,8 +113,11 @@ Graphics::Graphics(int windowWidth, int windowHeight, std::string appName)
 		return; 
 	}
 
+	cout << "TTF_Init() success." << endl; 
+
 	this->consoleFont = TTF_OpenFont("Resources//Anonymous_Pro.ttf", 10);
 
+	cout << "TTF_OpenFont() success." << endl; 
 }
 //------------------------------------------------------------------------------------
 // Name: LoadSurface

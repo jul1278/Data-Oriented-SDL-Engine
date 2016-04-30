@@ -1,8 +1,18 @@
-#include "SnakeGame/SnakeAction.h"
+#include "Game/IGameApp.h"
+#include "Graphics/Graphics.h"
+#include "Components/ComponentCollectionRepository.h"
+#include "Events/SDLEventCollector.h"
+#include "Events/ButtonEventArgs.h"
 #include "Graphics/RectGraphicsResource.h"
 #include "Graphics/TextGraphicsResource.h"
 #include "Components/GraphicsComponent.h"
-#include "Game/IGameApp.h"
+#include "Components/TransformComponent.h"
+#include "Utility/MathUtility.h"
+#include "SnakeGame/SnakeAction.h"
+#include <string>
+#include <chrono>
+#include <ratio>
+#include <iostream>
 
 //---------------------------------------------------------------------------
 // Name: SnakeAction 
@@ -55,7 +65,6 @@ SnakeAction::SnakeAction(IGameApp* gameApp)
 
 	foodGraphic->resourceId = foodGraphicId;
 	foodGraphic->transformComponent = foodPos;
-
 
 	for (auto i = 0; i < (this->snakeStartLength - 1); i++) {
 
@@ -149,6 +158,9 @@ void SnakeAction::Update(IGameApp* gameApp)
 			nextPos = lastPos;
 		}
 
+		std::chrono::steady_clock::time_point start; 
+		start = std::chrono::steady_clock::now();
+		
 		// see if we ate anything
 		if (headTransform.position == foodTransform.position) {
 
@@ -164,6 +176,12 @@ void SnakeAction::Update(IGameApp* gameApp)
 			newSnakeGraphic->resourceId = 0; 
 
 			this->SpawnFood(gameApp); 
+
+			auto diff = std::chrono::steady_clock::now() - start; 
+
+			auto diffNs = chrono::duration<double, std::milli>(diff); 
+
+			cout << "Eat food time: " << diffNs.count() << endl;
 		}
 	}
 }

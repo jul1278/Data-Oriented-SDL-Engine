@@ -5,10 +5,8 @@
 #ifndef IGRAPHICSRESOURCE_H
 #define IGRAPHICSRESOURCE_H
 
-#include "Graphics/GraphicsUtility.h"
-#include "Components/TransformComponent.h"
-
-#include <SDL_ttf.h>
+struct SDL_Renderer; 
+struct TransformComponent;
 
 class IGraphicsResource
 {

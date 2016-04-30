@@ -4,13 +4,12 @@
 #ifndef I_GAME_APP_H
 #define I_GAME_APP_H
 
-#include "Graphics/Graphics.h"
-#include "Components/ComponentCollectionRepository.h"
-#include "Physics/Physics.h"
 #include "Game/IStage.h"
-
-#include <typeindex>
 #include <queue>
+
+class ComponentCollectionRepository;
+class Physics;
+class Graphics;
 
 using namespace std;
 
@@ -25,7 +24,7 @@ public:
 
 	IGameApp() {}
 
-	~IGameApp()
+	virtual ~IGameApp()
 	{
 		while (!stageQueue.empty()) {
 			delete stageQueue.front(); 

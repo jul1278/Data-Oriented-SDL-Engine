@@ -1,10 +1,11 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include "Headers/Components/ComponentCollectionRepository.h"
-#include "Headers/Components/BaseComponent.h"
-#include "Headers/Components/TransformComponent.h"
-#include "Headers/Components/VelocityComponent.h"
+#include "Components/ComponentCollectionRepository.h"
+#include "Components/BaseComponent.h"
+#include "Components/TransformComponent.h"
+#include "Components/VelocityComponent.h"
 #include <vector>
+#include <Components/GraphicsComponent.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -21,13 +22,15 @@ namespace ComponentTests
 		TEST_METHOD(NewComponentTest)
 		{
 			ComponentCollectionRepository componentCollectionRepository; 
-            vector<BaseComponent*> components; 
+			componentCollectionRepository.NewCollection("TestCollection"); 
 
-            for (auto i = 0; i < 10; i++)
+            for (auto i = 0; i < 20; i += 2)
             {
-                auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>();
-                components.push_back(transformComponent);
+				auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>("TestCollection");
+				auto graphicsComponent = componentCollectionRepository.NewComponent<GraphicsComponent>("TestCollection");
+
                 Assert::AreEqual(transformComponent->id, i);
+				Assert::AreEqual(graphicsComponent->id, i + 1); 
             }
 		}
         //-----------------------------------------------------------------------------
@@ -43,7 +46,7 @@ namespace ComponentTests
 			transformComponents.reserve(100);
 			physicsComponents.reserve(100); 
 
-            for (auto i = 0; i < 100; i++)
+            for (auto i = 0; i < 50; i++)
             {
                 auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>();
 				auto physicsComponent = componentCollectionRepository.NewComponent<VelocityComponent>();
@@ -53,6 +56,17 @@ namespace ComponentTests
                 transformComponents.push_back(transformComponent); 
                 physicsComponents.push_back(physicsComponent); 
             }
+
+			for (auto i = 0; i < 50; i++)
+			{
+				auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>();
+				auto physicsComponent = componentCollectionRepository.NewComponent<VelocityComponent>();
+
+				physicsComponent->transformComponent = transformComponent;
+
+				transformComponents.push_back(transformComponent);
+				physicsComponents.push_back(physicsComponent);
+			}
 
             for (auto i = 0; i < 100; i++)
             {

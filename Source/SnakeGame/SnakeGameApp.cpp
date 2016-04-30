@@ -1,5 +1,9 @@
-#include "SnakeGame\SnakeGameApp.h"
-
+#include "Graphics/Graphics.h"
+#include "Physics/Physics.h"
+#include "Components/ComponentCollectionRepository.h"
+#include "SnakeGame/SnakeGameApp.h"
+#include "SnakeGame/SnakeGameStage.h"
+#include "SnakeGame/SnakeGameMenuStage.h"
 
 //------------------------------------------------------------------------------------
 // Name: SnakeGameApp

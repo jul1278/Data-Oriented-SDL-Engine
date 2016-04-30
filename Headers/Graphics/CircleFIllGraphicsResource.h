@@ -6,6 +6,7 @@
 #define CIRCLE_GRAPHICS_RESOURCE_H
 
 #include "Graphics/IGraphicsResource.h"
+#include "Components/TransformComponent.h"
 #include "GraphicsUtility.h"
 
 // CircleGraphicsResource

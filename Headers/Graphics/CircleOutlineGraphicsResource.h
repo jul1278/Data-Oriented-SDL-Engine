@@ -6,6 +6,8 @@
 #define CIRCLE_OUTLINE_GRAPHICS_RESOURCE_H
 
 #include "Graphics/IGraphicsResource.h"
+#include "Components/TransformComponent.h"
+#include <Graphics/GraphicsUtility.h>
 
 // CircleGraphicsResource
 class CircleOutlineGraphicsResource : public IGraphicsResource

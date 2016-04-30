@@ -2,8 +2,7 @@
 #define SNAKE_GAME_APP_H
 
 #include "Game\IGameApp.h"
-#include "SnakeGame\SnakeGameStage.h"
-#include "SnakeGame\SnakeGameMenuStage.h"
+#include "Components\ComponentCollectionRepository.h"
 
 class SnakeGameApp : public IGameApp
 {

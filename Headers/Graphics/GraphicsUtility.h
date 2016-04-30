@@ -4,8 +4,9 @@
 #ifndef GRAPHICS_UTILITY_H
 #define GRAPHICS_UTILITY_H
 
-#include "SDL.h"
-
+#include <SDL.h>
+#include "SDL_ttf.h"
+#include "SDL_image.h"
 #include <cstring>
 #include <cmath>
 

@@ -1,9 +1,10 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include "SDL.h"
 #include "Utility/Vector.h"
-#include <Headers/Events/SDLEventCollector.h>
-
+#include "Events/SDLEventCollector.h"
+#include "Events/MouseButtonEventArgs.h"
+#include "Events/MouseMotionEventArgs.h"
+#include "SDL.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

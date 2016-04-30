@@ -1,4 +1,17 @@
 #include "Events\SDLEventCollector.h"
+#include "Events\ButtonEventArgs.h"
+#include "Events\ITaskEvent.h"
+#include "Events\MouseButtonEventArgs.h"
+#include "Events\EventObserveable.h"
+#include "Events\QuitApplicationEventArgs.h"
+#include "Events\MouseMotionEventArgs.h"
+#include "Components\SimpleButtonComponent.h"
+#include "SDL.h"
+
+#include <string>
+#include <list>
+#include <tuple>
+
 
 //-----------------------------------------------------------------------------------------------
 // Name: Update

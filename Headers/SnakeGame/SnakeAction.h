@@ -5,11 +5,9 @@
 #include "Events/SDLEventCollector.h"
 
 class ComponentCollectionRepository;
-class IAction; 
 class IGameApp; 
 class ButtonEventArgs;
 class TextGraphicsResource; 
-
 
 enum SnakeDirection
 {
