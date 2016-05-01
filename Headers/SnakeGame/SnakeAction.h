@@ -4,6 +4,7 @@
 #include "Actions/IAction.h"
 #include "Events/SDLEventCollector.h"
 
+class IntersectionEventArgs;
 class ComponentCollectionRepository;
 class IGameApp; 
 class ButtonEventArgs;
@@ -16,20 +17,28 @@ enum SnakeDirection
 
 class SnakeAction : public IAction
 {
-public:
+private:
+
+	IGameApp* gameApp;
 
 	int snakeScore;
 	int snakeLength;
 	int snakeStartLength;
 
 	TextGraphicsResource* textGraphicResource;
-	SDLEventCollector sdlEventCollector; 
+	SDLEventCollector sdlEventCollector;
 	SnakeDirection currentSnakeDirection;
+	
+	int snakeGraphicId;
+
+public:
 
 	SnakeAction(IGameApp* gameApp);
 
 	void Update(IGameApp* gameApp) override;
+
 	void OnButtonEvent(const ButtonEventArgs& buttonEventArgs); 
+	void OnEatFood(const IntersectionEventArgs& intersectionEventArgs); 
 };
 
 #endif // SNAKE_ACTION_H

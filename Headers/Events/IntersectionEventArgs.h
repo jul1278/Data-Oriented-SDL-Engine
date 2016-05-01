@@ -4,7 +4,7 @@
 #include "Events/IEventArgs.h"
 #include <Components/TransformComponent.h>
 
-class IntersectionEventArgs : IEventArgs
+class IntersectionEventArgs : public IEventArgs
 {
 private:
 
@@ -13,7 +13,7 @@ private:
 
 public:
 
-	explicit IntersectionEventArgs(TransformComponent* component1, TransformComponent* component2)
+	IntersectionEventArgs(TransformComponent* component1, TransformComponent* component2)
 		: IEventArgs(CollisionEvent)
 	{
 		this->component1 = component1; 

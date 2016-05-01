@@ -1,4 +1,3 @@
-//#include <SpaceGame\SpaceGameApp.h>
 #include "SnakeGame\SnakeGameApp.h"
 
 //------------------------------------------------------------------------------------

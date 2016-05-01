@@ -5,21 +5,34 @@
 #include "Components/GraphicsComponent.h"
 #include "SDL.h"
 
+//-----------------------------------------------------------------------
+// Name: SnakeGameStage
+// Desc:
+//-----------------------------------------------------------------------
 SnakeGameStage::SnakeGameStage(IGameApp* gameApp)
 {
 	this->snakeAction = new SnakeAction(gameApp);
 	this->foodAction = new FoodAction(gameApp); 
 }
-
+//-----------------------------------------------------------------------
+// Name: ~SnakeGameStage
+// Desc:
+//-----------------------------------------------------------------------
 SnakeGameStage::~SnakeGameStage()
 {
 	delete this->snakeAction;
 }
-
+//-----------------------------------------------------------------------
+// Name: Update
+// Desc:
+//-----------------------------------------------------------------------
 void SnakeGameStage::Update(IGameApp* gameApp)
 {
 	auto componentCollections = gameApp->GetComponentCollectionRepository();
 	auto graphics = gameApp->GetGraphics();
+	auto physics = gameApp->GetPhysics(); 
+
+	physics->ExecuteTasks(componentCollections); 
 
 	this->foodAction->Update(gameApp); 
 	this->snakeAction->Update(gameApp);

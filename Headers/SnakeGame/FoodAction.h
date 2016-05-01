@@ -1,26 +1,38 @@
 #ifndef FOOD_ACTIONS_H
 #define FOOD_ACTIONS_H
 
+
+#include "Game/IGameApp.h"
 #include "Graphics/Graphics.h"
 #include "Components/ComponentCollectionRepository.h"
 #include "Physics/Physics.h"
 #include "Actions/IAction.h"
 #include "Events/CollisionEventArgs.h"
-#include "Game/IGameApp.h"
 #include "Utility/MathUtility.h"
 #include "Components/GraphicsComponent.h"
-#include <Graphics/RectGraphicsResource.h>
+#include "Graphics/RectGraphicsResource.h"
+#include "Physics/IntersectionTask.h"
+
+#include <math.h>
 
 class FoodAction : public IAction
 {
-private:
-	int counter; 
+
+	int stepCounter;
+	int updateCounter; 
 
 	int width;
 	int height;
 
+	IGameApp* gameApp; 
+
+	int goalX; 
+	int goalY; 
+
 	void SpawnFood(IGameApp* gameApp)
 	{
+		this->gameApp = gameApp; 
+
 		auto graphics = gameApp->GetGraphics();
 		auto componentCollections = gameApp->GetComponentCollectionRepository();
 
@@ -55,7 +67,8 @@ public:
 	
 	FoodAction(IGameApp* gameApp)
 	{
-		counter = 0; 
+		this->stepCounter = 0;
+		this->updateCounter = 0; 
 
 		width = gameApp->GetGraphics()->WindowWidth(); 
 		height = gameApp->GetGraphics()->WindowHeight(); 
@@ -64,10 +77,9 @@ public:
 		auto graphics = gameApp->GetGraphics(); 
 		auto physics = gameApp->GetPhysics(); 
 
-		auto foodGraphicId = graphics->AddGraphicsResource(new RectGraphicsResource(8.0f, 8.0f, 0xff, 0xff, 0xff, 0xff));
-
 		componentCollection->NewCollection("Food");
-
+		
+		auto foodGraphicId = graphics->AddGraphicsResource(new RectGraphicsResource(8.0f, 8.0f, 0xff, 0xff, 0xff, 0xff));
 		auto foodPos = componentCollection->NewComponent<TransformComponent>("Food");
 		auto foodGraphic = componentCollection->NewComponent<GraphicsComponent>("Food");
 
@@ -79,25 +91,65 @@ public:
 
 		this->SpawnFood(gameApp);
 
-		// physics->
+		auto intersectionTask = new IntersectionTask("Food", "Snake"); 
+
+		physics->AddPhysicsTask(intersectionTask); 
+
+		intersectionTask->RegisterListener<IntersectionEventArgs>(bind(&FoodAction::OnSnakeIntersection, this, placeholders::_1)); 
 	}
 
-	~FoodAction() override
-	{
-	}
+	~FoodAction() override { }
 
-	void Update(IGameApp* gameApp)
+	void Update(IGameApp* gameApp) override
 	{
+		this->stepCounter++;
+
+		if (this->stepCounter < 5) {
+			return;
+		} else {
+			this->stepCounter = 0; 
+		}
+
+		this->updateCounter++; 
+
+		this->gameApp = gameApp; 
+
 		auto components = gameApp->GetComponentCollectionRepository();
 		auto& foodTransform = components->SelectFromCollection<TransformComponent>("Food")->front();
 
-		foodTransform.position.x += 10.0f * ((MathUtility::RandomIntUniformDist() / 10) % width); 
-		foodTransform.position.y += 10*(MathUtility::RandomIntUniformDist() % 2);
-	}
+		auto diffX = foodTransform.position.x - this->goalX; 
+		auto diffY = foodTransform.position.y - this->goalY; 
 
-	void OnSnakeCollision(const CollisionEventArgs& collisionEventArgs)
+		if (abs(diffX) > abs(diffY)) {
+			if (diffX > 0.0f) {
+				foodTransform.position.x -= 10.0f;
+			} else {
+				foodTransform.position.y += 10.0f; 
+			}
+		} else {
+			if (diffY > 0.0f) {
+				foodTransform.position.y -= 10.0f;
+			} else {
+				foodTransform.position.y += 10.0f;
+			}
+		}
+
+		if (this->updateCounter > 10) {
+			this->goalX = 10 * (MathUtility::RandomIntUniformDist() % (width / 10));
+			this->goalY = 10 * (MathUtility::RandomIntUniformDist() % (height / 10));
+		}		
+	}
+	
+	void OnSnakeIntersection(const IntersectionEventArgs& intersectionEventArgs)
 	{
-		
+		auto components = this->gameApp->GetComponentCollectionRepository(); 
+		auto snakeHead = components->SelectFromCollection<TransformComponent>("Snake")->front(); 
+
+		if (intersectionEventArgs.TransformComponent1()->id == snakeHead.id 
+			|| intersectionEventArgs.TransformComponent2()->id == snakeHead.id) {
+			this->SpawnFood(this->gameApp);
+
+		}
 	}
 };
 

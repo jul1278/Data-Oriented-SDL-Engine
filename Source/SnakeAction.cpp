@@ -1,17 +1,18 @@
 #include "Game/IGameApp.h"
 #include "Graphics/Graphics.h"
+#include "Physics/Physics.h"
 #include "Components/ComponentCollectionRepository.h"
 #include "Events/SDLEventCollector.h"
+#include "Events/IntersectionEventArgs.h"
+#include "Physics/IntersectionTask.h"
 #include "Events/ButtonEventArgs.h"
 #include "Graphics/RectGraphicsResource.h"
 #include "Graphics/TextGraphicsResource.h"
 #include "Components/GraphicsComponent.h"
 #include "Components/TransformComponent.h"
-#include "Utility/MathUtility.h"
 #include "SnakeGame/SnakeAction.h"
+
 #include <string>
-#include <chrono>
-#include <ratio>
 #include <iostream>
 
 //---------------------------------------------------------------------------
@@ -25,33 +26,38 @@ SnakeAction::SnakeAction(IGameApp* gameApp)
 	this->snakeLength = this->snakeStartLength;
 
 	this->currentSnakeDirection = SNAKE_LEFT;
-	auto graphics = gameApp->GetGraphics();
 
+	this->gameApp = gameApp; 
+
+	auto graphics = gameApp->GetGraphics();
+	auto physics = gameApp->GetPhysics(); 
+	auto componentCollection = gameApp->GetComponentCollectionRepository();
+	
 	auto headStartPos = Vector2D(graphics->WindowWidth() / 2.0f, graphics->WindowHeight() / 2.0f);
 
-	auto componentCollection = gameApp->GetComponentCollectionRepository();
-
-	auto snakeGraphicId = graphics->AddGraphicsResource(new RectGraphicsResource(8.0f, 8.0f, 0xff, 0xff, 0xff, 0xff));
-	
+	/* Create the score text */
+	componentCollection->NewCollection("Score");
 	this->textGraphicResource = new TextGraphicsResource("0", "", 20); 
 	auto textGraphicResourceId = graphics->AddGraphicsResource(this->textGraphicResource); 
-
-	componentCollection->NewCollection("Snake");
-	componentCollection->NewCollection("Score"); 
-
+	
 	auto scoreTextTransformComponent = componentCollection->NewComponent<TransformComponent>("Score");
 	auto scoreGraphicsComponent = componentCollection->NewComponent<GraphicsComponent>("Score"); 
 
-	scoreTextTransformComponent->position = Vector2D(10.0f, 10.0f); 
+	scoreTextTransformComponent->position = Vector2D(15.0f, 10.0f); 
 	scoreGraphicsComponent->transformComponent = scoreTextTransformComponent; 
 	scoreGraphicsComponent->resourceId = textGraphicResourceId; 
-
+	
+	/* Create the snake */
+	componentCollection->NewCollection("Snake");
+	 
 	auto snakeHead = componentCollection->NewComponent<TransformComponent>("Snake");
 	auto snakeHeadGraphics = componentCollection->NewComponent<GraphicsComponent>("Snake");
 
+	this->snakeGraphicId = graphics->AddGraphicsResource(new RectGraphicsResource(8.0f, 8.0f, 0xff, 0xff, 0xff, 0xff));
+
 	snakeHead->position = headStartPos;
 	snakeHeadGraphics->transformComponent = snakeHead;
-	snakeHeadGraphics->resourceId = snakeGraphicId;
+	snakeHeadGraphics->resourceId = this->snakeGraphicId;
 
 	auto lastPos = snakeHead->position;
 
@@ -68,6 +74,11 @@ SnakeAction::SnakeAction(IGameApp* gameApp)
 	}
 
 	this->sdlEventCollector.RegisterListener<ButtonEventArgs>(bind(&SnakeAction::OnButtonEvent, this, placeholders::_1));
+
+	auto physicsTask = new IntersectionTask("Food", "Snake"); 
+
+	physics->AddPhysicsTask(physicsTask); 
+	physicsTask->RegisterListener<IntersectionEventArgs>(bind(&SnakeAction::OnEatFood, this, placeholders::_1)); 
 }
 //---------------------------------------------------------------------------
 // Name: Update
@@ -108,21 +119,6 @@ void SnakeAction::Update(IGameApp* gameApp)
 			lastPos = (*transformComponents)[i].position;
 			(*transformComponents)[i].position = nextPos;
 			nextPos = lastPos;
-		}
-
-		// see if we ate anything
-		if (headTransform.position == foodTransform.position) {
-
-			this->snakeScore++;
-
-			this->textGraphicResource->SetText(to_string(this->snakeScore)); 
-
-			auto newSnakePart = componentCollectionRepository->NewComponent<TransformComponent>("Snake"); 
-			auto newSnakeGraphic = componentCollectionRepository->NewComponent<GraphicsComponent>("Snake"); 
-
-			newSnakePart->position = lastPos;
-			newSnakeGraphic->transformComponent = newSnakePart; 
-			newSnakeGraphic->resourceId = 0; 
 		}
 	}
 }
@@ -169,5 +165,31 @@ void SnakeAction::OnButtonEvent(const ButtonEventArgs& buttonEventArgs)
 			this->currentSnakeDirection = SNAKE_RIGHT;
 			break;
 		}
+	}
+}
+//---------------------------------------------------------------------------
+// Name: OnEatFood
+// Desc:
+//---------------------------------------------------------------------------
+void SnakeAction::OnEatFood(const IntersectionEventArgs& intersectionEventArgs)
+{
+	auto componentCollectionRepository = this->gameApp->GetComponentCollectionRepository(); 
+
+	auto snakeComponents = componentCollectionRepository->SelectFromCollection<TransformComponent>("Snake"); 
+	auto snakeHeadId = snakeComponents->front().id; 
+
+	if (intersectionEventArgs.TransformComponent1()->id == snakeHeadId 
+		|| intersectionEventArgs.TransformComponent2()->id == snakeHeadId) {
+		
+		this->snakeScore++;
+
+		this->textGraphicResource->SetText(to_string(this->snakeScore));
+
+		auto newSnakePart = componentCollectionRepository->NewComponent<TransformComponent>("Snake");
+		auto newSnakeGraphic = componentCollectionRepository->NewComponent<GraphicsComponent>("Snake");
+
+		newSnakePart->position = snakeComponents->back().position;
+		newSnakeGraphic->transformComponent = newSnakePart;
+		newSnakeGraphic->resourceId = this->snakeGraphicId;
 	}
 }

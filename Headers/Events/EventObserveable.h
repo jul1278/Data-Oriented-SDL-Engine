@@ -1,8 +1,10 @@
 #ifndef EVENT_OBSERVEABLE_H
 #define EVENT_OBSERVEABLE_H
+
+#include "Events/ITaskEvent.h"
+
 #include <map>
 #include <typeindex>
-#include "TaskEvent.h"
 
 using namespace std;
 
