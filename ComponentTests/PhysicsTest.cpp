@@ -6,6 +6,7 @@
 #include "Components/PhysicsComponent.h"
 #include "Components/TransformComponent.h"
 #include "Components/VelocityComponent.h"
+#include <Physics/CollisionPhysicsTask.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -108,9 +109,12 @@ namespace PhysicsTest
 			phys2->transformComponent = trans2; 
 
 			auto physics = Physics(10, 10); 
-			auto taskResult = physics.AddSolveCollisionTask("Collection1", "Collection2"); 
 
-			taskResult->operator+=(bind(&PhysicsTest::OnCollision, this, placeholders::_1));
+			auto physicsTask = new CollisionPhysicsTask("Collection1", "Collection2"); 
+
+			physics.AddPhysicsTask(physicsTask); 
+
+			physicsTask->RegisterListener<CollisionEventArgs>(bind(&PhysicsTest::OnCollision, this, placeholders::_1));
 
 			physics.ExecuteTasks(&componentCollectionRepository); 
 
@@ -147,9 +151,12 @@ namespace PhysicsTest
 			phys2->transformComponent = trans2;
 
 			auto physics = Physics(10, 10);
-			auto taskResult = physics.AddSolveCollisionTask("Collection1", "Collection2");
 
-			taskResult->operator+=(bind(&PhysicsTest::OnCollision, this, placeholders::_1));
+			auto physicsTask = new CollisionPhysicsTask("Collection1", "Collection2"); 
+
+			physics.AddPhysicsTask(physicsTask);
+
+			physicsTask->RegisterListener<CollisionEventArgs>(bind(&PhysicsTest::OnCollision, this, placeholders::_1));
 
 			physics.ExecuteTasks(&componentCollectionRepository);
 
