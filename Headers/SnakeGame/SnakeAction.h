@@ -28,7 +28,6 @@ public:
 
 	SnakeAction(IGameApp* gameApp);
 
-	static void SpawnFood(IGameApp* gameApp);
 	void Update(IGameApp* gameApp) override;
 	void OnButtonEvent(const ButtonEventArgs& buttonEventArgs); 
 };
