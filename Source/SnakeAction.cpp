@@ -6,6 +6,7 @@
 #include "Events/IntersectionEventArgs.h"
 #include "Physics/IntersectionTask.h"
 #include "Events/ButtonEventArgs.h"
+#include "Events/QuitApplicationEventArgs.h"
 #include "Graphics/RectGraphicsResource.h"
 #include "Graphics/TextGraphicsResource.h"
 #include "Components/GraphicsComponent.h"
@@ -74,11 +75,11 @@ SnakeAction::SnakeAction(IGameApp* gameApp)
 	}
 
 	this->sdlEventCollector.RegisterListener<ButtonEventArgs>(bind(&SnakeAction::OnButtonEvent, this, placeholders::_1));
+	this->sdlEventCollector.RegisterListener<QuitApplicationEventArgs>(bind(&SnakeAction::OnQuitApplication, this, placeholders::_1));
 
 	auto physicsTask = new IntersectionTask("Food", "Snake"); 
-
 	physics->AddPhysicsTask(physicsTask); 
-	physicsTask->RegisterListener<IntersectionEventArgs>(bind(&SnakeAction::OnEatFood, this, placeholders::_1)); 
+	physicsTask->RegisterListener<IntersectionEventArgs>(bind(&SnakeAction::OnEatFood, this, placeholders::_1));
 }
 //---------------------------------------------------------------------------
 // Name: Update
@@ -192,4 +193,12 @@ void SnakeAction::OnEatFood(const IntersectionEventArgs& intersectionEventArgs)
 		newSnakeGraphic->transformComponent = newSnakePart;
 		newSnakeGraphic->resourceId = this->snakeGraphicId;
 	}
+}
+//---------------------------------------------------------------------------
+// Name: OnQuitApplication
+// Desc:
+//---------------------------------------------------------------------------
+void SnakeAction::OnQuitApplication(const QuitApplicationEventArgs& quitApplicationEventArgs)
+{
+	this->gameApp->PopStage(); 
 }

@@ -6,9 +6,11 @@
 #include "Graphics/TextGraphicsResource.h"
 #include "Events/MouseButtonEventArgs.h"
 #include "Events/MouseMotionEventArgs.h"
+#include "Events/QuitApplicationEventArgs.h"
 #include "Components/GraphicsComponent.h"
 #include "Components/SimpleButtonComponent.h"
 #include "Components/TransformComponent.h"
+#include <SnakeGame/SnakeGameStage.h>
 
 //----------------------------------------------------------------------------------------
 // Name: SnakeGameMenuStage
@@ -43,8 +45,14 @@ SnakeGameMenuStage::SnakeGameMenuStage(IGameApp* gameApp)
 	newGameButtonComponent->transformComponent = newGameTextTransform;
 	newGameButtonComponent->size = buttonGraphicsComponent->GetSize();
 
-	this->sdlEventCollector->RegisterMouseClickHandler(newGameButtonComponent, bind(&SnakeGameMenuStage::OnMenuStartGameClick, this, placeholders::_1));
-	this->sdlEventCollector->RegisterMouseOverHandler(newGameButtonComponent, bind(&SnakeGameMenuStage::OnMenuStartGameMouseOver, this, placeholders::_1));
+	this->sdlEventCollector->RegisterMouseClickHandler(
+		newGameButtonComponent, bind(&SnakeGameMenuStage::OnMenuStartGameClick, this, placeholders::_1));
+	
+	this->sdlEventCollector->RegisterMouseOverHandler(
+		newGameButtonComponent, bind(&SnakeGameMenuStage::OnMenuStartGameMouseOver, this, placeholders::_1));
+	
+	this->sdlEventCollector->RegisterListener<QuitApplicationEventArgs>(
+		bind(&SnakeGameMenuStage::OnQuitApplication, this, placeholders::_1));
 }
 //----------------------------------------------------------------------------------------
 // Name: ~SnakeGameMenuStage
@@ -82,6 +90,7 @@ void SnakeGameMenuStage::OnMenuStartGameClick(const MouseButtonEventArgs& mouseB
 {
 	if (mouseButtonEventArgs.MouseButton() == LEFT_BUTTON && mouseButtonEventArgs.Released()) {
 		this->gameApp->PopStage();
+		this->gameApp->PushStage(new SnakeGameStage(this->gameApp)); 
 	}
 }
 //----------------------------------------------------------------------------------------
@@ -98,4 +107,12 @@ void SnakeGameMenuStage::OnMenuStartGameMouseOver(const MouseMotionEventArgs& mo
 	else {
 		startGameButton->front().transformComponent->scale = Vector2D(1.0f, 1.0f);
 	}
+}
+//----------------------------------------------------------------------------------------
+// Name: OnQuitApplication
+// Desc: 
+//----------------------------------------------------------------------------------------
+void SnakeGameMenuStage::OnQuitApplication(const QuitApplicationEventArgs& quitApplicationEventArgs) const
+{
+	this->gameApp->PopStage(); 
 }

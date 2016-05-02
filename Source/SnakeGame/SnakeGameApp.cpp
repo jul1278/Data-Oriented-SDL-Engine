@@ -20,11 +20,7 @@ SnakeGameApp::SnakeGameApp()
 	this->graphics = new Graphics(this->windowWidth, this->windowHeight, this->appName);
 	this->physics = new Physics(this->windowWidth, this->windowHeight);
 
-	this->snakeGameStage = new SnakeGameStage(this);
-	this->snakeGameMenu = new SnakeGameMenuStage(this);
-
-	this->PushStage(this->snakeGameMenu);
-	this->PushStage(this->snakeGameStage);
+	this->PushStage(new SnakeGameMenuStage(this));
 }
 //------------------------------------------------------------------------------------
 // Name: SnakeGameApp

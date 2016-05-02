@@ -4,6 +4,7 @@
 #include "Actions/IAction.h"
 #include "Events/SDLEventCollector.h"
 
+class QuitApplicationEventArgs;
 class IntersectionEventArgs;
 class ComponentCollectionRepository;
 class IGameApp; 
@@ -39,6 +40,7 @@ public:
 
 	void OnButtonEvent(const ButtonEventArgs& buttonEventArgs); 
 	void OnEatFood(const IntersectionEventArgs& intersectionEventArgs); 
+	void OnQuitApplication(const QuitApplicationEventArgs& quitApplicationEventArgs); 
 };
 
 #endif // SNAKE_ACTION_H
