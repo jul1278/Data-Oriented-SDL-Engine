@@ -1,7 +1,7 @@
 #ifndef EVENT_OBSERVEABLE_H
 #define EVENT_OBSERVEABLE_H
 
-#include "Events/ITaskEvent.h"
+#include "Events/TaskEvent.h"
 
 #include <map>
 #include <typeindex>

@@ -40,6 +40,7 @@ namespace SDLEventTest
 
 			mouseButtonEvent.type = SDL_MOUSEBUTTONDOWN;
 			mouseButtonEvent.button.button = SDL_BUTTON_LEFT; 
+			mouseButtonEvent.button.state = SDL_RELEASED; 
 			mouseButtonEvent.motion.x = 10; 
 			mouseButtonEvent.motion.y = 10; 
 
@@ -54,7 +55,7 @@ namespace SDLEventTest
 		void MouseButtonHandler(const MouseButtonEventArgs& mouseButtonEventArgs)
 		{
 			if (mouseButtonEventArgs.MouseButton() == LEFT_BUTTON) {
-				if (!mouseButtonEventArgs.Released()) {
+				if (mouseButtonEventArgs.Released()) {
 					this->leftMouseButtonPressed = true;
 				}
 			}
@@ -94,7 +95,7 @@ namespace SDLEventTest
 
 		//-----------------------------------------------------------------------------
 		// Name: SDL_MouseButtonOverEvent
-		// Desc: 		
+		// Desc: when the mouse clicks within a certain area	
 		//-----------------------------------------------------------------------------
 		TEST_METHOD(SDL_MouseButtonOverEvent)
 		{
@@ -104,6 +105,7 @@ namespace SDLEventTest
 			SDLEventCollector sdlEventCollector; 
 			
 			mouseButtonEvent.type = SDL_MOUSEBUTTONDOWN;
+			mouseButtonEvent.motion.state = SDL_RELEASED; 
 			mouseButtonEvent.motion.x = 12;
 			mouseButtonEvent.motion.y = 12;
 			mouseButtonEvent.motion.xrel = 0;

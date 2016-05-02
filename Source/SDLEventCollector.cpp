@@ -180,14 +180,8 @@ void SDLEventCollector::MouseButtonEvent(const SDL_Event& sdlEvent)
 
 	Vector2D currentPosition; 
 
-	// HACK: y number seems to be missing on SDL_RELEASED
-	if (sdlEvent.button.state != SDL_RELEASED) {
-		this->lastMouseY = sdlEvent.button.y; 
-		currentPosition = Vector2D(sdlEvent.button.x, sdlEvent.button.y);
-	} else {
-		currentPosition = Vector2D(sdlEvent.button.x, this->lastMouseY);
-	}
-	
+	currentPosition = Vector2D(sdlEvent.button.x, sdlEvent.button.y);
+
 	auto released = (sdlEvent.button.state == SDL_RELEASED);
 	auto button = (sdlEvent.button.button == SDL_BUTTON_LEFT) ? LEFT_BUTTON : RIGHT_BUTTON;
 
