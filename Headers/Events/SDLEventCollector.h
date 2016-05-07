@@ -2,6 +2,9 @@
 #define SDL_EVENT_COLLECTOR_H
 
 #include "Events/EventObserveable.h"
+#include <thread>
+#include <mutex>
+#include <condition_variable>
 
 union SDL_Event;
 struct SDL_Rect;

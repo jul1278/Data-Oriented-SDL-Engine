@@ -7,8 +7,6 @@
 #include "Game/IStage.h"
 #include <queue>
 
-class ComponentCollectionRepository;
-class Physics;
 class Graphics;
 
 using namespace std;
@@ -35,7 +33,7 @@ public:
 	void Run()
 	{
 		while (!stageQueue.empty()) {
-			stageQueue.front()->Update(this); 
+			stageQueue.front()->Update(); 
 		}
 	}
 
@@ -52,9 +50,9 @@ public:
 		this->stageQueue.pop(); 
 	}
 
+	// Don't want the base class to store graphics for now, 
+	// but make sure derived classes have to. 
 	virtual Graphics* GetGraphics() = 0;
-	virtual Physics* GetPhysics() = 0;
-	virtual ComponentCollectionRepository* GetComponentCollectionRepository() = 0;
 };
 
 #endif // I_GAME_APP_H

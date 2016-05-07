@@ -23,6 +23,8 @@ public:
 		this->height = height;
 	}
 
+	~Physics();
+
 	void AddPhysicsTask(IPhysicsTask* physicsTask); 
 
 	void ExecuteTasks(ComponentCollectionRepository* componentCollectionRepository); 

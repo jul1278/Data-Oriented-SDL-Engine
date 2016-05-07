@@ -1,7 +1,7 @@
 #ifndef IACTION_H
 #define IACTION_H
 
-class IGameApp; 
+class IStage; 
 
 class IAction
 {
@@ -9,10 +9,10 @@ private:
 
 public:
 
-	IAction() {}; 
+	IAction(IStage* stage) {};
 	virtual ~IAction() {};
 
-	virtual void Update(IGameApp* gameApp) = 0; 
+	virtual void Update() = 0; 
 };
 
 #endif // IACTION_H

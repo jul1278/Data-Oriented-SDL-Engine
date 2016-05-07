@@ -12,6 +12,7 @@
 #include "Components/GraphicsComponent.h"
 #include "Graphics/RectGraphicsResource.h"
 #include "Physics/IntersectionTask.h"
+#include "SnakeGame/SnakeEatFoodTask.h"
 
 #include <math.h>
 
@@ -24,17 +25,15 @@ class FoodAction : public IAction
 	int width;
 	int height;
 
-	IGameApp* gameApp; 
+	IStage* stage; 
 
 	int goalX; 
 	int goalY; 
 
-	void SpawnFood(IGameApp* gameApp)
+	void SpawnFood() const
 	{
-		this->gameApp = gameApp; 
-
-		auto graphics = gameApp->GetGraphics();
-		auto componentCollections = gameApp->GetComponentCollectionRepository();
+		auto graphics = this->stage->GetGameApp()->GetGraphics();
+		auto componentCollections = this->stage->GetComponentCollectionRepository();
 
 		auto width = graphics->WindowWidth();
 		auto height = graphics->WindowHeight();
@@ -65,17 +64,19 @@ class FoodAction : public IAction
 
 public:
 	
-	FoodAction(IGameApp* gameApp)
+	FoodAction(IStage* stage) : IAction(stage)
 	{
+		this->stage = stage; 
+
 		this->stepCounter = 0;
 		this->updateCounter = 0; 
 
-		width = gameApp->GetGraphics()->WindowWidth(); 
-		height = gameApp->GetGraphics()->WindowHeight(); 
+		width = stage->GetGameApp()->GetGraphics()->WindowWidth(); 
+		height = stage->GetGameApp()->GetGraphics()->WindowHeight(); 
 
-		auto componentCollection = gameApp->GetComponentCollectionRepository(); 
-		auto graphics = gameApp->GetGraphics(); 
-		auto physics = gameApp->GetPhysics(); 
+		auto componentCollection = stage->GetComponentCollectionRepository();
+		auto graphics = stage->GetGameApp()->GetGraphics();
+		auto physics = stage->GetPhysics();
 
 		componentCollection->NewCollection("Food");
 		
@@ -89,18 +90,16 @@ public:
 		foodGraphic->resourceId = foodGraphicId;
 		foodGraphic->transformComponent = foodPos;
 
-		this->SpawnFood(gameApp);
+		this->SpawnFood();
 
-		auto intersectionTask = new IntersectionTask("Food", "Snake"); 
-
-		physics->AddPhysicsTask(intersectionTask); 
-
-		intersectionTask->RegisterListener<IntersectionEventArgs>(bind(&FoodAction::OnSnakeIntersection, this, placeholders::_1)); 
+		auto eatFoodTask = new SnakeEatFoodTask(); 
+		physics->AddPhysicsTask(eatFoodTask); 
+		eatFoodTask->RegisterListener<IntersectionEventArgs>(bind(&FoodAction::OnSnakeIntersection, this, placeholders::_1));
 	}
 
 	~FoodAction() override { }
 
-	void Update(IGameApp* gameApp) override
+	void Update() override
 	{
 		this->stepCounter++;
 
@@ -112,9 +111,7 @@ public:
 
 		this->updateCounter++; 
 
-		this->gameApp = gameApp; 
-
-		auto components = gameApp->GetComponentCollectionRepository();
+		auto components = stage->GetComponentCollectionRepository();
 		auto& foodTransform = components->SelectFromCollection<TransformComponent>("Food")->front();
 
 		auto diffX = foodTransform.position.x - this->goalX; 
@@ -140,15 +137,14 @@ public:
 		}		
 	}
 	
-	void OnSnakeIntersection(const IntersectionEventArgs& intersectionEventArgs)
+	void OnSnakeIntersection(const IntersectionEventArgs& intersectionEventArgs) const
 	{
-		auto components = this->gameApp->GetComponentCollectionRepository(); 
+		auto components = this->stage->GetComponentCollectionRepository(); 
 		auto snakeHead = components->SelectFromCollection<TransformComponent>("Snake")->front(); 
 
 		if (intersectionEventArgs.TransformComponent1()->id == snakeHead.id 
 			|| intersectionEventArgs.TransformComponent2()->id == snakeHead.id) {
-			this->SpawnFood(this->gameApp);
-
+			this->SpawnFood();
 		}
 	}
 };

@@ -20,7 +20,7 @@ class SnakeAction : public IAction
 {
 private:
 
-	IGameApp* gameApp;
+	IStage* stage; 
 
 	int snakeScore;
 	int snakeLength;
@@ -34,13 +34,15 @@ private:
 
 public:
 
-	SnakeAction(IGameApp* gameApp);
+	SnakeAction(IStage* stage);
 
-	void Update(IGameApp* gameApp) override;
+	void Update() override;
 
 	void OnButtonEvent(const ButtonEventArgs& buttonEventArgs); 
 	void OnEatFood(const IntersectionEventArgs& intersectionEventArgs); 
-	void OnQuitApplication(const QuitApplicationEventArgs& quitApplicationEventArgs); 
+	void OnEatSelf(const IntersectionEventArgs& intersectionEventArgs); 
+
+	void OnQuitApplication(const QuitApplicationEventArgs& quitApplicationEventArgs) const; 
 };
 
 #endif // SNAKE_ACTION_H

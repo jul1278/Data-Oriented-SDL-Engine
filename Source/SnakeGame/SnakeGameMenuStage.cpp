@@ -10,19 +10,31 @@
 #include "Components/GraphicsComponent.h"
 #include "Components/SimpleButtonComponent.h"
 #include "Components/TransformComponent.h"
-#include <SnakeGame/SnakeGameStage.h>
+#include "SnakeGame/SnakeGameStage.h"
 
 //----------------------------------------------------------------------------------------
 // Name: SnakeGameMenuStage
 // Desc: 
 //----------------------------------------------------------------------------------------
-SnakeGameMenuStage::SnakeGameMenuStage(IGameApp* gameApp)
+SnakeGameMenuStage::SnakeGameMenuStage(IGameApp* gameApp) 
+	: IStage(gameApp, new ComponentCollectionRepository, 
+	new Physics(gameApp->GetGraphics()->WindowWidth(), gameApp->GetGraphics()->WindowHeight()))
 {
-	auto graphics = gameApp->GetGraphics();
-	this->componentCollectionRepository = gameApp->GetComponentCollectionRepository();
 	this->gameApp = gameApp;
-	this->sdlEventCollector = new SDLEventCollector();
+	this->Setup();
+}
+//----------------------------------------------------------------------------------------
+// Name: Setup
+// Desc: 
+//----------------------------------------------------------------------------------------
+void SnakeGameMenuStage::Setup()
+{
+	auto componentCollectionRepository = this->GetComponentCollectionRepository(); 
 
+	auto graphics = this->GetGameApp()->GetGraphics(); 
+	
+	this->sdlEventCollector = new SDLEventCollector();
+	
 	this->stageHeight = graphics->WindowHeight();
 	this->stageWidth = graphics->WindowWidth();
 
@@ -68,10 +80,10 @@ SnakeGameMenuStage::~SnakeGameMenuStage()
 // Name: Update
 // Desc: 
 //----------------------------------------------------------------------------------------
-void SnakeGameMenuStage::Update(IGameApp* gameApp)
+void SnakeGameMenuStage::Update()
 {
 	auto graphics = gameApp->GetGraphics();
-	auto componentCollectionRepository = gameApp->GetComponentCollectionRepository();
+	auto componentCollectionRepository = this->GetComponentCollectionRepository();
 
 	auto transformComponents = componentCollectionRepository->SelectFromCollection<TransformComponent>("MainMenu");
 	auto graphicsComponents = componentCollectionRepository->SelectFromCollection<GraphicsComponent>("MainMenu");
@@ -90,7 +102,7 @@ void SnakeGameMenuStage::OnMenuStartGameClick(const MouseButtonEventArgs& mouseB
 {
 	if (mouseButtonEventArgs.MouseButton() == LEFT_BUTTON && mouseButtonEventArgs.Released()) {
 		this->gameApp->PopStage();
-		this->gameApp->PushStage(new SnakeGameStage(this->gameApp)); 
+		this->gameApp->PushStage(new SnakeGameStage(this->gameApp));
 	}
 }
 //----------------------------------------------------------------------------------------
@@ -99,7 +111,7 @@ void SnakeGameMenuStage::OnMenuStartGameClick(const MouseButtonEventArgs& mouseB
 //----------------------------------------------------------------------------------------
 void SnakeGameMenuStage::OnMenuStartGameMouseOver(const MouseMotionEventArgs& mouseMotionEventArgs) const
 {
-	auto startGameButton = this->componentCollectionRepository->SelectFromCollection<SimpleButtonComponent>("MainMenu");
+	auto startGameButton = this->GetComponentCollectionRepository()->SelectFromCollection<SimpleButtonComponent>("MainMenu");
 
 	if (mouseMotionEventArgs.MouseOver()) {
 		startGameButton->front().transformComponent->scale = Vector2D(1.2f, 1.2f);

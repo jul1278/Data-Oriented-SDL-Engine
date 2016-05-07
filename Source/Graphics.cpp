@@ -174,16 +174,15 @@ SDL_Surface* Graphics::LoadSurface(std::string filename, SDL_PixelFormat* format
 //------------------------------------------------------------------------------------
 int Graphics::LoadGraphicResource(std::string fileName, std::string resourceName)
 {
-    SDL_Surface* surface = this->LoadSurface(fileName, this->sdlSurface->format);
+    auto surface = this->LoadSurface(fileName, this->sdlSurface->format);
 
     if (surface != nullptr) {
 
-        int id = GetNextResourceId();
+        auto id = GetNextResourceId();
 
-        IGraphicsResource* spriteGraphicsResource = new SpriteGraphicsResource(surface);
+        auto spriteGraphicsResource = new SpriteGraphicsResource(surface);
         this->graphicsResourceMap.insert(std::pair<int, IGraphicsResource*>(id, spriteGraphicsResource));
-        return id;
-
+		return id;
     }
 
     return -1;
@@ -194,7 +193,7 @@ int Graphics::LoadGraphicResource(std::string fileName, std::string resourceName
 //------------------------------------------------------------------------------------
 int Graphics::AddGraphicsResource(IGraphicsResource* graphicsResource)
 {
-    int resourceId = this->GetNextResourceId();
+    auto resourceId = this->GetNextResourceId();
     this->graphicsResourceMap.insert(pair<int, IGraphicsResource*>(resourceId, graphicsResource));
     return resourceId;
 }

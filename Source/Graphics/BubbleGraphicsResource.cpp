@@ -23,7 +23,6 @@ BubbleGraphicsResource::~BubbleGraphicsResource()
 	delete this->bubbleCircle;
 	delete this->bubbleHighlight;
 }
-
 //---------------------------------------------------------------------------
 // Name: Render
 // Desc: 

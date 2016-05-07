@@ -12,6 +12,9 @@
 #include "Components/GraphicsComponent.h"
 #include "Components/TransformComponent.h"
 #include "SnakeGame/SnakeAction.h"
+#include "SnakeGame/SnakeEatFoodTask.h"
+#include "SnakeGame/SnakeEatSelfTask.h"
+#include "SnakeGame/SnakeGameStage.h"
 
 #include <string>
 #include <iostream>
@@ -20,7 +23,7 @@
 // Name: SnakeAction 
 // Desc:
 //---------------------------------------------------------------------------
-SnakeAction::SnakeAction(IGameApp* gameApp)
+SnakeAction::SnakeAction(IStage* stage) : IAction(stage)
 {
 	this->snakeStartLength = 4;
 	this->snakeScore = 0;
@@ -28,11 +31,11 @@ SnakeAction::SnakeAction(IGameApp* gameApp)
 
 	this->currentSnakeDirection = SNAKE_LEFT;
 
-	this->gameApp = gameApp; 
+	this->stage = stage; 
 
-	auto graphics = gameApp->GetGraphics();
-	auto physics = gameApp->GetPhysics(); 
-	auto componentCollection = gameApp->GetComponentCollectionRepository();
+	auto graphics = stage->GetGameApp()->GetGraphics();
+	auto physics = stage->GetPhysics(); 
+	auto componentCollection = stage->GetComponentCollectionRepository();
 	
 	auto headStartPos = Vector2D(graphics->WindowWidth() / 2.0f, graphics->WindowHeight() / 2.0f);
 
@@ -77,17 +80,21 @@ SnakeAction::SnakeAction(IGameApp* gameApp)
 	this->sdlEventCollector.RegisterListener<ButtonEventArgs>(bind(&SnakeAction::OnButtonEvent, this, placeholders::_1));
 	this->sdlEventCollector.RegisterListener<QuitApplicationEventArgs>(bind(&SnakeAction::OnQuitApplication, this, placeholders::_1));
 
-	auto physicsTask = new IntersectionTask("Food", "Snake"); 
+	auto physicsTask = new SnakeEatFoodTask(); 
 	physics->AddPhysicsTask(physicsTask); 
 	physicsTask->RegisterListener<IntersectionEventArgs>(bind(&SnakeAction::OnEatFood, this, placeholders::_1));
+
+	auto eatSelfTask = new SnakeEatSelfTask(); 
+	physics->AddPhysicsTask(eatSelfTask); 
+	eatSelfTask->RegisterListener<IntersectionEventArgs>(bind(&SnakeAction::OnEatSelf, this, placeholders::_1)); 
 }
 //---------------------------------------------------------------------------
 // Name: Update
 // Desc:
 //---------------------------------------------------------------------------
-void SnakeAction::Update(IGameApp* gameApp) 
+void SnakeAction::Update() 
 {
-	auto componentCollectionRepository = gameApp->GetComponentCollectionRepository(); 
+	auto componentCollectionRepository = this->stage->GetComponentCollectionRepository(); 
 
 	auto transformComponents = componentCollectionRepository->SelectFromCollection<TransformComponent>("Snake");
 	auto graphicsComponents = componentCollectionRepository->SelectFromCollection<GraphicsComponent>("Snake");
@@ -174,31 +181,34 @@ void SnakeAction::OnButtonEvent(const ButtonEventArgs& buttonEventArgs)
 //---------------------------------------------------------------------------
 void SnakeAction::OnEatFood(const IntersectionEventArgs& intersectionEventArgs)
 {
-	auto componentCollectionRepository = this->gameApp->GetComponentCollectionRepository(); 
-
+	auto componentCollectionRepository = this->stage->GetComponentCollectionRepository(); 
 	auto snakeComponents = componentCollectionRepository->SelectFromCollection<TransformComponent>("Snake"); 
-	auto snakeHeadId = snakeComponents->front().id; 
+	
+	this->snakeScore++;
 
-	if (intersectionEventArgs.TransformComponent1()->id == snakeHeadId 
-		|| intersectionEventArgs.TransformComponent2()->id == snakeHeadId) {
-		
-		this->snakeScore++;
+	this->textGraphicResource->SetText(to_string(this->snakeScore));
 
-		this->textGraphicResource->SetText(to_string(this->snakeScore));
+	auto newSnakePart = componentCollectionRepository->NewComponent<TransformComponent>("Snake");
+	auto newSnakeGraphic = componentCollectionRepository->NewComponent<GraphicsComponent>("Snake");
 
-		auto newSnakePart = componentCollectionRepository->NewComponent<TransformComponent>("Snake");
-		auto newSnakeGraphic = componentCollectionRepository->NewComponent<GraphicsComponent>("Snake");
-
-		newSnakePart->position = snakeComponents->back().position;
-		newSnakeGraphic->transformComponent = newSnakePart;
-		newSnakeGraphic->resourceId = this->snakeGraphicId;
-	}
+	newSnakePart->position = snakeComponents->back().position;
+	newSnakeGraphic->transformComponent = newSnakePart;
+	newSnakeGraphic->resourceId = this->snakeGraphicId;	
+}
+//---------------------------------------------------------------------------
+// Name: OnEatSelf
+// Desc:
+//---------------------------------------------------------------------------
+void SnakeAction::OnEatSelf(const IntersectionEventArgs& intersectionEventArgs)
+{
+	this->stage->GetGameApp()->PopStage();
+	this->stage->GetGameApp()->PushStage(new SnakeGameStage(this->stage->GetGameApp())); 
 }
 //---------------------------------------------------------------------------
 // Name: OnQuitApplication
 // Desc:
 //---------------------------------------------------------------------------
-void SnakeAction::OnQuitApplication(const QuitApplicationEventArgs& quitApplicationEventArgs)
+void SnakeAction::OnQuitApplication(const QuitApplicationEventArgs& quitApplicationEventArgs) const
 {
-	this->gameApp->PopStage(); 
+	this->stage->GetGameApp()->PopStage();
 }

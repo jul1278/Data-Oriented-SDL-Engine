@@ -9,10 +9,11 @@
 // Name: SnakeGameStage
 // Desc:
 //-----------------------------------------------------------------------
-SnakeGameStage::SnakeGameStage(IGameApp* gameApp)
+SnakeGameStage::SnakeGameStage(IGameApp* gameApp) : IStage(gameApp, new ComponentCollectionRepository,
+	new Physics(gameApp->GetGraphics()->WindowWidth(), gameApp->GetGraphics()->WindowHeight()))
 {
-	this->snakeAction = new SnakeAction(gameApp);
-	this->foodAction = new FoodAction(gameApp); 
+	this->snakeAction = new SnakeAction(this);
+	this->foodAction = new FoodAction(this); 
 }
 //-----------------------------------------------------------------------
 // Name: ~SnakeGameStage
@@ -22,20 +23,21 @@ SnakeGameStage::~SnakeGameStage()
 {
 	delete this->snakeAction;
 }
+
 //-----------------------------------------------------------------------
 // Name: Update
 // Desc:
 //-----------------------------------------------------------------------
-void SnakeGameStage::Update(IGameApp* gameApp)
+void SnakeGameStage::Update()
 {
-	auto componentCollections = gameApp->GetComponentCollectionRepository();
-	auto graphics = gameApp->GetGraphics();
-	auto physics = gameApp->GetPhysics(); 
+	auto componentCollections = this->GetComponentCollectionRepository();
+	auto graphics = this->GetGameApp()->GetGraphics();
+	auto physics = this->GetPhysics();
 
-	physics->ExecuteTasks(componentCollections); 
+	physics->ExecuteTasks(componentCollections);
 
-	this->foodAction->Update(gameApp); 
-	this->snakeAction->Update(gameApp);
+	this->foodAction->Update();
+	this->snakeAction->Update();
 
 	auto graphicsComponents = componentCollections->SelectFromCollection<GraphicsComponent>("Snake");
 	auto transformComponents = componentCollections->SelectFromCollection<TransformComponent>("Snake");

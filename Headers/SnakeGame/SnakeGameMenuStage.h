@@ -11,26 +11,29 @@ class SDLEventCollector;
 
 class SnakeGameMenuStage : public IStage
 {
+public:
 
+private:
 	list<IAction*> actions;
 
 	int stageHeight;
 	int stageWidth;
 
 	SDLEventCollector* sdlEventCollector;
-	ComponentCollectionRepository* componentCollectionRepository;
 	IGameApp* gameApp;
+
+	void Setup();
 
 public:
 
 	SnakeGameMenuStage(IGameApp* gameApp);
 	~SnakeGameMenuStage();
 
-	void Update(IGameApp* gameApp) override final;
+	void Update() override final;
 
 	void OnMenuStartGameClick(const MouseButtonEventArgs& mouseButtonEventArgs) const;
 	void OnMenuStartGameMouseOver(const MouseMotionEventArgs& mouseMotionEventArgs) const;
-	void OnQuitApplication(const QuitApplicationEventArgs& quitApplicationEventArgs) const; 	
+	void OnQuitApplication(const QuitApplicationEventArgs& quitApplicationEventArgs) const; 
 };
 
 #endif // SNAKE_GAME_MENU_STAGE_H

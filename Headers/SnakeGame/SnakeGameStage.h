@@ -20,7 +20,7 @@ public:
 	
 	~SnakeGameStage(); 
 
-	void Update(IGameApp* gameApp) override final; 
+	void Update() override final; 
 
 };
 
