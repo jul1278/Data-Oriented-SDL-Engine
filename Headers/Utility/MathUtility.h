@@ -9,6 +9,7 @@
 
 #include <math.h>
 #include <random>
+#include <algorithm>
 
 using namespace std;
 
@@ -70,7 +71,7 @@ namespace MathUtility
 	{ 
 
 		if (left > right)
-			std::swap(left, right);
+			swap(left, right);
 	
 		if (step <= 0 || left == right || abs(left) + abs(right) < step)
 			return left;
@@ -79,7 +80,7 @@ namespace MathUtility
 		int aleft = abs(left);
 	
 		if (aleft > aright)
-			std::swap(aleft, aright);
+			swap(aleft, aright);
 	
 		int r = 1;
 		int c = 0;
@@ -99,11 +100,11 @@ namespace MathUtility
 	
 		if (rand() % 2) { // round down
 			r = (r / step) * step;
-			r = std::max(r, left);
+			r = max(r, left);
 		}
 		else { // round up
 			r = (r / step + 1) * step;
-			r = std::min(r, right + c);
+			r = min(r, right + c);
 		}
 	
 		r -= c;
