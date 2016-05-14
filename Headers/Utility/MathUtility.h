@@ -85,7 +85,7 @@ namespace MathUtility
 		int r = 1;
 		int c = 0;
 	
-		if (right <= 0 || left >= 0) { // if the interval is fully negative or fully positive
+		if (right <= 0 || left >= 0) {
 			left >= 0 ? r = 1 : r = -1;
 			r *= rand() % (aright - aleft) + aleft;
 		}
@@ -98,11 +98,11 @@ namespace MathUtility
 	
 		r += c;
 	
-		if (rand() % 2) { // round down
+		if (rand() % 2) {
 			r = (r / step) * step;
 			r = max(r, left);
 		}
-		else { // round up
+		else {
 			r = (r / step + 1) * step;
 			r = min(r, right + c);
 		}
