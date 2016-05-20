@@ -97,5 +97,25 @@ namespace ComponentTests
                 Assert::AreEqual(static_cast<unsigned int>(diff), sizeof(TransformComponent));
             }
         }
+		//-----------------------------------------------------------------------------
+		// Name: SelectById
+		// Desc: 		
+		//-----------------------------------------------------------------------------
+		TEST_METHOD(SelectComponentById)
+		{
+			ComponentCollectionRepository componentCollectionRepository; 
+
+			componentCollectionRepository.NewCollection("TestCollection");
+
+			auto component1 = componentCollectionRepository.NewComponent<TransformComponent>();
+			auto component2 = componentCollectionRepository.NewComponent<TransformComponent>();
+			auto component3 = componentCollectionRepository.NewComponent<TransformComponent>("TestCollection");
+
+			auto result = componentCollectionRepository.Select<TransformComponent>(component2->id); 
+
+			Assert::AreEqual(result->id, component2->id); 
+			Assert::AreNotEqual(result->id, component1->id); 
+			Assert::AreNotEqual(result->id, component3->id); 
+		}
 	};
 }

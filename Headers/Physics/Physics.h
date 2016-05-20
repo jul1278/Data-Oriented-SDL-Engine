@@ -11,6 +11,7 @@ class Physics
 private:
 
 	list<IPhysicsTask*> tasks; 
+	unordered_map<string, IPhysicsTask*> namedTasks; 
 
 	int width; 
 	int height;

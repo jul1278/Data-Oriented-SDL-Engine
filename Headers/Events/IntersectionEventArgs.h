@@ -14,7 +14,6 @@ private:
 public:
 
 	IntersectionEventArgs(TransformComponent* component1, TransformComponent* component2)
-		: IEventArgs(CollisionEvent)
 	{
 		this->component1 = component1; 
 		this->component2 = component2; 

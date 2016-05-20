@@ -33,10 +33,10 @@ void SnakeGameMenuStage::Setup()
 
 	auto graphics = this->GetGameApp()->GetGraphics(); 
 	
-	this->sdlEventCollector = new SDLEventCollector();
-	
 	this->stageHeight = graphics->WindowHeight();
 	this->stageWidth = graphics->WindowWidth();
+
+	this->sdlEventCollector = new SDLEventCollector(this->stageHeight, this->stageWidth);
 
 	// graphics owns this memory
 	auto buttonGraphicsComponent = new TextGraphicsResource("Start Game", "", 25);

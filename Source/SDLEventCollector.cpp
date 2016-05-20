@@ -19,14 +19,12 @@
 //-----------------------------------------------------------------------------------------------
 void SDLEventCollector::Update()
 {
-	SDL_Event sdlEvent;
+	SDL_Event event;
 
-	while (SDL_PollEvent(&sdlEvent)) {
-		this->sdlEvents.push_back(sdlEvent);
-	}
+	while (SDL_PollEvent(&event)) {
 
-	// check if there's a quit event
-	for (auto event : this->sdlEvents) {
+		this->sdlEvents.push_back(event);
+
 		if (event.type == SDL_QUIT) {
 			this->Invoke<QuitApplicationEventArgs>(QuitApplicationEventArgs());
 		}
@@ -42,9 +40,21 @@ void SDLEventCollector::Update()
 		if (event.type == SDL_MOUSEBUTTONUP || event.type == SDL_MOUSEBUTTONDOWN) {
 			this->MouseButtonEvent(event);
 		}
-	}
 
-	this->sdlEvents.clear(); 
+		if (event.type == SDL_CONTROLLERBUTTONDOWN) {
+			this->GameControllerButtonEvent(event); 
+		}
+	}
+}
+//-----------------------------------------------------------------------------------------------
+// Name: InitGameControllers
+// Desc: 
+//-----------------------------------------------------------------------------------------------
+void SDLEventCollector::InitGameControllers()
+{
+	if (SDL_NumJoysticks() > 0) {
+		this->gameController = SDL_GameControllerOpen(0); 
+	}
 }
 //-----------------------------------------------------------------------------------------------
 // Name: RegisterMouseOverHandler
@@ -111,19 +121,15 @@ void SDLEventCollector::ButtonEvent(const SDL_Event& sdlEvent)
 		case SDLK_LEFT:
 			this->Invoke<ButtonEventArgs>(ButtonEventArgs(LEFT_ARROW, released));
 			break;
-
 		case SDLK_RIGHT:
 			this->Invoke<ButtonEventArgs>(ButtonEventArgs(RIGHT_ARROW, released));
 			break;
-
 		case SDLK_UP:
 			this->Invoke<ButtonEventArgs>(ButtonEventArgs(UP_ARROW, released));
 			break;
-
 		case SDLK_DOWN:
 			this->Invoke<ButtonEventArgs>(ButtonEventArgs(DOWN_ARROW, released));
 			break;
-
 		default:
 			break;
 	}
@@ -138,34 +144,67 @@ void SDLEventCollector::MouseMotionEvent(const SDL_Event& sdlEvent)
 		return;
 	}
 
+	auto size = Vector2D(this->width, this->height);
+
 	auto currentPosition = Vector2D(sdlEvent.motion.x + sdlEvent.motion.xrel, sdlEvent.motion.y + sdlEvent.motion.yrel);
 	auto lastPosition = Vector2D(sdlEvent.motion.x, sdlEvent.motion.y);
-	auto delta = Vector2D(sdlEvent.motion.xrel, sdlEvent.motion.yrel); 
+	auto delta = Vector2D(sdlEvent.motion.xrel, sdlEvent.motion.yrel);
 
 	// invoke listeners that dont care where the mouse is
-	this->Invoke<MouseMotionEventArgs>(MouseMotionEventArgs(currentPosition, lastPosition)); 
+	this->Invoke<MouseMotionEventArgs>(MouseMotionEventArgs(currentPosition, lastPosition, size));
 
 	for (auto rectNamePair : this->mouseOverNames) {
-		auto rect = get<0>(rectNamePair); 
+		auto rect = get<0>(rectNamePair);
 		auto name = get<1>(rectNamePair);
 
-		if (currentPosition.x > rect.x && currentPosition.x < (rect.x + rect.w) && 
+		if (currentPosition.x > rect.x && currentPosition.x < (rect.x + rect.w) &&
 			currentPosition.y > rect.y && currentPosition.y < (rect.y + rect.h)) {
 
 			if (this->mouseOverNameState[name] == false) {
 				this->mouseOverNameState[name] = true;
-				this->InvokeGroup<MouseMotionEventArgs>(name, MouseMotionEventArgs(currentPosition, lastPosition, true)); 
+				this->InvokeGroup<MouseMotionEventArgs>(name, MouseMotionEventArgs(currentPosition, lastPosition, size, true));
 			}
-
-		} else {
+		}
+		else {
 
 			// if we exit
 			if (this->mouseOverNameState[name]) {
-				this->InvokeGroup<MouseMotionEventArgs>(name, MouseMotionEventArgs(currentPosition, lastPosition, false));
+				this->InvokeGroup<MouseMotionEventArgs>(name, MouseMotionEventArgs(currentPosition, lastPosition, size, false));
 			}
 
 			this->mouseOverNameState[name] = false;
 		}
+	}
+}
+//-----------------------------------------------------------------------------------------------
+// Name: MouseButtonEvent
+// Desc: 
+//-----------------------------------------------------------------------------------------------
+void SDLEventCollector::GameControllerButtonEvent(const SDL_Event& sdlEvent)
+{
+	/*if (sdlEvent.type != SDL_CONTROLLERBUTTONDOWN || sdlEvent.type != SDL_CONTROLLERBUTTONUP) {
+		return; 
+	}
+	*/
+
+	auto released = sdlEvent.cbutton.state; 
+
+	switch (sdlEvent.cbutton.button) {
+
+	case 2: // d pad left
+		this->Invoke<ButtonEventArgs>(ButtonEventArgs(LEFT_ARROW, released));
+		break;
+	case 3: // d pad right
+		this->Invoke<ButtonEventArgs>(ButtonEventArgs(RIGHT_ARROW, released));
+		break;
+	case 0: // d pad up
+		this->Invoke<ButtonEventArgs>(ButtonEventArgs(UP_ARROW, released));
+		break;
+	case 1: // d pad down
+		this->Invoke<ButtonEventArgs>(ButtonEventArgs(DOWN_ARROW, released));
+		break;
+	default:
+		break;
 	}
 }
 //-----------------------------------------------------------------------------------------------

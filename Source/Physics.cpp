@@ -37,7 +37,7 @@ void Physics::ExecuteTasks(ComponentCollectionRepository* componentCollectionRep
 //-------------------------------------------------------------------------------
 void Physics::SolveAsteroidPhysics(ComponentCollectionRepository* componentCollectionRepository) const
 {
-#pragma message ("WARNING: "__FUNCTION__" is deprecated.")
+#pragma message ("WARNING: "__FILE__ "  -  " __FUNCTION__" is deprecated.")
 
 	auto asteroidPhysicsComponents = componentCollectionRepository->SelectFromCollection<PhysicsComponent>("EnemyAsteroids");
 	auto playerPhysicsComponents = componentCollectionRepository->SelectFromCollection<PhysicsComponent>("PlayerSpaceShip");

@@ -15,15 +15,12 @@ namespace EventTest
 	public:
 
 		explicit TestEventArgs(int eventData)
-			: IEventArgs(ButtonEvent)
 		{
 			this->eventData = eventData; 
 		}
 
 		int eventData; 
-
 	};
-
 
 	TEST_CLASS(EventTests)
 	{
@@ -74,9 +71,6 @@ namespace EventTest
 			if (buttonEventArgs.Key() == UP_ARROW && buttonEventArgs.Released()) {
 				this->testButtonEventCalled = true; 
 			}
-
 		}
-
 	};
-
 }

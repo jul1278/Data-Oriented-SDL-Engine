@@ -13,7 +13,7 @@ public:
 	
 	CollisionEventArgs(PhysicsComponent* simplePhysicsComponent1, 
 		PhysicsComponent* simplePhysicsComponent2) 
-		: IEventArgs(CollisionEvent) 
+		
 	{
 		this->physicsComponent1 = simplePhysicsComponent1; 
 		this->physicsComponent2 = simplePhysicsComponent2; 

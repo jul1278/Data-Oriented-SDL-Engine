@@ -2,7 +2,6 @@
 #define MOUSE_BUTTON_EVENT_ARGS
 
 #include "Events/IEventArgs.h"
-#include "Events/EventTypes.h"
 #include "Utility/Vector.h"
 
 enum MouseButton
@@ -22,7 +21,7 @@ private:
 public:
 
 	explicit MouseButtonEventArgs(MouseButton mouseButton, bool released, Vector2D mousePosition)
-		: IEventArgs(MouseButtonEvent), mouseButton(mouseButton), released(released), mousePosition(mousePosition)
+		: mouseButton(mouseButton), released(released), mousePosition(mousePosition)
 	{}
 
 	MouseButton MouseButton() const

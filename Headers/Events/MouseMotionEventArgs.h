@@ -7,13 +7,19 @@
 class MouseMotionEventArgs : public IEventArgs
 {
 	Vector2D currentPosition;
-	Vector2D lastPosition; 
+	Vector2D lastPosition;
+	Vector2D size; 
 	bool mouseOver; 
+
+	Vector2D GetNormalized(Vector2D vector) const
+	{
+		return Vector2D(vector.x / this->size.x, vector.y / this->size.y); 
+	}
 
 public:
 
-	explicit MouseMotionEventArgs(Vector2D currentPosition, Vector2D lastPosition, bool mouseOver = false)
-		: IEventArgs(MouseMotionEvent), currentPosition(currentPosition), lastPosition(lastPosition), mouseOver(mouseOver)
+	explicit MouseMotionEventArgs(Vector2D currentPosition, Vector2D lastPosition, Vector2D size = Vector2D(1.0f, 1.0f), bool mouseOver = false)
+		: currentPosition(currentPosition), lastPosition(lastPosition), size(size), mouseOver(mouseOver)
 	{}
 
 	Vector2D CurrentPosition() const
@@ -21,14 +27,29 @@ public:
 		return this->currentPosition; 
 	}
 
+	Vector2D CurrentPositionNormalized() const
+	{
+		return this->GetNormalized(this->currentPosition);
+	}
+
 	Vector2D LastPosition() const
 	{
 		return this->lastPosition; 
 	}
 
+	Vector2D LastPositionNormalized() const
+	{
+		return this->GetNormalized(this->lastPosition); 
+	}
+
 	Vector2D Delta() const
 	{
 		return (this->currentPosition - this->lastPosition);
+	}
+
+	Vector2D DeltaNormalized() const
+	{
+		return this->GetNormalized(this->Delta()); 
 	}
 
 	bool MouseOver() const

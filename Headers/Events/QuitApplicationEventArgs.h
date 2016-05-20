@@ -7,7 +7,7 @@ class QuitApplicationEventArgs : public IEventArgs
 {
 public:
 
-	QuitApplicationEventArgs() : IEventArgs(QuitEvent) {}
+	QuitApplicationEventArgs() {}
 
 	~QuitApplicationEventArgs() {}
 };

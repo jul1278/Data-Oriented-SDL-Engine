@@ -27,7 +27,7 @@ private:
 	int snakeStartLength;
 
 	TextGraphicsResource* textGraphicResource;
-	SDLEventCollector sdlEventCollector;
+	SDLEventCollector* sdlEventCollector;
 	SnakeDirection currentSnakeDirection;
 	
 	int snakeGraphicId;
@@ -35,6 +35,8 @@ private:
 public:
 
 	SnakeAction(IStage* stage);
+
+	~SnakeAction(); 
 
 	void Update() override;
 

@@ -1,24 +1,15 @@
 #ifndef IEVENT_ARGS_H
 #define IEVENT_ARGS_H
 
-#include "EventTypes.h"
-
 class IEventArgs 
 {
 private:
 
-	EventType eventType; 
-
 public:
 
-	IEventArgs(EventType eventType)
-	{
-		this->eventType = eventType; 
-	}
+	IEventArgs() {}
 
 	virtual ~IEventArgs() {}; 
-
-	EventType GetEventType() { return this->eventType; }
 };
 
 #endif // IEVENT_ARGS_H

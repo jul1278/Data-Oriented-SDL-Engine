@@ -25,6 +25,8 @@
 //---------------------------------------------------------------------------
 SnakeAction::SnakeAction(IStage* stage) : IAction(stage)
 {
+	this->sdlEventCollector = new SDLEventCollector(stage->GetGameApp()->GetGraphics()->WindowWidth(), stage->GetGameApp()->GetGraphics()->WindowHeight());
+
 	this->snakeStartLength = 4;
 	this->snakeScore = 0;
 	this->snakeLength = this->snakeStartLength;
@@ -77,8 +79,11 @@ SnakeAction::SnakeAction(IStage* stage) : IAction(stage)
 		snakePartGraphics->resourceId = snakeGraphicId;
 	}
 
-	this->sdlEventCollector.RegisterListener<ButtonEventArgs>(bind(&SnakeAction::OnButtonEvent, this, placeholders::_1));
-	this->sdlEventCollector.RegisterListener<QuitApplicationEventArgs>(bind(&SnakeAction::OnQuitApplication, this, placeholders::_1));
+	auto buttonEventHandler = [this] (const ButtonEventArgs& args){this->OnButtonEvent(args); };
+	auto quitEventHandler = [this] (const QuitApplicationEventArgs& args) {this->OnQuitApplication(args); };
+
+	this->sdlEventCollector->RegisterListener<ButtonEventArgs>(buttonEventHandler);
+	this->sdlEventCollector->RegisterListener<QuitApplicationEventArgs>(quitEventHandler); 
 
 	auto physicsTask = new SnakeEatFoodTask(); 
 	physics->AddPhysicsTask(physicsTask); 
@@ -87,6 +92,14 @@ SnakeAction::SnakeAction(IStage* stage) : IAction(stage)
 	auto eatSelfTask = new SnakeEatSelfTask(); 
 	physics->AddPhysicsTask(eatSelfTask); 
 	eatSelfTask->RegisterListener<IntersectionEventArgs>(bind(&SnakeAction::OnEatSelf, this, placeholders::_1)); 
+}
+//---------------------------------------------------------------------------
+// Name: destructor
+// Desc:
+//---------------------------------------------------------------------------
+SnakeAction::~SnakeAction()
+{
+	delete this->sdlEventCollector; 
 }
 //---------------------------------------------------------------------------
 // Name: Update
@@ -100,7 +113,7 @@ void SnakeAction::Update()
 	auto graphicsComponents = componentCollectionRepository->SelectFromCollection<GraphicsComponent>("Snake");
 	auto foodTransform = componentCollectionRepository->SelectFromCollection<TransformComponent>("Food")->front(); 
 
-	this->sdlEventCollector.Update();
+	this->sdlEventCollector->Update();
 
 	if (!transformComponents->empty()) {
 		auto& headTransform = transformComponents->front();

@@ -11,6 +11,7 @@
 #include <iostream>
 #include <vector>
 #include <unordered_map>
+#include <Graphics/Camera.h>
 
 //------------------------------------------------------------------------------------
 // Name: LoadSurface
@@ -125,6 +126,10 @@ Graphics::Graphics(int windowWidth, int windowHeight, std::string appName)
 //------------------------------------------------------------------------------------
 Graphics::~Graphics()
 {
+	for (auto camera : this->cameras) {
+		delete camera; 
+	}
+
     // Free the surfaces
     for (std::pair<std::string, SDL_Surface*> resourceSurfaceMapElement : this->resourceSurfaceMap ) {
         SDL_FreeSurface(resourceSurfaceMapElement.second);
@@ -239,10 +244,28 @@ void Graphics::PrintConsoleText(const string& message)
 // Name: Clear
 // Desc:
 //------------------------------------------------------------------------------------
+void Graphics::AddCamera(Camera* camera)
+{
+	this->cameras.push_back(camera); 
+}
+//------------------------------------------------------------------------------------
+// Name: Clear
+// Desc:
+//------------------------------------------------------------------------------------
 void Graphics::Clear()
 {
 	SDL_SetRenderDrawColor(this->renderer, 0x00, 0x00, 0x00, 0xff);
 	SDL_RenderClear(this->renderer);
+}
+//------------------------------------------------------------------------------------
+// Name: RenderCameras
+// Desc:
+//------------------------------------------------------------------------------------
+void Graphics::RenderCameras()
+{
+	for (auto camera : this->cameras) {
+		camera->Render(); 
+	}
 }
 //------------------------------------------------------------------------------------
 // Name: UpdateGraphics
@@ -250,6 +273,10 @@ void Graphics::Clear()
 //------------------------------------------------------------------------------------
 void Graphics::UpdateGraphics(vector<GraphicsComponent>* graphicsComponents, vector<TransformComponent>* transformComponents)
 {
+	// TODO: should call the UpdateGraphics(vector<GraphicsComponent>*, vector<TransformComponent>*, TransformComponent*)
+	//	     with parent = (0,0) etc etc
+	//       this is probably faster though  
+
 	for (auto graphicsComponent : *graphicsComponents) {
 
 		TransformComponent* transformComponent = graphicsComponent.transformComponent;
@@ -259,6 +286,23 @@ void Graphics::UpdateGraphics(vector<GraphicsComponent>* graphicsComponents, vec
 
 		graphicsResource = this->graphicsResourceMap[graphicsResourceId];
 		graphicsResource->Render(this->renderer, transformComponent);
+	}
+}
+//------------------------------------------------------------------------------------
+// Name: UpdateGraphics
+// Desc:
+//------------------------------------------------------------------------------------
+void Graphics::UpdateGraphics(vector<GraphicsComponent>* graphicsComponents, vector<TransformComponent>* transformComponents, TransformComponent* parent)
+{
+	for (auto graphicsComponent : *graphicsComponents) {
+
+		TransformComponent* transformComponent = graphicsComponent.transformComponent;
+
+		IGraphicsResource* graphicsResource;
+		int graphicsResourceId = graphicsComponent.resourceId;
+
+		graphicsResource = this->graphicsResourceMap[graphicsResourceId];
+		graphicsResource->Render(this->renderer, transformComponent, parent);
 	}
 }
 //------------------------------------------------------------------------------------

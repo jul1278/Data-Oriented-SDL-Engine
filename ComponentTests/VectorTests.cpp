@@ -35,7 +35,7 @@ namespace VectorTests
 			Assert::AreEqual(a.y, 10.f); 
 		}
 
-		TEST_METHOD(VectorEqualityInEqualityTest)
+		TEST_METHOD(VectorEqualityAndInequalityTest)
 		{
 			auto a = Vector2D(5.0f, 5.0f); 
 			auto b = Vector2D(5.0f, 5.0f); 

@@ -10,6 +10,7 @@
 #include <vector>
 #include <typeindex>
 #include <type_traits>
+#include <algorithm>
 #include <list>
 
 using namespace std;
@@ -61,8 +62,8 @@ public:
 		newComponent = this->componentCollectionMap[collectionNameTemp]->NewComponent<T>();
 		newComponent->id = this->GetNextId();
 
-		//auto collection = componentCollectionMap[collectionNameTemp]; 
-		//this->idToCollectionMap[newComponent->id] = collection; 
+		auto collection = componentCollectionMap[collectionNameTemp]; 
+		this->idToCollectionMap[newComponent->id] = collection; 
 
 		return static_cast<T*>(newComponent);
 	}
@@ -100,9 +101,33 @@ public:
 	}
 
 	template<typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
+	T* Select(int id)
+	{
+		auto collection = this->idToCollectionMap[id]; 
+
+		if (collection != nullptr) {
+
+			vector<T>* vec = collection->Select<T>();
+
+			if (vec != nullptr) {
+				auto result = find_if(vec->begin(), vec->end(), [id](const T& c) {return (c.id == id); });
+
+				return &(*result);
+			}
+		}
+
+		return nullptr;
+	}
+
+	template<typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
     void InsertCollection(IVectorContainer* vectorContainer)
 	{
         this->componentTypeMap[type_index(typeid(T))].push_back(vectorContainer); 
+	}
+
+	void DeleteCollection(const string& name)
+	{
+		delete this->componentCollectionMap[name];
 	}
 
 	list<string> GetCollections()

@@ -36,7 +36,7 @@ namespace SDLEventTest
 		TEST_METHOD(SDL_MouseButtonEventTest)
 		{
 			SDL_Event mouseButtonEvent; 
-			SDLEventCollector sdlEventCollector;
+			SDLEventCollector sdlEventCollector(100, 100);
 
 			mouseButtonEvent.type = SDL_MOUSEBUTTONDOWN;
 			mouseButtonEvent.button.button = SDL_BUTTON_LEFT; 
@@ -67,7 +67,7 @@ namespace SDLEventTest
 		TEST_METHOD(SDL_MouseMotionEventTest)
 		{
 			SDL_Event mouseMotionEvent; 
-			SDLEventCollector sdlEventCollector; 
+			SDLEventCollector sdlEventCollector(100, 100); 
 
 			mouseMotionEvent.type = SDL_MOUSEMOTION; 
 			mouseMotionEvent.motion.x = 10; 
@@ -102,7 +102,7 @@ namespace SDLEventTest
 			this->mouseClickRect = false; 
 
 			SDL_Event mouseButtonEvent;
-			SDLEventCollector sdlEventCollector; 
+			SDLEventCollector sdlEventCollector(100, 100); 
 			
 			mouseButtonEvent.type = SDL_MOUSEBUTTONDOWN;
 			mouseButtonEvent.motion.state = SDL_RELEASED; 
@@ -133,7 +133,7 @@ namespace SDLEventTest
 			this->mouseOverRect = false;
 
 			SDL_Event mouseMotionEvent;
-			SDLEventCollector sdlEventCollector;
+			SDLEventCollector sdlEventCollector(100, 100);
 
 			mouseMotionEvent.type = SDL_MOUSEMOTION;
 			mouseMotionEvent.motion.x = 10;
@@ -166,7 +166,7 @@ namespace SDLEventTest
 			SDL_Event mouseMotionEvent2;
 			SDL_Event mouseMotionEvent3;
 
-			SDLEventCollector sdlEventCollector;
+			SDLEventCollector sdlEventCollector(100, 100);
 
 			mouseMotionEvent1.type = SDL_MOUSEMOTION;
 			mouseMotionEvent1.motion.x = 0;

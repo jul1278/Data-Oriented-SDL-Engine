@@ -32,7 +32,7 @@ public:
 		}
 	}
 
-	template<typename T>
+	template<typename T, typename = typename enable_if<is_base_of<IEventArgs, T>::value>::type>
 	void RegisterListener(function<void(const T&)> listener)
 	{
 		if (listenerMap.find(type_index(typeid(T))) == listenerMap.end()) {
@@ -43,7 +43,7 @@ public:
 		taskEvent->operator+=(listener); 
 	}
 
-	template<typename T>
+	template<typename T, typename = typename enable_if<is_base_of<IEventArgs, T>::value>::type>
 	void RegisterGroupListener(string groupName, function<void(const T&)> handler)
 	{
 		auto& group = this->namedListenerMap[type_index(typeid(T))];
@@ -57,7 +57,7 @@ public:
 		taskEvent->operator+=(handler); 
 	}
 
-	template<typename T>
+	template<typename T, typename = typename enable_if<is_base_of<IEventArgs, T>::value>::type>
 	void InvokeGroup(string groupName, T eventArgs)
 	{
 		auto group = this->namedListenerMap[type_index(typeid(T))]; 
@@ -67,7 +67,7 @@ public:
 		taskEvent->Invoke(eventArgs); 		
 	}
 
-	template<typename T>
+	template<typename T, typename = typename enable_if<is_base_of<IEventArgs, T>::value>::type>
 	void Invoke(T eventArgs)
 	{
 		if (listenerMap.find(type_index(typeid(T))) == listenerMap.end()) {
@@ -77,7 +77,6 @@ public:
 		TaskEvent<T>* taskEvent = dynamic_cast<TaskEvent<T>*>(listenerMap[type_index(typeid(T))]);
 		taskEvent->Invoke(eventArgs);
 	}
-
 };
 
 #endif // EVENT_OBSERVEABLE_H
