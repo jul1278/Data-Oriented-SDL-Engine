@@ -1,6 +1,10 @@
 # SimpleComponents
 Component-Based 2D game engine in SDL for a simple games. 
 
+If you'd like to know more about component based design, here's a few links to get started:
+- http://www.randygaul.net/2013/05/20/component-based-engine-design/
+- https://www.raywenderlich.com/24878/introduction-to-component-based-architecture-in-games
+
 # Build Instructions
 
 Can be fairly painlessly setup in visual studio (I'm using vs2013). 
