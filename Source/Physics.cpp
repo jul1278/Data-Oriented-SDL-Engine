@@ -51,20 +51,23 @@ void Physics::SolveAsteroidPhysics(ComponentCollectionRepository* componentColle
 	}
 
 	auto playerPhysicsComponent = playerPhysicsComponents->front();
+	auto playerTransformComponent = componentCollectionRepository->Select<TransformComponent>(playerPhysicsComponent.transformComponentId); 
 
 	for (auto physicsComponent : *asteroidPhysicsComponents) {
 
-		if (physicsComponent.transformComponent->position.x > this->width || physicsComponent.transformComponent->position.x <= 0 ||
-			physicsComponent.transformComponent->position.y > this->height || physicsComponent.transformComponent->position.y <= 0) {
+		if (playerTransformComponent->position.x > this->width || playerTransformComponent->position.x <= 0 ||
+			playerTransformComponent->position.y > this->height || playerTransformComponent->position.y <= 0) {
 
-			physicsComponent.transformComponent->position.x = MathUtility::RandomFloatUniformDist()*this->width;
-			physicsComponent.transformComponent->position.y = MathUtility::RandomFloatUniformDist()*this->height;
+			playerTransformComponent->position.x = MathUtility::RandomFloatUniformDist()*this->width;
+			playerTransformComponent->position.y = MathUtility::RandomFloatUniformDist()*this->height;
 
 			continue;
 		}
 
+		auto transformComponent = componentCollectionRepository->Select<TransformComponent>(physicsComponent.transformComponentId); 
+
 		// 
-		auto distVector = playerPhysicsComponent.transformComponent->position - physicsComponent.transformComponent->position;
+		auto distVector = playerTransformComponent->position - transformComponent->position;
 
 		// calculate acceleration on asteroids
 		auto accel = 10000.0f * physicsComponent.mass / (distVector.Length()*distVector.Length());
@@ -73,11 +76,11 @@ void Physics::SolveAsteroidPhysics(ComponentCollectionRepository* componentColle
 		physicsComponent.velocity.x += accel*cosf(angle);
 		physicsComponent.velocity.y += accel*sinf(angle);
 
-		physicsComponent.transformComponent->position.x += physicsComponent.velocity.x;
-		physicsComponent.transformComponent->position.y += physicsComponent.velocity.y;
+		transformComponent->position.x += physicsComponent.velocity.x;
+		transformComponent->position.y += physicsComponent.velocity.y;
 
-		auto currentAngle = physicsComponent.transformComponent->orientation.Angle();
-		physicsComponent.transformComponent->orientation = Vector2D(currentAngle + physicsComponent.angularVelocity);
+		auto currentAngle = transformComponent->orientation.Angle();
+		transformComponent->orientation = Vector2D(currentAngle + physicsComponent.angularVelocity);
 	}
 }
 //-------------------------------------------------------------------------------
@@ -95,9 +98,12 @@ void Physics::SolvePhysics(ComponentCollectionRepository* componentCollectionRep
 	}
 
 	for (auto component : *physicsComponents) {
-		component.transformComponent->orientation = Vector2D(component.angularVelocity) + component.transformComponent->orientation;
-		component.transformComponent->position.x += component.velocity.x;
-		component.transformComponent->position.y += component.velocity.y;
+
+		auto transformComponent = componentCollectionRepository->Select<TransformComponent>(component.transformComponentId);
+
+		transformComponent->orientation = Vector2D(component.angularVelocity) + transformComponent->orientation;
+		transformComponent->position.x += component.velocity.x;
+		transformComponent->position.y += component.velocity.y;
 	}
 }
 //-------------------------------------------------------------------------------
@@ -115,7 +121,10 @@ void Physics::SolveSimplePhysics(ComponentCollectionRepository* componentCollect
 	}
 
 	for (auto component : *physicsComponents) {
-		component.transformComponent->position.x += component.velocity.x;
-		component.transformComponent->position.y += component.velocity.y;
+
+		auto transformComponent = componentCollectionRepository->Select<TransformComponent>(component.transformComponentId);
+
+		transformComponent->position.x += component.velocity.x;
+		transformComponent->position.y += component.velocity.y;
 	}
 }

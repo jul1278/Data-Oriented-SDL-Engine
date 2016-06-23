@@ -42,7 +42,8 @@ public:
 		auto projectileGraphics = componentCollectionRepository->SelectFromCollection<GraphicsComponent>("PlayerSpaceShipProjectiles");
 
 		for (auto graphicsComponent : *projectileGraphics) {
-			auto transform = graphicsComponent.transformComponent; 
+			
+			auto transform = componentCollectionRepository->Select<TransformComponent>(graphicsComponent.transformComponentId);
 
 			if (transform->position.x > this->width || transform->position.x < 0) {
 				if (transform->position.y > this->height || transform->position.y < 0) {

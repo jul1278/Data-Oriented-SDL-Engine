@@ -4,23 +4,21 @@
 #ifndef GRAPHICS_COMPONENT_H
 #define GRAPHICS_COMPONENT_H
 
-#include "TransformComponent.h"
-
 // GraphicsComponent
 struct GraphicsComponent : public BaseComponent
 {
-    int resourceId;
-	TransformComponent* transformComponent; 
+    unsigned int resourceId;
+	unsigned int transformComponentId; 
 
 	GraphicsComponent()
 	{
 		this->resourceId = 0;
-		this->transformComponent = nullptr; 
+		this->transformComponentId = 0;
 	}
 
-    GraphicsComponent(int resourceId, TransformComponent* transformComponent = nullptr)
+    GraphicsComponent(unsigned int resourceId, unsigned int transformComponentId)
     {
-		this->transformComponent = transformComponent; 
+		this->transformComponentId = transformComponentId; 
         this->resourceId = resourceId;
     }
 };

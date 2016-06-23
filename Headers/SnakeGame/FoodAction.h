@@ -88,7 +88,7 @@ public:
 		foodPos->position.y = MathUtility::RandomIntUniformDist() % graphics->WindowHeight();
 
 		foodGraphic->resourceId = foodGraphicId;
-		foodGraphic->transformComponent = foodPos;
+		foodGraphic->transformComponentId = foodPos->id;
 
 		this->SpawnFood();
 

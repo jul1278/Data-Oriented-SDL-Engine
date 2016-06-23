@@ -12,6 +12,7 @@
 #include <list>
 #include <tuple>
 #include <thread>
+#include <Components/TransformComponent.h>
 
 //-----------------------------------------------------------------------------------------------
 // Name: Update
@@ -76,10 +77,10 @@ void SDLEventCollector::RegisterMouseOverHandler(Vector2D topLeft, Vector2D size
 // Name: RegisterMouseOverHandler
 // Desc: 
 //-----------------------------------------------------------------------------------------------
-void SDLEventCollector::RegisterMouseOverHandler(SimpleButtonComponent* simpleButtonComponent, function<void(const MouseMotionEventArgs&)> handler)
+void SDLEventCollector::RegisterMouseOverHandler(const SimpleButtonComponent& simpleButtonComponent, const TransformComponent& transformComponent, function<void(const MouseMotionEventArgs&)> handler)
 {
-	auto size = Vector2D(simpleButtonComponent->size.x * simpleButtonComponent->transformComponent->scale.x, simpleButtonComponent->size.y * simpleButtonComponent->transformComponent->scale.y);
-	auto topLeft = Vector2D(simpleButtonComponent->transformComponent->position.x - 0.5f*size.x, simpleButtonComponent->transformComponent->position.y - 0.5f*size.y);
+	auto size = Vector2D(simpleButtonComponent.size.x * transformComponent.scale.x, simpleButtonComponent.size.y * transformComponent.scale.y);
+	auto topLeft = Vector2D(transformComponent.position.x - 0.5f*size.x, transformComponent.position.y - 0.5f*size.y);
 
 	this->RegisterMouseOverHandler(topLeft, size, handler); 
 }
@@ -99,10 +100,10 @@ void SDLEventCollector::RegisterMouseClickHandler(Vector2D topLeft, Vector2D siz
 // Name: RegisterMouseClickHandler
 // Desc: 
 //-----------------------------------------------------------------------------------------------
-void SDLEventCollector::RegisterMouseClickHandler(SimpleButtonComponent* simpleButtonComponent, function<void(const MouseButtonEventArgs&)> handler)
+void SDLEventCollector::RegisterMouseClickHandler(const SimpleButtonComponent& simpleButtonComponent, const TransformComponent& transform, function<void(const MouseButtonEventArgs&)> handler)
 {
-	auto size = Vector2D(simpleButtonComponent->size.x * simpleButtonComponent->transformComponent->scale.x, simpleButtonComponent->size.y * simpleButtonComponent->transformComponent->scale.y);
-	auto topLeft = Vector2D(simpleButtonComponent->transformComponent->position.x - 0.5f*size.x, simpleButtonComponent->transformComponent->position.y - 0.5f*size.y);
+	auto size = Vector2D(simpleButtonComponent.size.x * transform.scale.x, simpleButtonComponent.size.y * transform.scale.y);
+	auto topLeft = Vector2D(transform.position.x - 0.5f*size.x, transform.position.y - 0.5f*size.y);
 
 	this->RegisterMouseClickHandler(topLeft, size, handler); 
 }

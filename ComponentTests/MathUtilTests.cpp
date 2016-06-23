@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 
-#include "Utility/MathUtility.h"
+#include <Utility/MathUtility.h>
 #include <vector>
 #include <map>
 

@@ -4,6 +4,7 @@
 #include "Events/EventObserveable.h"
 #include "SDL.h"
 
+struct TransformComponent;
 union SDL_Event;
 struct SDL_Rect;
 
@@ -60,10 +61,10 @@ public:
 	void Update(); 
 
 	void RegisterMouseOverHandler(Vector2D topLeft, Vector2D size, function<void(const MouseMotionEventArgs&)> handler); 
-	void RegisterMouseOverHandler(SimpleButtonComponent* simpleButtonComponent, function<void(const MouseMotionEventArgs&)> handler);
+	void RegisterMouseOverHandler(const SimpleButtonComponent& simpleButtonComponent, const TransformComponent& transformComponent, function<void(const MouseMotionEventArgs&)> handler);
 
 	void RegisterMouseClickHandler(Vector2D topLeft, Vector2D size, function<void(const MouseButtonEventArgs&)> handler); 
-	void RegisterMouseClickHandler(SimpleButtonComponent* simpleButtonComponent, function<void(const MouseButtonEventArgs&)> handler);
+	void RegisterMouseClickHandler(const SimpleButtonComponent& simpleButtonComponent, const TransformComponent& transform, function<void(const MouseButtonEventArgs&)> handler);
 
 	bool QuitEvent() const
 	{

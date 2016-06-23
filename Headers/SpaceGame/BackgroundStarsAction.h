@@ -35,14 +35,20 @@ public:
 		auto componentCollectionRepository = this->GetParentStage()->GetComponentCollectionRepository(); 
 
 		auto starPhysicsComponents = componentCollectionRepository->SelectFromCollection<VelocityComponent>("ScrollingBackgroundStars");
+		auto starTransformComponents = componentCollectionRepository->SelectFromCollection<TransformComponent>("ScrollingBackgroundStars"); 
 
 		// star background loop
 		for (auto physicsComponent : *starPhysicsComponents) {
-			physicsComponent.transformComponent->position.y += physicsComponent.velocity.y;
 
-			if (physicsComponent.transformComponent->position.y > this->height) {
-				physicsComponent.transformComponent->position.y = 0.0f;
-				physicsComponent.transformComponent->position.x = this->width * MathUtility::RandomFloatUniformDist();
+			auto id = physicsComponent.transformComponentId; 
+			auto transformComponent = componentCollectionRepository->Select<TransformComponent>(id); 
+
+			transformComponent->position.y += physicsComponent.velocity.y;
+
+			if (transformComponent->position.y > this->height) {
+
+				transformComponent->position.y = 0.0f;
+				transformComponent->position.x = this->width * MathUtility::RandomFloatUniformDist();
 			}
 		}
 	}

@@ -2,23 +2,22 @@
 #define SIMPLE_BUTTON_COMPONENT_H
 
 #include "Components/BaseComponent.h"
-#include "TransformComponent.h"
 
-class SimpleButtonComponent : public BaseComponent
+struct SimpleButtonComponent : public BaseComponent
 {
 public:
 
 	bool mouseOverState; 
 	bool toggleState;
 
-	TransformComponent* transformComponent;
+	unsigned int transformComponentId; 
 
 	Vector2D size;
 
-	SimpleButtonComponent() : mouseOverState(false), toggleState(false), transformComponent(nullptr)
+	SimpleButtonComponent() : mouseOverState(false), toggleState(false), transformComponentId(0)
 	{}
 
-	explicit SimpleButtonComponent(Vector2D size): mouseOverState(false), toggleState(false), transformComponent(nullptr)
+	explicit SimpleButtonComponent(Vector2D size) : mouseOverState(false), toggleState(false), transformComponentId(0)
 	{
 		this->size = size; 
 	}

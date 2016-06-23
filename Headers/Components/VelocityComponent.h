@@ -6,24 +6,19 @@
 #define VELOCITY_COMPONENT_H
 
 #include "BaseComponent.h"
-#include "TransformComponent.h"
+#include "Utility/Vector.h"
 
-struct VelocityComponent : BaseComponent
+struct VelocityComponent : public BaseComponent
 {
 	Vector2D velocity; 
-	
-	TransformComponent* transformComponent;
+	unsigned int transformComponentId;
 
 	VelocityComponent()
 	{
-		this->transformComponent = nullptr; 
+		this->transformComponentId = 0; 
 	}
 
-	VelocityComponent(Vector2D velocity, TransformComponent* transformComponent = nullptr)
-	{
-		this->transformComponent = transformComponent;
-		this->velocity = velocity; 
-	}
+	VelocityComponent(Vector2D velocity, unsigned int transformComponentId) : velocity(velocity), transformComponentId(transformComponentId) {}
 };
 
 #endif // VELOCITY_COMPONENT_H

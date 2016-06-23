@@ -9,6 +9,7 @@
 #include <Physics/CollisionPhysicsTask.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace std; 
 
 namespace PhysicsTest
 {
@@ -36,7 +37,7 @@ namespace PhysicsTest
 			auto simplePhysicsComponent = componentCollectionRepository.NewComponent<VelocityComponent>(testCollectionName);
 			auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>(testCollectionName); 
 
-			simplePhysicsComponent->transformComponent = transformComponent; 
+			simplePhysicsComponent->transformComponentId = transformComponent->id; 
 
 			transformComponent->position = Vector2D(1.0f, 1.0f); 
 			simplePhysicsComponent->velocity = Vector2D(1.0f, 1.0f); 
@@ -62,7 +63,7 @@ namespace PhysicsTest
 			auto physicsComponent = componentCollectionRepository.NewComponent<PhysicsComponent>(testCollectionName);
 			auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>(testCollectionName);
 
-			physicsComponent->transformComponent = transformComponent;
+			physicsComponent->transformComponentId = transformComponent->id;
 
 			transformComponent->position = Vector2D(1.0f, 1.0f);
 			transformComponent->orientation = Vector2D(0.0f, 0.0f); 
@@ -102,11 +103,11 @@ namespace PhysicsTest
 
 			trans1->position = Vector2D(0.0f, 1.0f); 
 			phys1->radius = 2.0f; 
-			phys1->transformComponent = trans1; 
+			phys1->transformComponentId = trans1->id; 
 			
 			trans2->position = Vector2D(1.0f, 1.0f); 
 			phys2->radius = 2.0f; 
-			phys2->transformComponent = trans2; 
+			phys2->transformComponentId = trans2->id; 
 
 			auto physics = Physics(10, 10); 
 
@@ -144,11 +145,11 @@ namespace PhysicsTest
 
 			trans1->position = Vector2D(0.0f, 0.0f);
 			phys1->radius = 0.1f;
-			phys1->transformComponent = trans1;
+			phys1->transformComponentId = trans1->id;
 
 			trans2->position = Vector2D(1.0f, 1.0f);
 			phys2->radius = 0.1f;
-			phys2->transformComponent = trans2;
+			phys2->transformComponentId = trans2->id;
 
 			auto physics = Physics(10, 10);
 

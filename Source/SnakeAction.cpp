@@ -50,7 +50,7 @@ SnakeAction::SnakeAction(IStage* stage) : IAction(stage)
 	auto scoreGraphicsComponent = componentCollection->NewComponent<GraphicsComponent>("Score"); 
 
 	scoreTextTransformComponent->position = Vector2D(15.0f, 10.0f); 
-	scoreGraphicsComponent->transformComponent = scoreTextTransformComponent; 
+	scoreGraphicsComponent->transformComponentId = scoreTextTransformComponent->id; 
 	scoreGraphicsComponent->resourceId = textGraphicResourceId; 
 	
 	/* Create the snake */
@@ -62,7 +62,7 @@ SnakeAction::SnakeAction(IStage* stage) : IAction(stage)
 	this->snakeGraphicId = graphics->AddGraphicsResource(new RectGraphicsResource(8.0f, 8.0f, 0xff, 0xff, 0xff, 0xff));
 
 	snakeHead->position = headStartPos;
-	snakeHeadGraphics->transformComponent = snakeHead;
+	snakeHeadGraphics->transformComponentId = snakeHead->id;
 	snakeHeadGraphics->resourceId = this->snakeGraphicId;
 
 	auto lastPos = snakeHead->position;
@@ -75,7 +75,7 @@ SnakeAction::SnakeAction(IStage* stage) : IAction(stage)
 		lastPos += Vector2D(10.0f, 0.0);
 
 		snakePart->position = lastPos;
-		snakePartGraphics->transformComponent = snakePart;
+		snakePartGraphics->transformComponentId = snakePart->id;
 		snakePartGraphics->resourceId = snakeGraphicId;
 	}
 
@@ -205,7 +205,7 @@ void SnakeAction::OnEatFood(const IntersectionEventArgs& intersectionEventArgs)
 	auto newSnakeGraphic = componentCollectionRepository->NewComponent<GraphicsComponent>("Snake");
 
 	newSnakePart->position = snakeComponents->back().position;
-	newSnakeGraphic->transformComponent = newSnakePart;
+	newSnakeGraphic->transformComponentId = newSnakePart->id;
 	newSnakeGraphic->resourceId = this->snakeGraphicId;	
 }
 //---------------------------------------------------------------------------

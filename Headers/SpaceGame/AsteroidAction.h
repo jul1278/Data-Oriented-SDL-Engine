@@ -72,7 +72,10 @@ public:
 
 		for (auto physicsComponent : *asteroidPhysicsComponents) {
 
-			auto distVector = playerPhysicsComponent.transformComponent->position - physicsComponent.transformComponent->position;
+			auto playerTransformComponent = componentCollectionRepository->Select<TransformComponent>(playerPhysicsComponent.transformComponentId);
+			auto transformComponent = componentCollectionRepository->Select<TransformComponent>(physicsComponent.transformComponentId); 
+
+			auto distVector = playerTransformComponent->position - transformComponent->position;
 
 			// calculate acceleration on asteroids
 			auto accel = 10000.0f * physicsComponent.mass / powf(distVector.Length(), 2.0f);
@@ -81,11 +84,11 @@ public:
 			physicsComponent.velocity.x += accel*cosf(angle);
 			physicsComponent.velocity.y += accel*sinf(angle);
 
-			physicsComponent.transformComponent->position.x += physicsComponent.velocity.x;
-			physicsComponent.transformComponent->position.y += physicsComponent.velocity.y;
+			transformComponent->position.x += physicsComponent.velocity.x;
+			transformComponent->position.y += physicsComponent.velocity.y;
 
-			auto currentAngle = physicsComponent.transformComponent->orientation.Angle();
-			physicsComponent.transformComponent->orientation = Vector2D(currentAngle + physicsComponent.angularVelocity);
+			auto currentAngle = transformComponent->orientation.Angle();
+			transformComponent->orientation = Vector2D(currentAngle + physicsComponent.angularVelocity);
 		}
 	}
 

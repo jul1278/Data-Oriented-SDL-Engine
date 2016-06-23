@@ -282,11 +282,11 @@ void Graphics::UpdateGraphics(vector<GraphicsComponent>* graphicsComponents, vec
 		if (graphicsComponent.resourceId == NO_RENDER) {
 			continue; 
 		}
-
-		auto transformComponent = graphicsComponent.transformComponent;
+		auto id = graphicsComponent.transformComponentId; 
+		auto transformComponent = find_if(transformComponents->begin(), transformComponents->end(), [id](const TransformComponent& t) {return t.id == id; });
 
 		auto graphicsResource = this->graphicsResourceMap[graphicsComponent.resourceId];
-		graphicsResource->Render(this->renderer, transformComponent);
+		graphicsResource->Render(this->renderer, transformComponent._Ptr);
 	}
 }
 //------------------------------------------------------------------------------------
@@ -301,8 +301,12 @@ void Graphics::UpdateGraphics(vector<GraphicsComponent>* graphicsComponents, vec
 			continue; 
 		}
 		
+		auto id = graphicsComponent.transformComponentId;
+		auto transformComponent = find_if(transformComponents->begin(), transformComponents->end(), [id](const TransformComponent& t) {return t.id == id; });
+
+
 		auto graphicsResource = this->graphicsResourceMap[graphicsComponent.resourceId];
-		graphicsResource->Render(this->renderer, graphicsComponent.transformComponent, parent);
+		graphicsResource->Render(this->renderer, transformComponent._Ptr, parent);
 	}
 }
 //------------------------------------------------------------------------------------
@@ -330,42 +334,4 @@ int Graphics::WindowHeight() const
 	SDL_GetWindowSize(this->window, &w, &h);
 
 	return h;
-}
-//------------------------------------------------------------------------------------
-// Name: UpdateGraphics
-// Desc:
-//------------------------------------------------------------------------------------
-void Graphics::UpdateGraphicsPresentAndClear(SDL_Event* event, vector<BaseComponent*>* graphicsComponents, vector<BaseComponent*>* transformComponents)
-{
-#pragma message ("WARNING: "__FUNCTION__" is deprecated.")
-
-	SDL_SetRenderDrawColor(this->renderer, 0x00, 0x00, 0x00, 0xff); 
-    SDL_RenderClear(this->renderer);
-
-    for (auto component : *graphicsComponents) {
-
-		GraphicsComponent* graphicsComponent = component->As<GraphicsComponent*>(); 
-		TransformComponent* transformComponent = static_cast<GraphicsComponent*>(graphicsComponent)->transformComponent; 
-
-        IGraphicsResource* graphicsResource;
-		int graphicsResourceId = static_cast<GraphicsComponent*>(graphicsComponent)->resourceId;
-
-        graphicsResource = this->graphicsResourceMap[graphicsResourceId];
-        graphicsResource->Render(this->renderer, transformComponent);
-    }
-
-	// Mouse debug stuff
-	if (event!= nullptr && event->type == SDL_MOUSEMOTION) {
-
-		SDL_Rect lastRect = {event->motion.x - 8, event->motion.y - 8, 16, 16};
-		SDL_Rect currRect = { event->motion.x + event->motion.xrel - 8, event->motion.y + event->motion.yrel - 8, 16, 16 }; 
-		SDL_SetRenderDrawColor(this->renderer, 0x00, 0x00, 0xff, 0xff); 
-		SDL_RenderDrawRect(this->renderer, &lastRect); 
-		SDL_RenderDrawRect(this->renderer, &currRect); 
-
-		SDL_SetRenderDrawColor(this->renderer, 0x00, 0xff, 0x00, 0xff); 
-		SDL_RenderDrawLine(this->renderer, lastRect.x + 8, lastRect.y + 8, currRect.x + 8, currRect.y + 8); 
-	}
-
-    SDL_RenderPresent(this->renderer);
 }

@@ -23,11 +23,14 @@ private:
 
 		for (auto physComponent1 : *physCollection1) {
 
-			auto pos1 = physComponent1.transformComponent->position;
+			auto transformComponent1 = componentCollectionRepository->Select<TransformComponent>(physComponent1.transformComponentId); 
+			auto pos1 = transformComponent1->position;
 
 			for (auto physComponent2 : *physCollection2) {
 
-				auto diff = pos1 - physComponent2.transformComponent->position;
+				auto transformComponent2 = componentCollectionRepository->Select<TransformComponent>(physComponent2.transformComponentId); 
+
+				auto diff = pos1 - transformComponent2->position;
 				auto rad = physComponent1.radius + physComponent2.radius;
 
 				if (diff.Length() < rad) {

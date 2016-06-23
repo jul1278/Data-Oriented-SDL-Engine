@@ -3,6 +3,7 @@
 #include <Components/ComponentCollectionRepository.h>
 #include <Components/GraphicsComponent.h>
 #include <Components/VelocityComponent.h>
+#include <Components/TransformComponent.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -18,59 +19,18 @@ namespace ComponentTests
 		//-----------------------------------------------------------------------------
 		TEST_METHOD(NewComponentTest)
 		{
-			ComponentCollectionRepository componentCollectionRepository; 
-			componentCollectionRepository.NewCollection("TestCollection"); 
+			ComponentCollectionRepository componentCollectionRepository;
+			componentCollectionRepository.NewCollection("TestCollection");
 
-            for (auto i = 0; i < 20; i += 2)
-            {
+			for (auto i = 0; i < 20; i += 2)
+			{
 				auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>("TestCollection");
 				auto graphicsComponent = componentCollectionRepository.NewComponent<GraphicsComponent>("TestCollection");
 
-                Assert::AreEqual(transformComponent->id, i);
-				Assert::AreEqual(graphicsComponent->id, i + 1); 
-            }
-		}
-        //-----------------------------------------------------------------------------
-        // Name: ComponentPointersAreCorrect
-        // Desc: 		
-        //-----------------------------------------------------------------------------
-        TEST_METHOD(ComponentPointersAreCorrect)
-        {
-            ComponentCollectionRepository componentCollectionRepository;
-            vector<TransformComponent*> transformComponents;
-            vector<VelocityComponent*> physicsComponents; 
-
-			transformComponents.reserve(100);
-			physicsComponents.reserve(100); 
-
-            for (auto i = 0; i < 50; i++)
-            {
-                auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>();
-				auto physicsComponent = componentCollectionRepository.NewComponent<VelocityComponent>();
-
-                physicsComponent->transformComponent = transformComponent; 
-
-                transformComponents.push_back(transformComponent); 
-                physicsComponents.push_back(physicsComponent); 
-            }
-
-			for (auto i = 0; i < 50; i++)
-			{
-				auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>();
-				auto physicsComponent = componentCollectionRepository.NewComponent<VelocityComponent>();
-
-				physicsComponent->transformComponent = transformComponent;
-
-				transformComponents.push_back(transformComponent);
-				physicsComponents.push_back(physicsComponent);
+				Assert::AreEqual(transformComponent->id, i);
+				Assert::AreEqual(graphicsComponent->id, i + 1);
 			}
-
-            for (auto i = 0; i < 100; i++)
-            {
-                Assert::AreEqual(static_cast<void*>(physicsComponents[i]->transformComponent), static_cast<void*>(transformComponents[i])); 
-            }
-        }
-
+		}
         //-----------------------------------------------------------------------------
         // Name: ComponentPointersAreContiguous
         // Desc: 		

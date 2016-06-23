@@ -51,17 +51,17 @@ void SnakeGameMenuStage::Setup()
 	newGameTextTransform->position = Vector2D(this->stageWidth / 2, this->stageHeight / 2);
 	newGameTextTransform->scale = Vector2D(1.0f, 1.0f);
 
-	newGameTextGraphicComponent->transformComponent = newGameTextTransform;
+	newGameTextGraphicComponent->transformComponentId = newGameTextTransform->id;
 	newGameTextGraphicComponent->resourceId = newGameTextGraphicResId;
 
-	newGameButtonComponent->transformComponent = newGameTextTransform;
+	newGameButtonComponent->transformComponentId = newGameTextTransform->id;
 	newGameButtonComponent->size = buttonGraphicsComponent->GetSize();
 
 	this->sdlEventCollector->RegisterMouseClickHandler(
-		newGameButtonComponent, bind(&SnakeGameMenuStage::OnMenuStartGameClick, this, placeholders::_1));
+		*newGameButtonComponent, *newGameTextTransform, bind(&SnakeGameMenuStage::OnMenuStartGameClick, this, placeholders::_1));
 	
 	this->sdlEventCollector->RegisterMouseOverHandler(
-		newGameButtonComponent, bind(&SnakeGameMenuStage::OnMenuStartGameMouseOver, this, placeholders::_1));
+		*newGameButtonComponent, *newGameTextTransform, bind(&SnakeGameMenuStage::OnMenuStartGameMouseOver, this, placeholders::_1));
 	
 	this->sdlEventCollector->RegisterListener<QuitApplicationEventArgs>(
 		bind(&SnakeGameMenuStage::OnQuitApplication, this, placeholders::_1));
@@ -111,13 +111,21 @@ void SnakeGameMenuStage::OnMenuStartGameClick(const MouseButtonEventArgs& mouseB
 //----------------------------------------------------------------------------------------
 void SnakeGameMenuStage::OnMenuStartGameMouseOver(const MouseMotionEventArgs& mouseMotionEventArgs) const
 {
-	auto startGameButton = this->GetComponentCollectionRepository()->SelectFromCollection<SimpleButtonComponent>("MainMenu");
+	auto startGameButtonComponents = this->GetComponentCollectionRepository()->SelectFromCollection<SimpleButtonComponent>("MainMenu");
+
+	if (startGameButtonComponents->empty()) {
+		return; 
+	}
+
+	auto& startGameButton = startGameButtonComponents->front(); 
+
+	auto startButtonTransform = this->GetComponentCollectionRepository()->Select<TransformComponent>(startGameButton.transformComponentId); 
 
 	if (mouseMotionEventArgs.MouseOver()) {
-		startGameButton->front().transformComponent->scale = Vector2D(1.2f, 1.2f);
+		startButtonTransform->scale = Vector2D(1.2f, 1.2f);
 	}
 	else {
-		startGameButton->front().transformComponent->scale = Vector2D(1.0f, 1.0f);
+		startButtonTransform->scale = Vector2D(1.0f, 1.0f);
 	}
 }
 //----------------------------------------------------------------------------------------

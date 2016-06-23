@@ -19,7 +19,7 @@ struct PhysicsComponent : BaseComponent
 	Vector2D velocity;
 	Vector2D acceleration;
 
-	TransformComponent* transformComponent;
+	unsigned int transformComponentId; 
 
 	PhysicsComponent()
 	{
@@ -29,7 +29,7 @@ struct PhysicsComponent : BaseComponent
 		this->angularAcceleration = 0.0f; 
 		this->angularVelocity = 0.0f; 
 
-		this->transformComponent = nullptr;
+		this->transformComponentId = 0;
 	}
 };
 

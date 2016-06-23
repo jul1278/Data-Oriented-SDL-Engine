@@ -53,8 +53,9 @@ void PlayerSpaceshipAction::MoveSpaceShip(const ButtonEventArgs& buttonEventArgs
 	auto playerPhysicsComponents = componentCollectionRepository->SelectFromCollection<PhysicsComponent>("PlayerSpaceShip");
 
 	auto& physicsComponent = playerPhysicsComponents->front();
+	auto transformComponent = componentCollectionRepository->Select<TransformComponent>(physicsComponent.transformComponentId);
 
-	if (physicsComponent.transformComponent->position.y < (this->height - 60)) {
+	if (transformComponent->position.y < (this->height - 60)) {
 		physicsComponent.velocity.y = 1.0f;
 	}
 	else {
@@ -66,28 +67,28 @@ void PlayerSpaceshipAction::MoveSpaceShip(const ButtonEventArgs& buttonEventArgs
 		switch (buttonEventArgs.Key()) {
 		case LEFT_ARROW:
 			{
-				if (physicsComponent.transformComponent->position.x > 25) {
+				if (transformComponent->position.x > 25) {
 					physicsComponent.velocity = Vector2D(-4.0f, 0.0f);
 				}
 				break; 
 			}
 		case RIGHT_ARROW:
 			{
-				if (physicsComponent.transformComponent->position.x < (this->width - 50)) {
+				if (transformComponent->position.x < (this->width - 50)) {
 					physicsComponent.velocity = Vector2D(4.0f, 0.0f);
 				}
 				break; 
 			}
 		case UP_ARROW:
 			{
-				if (physicsComponent.transformComponent->position.y > 25) {
+				if (transformComponent->position.y > 25) {
 					physicsComponent.velocity = Vector2D(0.0f, -4.0f);
 				}
 				break; 
 			}
 		case DOWN_ARROW:
 			{
-				if (physicsComponent.transformComponent->position.y < (this->height - 60)) {
+				if (transformComponent->position.y < (this->height - 60)) {
 					physicsComponent.velocity = Vector2D(0.0f, 4.0f);
 				}
 				break; 
@@ -122,8 +123,8 @@ void PlayerSpaceshipAction::FireWeapon(const ButtonEventArgs buttonEventArgs) co
 
 		transformComponent->position = playerTransform.position; 
 
-		graphicsComponent->transformComponent = transformComponent; 
-		physicsComponent->transformComponent = transformComponent; 
+		graphicsComponent->transformComponentId = transformComponent->id; 
+		physicsComponent->transformComponentId = transformComponent->id; 
 
 		graphicsComponent->resourceId = this->projectileGraphicResId; 
 		physicsComponent->velocity = Vector2D(0.0f, -8.0f); 

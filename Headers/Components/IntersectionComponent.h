@@ -2,14 +2,17 @@
 #define INTERSECTION_COMPONENT
 
 #include "Components/BaseComponent.h"
-#include "Components/TransformComponent.h"
+#include <Utility/Vector.h>
 
 struct IntersectionComponent : public BaseComponent
 {
 	Vector2D size;
-	TransformComponent* transfromComponent;
+	unsigned int transformComponentId;
 
-	IntersectionComponent(): transfromComponent(nullptr) {}
+	IntersectionComponent()
+	{
+		this->transformComponentId = 0; 
+	}
 };
 
 #endif // INTERSECTION_COMPONENT

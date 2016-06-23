@@ -113,7 +113,9 @@ public:
 			if (vec != nullptr) {
 				auto result = find_if(vec->begin(), vec->end(), [id](const T& c) {return (c.id == id); });
 
-				return &(*result);
+				if (result != vec->end()) {
+					return result._Ptr;
+				}
 			}
 		}
 

@@ -35,10 +35,10 @@ public:
 		transformComponent->position = position; 
 		transformComponent->scale = Vector2D(0.5f, 0.5f); 
 
-		physicsComponent->transformComponent = transformComponent; 
+		physicsComponent->transformComponentId = transformComponent->id; 
 		physicsComponent->velocity = Vector2D(0.0f, 0.0f);
 
-		graphicsComponent->transformComponent = transformComponent; 
+		graphicsComponent->transformComponentId = transformComponent->id; 
 		graphicsComponent->resourceId = graphicResourceId; 
 	}
 	//--------------------------------------------------------------------------------
@@ -69,10 +69,10 @@ public:
 			transformComponent->position.y = 2.0f*yUniformIntDistribution(defaultRandomEngine); 
 
 			graphicsComponent->resourceId = graphicResourceId; 
-			graphicsComponent->transformComponent = transformComponent;
+			graphicsComponent->transformComponentId = transformComponent->id;
 			
 			physicsComponent->velocity.y = 0.5f*starScrollVelocity*scale;
-			physicsComponent->transformComponent = transformComponent;  
+			physicsComponent->transformComponentId = transformComponent->id;  
 		}
 	}
 	//---------------------------------------------------------------------------
@@ -92,7 +92,7 @@ public:
 			auto physicsComponent = componentCollectionRepository->NewComponent<PhysicsComponent>(collectionName);
 
 			physicsComponent->mass = MathUtility::RandomFloatUniformDist(); 
-			physicsComponent->transformComponent = transformComponent;
+			physicsComponent->transformComponentId = transformComponent->id;
 			physicsComponent->angularVelocity = 0.01f; 
 
 			transformComponent->position.x = height*MathUtility::RandomFloatUniformDist(); 
@@ -100,7 +100,7 @@ public:
 			transformComponent->scale = Vector2D(1.0f, 1.0f);
 
 			graphicsComponent->resourceId = graphicResourceIds[i];
-			graphicsComponent->transformComponent = transformComponent;
+			graphicsComponent->transformComponentId = transformComponent->id;
 		}
 	}
 	//---------------------------------------------------------------------------
@@ -120,8 +120,8 @@ public:
 			auto graphicsComponent = componentCollectionRepository->NewComponent<GraphicsComponent>(collectionName);
 			auto physicsComponent = componentCollectionRepository->NewComponent<PhysicsComponent>(collectionName); 
 
-			graphicsComponent->transformComponent = transformComponent; 
-			physicsComponent->transformComponent = transformComponent; 
+			graphicsComponent->transformComponentId = transformComponent->id; 
+			physicsComponent->transformComponentId = transformComponent->id; 
 
 			graphicsComponent->resourceId = NO_RENDER; 
 		}

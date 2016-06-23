@@ -16,13 +16,15 @@ class VelocityTask : public IPhysicsTask
 		}
 
 		for (auto component : *physicsComponents) {
+			
+			auto transformComponent = componentCollectionRepository->Select<TransformComponent>(component.transformComponentId); 
 
 			// TODO: this should have a timestep and stuff
 			component.velocity += component.acceleration; 
-			component.transformComponent->position += component.velocity; 
+			transformComponent->position += component.velocity;
 
 			component.angularVelocity += component.angularAcceleration; 
-			component.transformComponent->orientation += component.angularVelocity; 
+			transformComponent->orientation += component.angularVelocity;
 		}
 	}
 

@@ -34,14 +34,14 @@ SpaceGameMenuStage::SpaceGameMenuStage(IGameApp* gameApp)
 	newGameTextTransform->position = Vector2D(this->stageWidth / 2, this->stageHeight / 2);
 	newGameTextTransform->scale = Vector2D(1.0f, 1.0f);
 
-	newGameTextGraphicComponent->transformComponent = newGameTextTransform;
+	newGameTextGraphicComponent->transformComponentId = newGameTextTransform->id;
 	newGameTextGraphicComponent->resourceId = newGameTextGraphicResId;
 
-	newGameButtonComponent->transformComponent = newGameTextTransform;
+	newGameButtonComponent->transformComponentId = newGameTextTransform->id;
 	newGameButtonComponent->size = buttonGraphicsComponent->GetSize();
 
-	this->sdlEventCollector->RegisterMouseClickHandler(newGameButtonComponent, bind(&SpaceGameMenuStage::OnMenuStartGameClick, this, placeholders::_1));
-	this->sdlEventCollector->RegisterMouseOverHandler(newGameButtonComponent, bind(&SpaceGameMenuStage::OnMenuStartGameMouseOver, this, placeholders::_1));
+	this->sdlEventCollector->RegisterMouseClickHandler(*newGameButtonComponent, *newGameTextTransform, bind(&SpaceGameMenuStage::OnMenuStartGameClick, this, placeholders::_1));
+	this->sdlEventCollector->RegisterMouseOverHandler(*newGameButtonComponent, *newGameTextTransform, bind(&SpaceGameMenuStage::OnMenuStartGameMouseOver, this, placeholders::_1));
 }
 //--------------------------------------------------------------------------
 // Name: Update
@@ -68,13 +68,20 @@ void SpaceGameMenuStage::Update()
 void SpaceGameMenuStage::OnMenuStartGameMouseOver(const MouseMotionEventArgs& mouseMotionEventArgs) const
 {
 	auto componentCollectionRepository = this->GetComponentCollectionRepository();
-	auto startGameButton = componentCollectionRepository->SelectFromCollection<SimpleButtonComponent>("MainMenu");
+	auto startGameButtonComponents = componentCollectionRepository->SelectFromCollection<SimpleButtonComponent>("MainMenu");
+
+	if (startGameButtonComponents->empty()) {
+		return; 
+	}
+
+	auto& startGameButton = startGameButtonComponents->front(); 
+	auto buttonTransformComponent = componentCollectionRepository->Select<TransformComponent>(startGameButton.transformComponentId); 
 
 	if (mouseMotionEventArgs.MouseOver()) {
-		startGameButton->front().transformComponent->scale = Vector2D(1.2f, 1.2f);
+		buttonTransformComponent->scale = Vector2D(1.2f, 1.2f);
 	}
 	else {
-		startGameButton->front().transformComponent->scale = Vector2D(1.0f, 1.0f);
+		buttonTransformComponent->scale = Vector2D(1.0f, 1.0f);
 	}
 }
 //--------------------------------------------------------------------------
