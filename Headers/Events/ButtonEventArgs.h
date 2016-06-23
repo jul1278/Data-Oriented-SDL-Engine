@@ -9,6 +9,7 @@ enum Key
 	RIGHT_ARROW,
 	UP_ARROW,
 	DOWN_ARROW,
+	SPACE,
 };
 
 // ButtonEventArgs 

@@ -103,6 +103,29 @@ public:
 			graphicsComponent->transformComponent = transformComponent;
 		}
 	}
+	//---------------------------------------------------------------------------
+	// Name: ConstructPlayerWeapons
+	// Desc:
+	//---------------------------------------------------------------------------
+	static void ConstructPlayerWeapons(ComponentCollectionRepository* componentCollectionRepository)
+	{
+		const auto collectionName = "PlayerSpaceShipProjectiles"; 
+		const auto maxNumProjectiles = 40; 
+
+		componentCollectionRepository->NewCollection(collectionName); 
+
+		for (auto i = 0; i < maxNumProjectiles; i++) {
+
+			auto transformComponent = componentCollectionRepository->NewComponent<TransformComponent>(collectionName); 
+			auto graphicsComponent = componentCollectionRepository->NewComponent<GraphicsComponent>(collectionName);
+			auto physicsComponent = componentCollectionRepository->NewComponent<PhysicsComponent>(collectionName); 
+
+			graphicsComponent->transformComponent = transformComponent; 
+			physicsComponent->transformComponent = transformComponent; 
+
+			graphicsComponent->resourceId = NO_RENDER; 
+		}
+	}
 };
 
 

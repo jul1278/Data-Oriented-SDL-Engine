@@ -3,6 +3,9 @@
 
 #include "Actions/IAction.h"
 #include "Components/PhysicsComponent.h"
+#include "Graphics/Graphics.h"
+#include "SpaceGameEntityConstructor.h"
+#include <Graphics/ProceduralAsteroidGraphicsResource.h>
 
 class AsteroidAction : public IAction
 {
@@ -13,22 +16,39 @@ private:
 
 public:
 
+	
 	//-------------------------------------------------------------------------------
 	// Name: AsteroidAction
 	// Desc: 
 	//-------------------------------------------------------------------------------
-	AsteroidAction(unsigned int width, unsigned int height)
+	AsteroidAction(IStage* stage): IAction(stage)
 	{
-		this->width = width; 
-		this->height = height; 
+		this->width = stage->GetGameApp()->GetGraphics()->WindowWidth();
+		this->height = stage->GetGameApp()->GetGraphics()->WindowHeight();
+
+		auto graphics = this->GetParentStage()->GetGameApp()->GetGraphics(); 
+		auto componentCollectionRepository = this->GetParentStage()->GetComponentCollectionRepository(); 
+
+		vector<int> asteroidGraphicsResIds;
+
+		for (auto i = 0; i < 5; i++) {
+			asteroidGraphicsResIds.push_back(graphics->AddGraphicsResource(new ProceduralAsteroidGraphicsResource(20.0f, 1.2f, 10)));
+		}
+
+		SpaceGameEntityConstructor::ConstructEnemyAsteroids(componentCollectionRepository, asteroidGraphicsResIds, this->width, this->height, 4);
+	
+		auto task = new CollisionPhysicsTask("EnemyAsteroids", "PlayerSpaceShipProjectiles"); 
+		auto handler = [this](const CollisionEventArgs& collisionEventArgs) {this->OnProjectileCollision(collisionEventArgs); };
+
+		task->RegisterListener<CollisionEventArgs>(handler); 
 	}
 	//-------------------------------------------------------------------------------
 	// Name: Update
 	// Desc: 
 	//-------------------------------------------------------------------------------
-	void Update(IGameApp* gameApp) override final
+	void Update() override final
 	{
-		auto componentCollectionRepository = gameApp->GetComponentCollectionRepository(); 
+		auto componentCollectionRepository = this->GetParentStage()->GetComponentCollectionRepository();
 		this->SolveAsteroidPhysics(componentCollectionRepository); 
 	}
 	//-------------------------------------------------------------------------------
@@ -68,6 +88,16 @@ public:
 			physicsComponent.transformComponent->orientation = Vector2D(currentAngle + physicsComponent.angularVelocity);
 		}
 	}
+
+	//-------------------------------------------------------------------------------
+	// Name: OnProjectileCollision
+	// Desc: 
+	//-------------------------------------------------------------------------------
+	void OnProjectileCollision(const CollisionEventArgs collisionEventArgs) const
+	{
+		// delete myself	
+	}
+
 };
 
 #endif // ASTEROID_ACTION_H

@@ -1,11 +1,8 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include "Components/ComponentCollectionRepository.h"
-#include "Components/BaseComponent.h"
-#include "Components/TransformComponent.h"
-#include "Components/VelocityComponent.h"
-#include <vector>
+#include <Components/ComponentCollectionRepository.h>
 #include <Components/GraphicsComponent.h>
+#include <Components/VelocityComponent.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -117,5 +114,20 @@ namespace ComponentTests
 			Assert::AreNotEqual(result->id, component1->id); 
 			Assert::AreNotEqual(result->id, component3->id); 
 		}
+		//-----------------------------------------------------------------------------
+		// Name: RemoveById
+		// Desc: 		
+		//-----------------------------------------------------------------------------
+		TEST_METHOD(RemoveComponentById)
+		{
+			ComponentCollectionRepository componentCollectionRepository; 
+
+			componentCollectionRepository.NewCollection("TestCollection"); 
+
+			auto component1 = componentCollectionRepository.NewComponent<TransformComponent>(); 
+
+			//componentCollectionRepository.RemoveComponent(component1->id); 
+		}
+
 	};
 }

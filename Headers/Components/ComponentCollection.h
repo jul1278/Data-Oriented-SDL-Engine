@@ -1,19 +1,20 @@
 #ifndef COMPONENT_COLLECTION_H
 #define COMPONENT_COLLECTION_H
 
-#include "Components\BaseComponent.h"
-
+#include <Components/BaseComponent.h>
 #include <unordered_map>  
 #include <vector>
 #include <typeindex>
 #include <type_traits>
-#include <list>
 
 using namespace std; 
 
 const unsigned int vectorContainerReserveSize = 100;
 
-struct IVectorContainer {};
+struct IVectorContainer
+{
+	virtual ~IVectorContainer() {}
+};
 
 template <typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
 struct VectorContainer : IVectorContainer
@@ -30,6 +31,7 @@ struct VectorContainer : IVectorContainer
 class ComponentCollection
 {
 	unordered_map<type_index, IVectorContainer*> componentCollection;
+	unordered_map<int, IVectorContainer> idToTypeIndexPair; 
 	
 public:
 
@@ -66,14 +68,16 @@ T* ComponentCollection::NewComponent()
 
 	if (container->vec.size() < vectorContainerReserveSize) {
 		container->vec.push_back(T());
-	}
-	else {
-		throw "Can't resize";
+
+	} else {
+		// container wraps around
+		auto& front = container->vec.front();
+		front = T(); 
+		return &front; 
 	}
 
 	return &container->vec.back();
 }
-
 //---------------------------------------------------------------------------------------------
 // Name: Select
 // Desc:

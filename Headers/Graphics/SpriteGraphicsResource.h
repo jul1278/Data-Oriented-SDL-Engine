@@ -48,7 +48,7 @@ public:
         auto w = static_cast<uint16_t>(this->w*transformComponent->scale.x);
         auto h = static_cast<uint16_t>(this->h*transformComponent->scale.y);
 
-        SDL_Rect dstRect = { x - 0.5f*w, y - 0.5f*h, w, h};
+        SDL_Rect dstRect = { x - w, y - h, w, h};
 
         SDL_RenderCopyEx(sdlRenderer, this->spriteTexture, nullptr, &dstRect, transformComponent->orientation.Angle()*(180.0f/M_PI), NULL, SDL_FLIP_NONE);
     }

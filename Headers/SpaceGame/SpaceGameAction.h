@@ -11,12 +11,12 @@ private:
 
 public:
 
-	SpaceGameAction(const IStage& stage)
+	SpaceGameAction(IStage* stage): IAction(stage)
 	{
 		
 	}
 
-	void Update(IGameApp* gameApp) override final
+	void Update() override final
 	{
 
 	}

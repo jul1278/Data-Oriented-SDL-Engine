@@ -8,6 +8,8 @@
 #include <vector>
 #include <unordered_map>
 
+const int NO_RENDER = 0; 
+
 class Camera;
 class IGraphicsResource; 
 struct BaseComponent; 
@@ -34,7 +36,7 @@ private:
 
 	list<Camera*> cameras;
 
-	int GetNextResourceId() { return resourceId++; }
+	int GetNextResourceId() { return ++resourceId; }
 
     unordered_map<int, IGraphicsResource*> graphicsResourceMap;
     unordered_map<string, SDL_Surface*> resourceSurfaceMap;
@@ -52,7 +54,7 @@ public:
     int LoadGraphicResource(string fileName, string resourceName);
     int AddGraphicsResource(IGraphicsResource* graphicsResource);
 
-	void Clear();
+	void Clear() const;
 	void Present();
 
 	void PrintConsoleText(const string& message); 

@@ -2,7 +2,7 @@
 #include "CppUnitTest.h"
 
 #include <vector>
-#include <Utility/Vector.h>
+#include "Utility/Vector.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;

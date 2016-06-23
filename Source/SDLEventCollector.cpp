@@ -69,6 +69,7 @@ void SDLEventCollector::RegisterMouseOverHandler(Vector2D topLeft, Vector2D size
 	this->mouseOverNames.push_back(tuple<SDL_Rect, string>(rect, name)); 
 	this->mouseOverNameState[name] = false; 
 
+	// wtf is a group listener?
 	this->RegisterGroupListener<MouseMotionEventArgs>(name, handler);
 }
 //-----------------------------------------------------------------------------------------------
@@ -129,6 +130,9 @@ void SDLEventCollector::ButtonEvent(const SDL_Event& sdlEvent)
 			break;
 		case SDLK_DOWN:
 			this->Invoke<ButtonEventArgs>(ButtonEventArgs(DOWN_ARROW, released));
+			break;
+		case SDLK_SPACE:
+			this->Invoke<ButtonEventArgs>(ButtonEventArgs(SPACE, released)); 
 			break;
 		default:
 			break;

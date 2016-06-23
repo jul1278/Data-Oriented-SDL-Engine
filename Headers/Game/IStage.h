@@ -1,18 +1,24 @@
 #ifndef I_STAGE_H
 #define I_STAGE_H
 
+
 #include <Components/ComponentCollectionRepository.h>
 #include <Physics/Physics.h>
+#include <Actions/IAction.h>
+#include <Graphics/Graphics.h>
 
-class IGameApp;
+class IGameApp; 
 
 class IStage
 {
 private:
-
+ 
 	IGameApp* gameApp; 
+
 	ComponentCollectionRepository* componentCollectionRepository; 
 	Physics* physics; 
+
+	list<IAction*> actions; 
 
 public:
 
@@ -23,13 +29,25 @@ public:
 		this->physics = physics; 
 	}
 
-	virtual void Update() = 0;
+	virtual void Update()
+	{
+		for_each(this->actions.begin(), this->actions.end(), [] (IAction* action) { action->Update(); });
+	}
 
 	virtual ~IStage()
 	{
 		delete this->componentCollectionRepository; 
-		delete this->physics; 
+		delete this->physics;
+
+		remove_if(this->actions.begin(), this->actions.end(), [](IAction* action){ delete action; return true; });
 	};
+
+	void InsertAction(IAction* action)
+	{
+		if (action != nullptr) {
+			this->actions.push_back(action); 
+		}
+	}
 
 	ComponentCollectionRepository* GetComponentCollectionRepository() const
 	{

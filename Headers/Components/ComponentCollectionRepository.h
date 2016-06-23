@@ -5,7 +5,8 @@
 #ifndef COMPONENT_COLLECTION_REPOSITORY_H
 #define COMPONENT_COLLECTION_REPOSITORY_H
 
-#include "Components/ComponentCollection.h"
+#include "ComponentCollection.h"
+
 #include <unordered_map>  
 #include <vector>
 #include <typeindex>

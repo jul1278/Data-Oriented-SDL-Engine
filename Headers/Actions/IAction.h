@@ -7,12 +7,23 @@ class IAction
 {
 private:
 
+	IStage* parentStage; 
+
 public:
 
-	IAction(IStage* stage) {};
+	IAction(IStage* stage)
+	{
+		this->parentStage = stage; 
+	};
+
 	virtual ~IAction() {};
 
 	virtual void Update() = 0; 
+
+	IStage* GetParentStage() const
+	{
+		return this->parentStage; 
+	}
 };
 
 #endif // IACTION_H

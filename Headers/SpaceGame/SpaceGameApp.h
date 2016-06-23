@@ -15,11 +15,8 @@ private:
 	int windowWidth;
 	std::string appName;
 
-	ComponentCollectionRepository* componentCollectionRepository; 
-	
 	Graphics* graphics; 
-	Physics* physics; 
-
+	
 	IStage* spaceGameStage;
 	IStage* spaceGameMenu;
 
@@ -29,8 +26,6 @@ public:
 	~SpaceGameApp();
 
 	Graphics* GetGraphics() override final;
-	Physics* GetPhysics() override final;
-	ComponentCollectionRepository* GetComponentCollectionRepository() override final;
 };
 
 #endif 

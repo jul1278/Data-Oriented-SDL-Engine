@@ -199,7 +199,7 @@ int Graphics::LoadGraphicResource(std::string fileName, std::string resourceName
 int Graphics::AddGraphicsResource(IGraphicsResource* graphicsResource)
 {
     auto resourceId = this->GetNextResourceId();
-    this->graphicsResourceMap.insert(pair<int, IGraphicsResource*>(resourceId, graphicsResource));
+    this->graphicsResourceMap[resourceId] = graphicsResource;
     return resourceId;
 }
 //------------------------------------------------------------------------------------
@@ -252,7 +252,7 @@ void Graphics::AddCamera(Camera* camera)
 // Name: Clear
 // Desc:
 //------------------------------------------------------------------------------------
-void Graphics::Clear()
+void Graphics::Clear() const
 {
 	SDL_SetRenderDrawColor(this->renderer, 0x00, 0x00, 0x00, 0xff);
 	SDL_RenderClear(this->renderer);
@@ -278,13 +278,14 @@ void Graphics::UpdateGraphics(vector<GraphicsComponent>* graphicsComponents, vec
 	//       this is probably faster though  
 
 	for (auto graphicsComponent : *graphicsComponents) {
+		
+		if (graphicsComponent.resourceId == NO_RENDER) {
+			continue; 
+		}
 
-		TransformComponent* transformComponent = graphicsComponent.transformComponent;
+		auto transformComponent = graphicsComponent.transformComponent;
 
-		IGraphicsResource* graphicsResource;
-		int graphicsResourceId = graphicsComponent.resourceId;
-
-		graphicsResource = this->graphicsResourceMap[graphicsResourceId];
+		auto graphicsResource = this->graphicsResourceMap[graphicsComponent.resourceId];
 		graphicsResource->Render(this->renderer, transformComponent);
 	}
 }
@@ -296,13 +297,12 @@ void Graphics::UpdateGraphics(vector<GraphicsComponent>* graphicsComponents, vec
 {
 	for (auto graphicsComponent : *graphicsComponents) {
 
-		TransformComponent* transformComponent = graphicsComponent.transformComponent;
-
-		IGraphicsResource* graphicsResource;
-		int graphicsResourceId = graphicsComponent.resourceId;
-
-		graphicsResource = this->graphicsResourceMap[graphicsResourceId];
-		graphicsResource->Render(this->renderer, transformComponent, parent);
+		if (graphicsComponent.resourceId == NO_RENDER) {
+			continue; 
+		}
+		
+		auto graphicsResource = this->graphicsResourceMap[graphicsComponent.resourceId];
+		graphicsResource->Render(this->renderer, graphicsComponent.transformComponent, parent);
 	}
 }
 //------------------------------------------------------------------------------------

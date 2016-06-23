@@ -1,18 +1,13 @@
-//#include "SnakeGame\SnakeGameApp.h"
-
-#include "CameraTest/CameraTestApp.h"
+#include <SpaceGame/SpaceGameApp.h>
 
 //------------------------------------------------------------------------------------
 // Name: main
 // Desc:
 //------------------------------------------------------------------------------------
 int main(int argc, char *argv[])
-{/*
-	SnakeGameApp snakeGameApp;
-	snakeGameApp.Run();*/
-
-	CameraTestApp cameraTestApp;
-	cameraTestApp.Run(); 
+{
+	SpaceGameApp spaceGameApp; 
+	spaceGameApp.Run(); 
 
 	return 0;
 }

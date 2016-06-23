@@ -5,6 +5,9 @@
 #include "Utility/MathUtility.h"
 #include "Components/VelocityComponent.h"
 #include "Game/IGameApp.h"
+#include "SpaceGameEntityConstructor.h"
+#include <Graphics/StarGraphicsResource.h>
+#include <Graphics/Graphics.h>
 
 class BackgroundStarsAction : public IAction
 {
@@ -15,15 +18,21 @@ private:
 
 public:
 
-	BackgroundStarsAction(unsigned int width, unsigned int height)
+	BackgroundStarsAction(IStage* stage) : IAction(stage)
 	{
-		this->width = width; 
-		this->height = height; 
+		auto graphics = this->GetParentStage()->GetGameApp()->GetGraphics();
+
+		this->width = graphics->WindowWidth(); 
+		this->height = graphics->WindowHeight();
+
+		auto starGraphicResId = graphics->AddGraphicsResource(new StarGraphicsResource(5.0f, 2.5f, 0xff, 0x5f, 0x5f, 0x5f));
+		
+		SpaceGameEntityConstructor::ConstructBackgroundStars(this->GetParentStage()->GetComponentCollectionRepository(), starGraphicResId, this->width, this->height, 20);
 	}
 
-	void Update(IGameApp* gameApp) override final
+	void Update() override final
 	{
-		auto componentCollectionRepository = gameApp->GetComponentCollectionRepository(); 
+		auto componentCollectionRepository = this->GetParentStage()->GetComponentCollectionRepository(); 
 
 		auto starPhysicsComponents = componentCollectionRepository->SelectFromCollection<VelocityComponent>("ScrollingBackgroundStars");
 

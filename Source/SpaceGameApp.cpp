@@ -8,7 +8,6 @@
 #include "SpaceGame/SpaceGameStage.h"
 #include "SpaceGame/SpaceGameMenuStage.h"
 
-#include <time.h>
 #include <stdlib.h>
 #include <memory>
 
@@ -22,10 +21,7 @@ SpaceGameApp::SpaceGameApp()
 	this->windowWidth = 640;
 	this->appName = "Space Game";
 
-	this->componentCollectionRepository = new ComponentCollectionRepository; 
-
 	this->graphics = new Graphics(this->windowWidth, this->windowHeight, this->appName);
-	this->physics = new Physics(this->windowWidth, this->windowHeight); 
 
 	this->spaceGameStage = new SpaceGameStage(this); 
 	this->spaceGameMenu = new SpaceGameMenuStage(this); 
@@ -39,10 +35,7 @@ SpaceGameApp::SpaceGameApp()
 //------------------------------------------------------------------------------------
 SpaceGameApp::~SpaceGameApp()
 {
-	// delete
-	delete this->componentCollectionRepository; 
 	delete this->graphics; 
-	delete this->physics;
 }
 //------------------------------------------------------------------------------------
 // Name: GetGraphics
@@ -51,20 +44,4 @@ SpaceGameApp::~SpaceGameApp()
 Graphics* SpaceGameApp::GetGraphics()
 {
 	return this->graphics; 
-}
-//------------------------------------------------------------------------------------
-// Name: GetPhysics
-// Desc:
-//------------------------------------------------------------------------------------
-Physics* SpaceGameApp::GetPhysics()
-{
-	return this->physics;
-}
-//------------------------------------------------------------------------------------
-// Name: GetComponentCollectionRepository
-// Desc:
-//------------------------------------------------------------------------------------
-ComponentCollectionRepository* SpaceGameApp::GetComponentCollectionRepository()
-{
-	return this->componentCollectionRepository; 
 }

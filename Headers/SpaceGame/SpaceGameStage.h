@@ -5,69 +5,49 @@
 #include "SpaceGame/BackgroundStarsAction.h"
 #include "SpaceGame/PlayerSpaceshipAction.h"
 #include "SpaceGame/AsteroidAction.h"
-#include "SpaceGameEntityConstructor.h"
-#include "Graphics/ProceduralAsteroidGraphicsResource.h"
-#include "Graphics/StarGraphicsResource.h"
-#include "Graphics/RectGraphicsResource.h"
 #include "Actions/IAction.h"
 
 class SpaceGameStage : public IStage
 {
-private:
 
 	int stageWidth; 
 	int stageHeight; 
 
 	SDLEventCollector* sdlEventCollector; 
 
-	list<IAction*> actions;
-
 public:
 
-	explicit SpaceGameStage(IGameApp* gameApp)
+	explicit SpaceGameStage(IGameApp* gameApp) : IStage(gameApp, new ComponentCollectionRepository,
+		new Physics(gameApp->GetGraphics()->WindowWidth(), gameApp->GetGraphics()->WindowHeight()))
 	{
-		auto graphics = gameApp->GetGraphics();
-		auto componentCollectionRepository = gameApp->GetComponentCollectionRepository(); 
-
-		this->sdlEventCollector = new SDLEventCollector(); 
+		auto graphics = this->GetGameApp()->GetGraphics(); 
 
 		this->stageHeight = graphics->WindowHeight(); 
 		this->stageWidth = graphics->WindowWidth(); 
 
-		auto spaceShipGraphicResId = graphics->LoadGraphicResource("Resources//space_ship.png", "spaceShip");
-		auto projectileGraphicResId = graphics->AddGraphicsResource(new RectGraphicsResource(2.0f, 12.0f, 0xff, 0xff, 0x00, 0x00));
-		auto starGraphicResId = graphics->AddGraphicsResource(new StarGraphicsResource(5.0f, 2.5f, 0xff, 0x5f, 0x5f, 0x5f));
-		auto enemyTriangleResId = graphics->LoadGraphicResource("Resources//enemy_triangle.png", "enemyTriangle");
-
-		vector<int> asteroidGraphicsResIds;
-
-		for (auto i = 0; i < 5; i++) {
-			asteroidGraphicsResIds.push_back(graphics->AddGraphicsResource(new ProceduralAsteroidGraphicsResource(20.0f, 1.2f, 10)));
-		}
-
-		SpaceGameEntityConstructor::ConstructBackgroundStars(componentCollectionRepository, starGraphicResId, this->stageWidth, this->stageHeight, 20);
-		SpaceGameEntityConstructor::ConstructPlayerSpaceShip(componentCollectionRepository, spaceShipGraphicResId, Vector2D(this->stageWidth / 2.0f, this->stageHeight - 60));
-		SpaceGameEntityConstructor::ConstructEnemyAsteroids(componentCollectionRepository, asteroidGraphicsResIds, this->stageWidth, this->stageHeight, 4);
+		this->sdlEventCollector = new SDLEventCollector(this->stageWidth, this->stageHeight); 
 
 		// Actions
-		this->actions.push_back(new AsteroidAction(this->stageWidth, this->stageHeight));
-		this->actions.push_back(new PlayerSpaceshipAction(this->stageHeight, this->stageWidth, this->sdlEventCollector));
-		this->actions.push_back(new BackgroundStarsAction(this->stageWidth, this->stageHeight));
+		this->InsertAction(new AsteroidAction(this));
+		this->InsertAction(new PlayerSpaceshipAction(this));
+		this->InsertAction(new BackgroundStarsAction(this));
 	}
 
 	~SpaceGameStage()
 	{
-		for (auto action : this->actions) {
-			delete action; 
-		}
-
 		delete this->sdlEventCollector; 
 	}
 
-	void Update(IGameApp* gameApp) override final
+	void Update() override final
 	{
-		auto graphics = gameApp->GetGraphics();
-		auto componentCollectionRepository = gameApp->GetComponentCollectionRepository();
+		//this->sdlEventCollector->Update();
+		this->GetPhysics()->ExecuteTasks(this->GetComponentCollectionRepository()); 
+
+		// call base class update first
+		IStage::Update(); 
+
+		auto graphics = this->GetGameApp()->GetGraphics();
+		auto componentCollectionRepository = this->GetComponentCollectionRepository();
 
 		auto starTransformComponents = componentCollectionRepository->SelectFromCollection<TransformComponent>("ScrollingBackgroundStars");
 		auto starGraphicsComponents = componentCollectionRepository->SelectFromCollection<GraphicsComponent>("ScrollingBackgroundStars");
@@ -78,15 +58,15 @@ public:
 		auto asteroidTransformComponents = componentCollectionRepository->SelectFromCollection<TransformComponent>("EnemyAsteroids");
 		auto asteroidGraphicsComponents = componentCollectionRepository->SelectFromCollection<GraphicsComponent>("EnemyAsteroids");
 
-		for_each(this->actions.begin(), this->actions.end(), [this, componentCollectionRepository](IAction* action) {
-			         action->Update(componentCollectionRepository);
-		         });
+		auto projectileTransformComponents = componentCollectionRepository->SelectFromCollection<TransformComponent>("PlayerSpaceShipProjectiles");
+		auto projectileGraphicsComponents = componentCollectionRepository->SelectFromCollection<GraphicsComponent>("PlayerSpaceShipProjectiles"); 
 
 		graphics->Clear();
 
 		graphics->UpdateGraphics(starGraphicsComponents, starTransformComponents);
 		graphics->UpdateGraphics(asteroidGraphicsComponents, asteroidTransformComponents);
 		graphics->UpdateGraphics(playerGraphicsComponents, playerTransformComponents);
+		graphics->UpdateGraphics(projectileGraphicsComponents, projectileTransformComponents); 
 
 		graphics->Present();
 	}
