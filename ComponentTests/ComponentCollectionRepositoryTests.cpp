@@ -81,13 +81,15 @@ namespace ComponentTests
 		TEST_METHOD(RemoveComponentById)
 		{
 			ComponentCollectionRepository componentCollectionRepository; 
-
 			componentCollectionRepository.NewCollection("TestCollection"); 
 
 			auto component1 = componentCollectionRepository.NewComponent<TransformComponent>(); 
+			auto id = component1->id; 
 
-			//componentCollectionRepository.RemoveComponent(component1->id); 
+			componentCollectionRepository.RemoveComponent(id); 
+
+			component1 = componentCollectionRepository.Select<TransformComponent>(id); 
+			Assert::IsNull(component1); 
 		}
-
 	};
 }

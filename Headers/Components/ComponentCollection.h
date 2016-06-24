@@ -1,38 +1,22 @@
 #ifndef COMPONENT_COLLECTION_H
 #define COMPONENT_COLLECTION_H
 
+#include <Components/VectorContainer.h>
 #include <Components/BaseComponent.h>
 #include <unordered_map>  
 #include <vector>
 #include <typeindex>
 #include <type_traits>
+#include <algorithm>
 
 using namespace std; 
-
-const unsigned int vectorContainerReserveSize = 100;
-
-struct IVectorContainer
-{
-	virtual ~IVectorContainer() {}
-};
-
-template <typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
-struct VectorContainer : IVectorContainer
-{
-	vector<T> vec;
-
-	VectorContainer()
-	{
-		vec.reserve(vectorContainerReserveSize);
-	}
-};
 
 // ComponentCollection
 class ComponentCollection
 {
 	unordered_map<type_index, IVectorContainer*> componentCollection;
-	unordered_map<int, IVectorContainer> idToTypeIndexPair; 
-	
+	unordered_map<unsigned int, tuple<type_index*, BaseComponent*>> idToComponent;
+
 public:
 
 	ComponentCollection() {}
@@ -43,13 +27,25 @@ public:
 		{
 			delete pair.second;
 		}
+
+		for (auto pair : this->idToComponent) {
+			auto tup = get<1>(pair); 
+			auto type = get<0>(tup); 
+
+			delete type; 
+		}
 	}
 	
 	template <typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
 	T* NewComponent();
 
+	void DeleteId(unsigned int id); 
+
 	template<typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
 	vector<T>* Select();
+
+	template<typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
+	T* Select(unsigned int id); 
 };
 
 //---------------------------------------------------------------------------------------------
@@ -66,17 +62,32 @@ T* ComponentCollection::NewComponent()
 
 	VectorContainer<T>* container = static_cast<VectorContainer<T>*>(this->componentCollection[type_index(typeid(T))]);
 
-	if (container->vec.size() < vectorContainerReserveSize) {
-		container->vec.push_back(T());
+	container->vec.push_back(T());
+	T* component = &container->vec.back();
 
-	} else {
-		// container wraps around
-		auto& front = container->vec.front();
-		front = T(); 
-		return &front; 
-	}
+	component->id = MathUtility::GenerateId();
+
+	auto type = new type_index(typeid(T));
+	this->idToComponent[component->id] = tuple<type_index*, BaseComponent*>(type, component);
 
 	return &container->vec.back();
+}
+//---------------------------------------------------------------------------------------------
+// Name: Delete
+// Desc:
+//---------------------------------------------------------------------------------------------
+inline void ComponentCollection::DeleteId(unsigned int id)
+{
+	auto typeComponentPair = this->idToComponent[id]; 
+
+	auto type = get<0>(typeComponentPair); 
+	this->componentCollection[*type]->RemoveId(id); 
+
+	auto it = this->idToComponent.find(id);
+
+	if (it != this->idToComponent.end()) {
+		this->idToComponent.erase(it); 
+	}
 }
 //---------------------------------------------------------------------------------------------
 // Name: Select
@@ -88,6 +99,19 @@ vector<T>* ComponentCollection::Select()
 	auto iContainer = componentCollection[type_index(typeid(T))];
 	auto container = static_cast<VectorContainer<T>*>(iContainer);
 	return &(container->vec);
+}
+//---------------------------------------------------------------------------------------------
+// Name: Select
+// Desc:
+//---------------------------------------------------------------------------------------------
+template<typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
+T* ComponentCollection::Select(unsigned int id)
+{
+	auto pair = this->idToComponent[id]; 
+	auto component = get<1>(pair); 
+	T* container = static_cast<T*>(component);
+
+	return container; 
 }
 
 #endif // COMPONENT_COLLECTION_H

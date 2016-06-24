@@ -62,6 +62,16 @@ namespace MathUtility
 		Vector2D v = Vector2D(vector.x*cosf(angle) + vector.y*sinf(angle), -vector.x*sinf(angle) + vector.y*cosf(angle)); 
 		return v; 
 	}
+	//---------------------------------------------------------------------------
+	// Name: Generate Id
+	// Desc: 
+	//---------------------------------------------------------------------------
+	static unsigned int GenerateId()
+	{
+		static unsigned id = 0;
+		return id++; 
+	}
+
 };
 
 #endif // MATH_UTILITY_H

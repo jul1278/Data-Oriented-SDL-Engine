@@ -5,6 +5,7 @@
 #ifndef COMPONENT_COLLECTION_REPOSITORY_H
 #define COMPONENT_COLLECTION_REPOSITORY_H
 
+#include "Utility/MathUtility.h"
 #include "ComponentCollection.h"
 
 #include <unordered_map>  
@@ -24,9 +25,6 @@ class ComponentCollectionRepository
 {
 private:
 
-    unsigned int nextId; 
-    unsigned int GetNextId() { return nextId++; }
-
 	// map string to component collection
 	unordered_map<string, ComponentCollection*> componentCollectionMap; 
 
@@ -41,8 +39,7 @@ public:
 	ComponentCollectionRepository()
 	{
 		// default collection so there is always somewhere to add to
-        this->componentCollectionMap[defaultCollectionName] = new ComponentCollection();
-        this->nextId = 0; 
+        this->componentCollectionMap[defaultCollectionName] = new ComponentCollection(); 
 	}
 
     ~ComponentCollectionRepository()
@@ -61,12 +58,25 @@ public:
 		BaseComponent* newComponent = nullptr;
 
 		newComponent = this->componentCollectionMap[collectionNameTemp]->NewComponent<T>();
-		newComponent->id = this->GetNextId();
 
 		auto collection = componentCollectionMap[collectionNameTemp]; 
 		this->idToCollectionMap[newComponent->id] = collection; 
 
 		return static_cast<T*>(newComponent);
+	}
+
+	void RemoveComponent(unsigned int id)
+	{
+		auto collection = this->idToCollectionMap[id]; 
+
+		if (collection != nullptr) {
+			collection->DeleteId(id); 
+			
+			auto it = this->idToCollectionMap.find(id); 
+			if (it != this->idToCollectionMap.end()) {
+				this->idToCollectionMap.erase(it); 
+			}
+		}
 	}
 
 	void NewCollection(const string collectionName)
@@ -108,15 +118,9 @@ public:
 
 		if (collection != nullptr) {
 
-			vector<T>* vec = collection->Select<T>();
-
-			if (vec != nullptr) {
-				auto result = find_if(vec->begin(), vec->end(), [id](const T& c) {return (c.id == id); });
-
-				if (result != vec->end()) {
-					return result._Ptr;
-				}
-			}
+			T* result = collection->Select<T>(id); 
+			return result;
+			
 		}
 
 		return nullptr;
