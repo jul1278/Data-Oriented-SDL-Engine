@@ -6,17 +6,9 @@
 // Name:
 // Desc: 
 //------------------------------------------------------------------------------------------
-RectGraphicsResource::RectGraphicsResource(float width, float height, char a, char r, char g, char b)
+RectGraphicsResource::RectGraphicsResource(float width, float height, const Color& color) :
+width(width), height(height), a(color.A()), r(color.R()), g(color.G()), b(color.B()), texture(nullptr)
 {
-	this->width = width;
-	this->height = height;
-	this->a = a;
-	this->r = r;
-	this->g = g;
-	this->b = b;
-
-	this->texture = nullptr;
-
 	this->surface = SDL_CreateRGBSurface(0, static_cast<int>(width), static_cast<int>(height), 32, 0, 0, 0, 0);
 
 	if (surface == nullptr) {

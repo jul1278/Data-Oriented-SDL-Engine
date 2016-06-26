@@ -17,18 +17,19 @@ private:
 
     float width;
     float height;
-    char a;
-    char r;
-    char g;
-    char b;
+
+    unsigned char a;
+    unsigned char r;
+    unsigned char g;
+    unsigned char b;
 
     SDL_Surface* surface;
     SDL_Texture* texture;
 
 public:
 
-	RectGraphicsResource(float width, float height, char a, char r, char g, char b);
-
+	RectGraphicsResource(float width, float height, const Color& color);
+	
 	~RectGraphicsResource();
 
 	void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent) override final;

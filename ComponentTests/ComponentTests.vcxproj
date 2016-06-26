@@ -43,8 +43,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>C:\Projects\lib\SDL2-2.0.3\lib\x86;C:\Projects\lib\boost_1_60_0\boost_1_60_0\stage\lib\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Projects\Data-Oriented-SDL-Engine\Headers\;C:\Projects\lib\boost_1_60_0\boost_1_60_0\;C:\Projects\lib\SDL2-2.0.3\include</IncludePath>
+    <LibraryPath>C:\Projects\lib\SDL2_ttf-2.0.14\lib\x86\;C:\Projects\lib\SDL2_image-2.0.0\lib\x86;C:\Projects\lib\SDL2-2.0.3\lib\x86;C:\Projects\lib\boost_1_60_0\boost_1_60_0\stage\lib\;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Projects\lib\SDL2_image-2.0.0\include;C:\Projects\lib\SDL2_ttf-2.0.14\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Projects\Data-Oriented-SDL-Engine\Headers\;C:\Projects\lib\boost_1_60_0\boost_1_60_0\;C:\Projects\lib\SDL2-2.0.3\include</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -61,11 +61,18 @@
       <UseFullPaths>true</UseFullPaths>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2_image.lib;SDL2.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>copy "$(SolutionDir)\..\lib\SDL2-2.0.3\lib\x86\" "$(SolutionDir)Debug\"
+copy "$(SolutionDir)\..\lib\SDL2_image-2.0.0\lib\x86" "$(SolutionDir)Debug\"
+copy "$(SolutionDir)\..\lib\SDL2_ttf-2.0.14\lib\x86\SDL2_ttf.dll" "$(SolutionDir)Debug\"
+copy "$(SolutionDir)\..\lib\SDL2_ttf-2.0.14\lib\x86\libfreetype-6.dll" "$(SolutionDir)Debug\"
+</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -91,6 +98,12 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Source\Graphics.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Source\Graphics\RectGraphicsResource.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\Source\Physics.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -99,6 +112,7 @@
     </ClCompile>
     <ClCompile Include="ComponentCollectionRepositoryTests.cpp" />
     <ClCompile Include="EventTests.cpp" />
+    <ClCompile Include="GraphicsTests.cpp" />
     <ClCompile Include="MathUtilTests.cpp" />
     <ClCompile Include="PhysicsTest.cpp" />
     <ClCompile Include="SDLEventTests.cpp" />

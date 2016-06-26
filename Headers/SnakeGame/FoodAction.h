@@ -80,7 +80,7 @@ public:
 
 		componentCollection->NewCollection("Food");
 		
-		auto foodGraphicId = graphics->AddGraphicsResource(new RectGraphicsResource(8.0f, 8.0f, 0xff, 0xff, 0xff, 0xff));
+		auto foodGraphicId = graphics->AddGraphicsResource(new RectGraphicsResource(8.0f, 8.0f, Color(Color::White)));
 		auto foodPos = componentCollection->NewComponent<TransformComponent>("Food");
 		auto foodGraphic = componentCollection->NewComponent<GraphicsComponent>("Food");
 
