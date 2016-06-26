@@ -180,7 +180,13 @@ public:
 
 	unsigned int Argb() const
 	{
-		unsigned int color = (this->a << 24) & (this->r << 16) & (this->g << 8) & this->b; 
+		unsigned int color = (this->a << 24) | (this->r << 16) | (this->g << 8) | this->b; 
+		return color; 
+	}
+
+	unsigned int Rgba() const
+	{
+		unsigned int color = (this->r << 24) | (this->g << 16) | (this->b << 8) | this->a;
 		return color; 
 	}
 

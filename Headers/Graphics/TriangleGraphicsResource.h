@@ -6,6 +6,8 @@
 #define TRIANGLE_GRAPHICS_RESOURCE_H
 
 #include "Graphics/IGraphicsResource.h"
+#include <SDL.h>
+#include "GraphicsUtility.h"
 
 class IsoTriangleGraphicsResource : public IGraphicsResource
 {
@@ -14,12 +16,12 @@ private:
     float width;
     float height;
 
-    SDL_Surface* triangleSurface;
+    struct SDL_Surface* triangleSurface;
     SDL_Texture* texture; 
 
 public:
 
-    IsoTriangleGraphicsResource(float width, float height, uint8_t a, uint8_t r, uint8_t g, uint8_t b)
+    IsoTriangleGraphicsResource(float width, float height, const Color& color)
     {
         this->texture = nullptr;
 
@@ -27,8 +29,7 @@ public:
         this->height = static_cast<float>(height);
 
         this->triangleSurface = SDL_CreateRGBSurface(0, this->width, this->height, 32, 0, 0, 0, 0);
-        auto color = SDL_MapRGBA(this->triangleSurface->format, r, g, b, a);
-        GraphicsUtility::FillIsoTriangle(this->triangleSurface, this->width, this->height, color);
+        GraphicsUtility::FillIsoTriangle(this->triangleSurface, this->width, this->height, color.Rgba());
     }
 
     ~IsoTriangleGraphicsResource()

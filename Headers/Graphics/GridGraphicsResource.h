@@ -19,16 +19,13 @@ private:
 
 public:
 
-	GridGraphicsResource(float interval, unsigned int xCount, unsigned int yCount, char a, char r, char g, char b)
+	GridGraphicsResource(float interval, unsigned int xCount, unsigned int yCount, const Color& color)
+		: interval(interval), xCount(xCount), yCount(yCount)
 	{
-		this->interval = interval;
-		this->xCount = xCount;
-		this->yCount = yCount;
-
-		this->a = a;
-		this->r = r; 
-		this->g = g; 
-		this->b = b; 
+		this->a = color.A();
+		this->r = color.R(); 
+		this->g = color.G(); 
+		this->b = color.B(); 
 	}
 
 	void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent) override final

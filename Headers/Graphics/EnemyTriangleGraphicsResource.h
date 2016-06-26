@@ -6,6 +6,7 @@
 #define ENEMY_TRIANGLE_GRAPHICS_RESOURCE_H
 
 #include "IGraphicsResource.h"
+#include "SDL.h"
 
 class EnemyTriangleGraphicsResource : public IGraphicsResource
 {
@@ -14,22 +15,15 @@ private:
 	float width;
 	float height; 
 
-	uint8_t a;
-	uint8_t r;
-	uint8_t g;
-	uint8_t b;
+	unsigned char a;
+	unsigned char r;
+	unsigned char g;
+	unsigned char b;
 public:
 
-	EnemyTriangleGraphicsResource(float width, float height, uint8_t a, uint8_t r, uint8_t g, uint8_t b)
-	{
-		this->width = width; 
-		this->height = height; 
-
-		this->a = a;
-		this->r = r; 
-		this->g = g; 
-		this->b = b; 
-	}
+	EnemyTriangleGraphicsResource(float width, float height, const Color& color) :
+		width(width), height(height), a(color.A()), r(color.R()), g(color.G()), b(color.B())
+	{}
 
 	void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent) override final
 	{

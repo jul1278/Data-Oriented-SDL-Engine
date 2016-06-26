@@ -10,6 +10,11 @@ class TextGraphicsResource : public IGraphicsResource
 
 private:
 
+	unsigned char a; 
+	unsigned char r;
+	unsigned char g;
+	unsigned char b; 
+
 	string text; 
 	string fontName; 
 	_TTF_Font* font; 
@@ -19,15 +24,19 @@ private:
 
 	void UpdateFontSurface()
 	{
-		SDL_Color textColor = { 255, 255, 255 };
-
+		SDL_Color textColor = { this->r, this->g, this->b};
 		this->fontSurface = TTF_RenderText_Solid(this->font, this->text.c_str(), textColor);
 	}
 	
 public:
 
-	TextGraphicsResource(string text, string fontName, unsigned short fontSize)
+	TextGraphicsResource(string text, string fontName, unsigned short fontSize, const Color& color)
 	{
+		this->a = color.A();
+		this->r = color.R(); 
+		this->g = color.G();
+		this->b = color.B(); 
+
 		this->font = TTF_OpenFont("Resources//Anonymous_Pro.ttf", fontSize);
 		this->fontName = fontName; 
 		this->text = text; 

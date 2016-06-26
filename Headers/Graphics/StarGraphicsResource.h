@@ -27,18 +27,18 @@ private:
 
 public:
 
-	StarGraphicsResource(float radiusOuter, float radiusInner, uint8_t a, uint8_t r, uint8_t g, uint8_t b)
+	StarGraphicsResource(float radiusOuter, float radiusInner, const Color& color)
 	{
-		this->a = a; 
-		this->r = r; 
-		this->g = g;
-		this->b = b; 
+		this->a = color.A();
+		this->r = color.R();
+		this->g = color.G();
+		this->b = color.B(); 
 
 		this->radiusInner = static_cast<uint16_t>(floor(radiusInner));
 		this->radiusOuter = static_cast<uint16_t>(floor(radiusOuter)); 
 
-		starCircle = new CircleOutlineGraphicsResource(0.5f*radiusOuter, 1.0f, a, r, g, b); 
-		starFill = new CircleFillGraphicsResource(0.5f*radiusInner, a, r, g, b); 
+		starCircle = new CircleOutlineGraphicsResource(0.5f*radiusOuter, 1.0f, color); 
+		starFill = new CircleFillGraphicsResource(0.5f*radiusInner, color); 
 	};
 
 	~StarGraphicsResource()

@@ -8,6 +8,7 @@
 #include "Graphics/IGraphicsResource.h"
 #include "Components/TransformComponent.h"
 #include "GraphicsUtility.h"
+#include "Graphics/Color.h"
 
 // CircleGraphicsResource
 class CircleFillGraphicsResource : public IGraphicsResource
@@ -20,14 +21,13 @@ private:
 
 public:
 
-    CircleFillGraphicsResource(float radius, uint8_t a, uint8_t r, uint8_t g, uint8_t b)
+    CircleFillGraphicsResource(float radius, const Color& color)
     {
         this->radius = static_cast<uint16_t>(floor(radius));
         this->circleTexture = nullptr; 
 
         circleSurface = SDL_CreateRGBSurface(0, 2 * this->radius, 2 * this->radius, 32, 0, 0, 0, 0);
-        auto color = SDL_MapRGBA(this->circleSurface->format, r, g, b, a);
-        GraphicsUtility::FillCircle(circleSurface, this->radius, color);
+        GraphicsUtility::FillCircle(circleSurface, this->radius, color.Rgba());
     }
 
     ~CircleFillGraphicsResource()

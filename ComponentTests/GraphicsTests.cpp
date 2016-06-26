@@ -7,6 +7,10 @@
 #include <Components/GraphicsComponent.h>
 #include "Graphics/RectGraphicsResource.h"
 #include <iostream>
+#include <Graphics/BubbleGraphicsResources.h>
+#include "Graphics/CircleFIllGraphicsResource.h"
+#include "Graphics/CircleOutlineGraphicsResource.h"
+#include <Graphics/GridGraphicsResource.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -69,6 +73,49 @@ namespace GraphicsTest
 			SDL_Delay(5000); 
 
 			delete graphics; 
+		}
+
+		TEST_METHOD(TestShapes)
+		{
+			graphics = new Graphics(200, 200, "TestShapes");
+			ComponentCollectionRepository componentCollection;
+			
+			vector<GraphicsComponent> graphicsComponents;
+			vector<TransformComponent> transformComponents;
+
+			graphics->AddGraphicsResource(new RectGraphicsResource(20, 20, Color(Color::AliceBlue)));
+			graphics->AddGraphicsResource(new BubbleGraphicsResource(10.0f));
+			graphics->AddGraphicsResource(new CircleFillGraphicsResource(30.0f, Color(Color::Chocolate)));
+			graphics->AddGraphicsResource(new CircleOutlineGraphicsResource(40.0f, 10.0f, Color(Color::DarkCyan)));
+			graphics->AddGraphicsResource(new GridGraphicsResource(5.0f, 5, 5, Color(Color::Firebrick)));
+
+			graphicsComponents.push_back(GraphicsComponent(1, 0));
+			transformComponents.push_back(TransformComponent(Vector2D(10.0f, 10.0f)));
+			
+			graphicsComponents.push_back(GraphicsComponent(2, 1));
+			transformComponents.push_back(TransformComponent(Vector2D(100.0f, 100.0f)));
+			
+			graphicsComponents.push_back(GraphicsComponent(3, 2));
+			transformComponents.push_back(TransformComponent(Vector2D(50.0f, 50.0f)));
+
+			graphicsComponents.push_back(GraphicsComponent(4, 3));
+			transformComponents.push_back(TransformComponent(Vector2D(70.0f, 50.0f)));
+
+			transformComponents[0].id = 0;
+			transformComponents[1].id = 1;
+			transformComponents[2].id = 2;
+			transformComponents[3].id = 3;
+
+			graphics->Clear();
+			graphics->UpdateGraphics(&graphicsComponents, &transformComponents);
+			graphics->Present();
+
+			graphics->AddGraphicsResource(new RectGraphicsResource(200, 40, Color(Color::AliceBlue)));
+
+			SDL_Delay(5000);
+
+			delete graphics;
+
 		}
 	};
 }

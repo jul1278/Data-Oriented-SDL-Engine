@@ -3,12 +3,17 @@
 #include <SDL.h>
 
 //------------------------------------------------------------------------------------------
-// Name:
+// Name: constructor
 // Desc: 
 //------------------------------------------------------------------------------------------
-RectGraphicsResource::RectGraphicsResource(float width, float height, const Color& color) :
-width(width), height(height), a(color.A()), r(color.R()), g(color.G()), b(color.B()), texture(nullptr)
+RectGraphicsResource::RectGraphicsResource(float width, float height, const Color& color) 
+	: width(width), height(height), texture(nullptr)
 {
+	this->a = color.A();
+	this->r = color.R(); 
+	this->g = color.G(); 
+	this->b = color.B(); 
+
 	this->surface = SDL_CreateRGBSurface(0, static_cast<int>(width), static_cast<int>(height), 32, 0, 0, 0, 0);
 
 	if (surface == nullptr) {
@@ -19,7 +24,7 @@ width(width), height(height), a(color.A()), r(color.R()), g(color.G()), b(color.
 	SDL_FillRect(surface, nullptr, SDL_MapRGBA(surface->format, this->r, this->g, this->b, this->a));
 };
 //------------------------------------------------------------------------------------------
-// Name:
+// Name: destructor
 // Desc: 
 //------------------------------------------------------------------------------------------
 RectGraphicsResource::~RectGraphicsResource()
@@ -29,7 +34,7 @@ RectGraphicsResource::~RectGraphicsResource()
 	}
 }
 //------------------------------------------------------------------------------------------
-// Name:
+// Name: Render
 // Desc: 
 //------------------------------------------------------------------------------------------
 void RectGraphicsResource::Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent)

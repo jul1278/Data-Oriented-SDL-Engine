@@ -62,5 +62,8 @@
     <ClCompile Include="..\Source\Graphics\RectGraphicsResource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\Graphics\BubbleGraphicsResource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

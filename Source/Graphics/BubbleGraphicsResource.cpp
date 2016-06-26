@@ -11,8 +11,8 @@ BubbleGraphicsResource::BubbleGraphicsResource(float radius)
 {
 	this->radius = radius;
 
-	bubbleCircle = new CircleOutlineGraphicsResource(radius, 1.0f, 0xff, 0xff, 0xff, 0xff);
-	bubbleHighlight = new CircleFillGraphicsResource(radius / 5.0f, 0xff, 0x8f, 0x8f, 0x8f);
+	bubbleCircle = new CircleOutlineGraphicsResource(radius, 1.0f, Color(Color::White));
+	bubbleHighlight = new CircleFillGraphicsResource(radius / 5.0f, Color(Color::Gray));
 }
 //---------------------------------------------------------------------------
 // Name: ~BubbleGraphicsResource

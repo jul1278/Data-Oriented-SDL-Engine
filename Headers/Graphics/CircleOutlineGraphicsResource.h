@@ -22,7 +22,7 @@ private:
 
 public:
 
-    CircleOutlineGraphicsResource(float radius, float thickness, uint8_t a, uint8_t r, uint8_t g, uint8_t b): circleTexture(nullptr)
+    CircleOutlineGraphicsResource(float radius, float thickness, const Color& color): circleTexture(nullptr)
     {
         this->radius = static_cast<uint16_t>(floor(radius));
 
@@ -33,10 +33,7 @@ public:
         }
 
         circleSurface = SDL_CreateRGBSurface(0, 2*this->radius, 2*this->radius, 32, 0, 0, 0, 0);
-
-        auto color = SDL_MapRGBA(this->circleSurface->format, r, g, b, a);
-        GraphicsUtility::OutlineCircle(circleSurface, this->radius, this->thickness, color);
-
+        GraphicsUtility::OutlineCircle(circleSurface, this->radius, this->thickness, color.Rgba());
     };
 
     ~CircleOutlineGraphicsResource()

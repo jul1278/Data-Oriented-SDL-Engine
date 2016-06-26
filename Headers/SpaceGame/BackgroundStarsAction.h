@@ -25,7 +25,7 @@ public:
 		this->width = graphics->WindowWidth(); 
 		this->height = graphics->WindowHeight();
 
-		auto starGraphicResId = graphics->AddGraphicsResource(new StarGraphicsResource(5.0f, 2.5f, 0xff, 0x5f, 0x5f, 0x5f));
+		auto starGraphicResId = graphics->AddGraphicsResource(new StarGraphicsResource(5.0f, 2.5f, Color(Color::DarkGray)));
 		
 		SpaceGameEntityConstructor::ConstructBackgroundStars(this->GetParentStage()->GetComponentCollectionRepository(), starGraphicResId, this->width, this->height, 20);
 	}

@@ -101,6 +101,9 @@ copy "$(SolutionDir)\..\lib\SDL2_ttf-2.0.14\lib\x86\libfreetype-6.dll" "$(Soluti
     <ClCompile Include="..\Source\Graphics.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\Source\Graphics\BubbleGraphicsResource.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\Source\Graphics\RectGraphicsResource.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
