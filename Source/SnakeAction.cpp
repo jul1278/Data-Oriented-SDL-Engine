@@ -59,7 +59,7 @@ SnakeAction::SnakeAction(IStage* stage) : IAction(stage)
 	auto snakeHead = componentCollection->NewComponent<TransformComponent>("Snake");
 	auto snakeHeadGraphics = componentCollection->NewComponent<GraphicsComponent>("Snake");
 
-	this->snakeGraphicId = graphics->AddGraphicsResource(new RectGraphicsResource(8.0f, 8.0f, 0xff, 0xff, 0xff, 0xff));
+	this->snakeGraphicId = graphics->AddGraphicsResource(new RectGraphicsResource(8.0f, 8.0f, Color(Color::White)));
 
 	snakeHead->position = headStartPos;
 	snakeHeadGraphics->transformComponentId = snakeHead->id;

@@ -5,7 +5,8 @@
 #ifndef IGRAPHICSRESOURCE_H
 #define IGRAPHICSRESOURCE_H
 
-#include <Components/TransformComponent.h>
+#include "Components/TransformComponent.h"
+#include "Graphics/Color.h"
 
 struct SDL_Renderer; 
 
@@ -17,7 +18,7 @@ public:
 
 	virtual void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent, TransformComponent* parentTransform)
 	{
-		TransformComponent resultTransform = *transformComponent; 
+		auto resultTransform = *transformComponent; 
 		resultTransform.position += parentTransform->position; 
 
 		// TODO: transform scale and orientation as well

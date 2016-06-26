@@ -1,4 +1,5 @@
 #include "SpaceGame/PlayerSpaceshipAction.h"
+#include "Graphics/Color.h"
 #include <Physics/VelocityTask.h>
 
 //-------------------------------------------------------------------------------------
@@ -18,7 +19,7 @@ PlayerSpaceshipAction::PlayerSpaceshipAction(IStage* stage) : IAction(stage)
 	//
 	// Resources
 	//
-	this->projectileGraphicResId = graphics->AddGraphicsResource(new RectGraphicsResource(2.0f, 12.0f, 0xff, 0xff, 0x00, 0x00));
+	this->projectileGraphicResId = graphics->AddGraphicsResource(new RectGraphicsResource(2.0f, 12.0f, Color(Color::Red)));
 	auto spaceShipGraphicResId = graphics->LoadGraphicResource("Resources//space_ship.png", "spaceShip");
 
 	//
