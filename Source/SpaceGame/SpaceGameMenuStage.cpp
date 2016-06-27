@@ -91,7 +91,7 @@ void SpaceGameMenuStage::OnMenuStartGameMouseOver(const MouseMotionEventArgs& mo
 void SpaceGameMenuStage::OnMenuStartGameClick(const MouseButtonEventArgs& mouseButtonEventArgs) const
 {
 	if (mouseButtonEventArgs.MouseButton() == LEFT_BUTTON && mouseButtonEventArgs.Released()) {
-		this->GetGameApp()->PushStage(new SpaceGameStage(this->GetGameApp()));
+		// this->GetGameApp()->PushStage(new SpaceGameStage(this->GetGameApp()));
 		this->GetGameApp()->PopStage();
 	}
 }

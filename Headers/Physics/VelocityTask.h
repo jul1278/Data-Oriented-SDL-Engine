@@ -15,7 +15,7 @@ class VelocityTask : public IPhysicsTask
 			return; 
 		}
 
-		for (auto component : *physicsComponents) {
+		for (auto& component : *physicsComponents) {
 			
 			auto transformComponent = componentCollectionRepository->Select<TransformComponent>(component.transformComponentId); 
 

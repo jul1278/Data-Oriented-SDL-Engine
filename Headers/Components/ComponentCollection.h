@@ -14,6 +14,8 @@ using namespace std;
 // ComponentCollection
 class ComponentCollection
 {
+	static unsigned int id; 
+
 	unordered_map<type_index, IVectorContainer*> componentCollection;
 	unordered_map<unsigned int, tuple<type_index*, BaseComponent*>> idToComponent;
 
@@ -46,6 +48,11 @@ public:
 
 	template<typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
 	T* Select(unsigned int id); 
+
+	static unsigned int GenerateId()
+	{
+		return id++;
+	}
 };
 
 //---------------------------------------------------------------------------------------------
@@ -65,7 +72,7 @@ T* ComponentCollection::NewComponent()
 	container->vec.push_back(T());
 	T* component = &container->vec.back();
 
-	component->id = MathUtility::GenerateId();
+	component->id = ComponentCollection::GenerateId();
 
 	auto type = new type_index(typeid(T));
 	this->idToComponent[component->id] = tuple<type_index*, BaseComponent*>(type, component);
@@ -107,11 +114,15 @@ vector<T>* ComponentCollection::Select()
 template<typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
 T* ComponentCollection::Select(unsigned int id)
 {
-	auto pair = this->idToComponent[id]; 
-	auto component = get<1>(pair); 
-	T* container = static_cast<T*>(component);
+	//auto pair = this->idToComponent[id]; 
+	//auto component = get<1>(pair); 
+	//T* container = static_cast<T*>(component);
 
-	return container; 
+	auto baseContainer = this->componentCollection[type_index(typeid(T))];
+	VectorContainer<T>* container = static_cast<VectorContainer<T>*>(baseContainer);
+	auto component = find_if(container->vec.begin(), container->vec.end(), [id](const T& t){return t.id == id; });
+
+	return component._Ptr; 
 }
 
 #endif // COMPONENT_COLLECTION_H

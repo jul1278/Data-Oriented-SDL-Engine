@@ -71,6 +71,7 @@ public:
 
     float Length() const { return sqrt( x*x + y*y );}
     float Angle() const { return atan2f(this->y, this->x); }
+
 };
 
 #endif //VECTOR_H_H

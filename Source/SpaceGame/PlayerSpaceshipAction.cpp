@@ -53,57 +53,58 @@ void PlayerSpaceshipAction::MoveSpaceShip(const ButtonEventArgs& buttonEventArgs
 	auto componentCollectionRepository = this->GetParentStage()->GetComponentCollectionRepository();
 	auto playerPhysicsComponents = componentCollectionRepository->SelectFromCollection<PhysicsComponent>("PlayerSpaceShip");
 
-	auto& physicsComponent = playerPhysicsComponents->front();
-	auto transformComponent = componentCollectionRepository->Select<TransformComponent>(physicsComponent.transformComponentId);
+	for (auto& physicsComponent : *playerPhysicsComponents) {
 
-	if (transformComponent->position.y < (this->height - 60)) {
-		physicsComponent.velocity.y = 1.0f;
-	}
-	else {
-		physicsComponent.velocity.y = 0.0f;
-	}
+		auto transformComponent = componentCollectionRepository->Select<TransformComponent>(physicsComponent.transformComponentId);
 
-	if (!buttonEventArgs.Released()) {
+		if (transformComponent->position.y < (this->height - 60)) {
+			physicsComponent.velocity.y = 1.0f;
+		}
+		else {
+			physicsComponent.velocity.y = 0.0f;
+		}
 
-		switch (buttonEventArgs.Key()) {
-		case LEFT_ARROW:
+		if (!buttonEventArgs.Released()) {
+
+			switch (buttonEventArgs.Key()) {
+			case LEFT_ARROW:
 			{
 				if (transformComponent->position.x > 25) {
 					physicsComponent.velocity = Vector2D(-4.0f, 0.0f);
 				}
-				break; 
+				break;
 			}
-		case RIGHT_ARROW:
+			case RIGHT_ARROW:
 			{
 				if (transformComponent->position.x < (this->width - 50)) {
 					physicsComponent.velocity = Vector2D(4.0f, 0.0f);
 				}
-				break; 
+				break;
 			}
-		case UP_ARROW:
+			case UP_ARROW:
 			{
 				if (transformComponent->position.y > 25) {
 					physicsComponent.velocity = Vector2D(0.0f, -4.0f);
 				}
-				break; 
+				break;
 			}
-		case DOWN_ARROW:
+			case DOWN_ARROW:
 			{
 				if (transformComponent->position.y < (this->height - 60)) {
 					physicsComponent.velocity = Vector2D(0.0f, 4.0f);
 				}
-				break; 
+				break;
 			}
-		case SPACE:
+			case SPACE:
 			{
 				break;
 			}
-			
-		default: break;
-		}
 
-	} else {
-		physicsComponent.velocity.x = 0.0f;
+			default: break;
+			}
+		} else {
+			physicsComponent.velocity.x = 0.0f;
+		}
 	}
 }
 //-------------------------------------------------------------------------------------

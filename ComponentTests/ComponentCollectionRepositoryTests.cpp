@@ -4,6 +4,8 @@
 #include <Components/GraphicsComponent.h>
 #include <Components/VelocityComponent.h>
 #include <Components/TransformComponent.h>
+#include <Components/PhysicsComponent.h>
+#include <list>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -62,17 +64,41 @@ namespace ComponentTests
 		{
 			ComponentCollectionRepository componentCollectionRepository; 
 
-			componentCollectionRepository.NewCollection("TestCollection");
+			componentCollectionRepository.NewCollection("TestCollection1");
+			componentCollectionRepository.NewCollection("TestCollection2");
 
-			auto component1 = componentCollectionRepository.NewComponent<TransformComponent>();
-			auto component2 = componentCollectionRepository.NewComponent<TransformComponent>();
-			auto component3 = componentCollectionRepository.NewComponent<TransformComponent>("TestCollection");
+			vector<unsigned int> ids1; 
+			vector<unsigned int> ids2; 
 
-			auto result = componentCollectionRepository.Select<TransformComponent>(component2->id); 
+			for (auto i = 0; i < 200; i++) {
+				auto component = componentCollectionRepository.NewComponent<TransformComponent>("TestCollection1");
+				componentCollectionRepository.NewComponent<PhysicsComponent>("TestCollection1");
+				component->position = Vector2D(i, i); 
+				
+				ids1.push_back(component->id); 
+			}
 
-			Assert::AreEqual(result->id, component2->id); 
-			Assert::AreNotEqual(result->id, component1->id); 
-			Assert::AreNotEqual(result->id, component3->id); 
+			for (auto i = 0; i < 100; i++) {
+				auto component = componentCollectionRepository.NewComponent<TransformComponent>("TestCollection2"); 
+				componentCollectionRepository.NewComponent<GraphicsComponent>("TestCollection2");
+
+				component->position = Vector2D(-i, -i);
+
+				ids2.push_back(component->id); 
+			}
+			
+			for (auto i = 0; i < 200; i++) {
+				auto component = componentCollectionRepository.Select<TransformComponent>(ids1[i]); 
+				Assert::AreEqual(component->position.x, (float)i); 
+				Assert::AreEqual(component->position.y, (float)i); 
+			}
+
+			for (auto i = 0; i < 100; i++) {
+				auto component = componentCollectionRepository.Select<TransformComponent>(ids2[i]);
+
+				Assert::AreEqual(component->position.x, (float)-i);
+				Assert::AreEqual(component->position.y, (float)-i);
+			}
 		}
 		//-----------------------------------------------------------------------------
 		// Name: RemoveById
@@ -90,6 +116,34 @@ namespace ComponentTests
 
 			component1 = componentCollectionRepository.Select<TransformComponent>(id); 
 			Assert::IsNull(component1); 
+		}
+		//-----------------------------------------------------------------------------
+		// Name: IdsAreUnique
+		// Desc: 		
+		//-----------------------------------------------------------------------------
+		TEST_METHOD(IdsAreUnique)
+		{
+			ComponentCollectionRepository componentCollectionRepository;
+			componentCollectionRepository.NewCollection("TestCollection");
+
+			list<unsigned int> ids; 
+
+			for (auto i = 0; i < 1000; i++) {
+				auto a = componentCollectionRepository.NewComponent<TransformComponent>("TestCollection");
+				auto b = componentCollectionRepository.NewComponent<GraphicsComponent>();
+
+				ids.push_back(a->id);
+				ids.push_back(b->id); 
+			}
+
+			ids.sort(); 
+
+			auto len = ids.size();	
+
+			// duplicates will be removed
+			ids.unique([](unsigned int a, unsigned int b) {return a == b; }); 
+
+			Assert::AreEqual(len, ids.size()); 
 		}
 	};
 }

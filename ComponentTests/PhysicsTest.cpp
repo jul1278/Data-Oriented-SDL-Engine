@@ -7,6 +7,7 @@
 #include "Components/TransformComponent.h"
 #include "Components/VelocityComponent.h"
 #include <Physics/CollisionPhysicsTask.h>
+#include <Physics/VelocityTask.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std; 
@@ -120,6 +121,78 @@ namespace PhysicsTest
 			physics.ExecuteTasks(&componentCollectionRepository); 
 
 			Assert::IsTrue(this->onCollisionSuccess); 
+		}
+		//------------------------------------------------------------------------------------
+		// Name: VelocityTaskTest
+		// Desc:
+		//------------------------------------------------------------------------------------
+		TEST_METHOD(VelocityTaskTest)
+		{
+			ComponentCollectionRepository components; 
+			Physics physics = Physics(1000, 1000); 
+
+			components.NewCollection("Collection1");
+			components.NewCollection("Collection2");
+
+			for (auto i = 0; i < 100; i++) {
+				auto transform = components.NewComponent<TransformComponent>("Collection1");
+				auto physicsComponent = components.NewComponent<PhysicsComponent>("Collection1");
+				
+				transform->position = Vector2D(i*5.0f, i*5.0f); 
+				transform->orientation = Vector2D(i*5.0f, i*5.0f);
+
+				physicsComponent->transformComponentId = transform->id; 
+				physicsComponent->acceleration = Vector2D(1.5f, 1.5f);
+				physicsComponent->velocity = Vector2D(1.0f, 1.0f); 
+				physicsComponent->angularAcceleration = 1.0f; 
+				physicsComponent->angularVelocity = 2.0f; 
+			}
+
+			for (auto i = 0; i < 20; i++) {
+				auto transform = components.NewComponent<TransformComponent>("Collection2");
+				auto physicsComponent = components.NewComponent<PhysicsComponent>("Collection2");
+
+				transform->position = Vector2D(i*5.0f, i*5.0f);
+				transform->orientation = Vector2D(i*5.0f, i*5.0f);
+
+				physicsComponent->transformComponentId = transform->id;
+				physicsComponent->acceleration = Vector2D(1.0f, 1.0f);
+				physicsComponent->velocity = Vector2D(1.0f, 1.0f);
+				//physicsComponent->angularAcceleration = 1.0f;
+				//physicsComponent->angularVelocity = 2.0f;
+			}
+
+			physics.AddPhysicsTask(new VelocityTask("Collection1"));
+			physics.AddPhysicsTask(new VelocityTask("Collection2"));
+
+			physics.ExecuteTasks(&components); 
+
+			auto transformComponents1 = components.SelectFromCollection<TransformComponent>("Collection1"); 
+			auto transformComponents2 = components.SelectFromCollection<TransformComponent>("Collection2"); 
+
+			for (auto i = 0; i < 100; i++) {
+
+				auto component = (*transformComponents1)[i];
+				auto expected = Vector2D((i*5.0f) + 1.0f + 1.5f, (i*5.0f) + 1.0f + 1.5f); 
+
+				auto expectedAngle = Vector2D((i*5.0f), (i*5.0f)); 
+				expectedAngle += (2.0f + 1.0f); 
+
+				Assert::AreEqual(component.position.x, expected.x);
+				Assert::AreEqual(component.position.y, expected.y);
+
+				Assert::AreEqual(component.orientation.Angle(), expectedAngle.Angle()); 
+			}
+
+			for (auto i = 0; i < 20; i++) {
+
+				auto component = (*transformComponents2)[i];
+				auto expected = Vector2D((i*5.0f) + 1.0f + 1.0f, (i*5.0f) + 1.0f + 1.0f);
+
+				Assert::AreEqual(component.position.x, expected.x);
+				Assert::AreEqual(component.position.y, expected.y);
+			}
+
 		}
 		//------------------------------------------------------------------------------------
 		// Name: PhysicsTaskNoCollisionTest

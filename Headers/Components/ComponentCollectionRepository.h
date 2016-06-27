@@ -32,7 +32,7 @@ private:
 	unordered_map<type_index, list<IVectorContainer*>> componentTypeMap; 
 
 	// id to parent collection
-	unordered_map<unsigned int, ComponentCollection*> idToCollectionMap; 
+	unordered_map<unsigned int, string> idToCollectionMap; 
 
 public:
 
@@ -60,14 +60,15 @@ public:
 		newComponent = this->componentCollectionMap[collectionNameTemp]->NewComponent<T>();
 
 		auto collection = componentCollectionMap[collectionNameTemp]; 
-		this->idToCollectionMap[newComponent->id] = collection; 
+		this->idToCollectionMap[newComponent->id] = collectionNameTemp; 
 
 		return static_cast<T*>(newComponent);
 	}
 
 	void RemoveComponent(unsigned int id)
 	{
-		auto collection = this->idToCollectionMap[id]; 
+		auto collectionName = this->idToCollectionMap[id]; 
+		auto collection = this->componentCollectionMap[collectionName]; 
 
 		if (collection != nullptr) {
 			collection->DeleteId(id); 
@@ -114,7 +115,8 @@ public:
 	template<typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
 	T* Select(int id)
 	{
-		auto collection = this->idToCollectionMap[id]; 
+		auto collectionName = this->idToCollectionMap[id]; 
+		auto collection = this->componentCollectionMap[collectionName]; 
 
 		if (collection != nullptr) {
 

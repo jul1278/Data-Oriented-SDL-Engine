@@ -26,16 +26,18 @@ public:
 		this->width = stage->GetGameApp()->GetGraphics()->WindowWidth();
 		this->height = stage->GetGameApp()->GetGraphics()->WindowHeight();
 
+		auto numAsteroids = 2; 
+
 		auto graphics = this->GetParentStage()->GetGameApp()->GetGraphics(); 
 		auto componentCollectionRepository = this->GetParentStage()->GetComponentCollectionRepository(); 
 
 		vector<int> asteroidGraphicsResIds;
 
-		for (auto i = 0; i < 5; i++) {
+		for (auto i = 0; i < numAsteroids; i++) {
 			asteroidGraphicsResIds.push_back(graphics->AddGraphicsResource(new ProceduralAsteroidGraphicsResource(20.0f, 1.2f, 10)));
 		}
 
-		SpaceGameEntityConstructor::ConstructEnemyAsteroids(componentCollectionRepository, asteroidGraphicsResIds, this->width, this->height, 4);
+		SpaceGameEntityConstructor::ConstructEnemyAsteroids(componentCollectionRepository, asteroidGraphicsResIds, this->width, this->height, numAsteroids);
 	
 		auto task = new CollisionPhysicsTask("EnemyAsteroids", "PlayerSpaceShipProjectiles"); 
 		auto handler = [this](const CollisionEventArgs& collisionEventArgs) {this->OnProjectileCollision(collisionEventArgs); };
@@ -70,7 +72,9 @@ public:
 
 		auto playerPhysicsComponent = playerPhysicsComponents->front();
 
-		for (auto physicsComponent : *asteroidPhysicsComponents) {
+		auto pPlayer = &playerPhysicsComponent; 
+
+		for (auto& physicsComponent : *asteroidPhysicsComponents) {
 
 			auto playerTransformComponent = componentCollectionRepository->Select<TransformComponent>(playerPhysicsComponent.transformComponentId);
 			auto transformComponent = componentCollectionRepository->Select<TransformComponent>(physicsComponent.transformComponentId); 
