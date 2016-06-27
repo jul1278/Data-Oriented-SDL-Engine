@@ -34,7 +34,7 @@ public:
 
 		SDL_SetRenderDrawColor(sdlRenderer, this->r, this->g, this->b, this->a); 
 
-		for (auto x = 0; x < this->xCount; x++) {
+		for (auto x = 0; x <= this->xCount; x++) {
 			auto xCoord = transformComponent->position.x + x*interval;
 			auto y1Coord = transformComponent->position.y; 
 			auto y2Coord = transformComponent->position.y + yCount*interval; 
@@ -42,7 +42,7 @@ public:
 			SDL_RenderDrawLine(sdlRenderer, xCoord, y1Coord, xCoord, y2Coord); 
 		}
 
-		for (auto y = 0; y < this->yCount; y++) {
+		for (auto y = 0; y <= this->yCount; y++) {
 			auto yCoord = transformComponent->position.y + y*interval; 
 			auto x1Coord = transformComponent->position.x; 
 			auto x2Coord = transformComponent->position.x + xCount*interval; 

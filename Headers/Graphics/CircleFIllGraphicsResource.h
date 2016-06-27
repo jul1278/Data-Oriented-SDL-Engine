@@ -26,8 +26,8 @@ public:
         this->radius = static_cast<uint16_t>(floor(radius));
         this->circleTexture = nullptr; 
 
-        circleSurface = SDL_CreateRGBSurface(0, 2 * this->radius, 2 * this->radius, 32, 0, 0, 0, 0);
-        GraphicsUtility::FillCircle(circleSurface, this->radius, color.Rgba());
+		circleSurface = SDL_CreateRGBSurface(0, 2 * this->radius, 2 * this->radius, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
+        GraphicsUtility::FillCircle(circleSurface, this->radius, color.Argb());
     }
 
     ~CircleFillGraphicsResource()
@@ -41,7 +41,8 @@ public:
     {
         if (this->circleTexture == nullptr) {
             this->circleTexture = SDL_CreateTextureFromSurface(sdlRenderer, this->circleSurface);
-        }
+			SDL_SetTextureBlendMode(this->circleTexture, SDL_BLENDMODE_BLEND);
+		}
 
         if (transformComponent == nullptr) {
             return;

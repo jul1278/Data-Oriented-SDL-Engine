@@ -11,6 +11,9 @@
 #include "Graphics/CircleFIllGraphicsResource.h"
 #include "Graphics/CircleOutlineGraphicsResource.h"
 #include <Graphics/GridGraphicsResource.h>
+#include <Graphics/SpriteGraphicsResource.h>
+#include <Graphics/TextGraphicsResource.h>
+#include <Graphics/ProceduralAsteroidGraphicsResource.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -77,7 +80,7 @@ namespace GraphicsTest
 
 		TEST_METHOD(TestShapes)
 		{
-			graphics = new Graphics(200, 200, "TestShapes");
+			graphics = new Graphics(500, 500, "TestShapes");
 			ComponentCollectionRepository componentCollection;
 			
 			vector<GraphicsComponent> graphicsComponents;
@@ -87,7 +90,12 @@ namespace GraphicsTest
 			graphics->AddGraphicsResource(new BubbleGraphicsResource(10.0f));
 			graphics->AddGraphicsResource(new CircleFillGraphicsResource(30.0f, Color(Color::Chocolate)));
 			graphics->AddGraphicsResource(new CircleOutlineGraphicsResource(40.0f, 10.0f, Color(Color::DarkCyan)));
-			graphics->AddGraphicsResource(new GridGraphicsResource(5.0f, 5, 5, Color(Color::Firebrick)));
+			graphics->AddGraphicsResource(new GridGraphicsResource(15.0f, 5, 5, Color(Color::DeepPink)));
+			auto graphicId = graphics->LoadGraphicResource("..//Resources//space_ship.png", "spaceShip"); 
+			graphics->AddGraphicsResource(new TextGraphicsResource("Hello World!", "", 20, Color(Color::IndianRed))); 
+			graphics->AddGraphicsResource(new TextGraphicsResource("Bold Hello World!", "Anonymous_Pro_B", 20, Color(Color::Gold)));
+			graphics->AddGraphicsResource(new BubbleGraphicsResource(100.0f));
+			graphics->AddGraphicsResource(new ProceduralAsteroidGraphicsResource(45.0f, 0.6f, 10)); 
 
 			graphicsComponents.push_back(GraphicsComponent(1, 0));
 			transformComponents.push_back(TransformComponent(Vector2D(10.0f, 10.0f)));
@@ -96,15 +104,38 @@ namespace GraphicsTest
 			transformComponents.push_back(TransformComponent(Vector2D(100.0f, 100.0f)));
 			
 			graphicsComponents.push_back(GraphicsComponent(3, 2));
-			transformComponents.push_back(TransformComponent(Vector2D(50.0f, 50.0f)));
+			transformComponents.push_back(TransformComponent(Vector2D(250.0f, 250.0f)));
 
 			graphicsComponents.push_back(GraphicsComponent(4, 3));
-			transformComponents.push_back(TransformComponent(Vector2D(70.0f, 50.0f)));
+			transformComponents.push_back(TransformComponent(Vector2D(280.0f, 250.0f)));
 
-			transformComponents[0].id = 0;
-			transformComponents[1].id = 1;
-			transformComponents[2].id = 2;
-			transformComponents[3].id = 3;
+			graphicsComponents.push_back(GraphicsComponent(5, 4));
+			transformComponents.push_back(TransformComponent(Vector2D(300.0f, 300.0f)));
+
+			graphicsComponents.push_back(GraphicsComponent(graphicId, 5));
+			transformComponents.push_back(TransformComponent(Vector2D(250.0f, 250.0f)));
+
+			graphicsComponents.push_back(GraphicsComponent(7, 6)); 
+			transformComponents.push_back(TransformComponent(Vector2D(400.0f, 400.0f)));
+			
+			graphicsComponents.push_back(GraphicsComponent(8, 7));
+			transformComponents.push_back(TransformComponent(Vector2D(250.0f, 400.0f)));
+
+			graphicsComponents.push_back(GraphicsComponent(9, 8));
+			transformComponents.push_back(TransformComponent(Vector2D(150.0f, 400.0f)));
+
+			graphicsComponents.push_back(GraphicsComponent(10, 9));
+			transformComponents.push_back(TransformComponent(Vector2D(300.0f, 150.0f)));
+
+			
+			for (auto i = 0; i < 10; i++) {
+				transformComponents[i].id = i;
+			}
+
+			transformComponents[5].scale = Vector2D(0.75f, 0.5f); 
+			transformComponents[5].orientation = Vector2D(5.0f); 
+
+			transformComponents[6].orientation = Vector2D(2.0f); 
 
 			graphics->Clear();
 			graphics->UpdateGraphics(&graphicsComponents, &transformComponents);

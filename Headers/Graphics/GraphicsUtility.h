@@ -29,7 +29,7 @@ namespace GraphicsUtility
         auto pixels = static_cast<Uint8*>(surface->pixels);
 
         // set all the pixels to have 0x00 alpha channel
-        memset(static_cast<void*>(pixels), 0xff000000, surface->w*surface->h);
+        memset(static_cast<void*>(pixels), 0x00, sizeof(Uint32)*surface->w*surface->h);
 
         for (auto x = 0; x < radius; x++) {
 
@@ -97,7 +97,7 @@ namespace GraphicsUtility
         auto pixels = static_cast<Uint8*>(surface->pixels);
 
         // set all the pixels to have 0x00 alpha channel
-        memset(static_cast<void*>(pixels), 0xff000000, surface->w*surface->h); 
+		memset(static_cast<void*>(pixels), 0x00, sizeof(Uint32)*surface->w*surface->h);
 
         for (auto x = 0; x < radius; x++) {
 

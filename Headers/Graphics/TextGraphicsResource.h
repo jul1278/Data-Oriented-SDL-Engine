@@ -37,7 +37,15 @@ public:
 		this->g = color.G();
 		this->b = color.B(); 
 
-		this->font = TTF_OpenFont("Resources//Anonymous_Pro.ttf", fontSize);
+		if (fontName.empty()) {
+			this->font = TTF_OpenFont("Resources//Anonymous_Pro.ttf", fontSize);
+		} else {
+
+			auto font = "Resources//" + fontName + ".ttf";
+			this->font = TTF_OpenFont(font.c_str(), fontSize);
+		}
+
+		
 		this->fontName = fontName; 
 		this->text = text; 
 

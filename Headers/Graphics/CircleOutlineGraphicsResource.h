@@ -32,8 +32,8 @@ public:
             this->thickness = 1;
         }
 
-        circleSurface = SDL_CreateRGBSurface(0, 2*this->radius, 2*this->radius, 32, 0, 0, 0, 0);
-        GraphicsUtility::OutlineCircle(circleSurface, this->radius, this->thickness, color.Rgba());
+        circleSurface = SDL_CreateRGBSurface(0, 2*this->radius, 2*this->radius, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
+        GraphicsUtility::OutlineCircle(circleSurface, this->radius, this->thickness, color.Argb());
     };
 
     ~CircleOutlineGraphicsResource()
@@ -47,7 +47,8 @@ public:
     {
         if (this->circleTexture == nullptr) {
             this->circleTexture = SDL_CreateTextureFromSurface(sdlRenderer, this->circleSurface);
-        }
+			SDL_SetTextureBlendMode(circleTexture, SDL_BLENDMODE_BLEND);
+		}
 
         if (transformComponent == nullptr) {
             return;
@@ -66,7 +67,6 @@ public:
         auto h = static_cast<uint16_t>(2.0f*this->radius*transformComponent->scale.y);
 
         SDL_Rect dstRect = { x, y, w, h };
-
         SDL_RenderCopy(sdlRenderer, circleTexture, nullptr, &dstRect);
     }
 };

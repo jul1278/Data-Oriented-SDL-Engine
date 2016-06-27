@@ -38,7 +38,7 @@ Graphics::Graphics(int windowWidth, int windowHeight, std::string appName)
 	cout << "SDL_CreateWindow() success." << endl; 
 
     // Create renderer
-    this->renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	this->renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
 
     if (this->renderer == nullptr) {
         SDL_DestroyWindow(window);
