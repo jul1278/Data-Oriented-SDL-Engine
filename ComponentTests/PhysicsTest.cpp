@@ -236,13 +236,10 @@ namespace PhysicsTest
 
 			Assert::IsTrue(!this->onCollisionSuccess);
 		}
+
 		void OnCollision(const CollisionEventArgs& collisionEventArgs)
 		{
-			if (collisionEventArgs.physicsComponent1 != nullptr) {
-				if (collisionEventArgs.physicsComponent2 != nullptr) {
-					this->onCollisionSuccess = true;
-				}
-			}
+			this->onCollisionSuccess = true;
 		}
 	};
 }

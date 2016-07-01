@@ -2,7 +2,6 @@
 // Created by Julian  on 17/11/15.
 //
 
-
 #include "SpaceGame/SpaceGameApp.h"
 #include "Components/ComponentCollectionRepository.h"
 #include "SpaceGame/SpaceGameStage.h"
@@ -19,7 +18,7 @@ SpaceGameApp::SpaceGameApp()
 {
 	this->windowHeight = 480;
 	this->windowWidth = 640;
-	this->appName = "Space Game";
+	this->appName = "Asteroid Action";
 
 	this->graphics = new Graphics(this->windowWidth, this->windowHeight, this->appName);
 

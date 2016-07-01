@@ -6,6 +6,7 @@
 #include <vector>
 #include <type_traits>
 #include <algorithm>
+#include <thread>
 
 using namespace std;
 
@@ -35,6 +36,16 @@ struct VectorContainer : IVectorContainer
 	VectorContainer()
 	{
 		vec.reserve(vectorContainerReserveSize);
+	}
+
+	typename vector<T>::iterator begin()
+	{
+		return this->vec.begin(); 
+	}
+
+	typename vector<T>::iterator end()
+	{
+		return this->vec.end(); 
 	}
 };
 

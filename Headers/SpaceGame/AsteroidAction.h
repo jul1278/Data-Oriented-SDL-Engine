@@ -6,6 +6,7 @@
 #include "Graphics/Graphics.h"
 #include "SpaceGameEntityConstructor.h"
 #include <Graphics/ProceduralAsteroidGraphicsResource.h>
+#include <Physics/ExitBoundsTask.h>
 
 class AsteroidAction : public IAction
 {
@@ -16,7 +17,7 @@ private:
 
 public:
 
-	
+
 	//-------------------------------------------------------------------------------
 	// Name: AsteroidAction
 	// Desc: 
@@ -26,23 +27,29 @@ public:
 		this->width = stage->GetGameApp()->GetGraphics()->WindowWidth();
 		this->height = stage->GetGameApp()->GetGraphics()->WindowHeight();
 
-		auto numAsteroids = 2; 
+		auto initNumAsteroids = 5; 
 
 		auto graphics = this->GetParentStage()->GetGameApp()->GetGraphics(); 
 		auto componentCollectionRepository = this->GetParentStage()->GetComponentCollectionRepository(); 
 
 		vector<int> asteroidGraphicsResIds;
 
-		for (auto i = 0; i < numAsteroids; i++) {
+		for (auto i = 0; i < initNumAsteroids; i++) {
 			asteroidGraphicsResIds.push_back(graphics->AddGraphicsResource(new ProceduralAsteroidGraphicsResource(20.0f, 1.2f, 10)));
 		}
 
-		SpaceGameEntityConstructor::ConstructEnemyAsteroids(componentCollectionRepository, asteroidGraphicsResIds, this->width, this->height, numAsteroids);
+		SpaceGameEntityConstructor::ConstructEnemyAsteroids(componentCollectionRepository, asteroidGraphicsResIds, this->width, this->height, initNumAsteroids);
 	
-		auto task = new CollisionPhysicsTask("EnemyAsteroids", "PlayerSpaceShipProjectiles"); 
-		auto handler = [this](const CollisionEventArgs& collisionEventArgs) {this->OnProjectileCollision(collisionEventArgs); };
+		auto projectileCollisionTask = new CollisionPhysicsTask("EnemyAsteroids", "PlayerSpaceShipProjectiles"); 
+		auto projectileCollisionTaskHandler = [=](const CollisionEventArgs& collisionEventArgs) {this->OnProjectileCollision(collisionEventArgs); };
 
-		task->RegisterListener<CollisionEventArgs>(handler); 
+		auto exitBoundsTask = new ExitBoundsTask("EnemyAsteroids", Vector2D(0.0f, 0.0f), Vector2D(width, height)); 
+		auto exitBoundsHandler = [=](const ExitBoundsEventArgs& exitBoundsEventArgs) {this->OnAsteroidExitBounds(exitBoundsEventArgs); };
+
+		projectileCollisionTask->RegisterListener<CollisionEventArgs>(projectileCollisionTaskHandler);
+
+		this->GetParentStage()->GetPhysics()->AddPhysicsTask(projectileCollisionTask);
+		this->GetParentStage()->GetPhysics()->AddPhysicsTask(exitBoundsTask); 
 	}
 	//-------------------------------------------------------------------------------
 	// Name: Update
@@ -72,8 +79,6 @@ public:
 
 		auto playerPhysicsComponent = playerPhysicsComponents->front();
 
-		auto pPlayer = &playerPhysicsComponent; 
-
 		for (auto& physicsComponent : *asteroidPhysicsComponents) {
 
 			auto playerTransformComponent = componentCollectionRepository->Select<TransformComponent>(playerPhysicsComponent.transformComponentId);
@@ -82,7 +87,7 @@ public:
 			auto distVector = playerTransformComponent->position - transformComponent->position;
 
 			// calculate acceleration on asteroids
-			auto accel = 10000.0f * physicsComponent.mass / powf(distVector.Length(), 2.0f);
+			auto accel = 2500.0f * physicsComponent.mass / powf(distVector.Length(), 2.0f);
 			auto angle = distVector.Angle();
 
 			physicsComponent.velocity.x += accel*cosf(angle);
@@ -95,16 +100,38 @@ public:
 			transformComponent->orientation = Vector2D(currentAngle + physicsComponent.angularVelocity);
 		}
 	}
-
 	//-------------------------------------------------------------------------------
 	// Name: OnProjectileCollision
 	// Desc: 
 	//-------------------------------------------------------------------------------
-	void OnProjectileCollision(const CollisionEventArgs collisionEventArgs) const
+	void OnProjectileCollision(const CollisionEventArgs& collisionEventArgs) const
 	{
-		// delete myself	
 	}
+	//-------------------------------------------------------------------------------
+	// Name: OnAsteroidExitBounds
+	// Desc: 
+	//-------------------------------------------------------------------------------
+	void OnAsteroidExitBounds(const ExitBoundsEventArgs& exitBoundsEventArgs) const
+	{
+		auto componentCollectionRepository = this->GetParentStage()->GetComponentCollectionRepository();
+		auto height = this->GetParentStage()->GetGameApp()->GetGraphics()->WindowHeight();
+		auto width = this->GetParentStage()->GetGameApp()->GetGraphics()->WindowWidth(); 
+		
+		// if we left the bottom of the screen
+		if (exitBoundsEventArgs.exitPoint.y > height) {
+			componentCollectionRepository->RemoveComponent(exitBoundsEventArgs.transformComponentId); 
 
+		} else if (exitBoundsEventArgs.exitPoint.y > 0.0f) {
+			auto transformComponent = componentCollectionRepository->Select<TransformComponent>(exitBoundsEventArgs.transformComponentId); 
+			auto physicsComponent = componentCollectionRepository->Select<PhysicsComponent>(exitBoundsEventArgs.physicsComponentId); 
+
+			physicsComponent->velocity.x = 0.0f; 
+			physicsComponent->velocity.y = 2.5f; 
+
+			transformComponent->position.x = (width / 2) + (MathUtility::RandomIntUniformDist() % (width / 2)); 
+			transformComponent->position.y = -10.0f; 
+		}
+	}
 };
 
 #endif // ASTEROID_ACTION_H

@@ -34,7 +34,7 @@ private:
 				auto rad = physComponent1.radius + physComponent2.radius;
 
 				if (diff.Length() < rad) {
-					eventObservable->Invoke(CollisionEventArgs(&physComponent1, &physComponent2));
+					eventObservable->Invoke(CollisionEventArgs(physComponent1.id, physComponent2.id));
 				}
 			}
 		}

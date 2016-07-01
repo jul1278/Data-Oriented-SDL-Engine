@@ -11,18 +11,20 @@ class CollisionEventArgs : public IEventArgs
 {
 public:
 	
-	CollisionEventArgs(PhysicsComponent* simplePhysicsComponent1, 
-		PhysicsComponent* simplePhysicsComponent2) 
-		
+	CollisionEventArgs(unsigned int physicsComponentId1, unsigned int physicsComponentId2)
 	{
-		this->physicsComponent1 = simplePhysicsComponent1; 
-		this->physicsComponent2 = simplePhysicsComponent2; 
+		this->collectionName1 = collectionName1; 
+		this->collectionName2 = collectionName2; 
+
+		this->physicsComponentId1 = physicsComponentId1;
+		this->physicsComponentId2 = physicsComponentId2;
 	}
 
-	string collectionName; 
+	string collectionName1;
+	string collectionName2;
 
-	PhysicsComponent* physicsComponent1; 
-	PhysicsComponent* physicsComponent2;
+	unsigned int physicsComponentId1;
+	unsigned int physicsComponentId2;
 };
 
 #endif // COLLISION_EVENT_ARGS_H
