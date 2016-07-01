@@ -6,8 +6,8 @@
 
 struct BaseComponent
 {
-    int id;
-    int entityId;
+	unsigned int id;
+    unsigned int entityId;
 
     BaseComponent()
     {

@@ -49,6 +49,29 @@ public:
 	template<typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
 	T* Select(unsigned int id); 
 
+	//-------------------------------------------------------------------------------
+	// Name: SelectBase
+	// Desc: select id as BaseComponent 
+	//-------------------------------------------------------------------------------
+	BaseComponent* SelectBase(unsigned int id)
+	{
+		auto pair = this->idToComponent[id]; 
+		return get<1>(pair); 
+	}
+	//-------------------------------------------------------------------------------
+	// Name: Type
+	// Desc: get the type_index for specified id
+	//-------------------------------------------------------------------------------
+	type_index Type(unsigned int id)
+	{
+		if (this->idToComponent.find(id) != this->idToComponent.end()) {
+			return *get<0>(this->idToComponent[id]);
+		}
+
+		// could throw an exception?
+		return type_index(typeid(void)); 
+	}
+
 	static unsigned int GenerateId()
 	{
 		return id++;
@@ -114,11 +137,12 @@ vector<T>* ComponentCollection::Select()
 template<typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
 T* ComponentCollection::Select(unsigned int id)
 {
-	//auto pair = this->idToComponent[id]; 
-	//auto component = get<1>(pair); 
-	//T* container = static_cast<T*>(component);
-
 	auto baseContainer = this->componentCollection[type_index(typeid(T))];
+
+	if (baseContainer == nullptr) {
+		return nullptr; 
+	}
+
 	VectorContainer<T>* container = static_cast<VectorContainer<T>*>(baseContainer);
 	auto component = find_if(container->vec.begin(), container->vec.end(), [id](const T& t){return t.id == id; });
 

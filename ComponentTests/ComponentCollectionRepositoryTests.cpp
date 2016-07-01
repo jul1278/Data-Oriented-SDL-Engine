@@ -2,7 +2,6 @@
 #include "CppUnitTest.h"
 #include <Components/ComponentCollectionRepository.h>
 #include <Components/GraphicsComponent.h>
-#include <Components/VelocityComponent.h>
 #include <Components/TransformComponent.h>
 #include <Components/PhysicsComponent.h>
 #include <list>
@@ -19,18 +18,18 @@ namespace ComponentTests
 		// Name: NewComponentTest
 		// Desc: 		
 		//-----------------------------------------------------------------------------
-		TEST_METHOD(NewComponentTest)
+		TEST_METHOD(NewComponentsHaveCorrectEntityId)
 		{
 			ComponentCollectionRepository componentCollectionRepository;
-			componentCollectionRepository.NewCollection("TestCollection");
+			auto entityId = componentCollectionRepository.NewCollection("TestCollection");
 
 			for (auto i = 0; i < 20; i += 2)
 			{
 				auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>("TestCollection");
 				auto graphicsComponent = componentCollectionRepository.NewComponent<GraphicsComponent>("TestCollection");
 
-				Assert::AreEqual(transformComponent->id, i);
-				Assert::AreEqual(graphicsComponent->id, i + 1);
+				Assert::AreEqual(transformComponent->entityId, entityId);
+				Assert::AreEqual(graphicsComponent->entityId, entityId);
 			}
 		}
         //-----------------------------------------------------------------------------
@@ -144,6 +143,36 @@ namespace ComponentTests
 			ids.unique([](unsigned int a, unsigned int b) {return a == b; }); 
 
 			Assert::AreEqual(len, ids.size()); 
+		}
+		//-------------------------------------------------------------------------------------
+		// Name: CreateEntity
+		// Desc:
+		//-------------------------------------------------------------------------------------
+		TEST_METHOD(CreateAndDeleteEntity)
+		{
+			ComponentCollectionRepository componentCollectionRepository;
+
+			componentCollectionRepository.NewEntityId(); 
+			componentCollectionRepository.NewEntityId();
+			componentCollectionRepository.NewEntityId();
+			componentCollectionRepository.NewEntityId();
+
+			auto entityId = componentCollectionRepository.NewEntityId();
+
+			auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>("Collection1", entityId);
+			auto id = transformComponent->id; 
+
+			componentCollectionRepository.NewComponent<GraphicsComponent>("Collection1", entityId); 
+			componentCollectionRepository.NewComponent<PhysicsComponent>("Collection1", entityId);
+			componentCollectionRepository.NewComponent<TransformComponent>("Collection1", entityId);
+
+			componentCollectionRepository.RemoveEntity(entityId);
+
+			auto result = componentCollectionRepository.Select<TransformComponent>(id); 
+			
+			// value of transformComponent is undefined at this point
+
+			Assert::IsNull(result); 
 		}
 	};
 }
