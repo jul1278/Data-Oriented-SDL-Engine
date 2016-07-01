@@ -113,12 +113,13 @@ public:
 		const auto maxNumProjectiles = 40; 
 
 		componentCollectionRepository->NewCollection(collectionName); 
+		auto entityId = componentCollectionRepository->NewEntityId(); 
 
 		for (auto i = 0; i < maxNumProjectiles; i++) {
 
-			auto transformComponent = componentCollectionRepository->NewComponent<TransformComponent>(collectionName); 
-			auto graphicsComponent = componentCollectionRepository->NewComponent<GraphicsComponent>(collectionName);
-			auto physicsComponent = componentCollectionRepository->NewComponent<PhysicsComponent>(collectionName); 
+			auto transformComponent = componentCollectionRepository->NewComponent<TransformComponent>(collectionName, entityId); 
+			auto graphicsComponent = componentCollectionRepository->NewComponent<GraphicsComponent>(collectionName, entityId);
+			auto physicsComponent = componentCollectionRepository->NewComponent<PhysicsComponent>(collectionName, entityId);
 
 			graphicsComponent->transformComponentId = transformComponent->id; 
 			physicsComponent->transformComponentId = transformComponent->id; 

@@ -16,8 +16,7 @@
 #include <list>
 
 using namespace std;
-
-const int collectionNameMinLength = 4; 
+ 
 const string defaultCollectionName = "defaultCollection";
 
 // ComponentCollectionRepository
@@ -28,20 +27,30 @@ private:
 	// map string to component collection
 	unordered_map<string, ComponentCollection*> componentCollectionMap; 
 
-	// all component types
-	unordered_map<type_index, list<IVectorContainer*>> componentTypeMap; 
-
 	// id to parent collection
-	unordered_map<unsigned int, string> idToCollectionMap; 
+	unordered_map<unsigned int, string> idToCollectionMap;
+
+	// entity id to component id
+	unordered_map<unsigned int, list<unsigned int>> entityToComponent; 
+
+	// namedEntities
+	unordered_map<string, unsigned int> nameToEntityId; 
 
 public:
 
+	//------------------------------------------------------------------------------------
+	// Name: Constructor
+	// Desc:
+	//------------------------------------------------------------------------------------
 	ComponentCollectionRepository()
 	{
 		// default collection so there is always somewhere to add to
         this->componentCollectionMap[defaultCollectionName] = new ComponentCollection(); 
 	}
-
+	//------------------------------------------------------------------------------------
+	// Name: Destructor
+	// Desc:
+	//------------------------------------------------------------------------------------
     ~ComponentCollectionRepository()
 	{
         for (const auto& pair : this->componentCollectionMap)
@@ -49,26 +58,55 @@ public:
             delete pair.second; 
         }
 	}
-
+	//------------------------------------------------------------------------------------
+	// Name: NewComponent
+	// Desc: collectionName and entityId is optional
+	//       if an entity id is associated with the collection name 
+	//       (except in the case of defaultCollectionName) it will be assigned
+	//------------------------------------------------------------------------------------
 	template<typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
-	T* NewComponent(const string collectionName = defaultCollectionName)
+	T* NewComponent(const string collectionName = defaultCollectionName, unsigned int entityId = 0)
 	{
-		auto collectionNameTemp = collectionName;
+		this->NewCollection(collectionName); 
 
 		BaseComponent* newComponent = nullptr;
 
-		newComponent = this->componentCollectionMap[collectionNameTemp]->NewComponent<T>();
+		newComponent = this->componentCollectionMap[collectionName]->NewComponent<T>();
 
-		auto collection = componentCollectionMap[collectionNameTemp]; 
-		this->idToCollectionMap[newComponent->id] = collectionNameTemp; 
+		auto collection = componentCollectionMap[collectionName]; 
+		this->idToCollectionMap[newComponent->id] = collectionName; 
 
+		if (entityId > 0) {
+			this->entityToComponent[entityId].push_back(newComponent->id);
+		} else if (collectionName != defaultCollectionName) {
+			if (this->nameToEntityId.find(collectionName) != this->nameToEntityId.end()) {
+				newComponent->entityId = this->nameToEntityId[collectionName]; 
+			}
+		}
+		
 		return static_cast<T*>(newComponent);
 	}
-
+	//------------------------------------------------------------------------------------
+	// Name: RemoveComponent
+	// Desc: 
+	//------------------------------------------------------------------------------------
 	void RemoveComponent(unsigned int id)
 	{
-		auto collectionName = this->idToCollectionMap[id]; 
+		auto collectionName = defaultCollectionName; 
+
+		if (this->idToCollectionMap.find(id) != this->idToCollectionMap.end()) {
+			collectionName = this->idToCollectionMap[id];
+		}
+
 		auto collection = this->componentCollectionMap[collectionName]; 
+		auto component = this->SelectBase(id); 
+
+		// find my entity and remove my id from its list
+		// NOTE: might be okay to not remove these. Ideally most of the
+		// time you'd be removing a whole entity rather than individual components..
+		if (this->entityToComponent.find(component->entityId) != this->entityToComponent.end()) {
+			this->entityToComponent[component->entityId].remove_if([id](unsigned int componentId) {return componentId == id; });
+		}
 
 		if (collection != nullptr) {
 			collection->DeleteId(id); 
@@ -79,18 +117,48 @@ public:
 			}
 		}
 	}
-
-	void NewCollection(const string collectionName)
+	//------------------------------------------------------------------------------------
+	// Name: RemoveEntity
+	// Desc:
+	//------------------------------------------------------------------------------------
+	void RemoveEntity(unsigned int entityId)
 	{
-		if (collectionName.length() < collectionNameMinLength) {
-			return; 
-		}
-
-		if (componentCollectionMap.find(collectionName) == componentCollectionMap.end()) {
-            componentCollectionMap[collectionName] = new ComponentCollection();
+		if (this->entityToComponent.find(entityId) != this->entityToComponent.end()) {
+			
+			auto& ids = this->entityToComponent[entityId];
+			
+			for_each(ids.begin(), ids.end(), [=](unsigned int id) {this->RemoveComponent(id); });
+			ids.clear(); 
 		}
 	}
+	//------------------------------------------------------------------------------------
+	// Name: NewCollection
+	// Desc: generates an entity id for the collection should one choose to use it.
+	//------------------------------------------------------------------------------------
+	unsigned int NewCollection(const string collectionName)
+	{
+		if (componentCollectionMap.find(collectionName) == componentCollectionMap.end()) {
+            componentCollectionMap[collectionName] = new ComponentCollection();
+			auto id = this->NewEntityId();
+			this->nameToEntityId[collectionName] = id;
+		}
 
+		return this->nameToEntityId[collectionName]; 
+	}
+	//------------------------------------------------------------------------------------
+	// Name: NewEntityId
+	// Desc: 
+	//------------------------------------------------------------------------------------
+	unsigned int NewEntityId()
+	{
+		auto id = ComponentCollection::GenerateId(); 
+		this->entityToComponent[id]; 
+		return id; 
+	}
+	//------------------------------------------------------------------------------------
+	// Name: SelectFromCollection
+	// Desc:
+	//------------------------------------------------------------------------------------
 	template<typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
     vector<T>* SelectFromCollection(const string collectionName = defaultCollectionName)
 	{
@@ -101,17 +169,10 @@ public:
 
         return nullptr; 
 	}
-
-	template<typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
-	list<IVectorContainer*>* Select()
-	{
-		if (this->componentTypeMap.find(type_index(typeid(T))) != this->componentTypeMap.end()) {
-			return &this->componentTypeMap[type_index(typeid(T))];
-		}
-
-		return nullptr; 
-	}
-
+	//------------------------------------------------------------------------------------
+	// Name: Select
+	// Desc:
+	//------------------------------------------------------------------------------------
 	template<typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
 	T* Select(int id)
 	{
@@ -122,23 +183,37 @@ public:
 
 			T* result = collection->Select<T>(id); 
 			return result;
-			
 		}
 
 		return nullptr;
 	}
-
-	template<typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
-    void InsertCollection(IVectorContainer* vectorContainer)
+	//------------------------------------------------------------------------------------
+	// Name:
+	// Desc:
+	//------------------------------------------------------------------------------------
+	BaseComponent* SelectBase(int id)
 	{
-        this->componentTypeMap[type_index(typeid(T))].push_back(vectorContainer); 
-	}
+		auto collectionName = this->idToCollectionMap[id]; 
+		auto collection = this->componentCollectionMap[collectionName];
 
+		if (collection != nullptr) {
+			return collection->SelectBase(id); 
+		}
+
+		return nullptr; 
+	}
+	//------------------------------------------------------------------------------------
+	// Name: DeleteCollection
+	// Desc:
+	//------------------------------------------------------------------------------------
 	void DeleteCollection(const string& name)
 	{
 		delete this->componentCollectionMap[name];
 	}
-
+	//------------------------------------------------------------------------------------
+	// Name: GetCollections
+	// Desc:
+	//------------------------------------------------------------------------------------
 	list<string> GetCollections()
 	{
 		list<string> collectionNames; 
