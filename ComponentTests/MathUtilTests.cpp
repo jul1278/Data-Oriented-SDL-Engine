@@ -20,10 +20,10 @@ namespace ComponentTests
 		//-----------------------------------------------------------------------------
 		TEST_METHOD(StdNormalDistHasZeroMean)
 		{
-			const int numSamples = 10000;
-			const float threshold = 0.05f; 
+			const auto numSamples = 10000;
+			const auto threshold = 0.05f; 
 
-			float cumulativeSum = 0.0f; 
+			auto cumulativeSum = 0.0f; 
 			
 			for (auto i = 0; i < numSamples; i++) {
 				auto sample = MathUtility::RandomFloatStdNormalDist();

@@ -1,7 +1,5 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
-
-#include <vector>
 #include "Utility/Vector.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -32,7 +30,7 @@ namespace VectorTests
 			a *= b;
 
 			Assert::AreEqual(a.x, 10.0f);
-			Assert::AreEqual(a.y, 10.f); 
+			Assert::AreEqual(a.y, 10.0f); 
 		}
 
 		TEST_METHOD(VectorEqualityAndInequalityTest)

@@ -44,10 +44,12 @@ public:
 		for (auto graphicsComponent : *projectileGraphics) {
 			auto transform = componentCollectionRepository->Select<TransformComponent>(graphicsComponent.transformComponentId);
 			
-			if (transform->position.x > this->width || transform->position.x < 0) {
-				if (transform->position.y > this->height || transform->position.y < 0) {
-					componentCollectionRepository->RemoveEntity(graphicsComponent.entityId); 
-				}
+			if (transform->position.x > this->width || 
+				transform->position.x < 0.0f || 
+				transform->position.y > this->height || 
+				transform->position.y < 0.0f) {
+
+				componentCollectionRepository->RemoveEntity(graphicsComponent.entityId); 
 			}
 		}
 	}

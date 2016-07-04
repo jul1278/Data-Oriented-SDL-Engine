@@ -21,7 +21,8 @@ namespace ComponentTests
 		TEST_METHOD(NewComponentsHaveCorrectEntityId)
 		{
 			ComponentCollectionRepository componentCollectionRepository;
-			auto entityId = componentCollectionRepository.NewCollection("TestCollection");
+			auto entityId = componentCollectionRepository.NewEntityId(); 
+			componentCollectionRepository.NewCollection("TestCollection");
 
 			for (auto i = 0; i < 20; i += 2)
 			{

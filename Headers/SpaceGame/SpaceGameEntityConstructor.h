@@ -113,9 +113,10 @@ public:
 		const auto maxNumProjectiles = 40; 
 
 		componentCollectionRepository->NewCollection(collectionName); 
-		auto entityId = componentCollectionRepository->NewEntityId(); 
-
+		
 		for (auto i = 0; i < maxNumProjectiles; i++) {
+
+			auto entityId = componentCollectionRepository->NewEntityId();
 
 			auto transformComponent = componentCollectionRepository->NewComponent<TransformComponent>(collectionName, entityId); 
 			auto graphicsComponent = componentCollectionRepository->NewComponent<GraphicsComponent>(collectionName, entityId);

@@ -114,14 +114,15 @@ void PlayerSpaceshipAction::MoveSpaceShip(const ButtonEventArgs& buttonEventArgs
 void PlayerSpaceshipAction::FireWeapon(const ButtonEventArgs buttonEventArgs) const
 {
 	auto componentCollectionRepository = this->GetParentStage()->GetComponentCollectionRepository(); 
-
 	auto playerTransform = componentCollectionRepository->SelectFromCollection<TransformComponent>("PlayerSpaceShip")->front(); 
 
 	if (!buttonEventArgs.Released()) {
 
-		auto transformComponent = componentCollectionRepository->NewComponent<TransformComponent>("PlayerSpaceShipProjectiles"); 
-		auto graphicsComponent = componentCollectionRepository->NewComponent<GraphicsComponent>("PlayerSpaceShipProjectiles"); 
-		auto physicsComponent = componentCollectionRepository->NewComponent<PhysicsComponent>("PlayerSpaceShipProjectiles"); 
+		auto entityId = componentCollectionRepository->NewEntityId();
+
+		auto transformComponent = componentCollectionRepository->NewComponent<TransformComponent>("PlayerSpaceShipProjectiles", entityId); 
+		auto graphicsComponent = componentCollectionRepository->NewComponent<GraphicsComponent>("PlayerSpaceShipProjectiles", entityId);
+		auto physicsComponent = componentCollectionRepository->NewComponent<PhysicsComponent>("PlayerSpaceShipProjectiles", entityId);
 
 		transformComponent->position = playerTransform.position; 
 
@@ -170,4 +171,7 @@ void PlayerSpaceshipAction::OnPlayerAsteroidCollision(const CollisionEventArgs& 
 // Name: OnProjectileAsteroidCollision
 // Desc: 
 //--------------------------------------------------------------------------------------
-void PlayerSpaceshipAction::OnProjectileAsteroidCollision(const CollisionEventArgs& collisionEventArgs) const {}
+void PlayerSpaceshipAction::OnProjectileAsteroidCollision(const CollisionEventArgs& collisionEventArgs) const
+{
+	
+}

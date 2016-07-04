@@ -25,6 +25,7 @@ class ComponentCollectionRepository
 private:
 
 	// map string to component collection
+	// TODO: can we make this not a pointer?
 	unordered_map<string, ComponentCollection*> componentCollectionMap; 
 
 	// id to parent collection
@@ -34,7 +35,7 @@ private:
 	unordered_map<unsigned int, list<unsigned int>> entityToComponent; 
 
 	// namedEntities
-	unordered_map<string, unsigned int> nameToEntityId; 
+	// unordered_map<string, list<unsigned int>> nameToEntityId; 
 
 public:
 
@@ -53,8 +54,7 @@ public:
 	//------------------------------------------------------------------------------------
     ~ComponentCollectionRepository()
 	{
-        for (const auto& pair : this->componentCollectionMap)
-        {
+        for (const auto& pair : this->componentCollectionMap) {
             delete pair.second; 
         }
 	}
@@ -78,12 +78,8 @@ public:
 
 		if (entityId > 0) {
 			this->entityToComponent[entityId].push_back(newComponent->id);
-		} else if (collectionName != defaultCollectionName) {
-			if (this->nameToEntityId.find(collectionName) != this->nameToEntityId.end()) {
-				newComponent->entityId = this->nameToEntityId[collectionName]; 
-			}
-		}
-		
+		} 
+
 		return static_cast<T*>(newComponent);
 	}
 	//------------------------------------------------------------------------------------
@@ -112,6 +108,7 @@ public:
 			collection->DeleteId(id); 
 			
 			auto it = this->idToCollectionMap.find(id); 
+
 			if (it != this->idToCollectionMap.end()) {
 				this->idToCollectionMap.erase(it); 
 			}
@@ -135,15 +132,11 @@ public:
 	// Name: NewCollection
 	// Desc: generates an entity id for the collection should one choose to use it.
 	//------------------------------------------------------------------------------------
-	unsigned int NewCollection(const string collectionName)
+	void NewCollection(const string collectionName)
 	{
 		if (componentCollectionMap.find(collectionName) == componentCollectionMap.end()) {
             componentCollectionMap[collectionName] = new ComponentCollection();
-			auto id = this->NewEntityId();
-			this->nameToEntityId[collectionName] = id;
 		}
-
-		return this->nameToEntityId[collectionName]; 
 	}
 	//------------------------------------------------------------------------------------
 	// Name: NewEntityId
@@ -188,7 +181,7 @@ public:
 		return nullptr;
 	}
 	//------------------------------------------------------------------------------------
-	// Name:
+	// Name: SelectBase
 	// Desc:
 	//------------------------------------------------------------------------------------
 	BaseComponent* SelectBase(int id)

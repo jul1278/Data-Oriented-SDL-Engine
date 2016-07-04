@@ -68,7 +68,6 @@ Graphics::Graphics(int windowWidth, int windowHeight, std::string appName)
     this->sdlSurface = SDL_CreateRGBSurface(0, 20, 20, 32, rmask, gmask, bmask, amask);
 
     if (sdlSurface == nullptr) {
-
         SDL_DestroyWindow(window);
         SDL_DestroyRenderer(renderer);
         SDL_Quit();
@@ -79,7 +78,7 @@ Graphics::Graphics(int windowWidth, int windowHeight, std::string appName)
 	cout << "SDL_CreateRGBSurface() success." << endl;
 
     // Create texture
-    SDL_Texture* sdlTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, 20, 20);
+    auto sdlTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, 20, 20);
 
     if (sdlTexture == nullptr) {
         SDL_DestroyWindow(window);
@@ -93,7 +92,7 @@ Graphics::Graphics(int windowWidth, int windowHeight, std::string appName)
 
     // init sdl image
     int imgFlags = IMG_INIT_PNG;
-    if ( !(IMG_Init(imgFlags) & imgFlags) ) {
+    if (!(IMG_Init(imgFlags) & imgFlags)) {
 		std::cout << IMG_GetError() << std::endl; 
         SDL_DestroyWindow(window);
         SDL_DestroyRenderer(renderer);
@@ -150,28 +149,24 @@ Graphics::~Graphics()
 //------------------------------------------------------------------------------------
 SDL_Surface* Graphics::LoadSurface(std::string filename, SDL_PixelFormat* format)
 {
-    // The final optimized image
-    SDL_Surface* optimizedSurface = NULL;
+	SDL_Surface* optimizedSurface = nullptr;
 
-    // Load image at specified path
-    SDL_Surface* loadedSurface = IMG_Load(filename.c_str());
-    if( loadedSurface == NULL )
-    {
-        printf("Unable to load image %s! SDL_image Error: %s\n", filename.c_str(), IMG_GetError());
-    }
-    else
-    {
-        // Convert surface to screen format
-        optimizedSurface = SDL_ConvertSurface(loadedSurface, format, NULL);
-        if( optimizedSurface == NULL )
-        {
-            printf("Unable to optimize image %s! SDL Error: %s\n", filename.c_str(), SDL_GetError());
-        }
+	auto loadedSurface = IMG_Load(filename.c_str());
 
-        //Get rid of old loaded surface
-        SDL_FreeSurface( loadedSurface );
-    }
-    return optimizedSurface;
+	if (loadedSurface == nullptr) {
+		cout << IMG_GetError() << " filename: " << filename.c_str() << endl;
+	} else {
+
+		optimizedSurface = SDL_ConvertSurface(loadedSurface, format, 0);
+
+		if (optimizedSurface == nullptr) {
+			cout << SDL_GetError() << " filename: " << filename.c_str() << endl;
+		}
+
+		SDL_FreeSurface(loadedSurface);
+	}
+
+	return optimizedSurface;
 }
 //------------------------------------------------------------------------------------
 // Name: LoadGraphicResource
@@ -187,6 +182,7 @@ int Graphics::LoadGraphicResource(std::string fileName, std::string resourceName
 
         auto spriteGraphicsResource = new SpriteGraphicsResource(surface);
         this->graphicsResourceMap.insert(std::pair<int, IGraphicsResource*>(id, spriteGraphicsResource));
+
 		return id;
     }
 
@@ -213,15 +209,15 @@ void Graphics::Present()
 	for (auto message : this->consoleMessages) {
 		
 		SDL_Color textColor = { 255, 255, 255 };
-		SDL_Surface* surfaceText = TTF_RenderText_Solid(this->consoleFont, message.c_str(), textColor);
-		SDL_Texture* textureText = SDL_CreateTextureFromSurface(this->renderer, surfaceText);
+
+		auto surfaceText = TTF_RenderText_Solid(this->consoleFont, message.c_str(), textColor);
+		auto textureText = SDL_CreateTextureFromSurface(this->renderer, surfaceText);
 
 		SDL_Rect textRect = { 5, yOffset, surfaceText->w, surfaceText->h };
 
 		yOffset += surfaceText->h + 2; 
 
-		SDL_RenderCopy(this->renderer, textureText, NULL, &textRect);
-
+		SDL_RenderCopy(this->renderer, textureText, nullptr, &textRect);
 		SDL_FreeSurface(surfaceText);
 		SDL_DestroyTexture(textureText);
 	}
@@ -234,6 +230,8 @@ void Graphics::Present()
 //------------------------------------------------------------------------------------
 void Graphics::PrintConsoleText(const string& message)
 {
+#pragma message ("WARNING: "__FILE__ "  -  " __FUNCTION__" is to be removed.")
+
 	this->consoleMessages.push_front(message); 
 
 	while (this->consoleMessages.size() > maxConsoleMessages) {
@@ -282,6 +280,7 @@ void Graphics::UpdateGraphics(vector<GraphicsComponent>* graphicsComponents, vec
 		if (graphicsComponent.resourceId == NO_RENDER) {
 			continue; 
 		}
+
 		auto id = graphicsComponent.transformComponentId; 
 		auto transformComponent = find_if(transformComponents->begin(), transformComponents->end(), [id](const TransformComponent& t) {return t.id == id; });
 
