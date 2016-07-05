@@ -30,23 +30,23 @@ private:
 	
 public:
 
-	TextGraphicsResource(string text, string fontName, unsigned short fontSize, const Color& color)
+	TextGraphicsResource(string text, unsigned short fontSize, const Color& color, string fontPath = "")
 	{
 		this->a = color.A();
 		this->r = color.R(); 
 		this->g = color.G();
 		this->b = color.B(); 
 
-		if (fontName.empty()) {
+		if (fontPath.empty()) {
 			this->font = TTF_OpenFont("Resources//Anonymous_Pro.ttf", fontSize);
 		} else {
 
-			auto font = "Resources//" + fontName + ".ttf";
+			auto font = fontPath;//"Resources//" + fontName + ".ttf";
 			this->font = TTF_OpenFont(font.c_str(), fontSize);
 		}
 
 		
-		this->fontName = fontName; 
+		this->fontName = fontPath;
 		this->text = text; 
 
 		this->UpdateFontSurface(); 

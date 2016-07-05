@@ -66,8 +66,6 @@ TEST(GraphicsTests, TestColor)
 
 	graphics->AddGraphicsResource(new RectGraphicsResource(200, 40, Color(Color::AliceBlue))); 
 
-	//SDL_Delay(5000); 
-
 	delete graphics; 
 }
 
@@ -84,9 +82,9 @@ TEST(GraphicsTests, TestShapes)
 	graphics->AddGraphicsResource(new CircleFillGraphicsResource(30.0f, Color(Color::Chocolate)));
 	graphics->AddGraphicsResource(new CircleOutlineGraphicsResource(40.0f, 10.0f, Color(Color::DarkCyan)));
 	graphics->AddGraphicsResource(new GridGraphicsResource(15.0f, 5, 5, Color(Color::DeepPink)));
-	auto graphicId = graphics->LoadGraphicResource("..//Resources//sprite.png", "spaceShip"); 
-	//graphics->AddGraphicsResource(new TextGraphicsResource("Red Hello World!", 20, Color(Color::IndianRed), "..//Resources//Starlight.ttf")); 
-	//graphics->AddGraphicsResource(new TextGraphicsResource("Gold Hello World!", 20, Color(Color::Gold), "..//Resources//Starlight.ttf"));
+	auto graphicId = graphics->LoadGraphicResource("..//Resources//space_ship.png", "spaceShip"); 
+	graphics->AddGraphicsResource(new TextGraphicsResource("Red Hello World!", 20, Color(Color::IndianRed), "..//Resources//Anonymous_Pro.ttf"));
+	graphics->AddGraphicsResource(new TextGraphicsResource("HIROSH", 20, Color(Color::Gold), "..//Resources//HIROSHT.ttf"));
 	graphics->AddGraphicsResource(new BubbleGraphicsResource(100.0f));
 	graphics->AddGraphicsResource(new ProceduralAsteroidGraphicsResource(45.0f, 0.6f, 10)); 
 
@@ -108,16 +106,16 @@ TEST(GraphicsTests, TestShapes)
 	graphicsComponents.push_back(GraphicsComponent(graphicId, 5));
 	transformComponents.push_back(TransformComponent(Vector2D(250.0f, 250.0f)));
 
-	//graphicsComponents.push_back(GraphicsComponent(7, 6)); 
-	//transformComponents.push_back(TransformComponent(Vector2D(400.0f, 400.0f)));
+	graphicsComponents.push_back(GraphicsComponent(7, 6)); 
+	transformComponents.push_back(TransformComponent(Vector2D(400.0f, 400.0f)));
 			
-	//graphicsComponents.push_back(GraphicsComponent(8, 7));
-	//transformComponents.push_back(TransformComponent(Vector2D(250.0f, 400.0f)));
+	graphicsComponents.push_back(GraphicsComponent(8, 7));
+	transformComponents.push_back(TransformComponent(Vector2D(250.0f, 400.0f)));
 
-	graphicsComponents.push_back(GraphicsComponent(7, 6));
+	graphicsComponents.push_back(GraphicsComponent(9, 8));
 	transformComponents.push_back(TransformComponent(Vector2D(150.0f, 400.0f)));
 
-	graphicsComponents.push_back(GraphicsComponent(8, 7));
+	graphicsComponents.push_back(GraphicsComponent(10, 9));
 	transformComponents.push_back(TransformComponent(Vector2D(300.0f, 150.0f)));
 
 			
@@ -125,9 +123,9 @@ TEST(GraphicsTests, TestShapes)
 		transformComponents[i].id = i;
 	}
 
-	transformComponents[5].scale = Vector2D(0.2f, 0.2f); 
+	transformComponents[5].scale = Vector2D(0.5f, 0.8f); 
 	transformComponents[5].orientation = Vector2D(5.0f); 
-	//transformComponents[6].orientation = Vector2D(2.0f); 
+	transformComponents[6].orientation = Vector2D(2.0f); 
 
 	graphics->Clear();
 	graphics->UpdateGraphics(&graphicsComponents, &transformComponents);
