@@ -43,7 +43,7 @@ SnakeAction::SnakeAction(IStage* stage) : IAction(stage)
 
 	/* Create the score text */
 	componentCollection->NewCollection("Score");
-	this->textGraphicResource = new TextGraphicsResource("0", "", 20, Color(Color::White)); 
+	this->textGraphicResource = new TextGraphicsResource("0", 20, Color(Color::White)); 
 	auto textGraphicResourceId = graphics->AddGraphicsResource(this->textGraphicResource); 
 	
 	auto scoreTextTransformComponent = componentCollection->NewComponent<TransformComponent>("Score");

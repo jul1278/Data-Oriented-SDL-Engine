@@ -22,7 +22,7 @@ SpaceGameMenuStage::SpaceGameMenuStage(IGameApp* gameApp)
 	this->sdlEventCollector = new SDLEventCollector(this->stageWidth, this->stageHeight);
 
 	// graphics owns this memory
-	auto buttonGraphicsComponent = new TextGraphicsResource("Start Game", "", 25, Color(Color::White));
+	auto buttonGraphicsComponent = new TextGraphicsResource("Start Game", 25, Color(Color::White));
 	auto newGameTextGraphicResId = graphics->AddGraphicsResource(buttonGraphicsComponent);
 
 	componentCollectionRepository->NewCollection("MainMenu");

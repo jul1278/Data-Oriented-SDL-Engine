@@ -48,13 +48,13 @@ void MouseButtonHandler(const MouseButtonEventArgs& mouseButtonEventArgs)
 
 class SdlEventTest : public testing::Test
 {
-    virtual void SetUp() override
+    void SetUp() override
     {
         auto result = SDL_Init(SDL_INIT_EVENTS);
         EXPECT_TRUE(result == 0, L"SDL_Init() failed.");
     }
 
-    virtual void TearDown() override
+    void TearDown() override
     {
         SDL_Quit();
     }

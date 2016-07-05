@@ -176,7 +176,6 @@ TEST(PhysicsTest, VelocityTaskTest)
 
 		EXPECT_EQ(component.position.x, expected.x);
 		EXPECT_EQ(component.position.y, expected.y);
-
 		EXPECT_EQ(component.orientation.Angle(), expectedAngle.Angle()); 
 	}
 

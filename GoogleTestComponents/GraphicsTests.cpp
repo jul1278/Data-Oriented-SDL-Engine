@@ -117,8 +117,7 @@ TEST(GraphicsTests, TestShapes)
 
 	graphicsComponents.push_back(GraphicsComponent(10, 9));
 	transformComponents.push_back(TransformComponent(Vector2D(300.0f, 150.0f)));
-
-			
+	
 	for (auto i = 0; i < transformComponents.size(); i++) {
 		transformComponents[i].id = i;
 	}
@@ -136,5 +135,4 @@ TEST(GraphicsTests, TestShapes)
 	SDL_Delay(5000);
 
 	delete graphics;
-
 }
