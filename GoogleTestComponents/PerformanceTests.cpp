@@ -5,9 +5,63 @@
 #include <list>
 #include <chrono>
 #include <iostream>
+#include <fstream>
 #include "gtest/gtest.h"
 
+#ifdef _WIN32
+#include "Windows.h"
+#else
 
+#ifdef  __APPLE__
+
+#endif
+
+#endif 
+
+void PerformanceTime(double testTime)
+{
+	auto currentTestName = ::testing::UnitTest::GetInstance()->current_test_info()->name();
+
+	string fileName; 
+	fileName += "..//PerformanceResults//";
+	fileName += currentTestName;
+	fileName += ".csv";
+
+	// check there exists a file "/PerformanceResults/*currentTestName*.csv"
+	ifstream file(fileName); 
+
+	if (!file.good()) {
+
+		//
+		CreateDirectory(L"..//PerformanceResults", nullptr); 
+
+		// create the file
+		ofstream newFile(fileName); 
+
+		newFile << "Date/Time, Test Time (ms)" << endl; 
+		newFile.close(); 
+	}
+
+	ofstream writeFile(fileName, ofstream::out | ofstream::app); 
+
+	if (writeFile.good()) {
+		char timeBuffer[32]; 
+		tm localTimeBuffer; 
+		auto currentTime = time(nullptr); 
+		
+		localtime_s(&localTimeBuffer, &currentTime); 
+		asctime_s(timeBuffer, 32, &localTimeBuffer); 
+
+		string currentDateTime(timeBuffer);
+
+		auto newLine = currentDateTime.find('\n');
+		currentDateTime.replace(newLine, newLine + 1, ""); 
+
+		writeFile << currentDateTime << ", " << testTime << endl;
+	}
+
+	writeFile.close(); 
+}
 //-----------------------------------------------------------------------------
 // Name: InsertComponentsPerfTest
 // Desc: 		
@@ -32,6 +86,8 @@ TEST(PerformanceTest, InsertComponentsPerfTest)
 	auto t = chrono::duration<double, milli>(end - start).count();
 
 	cout << t << endl;
+
+	PerformanceTime(t); 
 }
 //-----------------------------------------------------------------------------
 // Name: InsertMultipleTypeComponentsPerfTest
@@ -54,10 +110,9 @@ TEST(PerformanceTest, InsertMultipleTypeComponentsPerfTest)
 	}
 
 	auto end = chrono::steady_clock::now();
-
 	auto t = chrono::duration<double, milli>(end - start).count();
 
-	cout << t << endl;
+	PerformanceTime(t); 
 }
 //-----------------------------------------------------------------------------
 // Name: InsertMultipleTypeComponentsPerfTest
@@ -81,12 +136,11 @@ TEST(PerformanceTest, DeleteComponentsPerfTest)
 	}
 
 	for (auto i = 0; i < numComponents; i++) {
-		//auto str = to_string(ids[i]);
-		//cout << str << endl;
 		componentCollectionRepository.RemoveComponent(ids[i]);
 	}
 	
 	auto end = chrono::steady_clock::now();
 	auto t = chrono::duration<double, milli>(end - start).count();
-	cout << t << endl;
+	
+	PerformanceTime(t); 
 }
