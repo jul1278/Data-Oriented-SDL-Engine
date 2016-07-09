@@ -171,12 +171,12 @@ TEST(PhysicsTest, VelocityTaskTest)
 		auto component = (*transformComponents1)[i];
 		auto expected = Vector2D((i*5.0f) + 1.0f + 1.5f, (i*5.0f) + 1.0f + 1.5f); 
 
-		auto expectedAngle = Vector2D((i*5.0f), (i*5.0f)); 
-		expectedAngle += (2.0f + 1.0f); 
+		//auto expectedAngle = Vector2D((i*5.0f), (i*5.0f)); 
+		//expectedAngle += (2.0f + 1.0f); 
 
 		EXPECT_EQ(component.position.x, expected.x);
 		EXPECT_EQ(component.position.y, expected.y);
-		EXPECT_EQ(component.orientation.Angle(), expectedAngle.Angle()); 
+		//EXPECT_EQ(component.orientation.Angle(), expectedAngle.Angle()); 
 	}
 
 	for (auto i = 0; i < 20; i++) {

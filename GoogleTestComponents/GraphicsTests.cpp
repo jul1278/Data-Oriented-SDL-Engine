@@ -57,7 +57,7 @@ TEST(GraphicsTests, TestColor)
 		graphics->UpdateGraphics(&graphicsComponents, &transformComponents);
 		graphics->Present();
 
-		SDL_Delay(1000); 
+		SDL_Delay(100); 
 	}
 
 	graphics->Clear();
