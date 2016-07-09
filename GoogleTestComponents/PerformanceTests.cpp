@@ -14,7 +14,7 @@
 //-----------------------------------------------------------------------------
 TEST(PerformanceTest, InsertComponentsPerfTest)
 {
-	const auto numComponents = 5000; 
+	const auto numComponents = 5000;
 
 	auto start = chrono::steady_clock::now();
 
@@ -27,9 +27,9 @@ TEST(PerformanceTest, InsertComponentsPerfTest)
 		auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>("TestCollection");
 	}
 
-	auto end = chrono::steady_clock::now(); 
+	auto end = chrono::steady_clock::now();
 
-	auto t = chrono::duration<double, milli>(end - start).count(); 
+	auto t = chrono::duration<double, milli>(end - start).count();
 
 	cout << t << endl;
 }
@@ -50,7 +50,7 @@ TEST(PerformanceTest, InsertMultipleTypeComponentsPerfTest)
 	for (auto i = 0; i < numComponents; ++i)
 	{
 		auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>("TestCollection");
-		auto graphicsComponent = componentCollectionRepository.NewComponent<GraphicsComponent>("TestCollection"); 
+		auto graphicsComponent = componentCollectionRepository.NewComponent<GraphicsComponent>("TestCollection");
 	}
 
 	auto end = chrono::steady_clock::now();
@@ -71,22 +71,21 @@ TEST(PerformanceTest, DeleteComponentsPerfTest)
 
 	ComponentCollectionRepository componentCollectionRepository;
 
-	vector<int> ids; 
+	vector<int> ids;
 
-	auto entityId = componentCollectionRepository.NewEntityId();
 	componentCollectionRepository.NewCollection("TestCollection");
 
 	for (auto i = 0; i < numComponents; ++i) {
 		auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>("TestCollection");
-		ids.push_back(transformComponent->id); 
+		ids.push_back(transformComponent->id);
 	}
 
 	for (auto i = 0; i < numComponents; i++) {
-		auto str = to_string(ids[i]);
-		cout << str << endl; 
-		componentCollectionRepository.RemoveComponent(ids[i]); 
+		//auto str = to_string(ids[i]);
+		//cout << str << endl;
+		componentCollectionRepository.RemoveComponent(ids[i]);
 	}
-
+	
 	auto end = chrono::steady_clock::now();
 	auto t = chrono::duration<double, milli>(end - start).count();
 	cout << t << endl;

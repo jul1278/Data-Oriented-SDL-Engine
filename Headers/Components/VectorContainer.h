@@ -16,6 +16,8 @@ struct IVectorContainer
 {
 	virtual void RemoveId(unsigned int id) = 0; 
 	virtual ~IVectorContainer() {}
+
+	virtual BaseComponent* SelectBase(unsigned int id) = 0;
 };
 
 template <typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
@@ -31,6 +33,12 @@ struct VectorContainer : IVectorContainer
 			swap(*component, vec.back()); 
 			vec.pop_back(); 
 		}
+	}
+
+	BaseComponent* SelectBase(unsigned int id) override final
+	{
+		auto component = find_if(vec.begin(), vec.end(), [id](const T& t) { return t.id == id; });
+		return &(*component); 
 	}
 
 	VectorContainer()

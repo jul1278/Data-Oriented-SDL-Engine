@@ -17,7 +17,7 @@ class ComponentCollection
 	static unsigned int id; 
 
 	unordered_map<type_index, IVectorContainer*> componentCollection;
-	unordered_map<unsigned int, tuple<type_index*, BaseComponent*>> idToComponent;
+	unordered_map<unsigned int, tuple<type_index*, IVectorContainer*>> idToComponent;
 
 public:
 
@@ -56,7 +56,8 @@ public:
 	BaseComponent* SelectBase(unsigned int id)
 	{
 		auto pair = this->idToComponent[id]; 
-		return get<1>(pair); 
+		auto container = get<1>(pair);
+		return container->SelectBase(id); 
 	}
 	//-------------------------------------------------------------------------------
 	// Name: Type
@@ -98,7 +99,7 @@ T* ComponentCollection::NewComponent()
 	component->id = ComponentCollection::GenerateId();
 
 	auto type = new type_index(typeid(T));
-	this->idToComponent[component->id] = tuple<type_index*, BaseComponent*>(type, component);
+	this->idToComponent[component->id] = tuple<type_index*, IVectorContainer*>(type, container);
 
 	return &container->vec.back();
 }
