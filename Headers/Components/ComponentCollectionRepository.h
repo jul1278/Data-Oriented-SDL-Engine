@@ -70,13 +70,13 @@ public:
 		this->NewCollection(collectionName); 
 
 		BaseComponent* newComponent = nullptr;
-
 		newComponent = this->componentCollectionMap[collectionName]->NewComponent<T>();
 
 		auto collection = componentCollectionMap[collectionName]; 
 		this->idToCollectionMap[newComponent->id] = collectionName; 
 
 		if (entityId > 0) {
+			newComponent->entityId = entityId; 
 			this->entityToComponent[entityId].push_back(newComponent->id);
 		} 
 
@@ -84,33 +84,36 @@ public:
 	}
 	//------------------------------------------------------------------------------------
 	// Name: RemoveComponent
-	// Desc: 
+	// Desc: Note that this function assumes that the component id does not belong to an entity. 
 	//------------------------------------------------------------------------------------
 	void RemoveComponent(unsigned int id)
 	{
-		auto collectionName = defaultCollectionName; 
+		string collectionName; 
+		auto collectionIt = this->idToCollectionMap.find(id);
 
-		if (this->idToCollectionMap.find(id) != this->idToCollectionMap.end()) {
+		if (collectionIt != this->idToCollectionMap.end()) {
 			collectionName = this->idToCollectionMap[id];
+
+		} else {
+
+			collectionName = defaultCollectionName;
 		}
 
 		auto collection = this->componentCollectionMap[collectionName]; 
-		auto component = this->SelectBase(id); 
+		//auto component = this->SelectBase(id); 
 
-		// find my entity and remove my id from its list
-		// NOTE: might be okay to not remove these. Ideally most of the
-		// time you'd be removing a whole entity rather than individual components..
-		if (this->entityToComponent.find(component->entityId) != this->entityToComponent.end()) {
-			this->entityToComponent[component->entityId].remove_if([id](unsigned int componentId) {return componentId == id; });
-		}
+		//// find my entity and remove my id from its list
+		//// NOTE: might be okay to not remove these. Ideally most of the
+		//// time you'd be removing a whole entity rather than individual components..
+		//if (this->entityToComponent.find(component->entityId) != this->entityToComponent.end()) {
+		//	this->entityToComponent[component->entityId].remove_if([id](unsigned int componentId) {return componentId == id; });
+		//}
 
 		if (collection != nullptr) {
 			collection->DeleteId(id); 
-			
-			auto it = this->idToCollectionMap.find(id); 
 
-			if (it != this->idToCollectionMap.end()) {
-				this->idToCollectionMap.erase(it); 
+			if (collectionIt != this->idToCollectionMap.end()) {
+				this->idToCollectionMap.erase(collectionIt);
 			}
 		}
 	}
@@ -155,8 +158,7 @@ public:
 	template<typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
     vector<T>* SelectFromCollection(const string collectionName = defaultCollectionName)
 	{
-        if (this->componentCollectionMap.find(collectionName) != this->componentCollectionMap.end())
-        {
+        if (this->componentCollectionMap.find(collectionName) != this->componentCollectionMap.end()) {
             return this->componentCollectionMap[collectionName]->Select<T>(); 
         }
 

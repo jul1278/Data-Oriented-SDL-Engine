@@ -11,7 +11,7 @@ class VelocityTask : public IPhysicsTask
 	{
 		auto physicsComponents = componentCollectionRepository->SelectFromCollection<PhysicsComponent>(collection1); 
 		
-		if (physicsComponents->size() == 0) {
+		if (physicsComponents == nullptr || physicsComponents->size() == 0) {
 			return; 
 		}
 
@@ -24,7 +24,7 @@ class VelocityTask : public IPhysicsTask
 			transformComponent->position += component.velocity;
 
 			component.angularVelocity += component.angularAcceleration; 
-			transformComponent->orientation += component.angularVelocity;
+			transformComponent->orientation = Vector2D(component.angularVelocity + transformComponent->Angle());
 		}
 	}
 

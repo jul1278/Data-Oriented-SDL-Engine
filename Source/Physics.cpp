@@ -2,6 +2,8 @@
 #include "Physics/IPhysicsTask.h"
 #include <Utility/MathUtility.h>
 #include <Components/VelocityComponent.h>
+#include <Components/TransformComponent.h>
+#include <Components/PhysicsComponent.h>
 
 //-------------------------------------------------------------------------------
 // Name: AddPhysicsTask

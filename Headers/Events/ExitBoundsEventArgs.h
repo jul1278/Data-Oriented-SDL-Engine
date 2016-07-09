@@ -7,16 +7,18 @@ class ExitBoundsEventArgs : public IEventArgs
 {
 public:
 
-	ExitBoundsEventArgs(unsigned int transformComponentId, unsigned int physicsComponentId, string collectionName, Vector2D exitPoint)
+	ExitBoundsEventArgs(unsigned transformComponentId, unsigned physicsComponentId, unsigned entityId, string collectionName, Vector2D exitPoint)
 	{
+		this->entityId = entityId; 
 		this->transformComponentId = transformComponentId; 
 		this->physicsComponentId = physicsComponentId; 
 		this->collectionName = collectionName;
 		this->exitPoint = exitPoint; 
 	}
 
-	unsigned int transformComponentId;
-	unsigned int physicsComponentId;
+	unsigned entityId;
+	unsigned transformComponentId;
+	unsigned physicsComponentId;
 
 	Vector2D exitPoint;
 	string collectionName;

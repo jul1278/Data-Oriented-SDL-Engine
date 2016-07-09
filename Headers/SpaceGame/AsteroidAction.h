@@ -7,6 +7,7 @@
 #include "SpaceGameEntityConstructor.h"
 #include <Graphics/ProceduralAsteroidGraphicsResource.h>
 #include <Physics/ExitBoundsTask.h>
+#include <Physics/VelocityTask.h>
 
 class AsteroidAction : public IAction
 {
@@ -15,6 +16,8 @@ private:
 	unsigned int width; 
 	unsigned int height; 
 
+	vector<int> asteroidGraphicsResIds;
+
 public:
 
 
@@ -22,23 +25,21 @@ public:
 	// Name: AsteroidAction
 	// Desc: 
 	//-------------------------------------------------------------------------------
-	AsteroidAction(IStage* stage): IAction(stage)
+	AsteroidAction(IStage* stage) : IAction(stage)
 	{
 		this->width = stage->GetGameApp()->GetGraphics()->WindowWidth();
 		this->height = stage->GetGameApp()->GetGraphics()->WindowHeight();
-
-		auto initNumAsteroids = 5; 
+		
+		auto initNumAsteroids = 1; 
 
 		auto graphics = this->GetParentStage()->GetGameApp()->GetGraphics(); 
 		auto componentCollectionRepository = this->GetParentStage()->GetComponentCollectionRepository(); 
 
-		vector<int> asteroidGraphicsResIds;
-
-		for (auto i = 0; i < initNumAsteroids; i++) {
-			asteroidGraphicsResIds.push_back(graphics->AddGraphicsResource(new ProceduralAsteroidGraphicsResource(20.0f, 1.2f, 10)));
+		for (auto i = 0; i < 4*initNumAsteroids; i++) {
+			this->asteroidGraphicsResIds.push_back(graphics->AddGraphicsResource(new ProceduralAsteroidGraphicsResource(20.0f, 1.2f, 10)));
 		}
 
-		SpaceGameEntityConstructor::ConstructEnemyAsteroids(componentCollectionRepository, asteroidGraphicsResIds, this->width, this->height, initNumAsteroids);
+		// SpaceGameEntityConstructor::ConstructEnemyAsteroids(componentCollectionRepository, asteroidGraphicsResIds, this->width, this->height, initNumAsteroids);
 	
 		auto projectileCollisionTask = new CollisionPhysicsTask("EnemyAsteroids", "PlayerSpaceShipProjectiles"); 
 		auto projectileCollisionTaskHandler = [=](const CollisionEventArgs& collisionEventArgs) {this->OnProjectileCollision(collisionEventArgs); };
@@ -47,9 +48,11 @@ public:
 		auto exitBoundsHandler = [=](const ExitBoundsEventArgs& exitBoundsEventArgs) {this->OnAsteroidExitBounds(exitBoundsEventArgs); };
 
 		projectileCollisionTask->RegisterListener<CollisionEventArgs>(projectileCollisionTaskHandler);
+		exitBoundsTask->RegisterListener<ExitBoundsEventArgs>(exitBoundsHandler); 
 
 		this->GetParentStage()->GetPhysics()->AddPhysicsTask(projectileCollisionTask);
 		this->GetParentStage()->GetPhysics()->AddPhysicsTask(exitBoundsTask); 
+		this->GetParentStage()->GetPhysics()->AddPhysicsTask(new VelocityTask("EnemyAsteroids")); 
 	}
 	//-------------------------------------------------------------------------------
 	// Name: Update
@@ -57,8 +60,12 @@ public:
 	//-------------------------------------------------------------------------------
 	void Update() override final
 	{
-		auto componentCollectionRepository = this->GetParentStage()->GetComponentCollectionRepository();
-		this->SolveAsteroidPhysics(componentCollectionRepository); 
+		// NOTE: a more 'elegant way of doing this would be a 'spawnAsteroidOnTimerElapse' or something'
+		if (1 == MathUtility::RandomIntUniformDist() % 100) {
+			auto componentCollectionRepository = this->GetParentStage()->GetComponentCollectionRepository();
+			auto graphics = this->GetParentStage()->GetGameApp()->GetGraphics();
+			SpaceGameEntityConstructor::ConstructEnemyAsteroids(componentCollectionRepository, asteroidGraphicsResIds, this->width, this->height, 1); 
+		}
 	}
 	//-------------------------------------------------------------------------------
 	// Name: SolveAsteroidPhysics
@@ -106,6 +113,10 @@ public:
 	//-------------------------------------------------------------------------------
 	void OnProjectileCollision(const CollisionEventArgs& collisionEventArgs) const
 	{
+		auto componentCollectionRepository = this->GetParentStage()->GetComponentCollectionRepository(); 
+
+		componentCollectionRepository->RemoveEntity(collisionEventArgs.entityId1);
+		componentCollectionRepository->RemoveEntity(collisionEventArgs.entityId2);
 	}
 	//-------------------------------------------------------------------------------
 	// Name: OnAsteroidExitBounds
@@ -119,9 +130,10 @@ public:
 		
 		// if we left the bottom of the screen
 		if (exitBoundsEventArgs.exitPoint.y > height) {
-			componentCollectionRepository->RemoveComponent(exitBoundsEventArgs.transformComponentId); 
+			componentCollectionRepository->RemoveEntity(exitBoundsEventArgs.entityId);
 
 		} else if (exitBoundsEventArgs.exitPoint.y > 0.0f) {
+
 			auto transformComponent = componentCollectionRepository->Select<TransformComponent>(exitBoundsEventArgs.transformComponentId); 
 			auto physicsComponent = componentCollectionRepository->Select<PhysicsComponent>(exitBoundsEventArgs.physicsComponentId); 
 

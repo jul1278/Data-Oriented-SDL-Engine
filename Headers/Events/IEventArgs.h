@@ -7,7 +7,7 @@ private:
 
 public:
 
-	IEventArgs() {}
+	IEventArgs() {};
 
 	virtual ~IEventArgs() {}; 
 };

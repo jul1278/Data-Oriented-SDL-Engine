@@ -22,19 +22,27 @@ private:
 		}
 
 		for (auto physComponent1 : *physCollection1) {
-
 			auto transformComponent1 = componentCollectionRepository->Select<TransformComponent>(physComponent1.transformComponentId); 
+			
+			if (transformComponent1 == nullptr) {
+				continue; 
+			}
+			
 			auto pos1 = transformComponent1->position;
 
 			for (auto physComponent2 : *physCollection2) {
-
 				auto transformComponent2 = componentCollectionRepository->Select<TransformComponent>(physComponent2.transformComponentId); 
+
+				if (transformComponent2 == nullptr) {
+					continue; 
+				}
 
 				auto diff = pos1 - transformComponent2->position;
 				auto rad = physComponent1.radius + physComponent2.radius;
 
 				if (diff.Length() < rad) {
-					eventObservable->Invoke(CollisionEventArgs(physComponent1.id, physComponent2.id));
+					eventObservable->Invoke(CollisionEventArgs(collection1, collection2, physComponent1.id, physComponent2.id, 
+						physComponent1.entityId, physComponent2.entityId));
 				}
 			}
 		}

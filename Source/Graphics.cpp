@@ -275,6 +275,14 @@ void Graphics::UpdateGraphics(vector<GraphicsComponent>* graphicsComponents, vec
 	//	     with parent = (0,0) etc etc
 	//       this is probably faster though  
 
+	if (graphicsComponents == nullptr || graphicsComponents->size() == 0) {
+		return; 
+	}
+
+	if (transformComponents == nullptr || transformComponents->size() == 0) {
+		return; 
+	}
+
 	for (auto graphicsComponent : *graphicsComponents) {
 		
 		if (graphicsComponent.resourceId == NO_RENDER) {

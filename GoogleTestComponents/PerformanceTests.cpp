@@ -32,9 +32,13 @@ void PerformanceTime(double testTime)
 
 	if (!file.good()) {
 
-		//
+#ifdef _WIN32
 		CreateDirectory(L"..//PerformanceResults", nullptr); 
+#else
+#ifdef __APPLE__
 
+#endif
+#endif
 		// create the file
 		ofstream newFile(fileName); 
 
@@ -76,8 +80,7 @@ TEST(PerformanceTest, InsertComponentsPerfTest)
 	auto entityId = componentCollectionRepository.NewEntityId();
 	componentCollectionRepository.NewCollection("TestCollection");
 
-	for (auto i = 0; i < numComponents; ++i)
-	{
+	for (auto i = 0; i < numComponents; ++i) {
 		auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>("TestCollection");
 	}
 
@@ -103,8 +106,7 @@ TEST(PerformanceTest, InsertMultipleTypeComponentsPerfTest)
 	auto entityId = componentCollectionRepository.NewEntityId();
 	componentCollectionRepository.NewCollection("TestCollection");
 
-	for (auto i = 0; i < numComponents; ++i)
-	{
+	for (auto i = 0; i < numComponents; ++i) {
 		auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>("TestCollection");
 		auto graphicsComponent = componentCollectionRepository.NewComponent<GraphicsComponent>("TestCollection");
 	}

@@ -86,20 +86,25 @@ public:
 		componentCollectionRepository->NewCollection(collectionName); 
 
 		for (auto i = 0; i < num; i++) {
+			auto entityId = componentCollectionRepository->NewEntityId();
 
-			auto transformComponent = componentCollectionRepository->NewComponent<TransformComponent>(collectionName);
-			auto graphicsComponent = componentCollectionRepository->NewComponent<GraphicsComponent>(collectionName);
-			auto physicsComponent = componentCollectionRepository->NewComponent<PhysicsComponent>(collectionName);
+			auto transformComponent = componentCollectionRepository->NewComponent<TransformComponent>(collectionName, entityId);
+			auto graphicsComponent = componentCollectionRepository->NewComponent<GraphicsComponent>(collectionName, entityId);
+			auto physicsComponent = componentCollectionRepository->NewComponent<PhysicsComponent>(collectionName, entityId);
 
 			physicsComponent->mass = MathUtility::RandomFloatUniformDist(); 
 			physicsComponent->transformComponentId = transformComponent->id;
-			physicsComponent->angularVelocity = 0.01f; 
+			physicsComponent->angularVelocity = 0.01f;
+			physicsComponent->radius = 30.0f; 
+
+			physicsComponent->acceleration = Vector2D(0.001f*(0.5f - MathUtility::RandomFloatUniformDist()), 0.0f);
+			physicsComponent->velocity = Vector2D(0.0f, 1.0f); 
 
 			transformComponent->position.x = height*MathUtility::RandomFloatUniformDist(); 
-			transformComponent->position.y = width*MathUtility::RandomFloatUniformDist(); 
+			transformComponent->position.y = 0.0f;			
 			transformComponent->scale = Vector2D(1.0f, 1.0f);
 
-			graphicsComponent->resourceId = graphicResourceIds[i];
+			graphicsComponent->resourceId = graphicResourceIds[MathUtility::RandomIntUniformDist() % graphicResourceIds.size()];
 			graphicsComponent->transformComponentId = transformComponent->id;
 		}
 	}
@@ -121,6 +126,8 @@ public:
 			auto transformComponent = componentCollectionRepository->NewComponent<TransformComponent>(collectionName, entityId); 
 			auto graphicsComponent = componentCollectionRepository->NewComponent<GraphicsComponent>(collectionName, entityId);
 			auto physicsComponent = componentCollectionRepository->NewComponent<PhysicsComponent>(collectionName, entityId);
+
+			physicsComponent->radius = 1.0f; 
 
 			graphicsComponent->transformComponentId = transformComponent->id; 
 			physicsComponent->transformComponentId = transformComponent->id; 

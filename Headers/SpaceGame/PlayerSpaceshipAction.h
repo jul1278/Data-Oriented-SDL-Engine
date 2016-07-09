@@ -44,6 +44,10 @@ public:
 		for (auto graphicsComponent : *projectileGraphics) {
 			auto transform = componentCollectionRepository->Select<TransformComponent>(graphicsComponent.transformComponentId);
 			
+			if (transform == nullptr) {
+				continue; 
+			}
+
 			if (transform->position.x > this->width || 
 				transform->position.x < 0.0f || 
 				transform->position.y > this->height || 

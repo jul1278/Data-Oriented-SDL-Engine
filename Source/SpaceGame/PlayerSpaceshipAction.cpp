@@ -131,6 +131,7 @@ void PlayerSpaceshipAction::FireWeapon(const ButtonEventArgs buttonEventArgs) co
 
 		graphicsComponent->resourceId = this->projectileGraphicResId; 
 		physicsComponent->velocity = Vector2D(0.0f, -8.0f); 
+		physicsComponent->radius = 1.0f; 
 	}
 }
 //-------------------------------------------------------------------------------------

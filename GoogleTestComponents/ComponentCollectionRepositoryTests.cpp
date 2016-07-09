@@ -13,13 +13,18 @@
 TEST(ComponentCollectionRepositoryTests, NewComponentsHaveCorrectEntityId)
 {
 	ComponentCollectionRepository componentCollectionRepository;
-	auto entityId = componentCollectionRepository.NewEntityId(); 
+
+	// generate a bunch of ids first so we dont get zero
+	componentCollectionRepository.NewEntityId(); 
+	componentCollectionRepository.NewEntityId();
+	componentCollectionRepository.NewEntityId();
+	auto entityId = componentCollectionRepository.NewEntityId();
+
 	componentCollectionRepository.NewCollection("TestCollection");
 
-	for (auto i = 0; i < 20; i += 2)
-	{
-		auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>("TestCollection");
-		auto graphicsComponent = componentCollectionRepository.NewComponent<GraphicsComponent>("TestCollection");
+	for (auto i = 0; i < 20; i += 2) {
+		auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>("TestCollection", entityId);
+		auto graphicsComponent = componentCollectionRepository.NewComponent<GraphicsComponent>("TestCollection", entityId);
 
 		EXPECT_EQ(transformComponent->entityId, entityId);
         EXPECT_EQ(graphicsComponent->entityId, entityId);
@@ -36,14 +41,12 @@ TEST(ComponentCollectionRepositoryTests, ComponentPointersAreContiguous)
 
 	transformComponents.reserve(100); 
 
-    for (auto i = 0; i < 100; i++)
-    {
+    for (auto i = 0; i < 100; i++) {
         auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>();          
         transformComponents.push_back(transformComponent);
     }
 
-    for (auto i = 0; i < 99; i++)
-    {
+    for (auto i = 0; i < 99; i++) {
         auto diff = reinterpret_cast<uint8_t*>(transformComponents[i + 1]) - reinterpret_cast<uint8_t*>(transformComponents[i]); 
         EXPECT_EQ(static_cast<unsigned int>(diff), sizeof(TransformComponent));
     }

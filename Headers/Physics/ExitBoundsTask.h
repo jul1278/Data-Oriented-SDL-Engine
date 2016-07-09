@@ -14,6 +14,11 @@ class ExitBoundsTask : public IPhysicsTask
 	{
 		auto transformComponents = componentCollectionRepository->SelectFromCollection<TransformComponent>(collection1); 
 		auto physicsComponents = componentCollectionRepository->SelectFromCollection<PhysicsComponent>(collection1); 
+		
+		if (transformComponents == nullptr || transformComponents->size() == 0 ||
+			physicsComponents == nullptr || physicsComponents->size() == 0) {
+			return; 
+		}
 
 		for (auto component : *transformComponents) {
 			if (component.position.x < this->min.x || 
@@ -24,7 +29,7 @@ class ExitBoundsTask : public IPhysicsTask
 				auto id = component.id; 
 				auto physicsComponent = find_if(physicsComponents->begin(), physicsComponents->end(), [id](const PhysicsComponent& p) {return p.transformComponentId == id; });
 				
-				eventObservable->Invoke<ExitBoundsEventArgs>(ExitBoundsEventArgs(component.id, physicsComponent->id, collection1, component.position)); 
+				eventObservable->Invoke<ExitBoundsEventArgs>(ExitBoundsEventArgs(component.id, physicsComponent->id, physicsComponent->entityId, collection1, component.position)); 
 			}
 		}
 	}
