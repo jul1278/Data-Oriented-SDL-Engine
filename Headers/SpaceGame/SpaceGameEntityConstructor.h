@@ -98,7 +98,7 @@ public:
 			physicsComponent->radius = 30.0f; 
 
 			physicsComponent->acceleration = Vector2D(0.001f*(0.5f - MathUtility::RandomFloatUniformDist()), 0.0f);
-			physicsComponent->velocity = Vector2D(0.0f, 1.0f); 
+			physicsComponent->velocity = Vector2D((0.5f - MathUtility::RandomFloatUniformDist()), 1.0f); 
 
 			transformComponent->position.x = height*MathUtility::RandomFloatUniformDist(); 
 			transformComponent->position.y = 0.0f;			

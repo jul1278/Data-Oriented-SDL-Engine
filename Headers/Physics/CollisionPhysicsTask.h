@@ -37,6 +37,10 @@ private:
 					continue; 
 				}
 
+				if (transformComponent1->id == transformComponent2->id) {
+					continue; 
+				}
+
 				auto diff = pos1 - transformComponent2->position;
 				auto rad = physComponent1.radius + physComponent2.radius;
 

@@ -41,6 +41,10 @@ public:
 		auto componentCollectionRepository = this->GetParentStage()->GetComponentCollectionRepository();
 		auto projectileGraphics = componentCollectionRepository->SelectFromCollection<GraphicsComponent>("PlayerSpaceShipProjectiles");
 
+		if (projectileGraphics == nullptr || projectileGraphics->size() == 0) {
+			return; 
+		}
+
 		for (auto graphicsComponent : *projectileGraphics) {
 			auto transform = componentCollectionRepository->Select<TransformComponent>(graphicsComponent.transformComponentId);
 			

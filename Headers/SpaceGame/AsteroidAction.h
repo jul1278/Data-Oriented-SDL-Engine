@@ -21,6 +21,7 @@ private:
 public:
 
 
+	
 	//-------------------------------------------------------------------------------
 	// Name: AsteroidAction
 	// Desc: 
@@ -36,7 +37,8 @@ public:
 		auto componentCollectionRepository = this->GetParentStage()->GetComponentCollectionRepository(); 
 
 		for (auto i = 0; i < 4*initNumAsteroids; i++) {
-			this->asteroidGraphicsResIds.push_back(graphics->AddGraphicsResource(new ProceduralAsteroidGraphicsResource(20.0f, 1.2f, 10)));
+			auto radius = 10.0f + 5.0f*MathUtility::RandomFloatUniformDist(); 
+			this->asteroidGraphicsResIds.push_back(graphics->AddGraphicsResource(new ProceduralAsteroidGraphicsResource(radius, 1.2f, 10)));
 		}
 
 		// SpaceGameEntityConstructor::ConstructEnemyAsteroids(componentCollectionRepository, asteroidGraphicsResIds, this->width, this->height, initNumAsteroids);
@@ -44,15 +46,20 @@ public:
 		auto projectileCollisionTask = new CollisionPhysicsTask("EnemyAsteroids", "PlayerSpaceShipProjectiles"); 
 		auto projectileCollisionTaskHandler = [=](const CollisionEventArgs& collisionEventArgs) {this->OnProjectileCollision(collisionEventArgs); };
 
+		auto asteroidCollisionTask = new CollisionPhysicsTask("EnemyAsteroids", "EnemyAsteroids"); 
+		auto asteroidCollisionTaskHandler = [=](const CollisionEventArgs& collisionEventArgs) {this->OnAsteroidCollision(collisionEventArgs); };
+
 		auto exitBoundsTask = new ExitBoundsTask("EnemyAsteroids", Vector2D(0.0f, 0.0f), Vector2D(width, height)); 
 		auto exitBoundsHandler = [=](const ExitBoundsEventArgs& exitBoundsEventArgs) {this->OnAsteroidExitBounds(exitBoundsEventArgs); };
 
 		projectileCollisionTask->RegisterListener<CollisionEventArgs>(projectileCollisionTaskHandler);
 		exitBoundsTask->RegisterListener<ExitBoundsEventArgs>(exitBoundsHandler); 
+		asteroidCollisionTask->RegisterListener<CollisionEventArgs>(asteroidCollisionTaskHandler); 
 
 		this->GetParentStage()->GetPhysics()->AddPhysicsTask(projectileCollisionTask);
 		this->GetParentStage()->GetPhysics()->AddPhysicsTask(exitBoundsTask); 
 		this->GetParentStage()->GetPhysics()->AddPhysicsTask(new VelocityTask("EnemyAsteroids")); 
+		this->GetParentStage()->GetPhysics()->AddPhysicsTask(asteroidCollisionTask); 
 	}
 	//-------------------------------------------------------------------------------
 	// Name: Update
@@ -144,6 +151,25 @@ public:
 			transformComponent->position.y = -10.0f; 
 		}
 	}
+
+	//-------------------------------------------------------------------------------
+	// Name: OnAsteroidCollision
+	// Desc: 
+	//-------------------------------------------------------------------------------
+	void OnAsteroidCollision(const CollisionEventArgs& collisionEventArgs) const
+	{
+		if (collisionEventArgs.physicsComponentId1 == collisionEventArgs.physicsComponentId2) {
+			return; 
+		}
+
+		auto componentCollectionRepository = this->GetParentStage()->GetComponentCollectionRepository();
+
+		auto physicsComponent1 = componentCollectionRepository->Select<PhysicsComponent>(collisionEventArgs.physicsComponentId1); 
+		auto physicsComponent2 = componentCollectionRepository->Select<PhysicsComponent>(collisionEventArgs.physicsComponentId2); 
+
+		swap(physicsComponent1->velocity, physicsComponent2->velocity); 
+	}
+
 };
 
 #endif // ASTEROID_ACTION_H
