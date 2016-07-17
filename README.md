@@ -45,4 +45,9 @@ http://www.bogotobogo.com/cplusplus/google_unit_test_gtest.php
 - CMake build system for osx and windows
 - *Maybe* move to proper OpenGL
 
+# Contributing
+
+ok sure
+
+
 
