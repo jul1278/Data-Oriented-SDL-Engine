@@ -7,7 +7,7 @@ If you'd like to know more about component based design, here's a few links to g
 
 # Build Instructions
 
-## OSX
+### OSX
 
 Make sure you have the following libraries in your frameworks folder.
 
@@ -15,7 +15,7 @@ Make sure you have the following libraries in your frameworks folder.
 - https://www.libsdl.org/projects/SDL_image/
 - https://www.libsdl.org/projects/SDL_ttf/
 
-Clone the repo and navigate to the SimpleComponents folder. 
+Clone the branch for osx_build (not the master one!) and navigate to the SimpleComponents folder. 
 
 mkdir Build
 cd Build
@@ -24,7 +24,7 @@ cmake ..
 This *should* clone the latest google test, generate a makefile for the main project and test project. 
 Finally just run make to build the thing. 
 
-## Windows
+### Windows
 
 Can be fairly painlessly setup in visual studio (I'm using vs2013). 
 Clone the project and add all the .h and .cpp files into a new vs project. 
