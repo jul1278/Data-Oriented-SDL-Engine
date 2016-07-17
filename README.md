@@ -17,9 +17,11 @@ Make sure you have the following libraries in your frameworks folder.
 
 Clone the branch for osx_build (not the master one!) and navigate to the SimpleComponents folder. 
 
+```
 mkdir Build
 cd Build
 cmake ..
+```
 
 This *should* clone the latest google test, generate a makefile for the main project and test project. 
 Finally just run make to build the thing. 
