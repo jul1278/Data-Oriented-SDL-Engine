@@ -4,11 +4,11 @@
 #ifndef GRAPHICS_UTILITY_H
 #define GRAPHICS_UTILITY_H
 
-#include <SDL.h>
+#include "SDL.h"
 #include "SDL_ttf.h"
 #include "SDL_image.h"
-#include <cstring>
-#include <cmath>
+#include <string.h>
+#include <math.h>
 
 namespace GraphicsUtility
 {
@@ -45,36 +45,22 @@ namespace GraphicsUtility
 
                 Uint32 index = (y + radius - 1)* surface->pitch - 4*(x + radius);
 
-                if (index >= 0) {
-
-                    auto addr = reinterpret_cast<uint32_t*>(pixels + index);
-                    *addr = color;
-                }
+                auto addr = reinterpret_cast<uint32_t*>(pixels + index);
+                *addr = color;
 
                 // TODO: why -2?
                 index = (y + radius -2)* surface->pitch + 4*(x + radius);
 
-                if (index >= 0) {
-
-                    auto addr = reinterpret_cast<uint32_t*>(pixels + index);
-                    *addr = color;
-                }
-
+                addr = reinterpret_cast<uint32_t*>(pixels + index);
+                *addr = color;
                 index = (-y + radius - 1)* surface->pitch + 4*(x + radius);
 
-                if (index >= 0) {
-
-                    auto addr = reinterpret_cast<uint32_t*>(pixels + index);
-                    *addr = color;
-                }
-
+                addr = reinterpret_cast<uint32_t*>(pixels + index);
+                *addr = color;
                 index = (-y + radius)* surface->pitch - 4*(x + radius);
 
-                if (index >= 0) {
-
-                    auto addr = reinterpret_cast<uint32_t*>(pixels + index);
-                    *addr = color;
-                }
+                addr = reinterpret_cast<uint32_t*>(pixels + index);
+                *addr = color;        
             }
         }
 
@@ -106,33 +92,22 @@ namespace GraphicsUtility
             for (auto y = 0; y < yTop; y++) {
 
                 Uint32 index = (y + radius - 1)* surface->pitch - 4*(x + radius);
-                if (index >= 0) {
 
-	                auto addr = reinterpret_cast<uint32_t*>(pixels + index);
-                    *addr = color;
-                }
+                auto addr = reinterpret_cast<uint32_t*>(pixels + index);
+                *addr = color;
 
                 // TODO: why -2?
                 index = (y + radius -2)* surface->pitch + 4*(x + radius);
-                if (index >= 0) {
+                addr = reinterpret_cast<uint32_t*>(pixels + index);
+                *addr = color;
 
-	                auto addr = reinterpret_cast<uint32_t*>(pixels + index);
-                    *addr = color;
-                }
-
-                index = (-y + radius - 1)* surface->pitch + 4*(x + radius);
-                if (index >= 0) {
-
-	                auto addr = reinterpret_cast<uint32_t*>(pixels + index);
-                    *addr = color;
-                }
-
+                index = (-y + radius - 1)* surface->pitch + 4*(x + radius);    
+                addr = reinterpret_cast<uint32_t*>(pixels + index);
+                *addr = color;
+            
                 index = (-y + radius)* surface->pitch - 4*(x + radius);
-                if (index >= 0) {
-
-	                auto addr = reinterpret_cast<uint32_t*>(pixels + index);
-                    *addr = color;
-                }
+                addr = reinterpret_cast<uint32_t*>(pixels + index);
+                *addr = color;
             }
         }
 
@@ -234,5 +209,5 @@ namespace GraphicsUtility
 
 
 
-#endif //GRAPHICS_UTILITY_H
+#endif // GRAPHICS_UTILITY_H
 

@@ -1,19 +1,22 @@
-#include <Components/ComponentCollectionRepository.h>
-#include <Components/GraphicsComponent.h>
-#include <Components/TransformComponent.h>
-#include <Components/PhysicsComponent.h>
+#include "Components/ComponentCollectionRepository.h"
+#include "Components/GraphicsComponent.h"
+#include "Components/TransformComponent.h"
+#include "Components/PhysicsComponent.h"
+#include "Utility/ProcessUtility.h"
+#include "gtest/gtest.h"
+
 #include <list>
 #include <chrono>
 #include <iostream>
 #include <fstream>
-#include "gtest/gtest.h"
 
 #ifdef _WIN32
-#include "Windows.h"
+    #include "Windows.h"
 #else
 
 #ifdef  __APPLE__
-
+    #include <sys/types.h>
+    #include <sys/stat.h>
 #endif
 
 #endif 
@@ -21,47 +24,79 @@
 void PerformanceTime(double testTime)
 {
 	auto currentTestName = ::testing::UnitTest::GetInstance()->current_test_info()->name();
+    string csvHeaders = "Date/Time, Test Time (ms)";
+    string fileName;
 
-	string fileName; 
-	fileName += "..//PerformanceResults//";
+#ifdef _WIN32
+
+	fileName += "//PerformanceResults//";
 	fileName += currentTestName;
 	fileName += ".csv";
 
 	// check there exists a file "/PerformanceResults/*currentTestName*.csv"
-	ifstream file(fileName); 
+	ifstream file(fileName);
 
-	if (!file.good()) {
+    if (!file.good()) {
+		CreateDirectory(L"//PerformanceResults", nullptr);
 
-#ifdef _WIN32
-		CreateDirectory(L"..//PerformanceResults", nullptr); 
-#else
-#ifdef __APPLE__
+        		// create the file
+		ofstream newFile(fileName);
 
-#endif
-#endif
-		// create the file
-		ofstream newFile(fileName); 
-
-		newFile << "Date/Time, Test Time (ms)" << endl; 
-		newFile.close(); 
+		newFile << csvHeaders << endl;
+		newFile.close();
 	}
+#else
+    #ifdef __APPLE__
 
-	ofstream writeFile(fileName, ofstream::out | ofstream::app); 
+    auto filePath = ProcessUtility::CurrentApplicationDirectory();
+    filePath += "/PerformanceResults/";
+
+    fileName = filePath;
+    fileName += currentTestName;
+    fileName += ".csv";
+
+    ifstream file(fileName);
+
+    if (!file.good()) {
+        // apparently this creates a directory with:
+        // "read/write/search permissions for owner and group, and with read/search permissions for others."
+	    auto result = mkdir(filePath.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+
+        cout << filePath.c_str() << " " << result << endl;
+
+        ofstream newFile(fileName);
+
+        if (newFile.good()) {
+            newFile << csvHeaders << endl;
+            newFile.close();
+        } else {
+            return;
+        }
+    }
+    #endif
+#endif
+
+	ofstream writeFile(fileName, ofstream::out | ofstream::app);
 
 	if (writeFile.good()) {
-		char timeBuffer[32]; 
-		tm localTimeBuffer; 
-		auto currentTime = time(nullptr); 
-		
+        auto currentTime = time(nullptr);
+        tm localTimeBuffer;
+        char timeBuffer[32];
+
+#ifdef _WIN32
 		localtime_s(&localTimeBuffer, &currentTime); 
-		asctime_s(timeBuffer, 32, &localTimeBuffer); 
+		asctime_s(timeBuffer, 32, &localTimeBuffer);
+#else
+    #ifdef __APPLE__
+        localtime_r(&currentTime, &localTimeBuffer);
+        asctime_r(&localTimeBuffer, timeBuffer);
+    #endif
+#endif
+        string currentDateTime(timeBuffer);
 
-		string currentDateTime(timeBuffer);
-
-		auto newLine = currentDateTime.find('\n');
-		currentDateTime.replace(newLine, newLine + 1, ""); 
-
-		writeFile << currentDateTime << ", " << testTime << endl;
+        auto newLine = currentDateTime.find('\n');
+        currentDateTime.replace(newLine, newLine + 1, "");
+        writeFile << currentDateTime << ", " << testTime << endl;
 	}
 
 	writeFile.close(); 
@@ -85,10 +120,7 @@ TEST(PerformanceTest, InsertComponentsPerfTest)
 	}
 
 	auto end = chrono::steady_clock::now();
-
 	auto t = chrono::duration<double, milli>(end - start).count();
-
-	cout << t << endl;
 
 	PerformanceTime(t); 
 }

@@ -39,8 +39,13 @@ void Physics::ExecuteTasks(ComponentCollectionRepository* componentCollectionRep
 //-------------------------------------------------------------------------------
 void Physics::SolveAsteroidPhysics(ComponentCollectionRepository* componentCollectionRepository) const
 {
-#pragma message ("WARNING: "__FILE__ "  -  " __FUNCTION__" is deprecated.")
-
+#ifdef _WIN32
+	#pragma message ("WARNING: "__FILE__ "  -  " __FUNCTION__" is deprecated.")
+#endif
+#ifdef __APPLE__
+	#warning "Function is deprecated"	
+#endif
+	
 	auto asteroidPhysicsComponents = componentCollectionRepository->SelectFromCollection<PhysicsComponent>("EnemyAsteroids");
 	auto playerPhysicsComponents = componentCollectionRepository->SelectFromCollection<PhysicsComponent>("PlayerSpaceShip");
 
@@ -91,8 +96,12 @@ void Physics::SolveAsteroidPhysics(ComponentCollectionRepository* componentColle
 //-------------------------------------------------------------------------------
 void Physics::SolvePhysics(ComponentCollectionRepository* componentCollectionRepository, const string& collectionName)
 {
-#pragma message ("WARNING: "__FUNCTION__" is deprecated.")
-
+#ifdef _WIN32
+	#pragma message ("WARNING: "__FILE__ "  -  " __FUNCTION__" is deprecated.")
+#endif
+#ifdef __APPLE__
+	#warning "Function is deprecated"	
+#endif
 	auto physicsComponents = componentCollectionRepository->SelectFromCollection<PhysicsComponent>(collectionName);
 
 	if (physicsComponents == nullptr) {
@@ -114,8 +123,12 @@ void Physics::SolvePhysics(ComponentCollectionRepository* componentCollectionRep
 //-------------------------------------------------------------------------------
 void Physics::SolveSimplePhysics(ComponentCollectionRepository* componentCollectionRepository, const string& collectionName)
 {
-#pragma message ("WARNING: "__FUNCTION__" is deprecated.")
-
+#ifdef _WIN32
+	#pragma message ("WARNING: "__FILE__ "  -  " __FUNCTION__" is deprecated.")
+#endif
+#ifdef __APPLE__
+	#warning "Function is deprecated"	
+#endif
 	auto physicsComponents = componentCollectionRepository->SelectFromCollection<VelocityComponent>(collectionName);
 
 	if (physicsComponents == nullptr) {

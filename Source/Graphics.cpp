@@ -230,7 +230,14 @@ void Graphics::Present()
 //------------------------------------------------------------------------------------
 void Graphics::PrintConsoleText(const string& message)
 {
-#pragma message ("WARNING: "__FILE__ "  -  " __FUNCTION__" is to be removed.")
+
+#ifdef _WIN32
+	#pragma message ("WARNING: "__FILE__ "  -  " __FUNCTION__" is to be removed.")
+#endif
+
+#ifdef __APPLE__
+	#warning "This function is to be removed."
+#endif
 
 	this->consoleMessages.push_front(message); 
 
@@ -293,7 +300,7 @@ void Graphics::UpdateGraphics(vector<GraphicsComponent>* graphicsComponents, vec
 		auto transformComponent = find_if(transformComponents->begin(), transformComponents->end(), [id](const TransformComponent& t) {return t.id == id; });
 
 		auto graphicsResource = this->graphicsResourceMap[graphicsComponent.resourceId];
-		graphicsResource->Render(this->renderer, transformComponent._Ptr);
+		graphicsResource->Render(this->renderer, &(*transformComponent));
 	}
 }
 //------------------------------------------------------------------------------------
@@ -313,7 +320,7 @@ void Graphics::UpdateGraphics(vector<GraphicsComponent>* graphicsComponents, vec
 
 
 		auto graphicsResource = this->graphicsResourceMap[graphicsComponent.resourceId];
-		graphicsResource->Render(this->renderer, transformComponent._Ptr, parent);
+		graphicsResource->Render(this->renderer, &(*transformComponent), parent);
 	}
 }
 //------------------------------------------------------------------------------------

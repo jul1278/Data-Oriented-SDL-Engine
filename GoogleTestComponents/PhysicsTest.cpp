@@ -1,13 +1,12 @@
-#include "stdafx.h"
 #include "Utility/Vector.h"
 #include "Components/ComponentCollectionRepository.h"
 #include "Physics/Physics.h"
 #include "Components/PhysicsComponent.h"
 #include "Components/TransformComponent.h"
 #include "Components/VelocityComponent.h"
-#include <Physics/CollisionPhysicsTask.h>
-#include <Physics/VelocityTask.h>
-#include <gtest/gtest.h>
+#include "Physics/CollisionPhysicsTask.h"
+#include "Physics/VelocityTask.h"
+#include "gtest/gtest.h"
 
 using namespace std; 
 

@@ -7,9 +7,10 @@
 #include "Components/PhysicsComponent.h"
 #include "Graphics/Graphics.h"
 #include "SpaceGameEntityConstructor.h"
-#include <Events/ButtonEventArgs.h>
-#include <Physics/CollisionPhysicsTask.h>
-#include <Graphics/RectGraphicsResource.h>
+#include "Events/ButtonEventArgs.h"
+#include "Physics/CollisionPhysicsTask.h"
+#include "Graphics/RectGraphicsResource.h"
+#include "Events/QuitApplicationEventArgs.h"
 
 class PlayerSpaceshipAction : public IAction
 {
@@ -28,7 +29,14 @@ private:
 	void OnButtonEvent(const ButtonEventArgs& buttonEventArgs) const;
 
 	void OnPlayerAsteroidCollision(const CollisionEventArgs& collisionEventArgs) const;
-	void OnProjectileAsteroidCollision(const CollisionEventArgs& collisionEventArgs) const; 
+	void OnProjectileAsteroidCollision(const CollisionEventArgs& collisionEventArgs) const;
+
+	void OnQuitApplication(const QuitApplicationEventArgs& quitApplicationEventArgs)
+	{
+		// TODO: this won't work if there are more than one stage..
+		// unless the quit event goes to the other stages as well
+		this->GetParentStage()->GetGameApp()->PopStage();
+	}
 
 public:
 

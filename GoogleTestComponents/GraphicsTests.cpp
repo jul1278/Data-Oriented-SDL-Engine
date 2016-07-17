@@ -1,18 +1,18 @@
-#include "stdafx.h"
 #include "Graphics/Color.h"
 #include "Graphics/Graphics.h"
 #include "Components/ComponentCollectionRepository.h"
-#include <Components/GraphicsComponent.h>
+#include "Components/GraphicsComponent.h"
 #include "Graphics/RectGraphicsResource.h"
-#include <iostream>
-#include <Graphics/BubbleGraphicsResources.h>
+#include "Graphics/BubbleGraphicsResources.h"
 #include "Graphics/CircleFIllGraphicsResource.h"
 #include "Graphics/CircleOutlineGraphicsResource.h"
-#include <Graphics/GridGraphicsResource.h>
-#include <Graphics/SpriteGraphicsResource.h>
-#include <Graphics/TextGraphicsResource.h>
-#include <Graphics/ProceduralAsteroidGraphicsResource.h>
-#include <gtest/gtest.h>
+#include "Graphics/GridGraphicsResource.h"
+#include "Graphics/SpriteGraphicsResource.h"
+#include "Graphics/TextGraphicsResource.h"
+#include "Graphics/ProceduralAsteroidGraphicsResource.h"
+#include "gtest/gtest.h"
+
+#include <iostream>
 
 Graphics* graphics; 
 
@@ -82,9 +82,9 @@ TEST(GraphicsTests, TestShapes)
 	graphics->AddGraphicsResource(new CircleFillGraphicsResource(30.0f, Color(Color::Chocolate)));
 	graphics->AddGraphicsResource(new CircleOutlineGraphicsResource(40.0f, 10.0f, Color(Color::DarkCyan)));
 	graphics->AddGraphicsResource(new GridGraphicsResource(15.0f, 5, 5, Color(Color::DeepPink)));
-	auto graphicId = graphics->LoadGraphicResource("..//Resources//space_ship.png", "spaceShip"); 
-	graphics->AddGraphicsResource(new TextGraphicsResource("Red Hello World!", 20, Color(Color::IndianRed), "..//Resources//Anonymous_Pro.ttf"));
-	graphics->AddGraphicsResource(new TextGraphicsResource("HIROSH", 20, Color(Color::Gold), "..//Resources//HIROSHT.ttf"));
+	auto graphicId = graphics->LoadGraphicResource("//Resources//space_ship.png", "spaceShip"); 
+	graphics->AddGraphicsResource(new TextGraphicsResource("Red Hello World!", 20, Color(Color::IndianRed), "//Resources//Anonymous_Pro.ttf"));
+	graphics->AddGraphicsResource(new TextGraphicsResource("HIROSH", 20, Color(Color::Gold), "//Resources//HIROSHT.ttf"));
 	graphics->AddGraphicsResource(new BubbleGraphicsResource(100.0f));
 	graphics->AddGraphicsResource(new ProceduralAsteroidGraphicsResource(45.0f, 0.6f, 10)); 
 

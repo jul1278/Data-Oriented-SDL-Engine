@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "Utility/Vector.h"
 #include "Events/SDLEventCollector.h"
 #include "Events/MouseButtonEventArgs.h"
@@ -51,7 +50,7 @@ class SdlEventTest : public testing::Test
     void SetUp() override
     {
         auto result = SDL_Init(SDL_INIT_EVENTS);
-        EXPECT_TRUE(result == 0, L"SDL_Init() failed.");
+        EXPECT_TRUE(result == 0/*, L"SDL_Init() failed."*/);
     }
 
     void TearDown() override

@@ -4,6 +4,7 @@
 #include "SDL_ttf.h"
 #include "Graphics/IGraphicsResource.h"
 #include "Components/TransformComponent.h"
+#include "Utility/ProcessUtility.h"
 
 class TextGraphicsResource : public IGraphicsResource
 {
@@ -25,7 +26,10 @@ private:
 	void UpdateFontSurface()
 	{
 		SDL_Color textColor = { this->r, this->g, this->b};
-		this->fontSurface = TTF_RenderText_Solid(this->font, this->text.c_str(), textColor);
+
+		if (this->font != nullptr) {
+            this->fontSurface = TTF_RenderText_Solid(this->font, this->text.c_str(), textColor);
+        }
 	}
 	
 public:
@@ -38,7 +42,9 @@ public:
 		this->b = color.B(); 
 
 		if (fontPath.empty()) {
+            auto currentDir = ProcessUtility::CurrentApplicationDirectory();
 			this->font = TTF_OpenFont("Resources//Anonymous_Pro.ttf", fontSize);
+
 		} else {
 
 			auto font = fontPath;//"Resources//" + fontName + ".ttf";
@@ -81,12 +87,16 @@ public:
 		}
 
 		this->fontTexture = SDL_CreateTextureFromSurface(sdlRenderer, this->fontSurface);
+
+        if (this->fontTexture == nullptr) {
+            return;
+        }
+
+		auto width = static_cast<uint16_t>(transformComponent->scale.x * this->fontSurface->w); 
+		auto height = static_cast<uint16_t>(transformComponent->scale.y * this->fontSurface->h);
 		
-		auto width = transformComponent->scale.x * this->fontSurface->w; 
-		auto height = transformComponent->scale.y * this->fontSurface->h;
-		
-		auto x = transformComponent->position.x - width / 2;
-		auto y = transformComponent->position.y - height / 2; 
+		auto x = static_cast<uint16_t>(transformComponent->position.x - width / 2);
+		auto y = static_cast<uint16_t>(transformComponent->position.y - height / 2); 
 
 		SDL_Rect textRect = { x, y, width, height };
 

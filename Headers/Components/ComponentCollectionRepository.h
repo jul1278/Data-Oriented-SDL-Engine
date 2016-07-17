@@ -8,6 +8,7 @@
 #include "Utility/MathUtility.h"
 #include "ComponentCollection.h"
 
+#include <string>
 #include <unordered_map>  
 #include <vector>
 #include <typeindex>

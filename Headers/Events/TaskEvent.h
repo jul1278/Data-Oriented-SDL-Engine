@@ -3,6 +3,10 @@
 
 #include "ITaskEvent.h"
 
+#include <list>
+
+using namespace std;
+
 template<typename T>
 class TaskEvent : public ITaskEvent
 {

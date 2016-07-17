@@ -5,17 +5,13 @@
 #ifndef STAR_GRAPHICS_RESOURCE_H
 #define STAR_GRAPHICS_RESOURCE_H
 
-#include "Graphics\CircleOutlineGraphicsResource.h"
-#include "Graphics\CircleFIllGraphicsResource.h"
+#include "Graphics/CircleOutlineGraphicsResource.h"
+#include "Graphics/CircleFIllGraphicsResource.h"
 
 // CircleGraphicsResource
 class StarGraphicsResource : public IGraphicsResource
 {
 private:
-	
-
-	CircleOutlineGraphicsResource* starCircle;
-	CircleFillGraphicsResource* starFill; 
 
 	uint8_t a; 
 	uint8_t r;
@@ -35,28 +31,15 @@ public:
 		this->b = color.B(); 
 
 		this->radiusInner = static_cast<uint16_t>(floor(radiusInner));
-		this->radiusOuter = static_cast<uint16_t>(floor(radiusOuter)); 
-
-		starCircle = new CircleOutlineGraphicsResource(0.5f*radiusOuter, 1.0f, color); 
-		starFill = new CircleFillGraphicsResource(0.5f*radiusInner, color); 
+		this->radiusOuter = static_cast<uint16_t>(floor(radiusOuter));
 	};
 
 	~StarGraphicsResource()
 	{
-		delete this->starCircle; 
-		delete this->starFill; 
 	}
 
 	void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent) override final
 	{
-		if (this->starCircle != nullptr) {
-			//this->starCircle->Render(sdlRenderer, transformComponent); 
-		}
-
-		if (this->starFill != nullptr) {
-			//this->starFill->Render(sdlRenderer, transformComponent); 
-		}
-
 		int vx1, vx2, vy1, vy2;
 		int hx1, hx2, hy1, hy2; 
 

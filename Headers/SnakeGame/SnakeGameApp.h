@@ -1,7 +1,7 @@
 #ifndef SNAKE_GAME_APP_H
 #define SNAKE_GAME_APP_H
 
-#include "Game\IGameApp.h"
+#include "Game/IGameApp.h"
 
 class SnakeGameApp : public IGameApp
 {

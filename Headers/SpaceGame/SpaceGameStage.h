@@ -6,6 +6,7 @@
 #include "SpaceGame/PlayerSpaceshipAction.h"
 #include "SpaceGame/AsteroidAction.h"
 #include "Actions/IAction.h"
+#include "Events/QuitApplicationEventArgs.h"
 
 class SpaceGameStage : public IStage
 {
@@ -25,7 +26,7 @@ public:
 		this->stageHeight = graphics->WindowHeight(); 
 		this->stageWidth = graphics->WindowWidth(); 
 
-		this->sdlEventCollector = new SDLEventCollector(this->stageWidth, this->stageHeight); 
+		this->sdlEventCollector = new SDLEventCollector(this->stageWidth, this->stageHeight);
 
 		// Actions
 		this->InsertAction(new AsteroidAction(this));
@@ -40,6 +41,8 @@ public:
 
 	void Update() override final
 	{
+		// Warning! don't call this here otherwise actions wont get events - they'll be lost here.
+		// Issue 58 addresses this.
 		//this->sdlEventCollector->Update();
 		this->GetPhysics()->ExecuteTasks(this->GetComponentCollectionRepository()); 
 
@@ -70,8 +73,6 @@ public:
 
 		graphics->Present();
 	}
-
-
 };
 
 #endif // SPACE_GAME_STAGE_H

@@ -1,10 +1,10 @@
 #ifndef SPACE_GAME_MENU_STAGE_H
 #define SPACE_GAME_MENU_STAGE_H
 
-#include "Game\IStage.h"
-#include "Game\IGameApp.h"
-#include "Events\SDLEventCollector.h"
-#include "Events\MouseMotionEventArgs.h"
+#include "Game/IStage.h"
+#include "Game/IGameApp.h"
+#include "Events/SDLEventCollector.h"
+#include "Events/MouseMotionEventArgs.h"
 
 class SpaceGameMenuStage : public IStage
 {

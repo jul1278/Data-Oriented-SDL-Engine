@@ -1,8 +1,8 @@
 #ifndef SNAKE_GAME_MENU_STAGE_H
 #define SNAKE_GAME_MENU_STAGE_H
 
-#include "Game\IStage.h"
-#include "Actions\IAction.h"
+#include "Game/IStage.h"
+#include "Actions/IAction.h"
 
 class QuitApplicationEventArgs;
 class MouseMotionEventArgs;

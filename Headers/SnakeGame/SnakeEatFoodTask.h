@@ -1,9 +1,9 @@
 #ifndef SNAKE_EAT_FOOD_TASK_H
 #define SNAKE_EAT_FOOD_TASK_H
 
-#include "Physics\IPhysicsTask.h"
-#include "Components\TransformComponent.h"
-#include "Events\IntersectionEventArgs.h"
+#include "Physics/IPhysicsTask.h"
+#include "Components/TransformComponent.h"
+#include "Events/IntersectionEventArgs.h"
 
 class SnakeEatFoodTask : public IPhysicsTask
 {

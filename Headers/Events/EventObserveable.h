@@ -3,6 +3,7 @@
 
 #include "Events/TaskEvent.h"
 
+#include <string>
 #include <map>
 #include <typeindex>
 

@@ -1,18 +1,20 @@
-#include "Events\SDLEventCollector.h"
-#include "Events\ButtonEventArgs.h"
-#include "Events\ITaskEvent.h"
-#include "Events\MouseButtonEventArgs.h"
-#include "Events\EventObserveable.h"
-#include "Events\QuitApplicationEventArgs.h"
-#include "Events\MouseMotionEventArgs.h"
-#include "Components\SimpleButtonComponent.h"
+#include "Events/SDLEventCollector.h"
+#include "Events/ButtonEventArgs.h"
+#include "Events/ITaskEvent.h"
+#include "Events/MouseButtonEventArgs.h"
+#include "Events/EventObserveable.h"
+#include "Events/QuitApplicationEventArgs.h"
+#include "Events/MouseMotionEventArgs.h"
+#include "Components/SimpleButtonComponent.h"
+#include "Components/TransformComponent.h"
+
 #include "SDL.h"
 
 #include <string>
 #include <list>
 #include <tuple>
 #include <thread>
-#include <Components/TransformComponent.h>
+
 
 //-----------------------------------------------------------------------------------------------
 // Name: Update
@@ -63,7 +65,13 @@ void SDLEventCollector::InitGameControllers()
 //-----------------------------------------------------------------------------------------------
 void SDLEventCollector::RegisterMouseOverHandler(Vector2D topLeft, Vector2D size, function<void(const MouseMotionEventArgs&)> handler)
 {
-	SDL_Rect rect = { topLeft.x, topLeft.y, size.x, size.y };
+	SDL_Rect rect = 
+			{ 
+				static_cast<int>(topLeft.x), 
+				static_cast<int>(topLeft.y), 
+				static_cast<int>(size.x), 
+				static_cast<int>(size.y) 
+			};
 
 	auto name = to_string(this->mouseOverNames.size());
 	
@@ -90,7 +98,13 @@ void SDLEventCollector::RegisterMouseOverHandler(const SimpleButtonComponent& si
 //-----------------------------------------------------------------------------------------------
 void SDLEventCollector::RegisterMouseClickHandler(Vector2D topLeft, Vector2D size, function<void(const MouseButtonEventArgs&)> handler)
 {
-	SDL_Rect rect = { topLeft.x, topLeft.y, size.x, size.y };
+	SDL_Rect rect = 
+		{ 
+			static_cast<int>(topLeft.x), 
+			static_cast<int>(topLeft.y), 
+			static_cast<int>(size.x), 
+			static_cast<int>(size.y) 
+		};
 
 	auto name = to_string(this->mouseClickNames.size());
 	this->mouseClickNames.push_back(tuple<SDL_Rect, string>(rect, name));

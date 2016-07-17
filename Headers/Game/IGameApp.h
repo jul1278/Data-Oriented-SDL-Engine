@@ -39,8 +39,7 @@ public:
 
 	void PushStage(IStage* stage)
 	{
-		if (stage)
-		{
+		if (stage) {
 			this->stageQueue.push(stage);
 		}
 	}

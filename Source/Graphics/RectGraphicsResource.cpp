@@ -1,6 +1,6 @@
 #include "Graphics/RectGraphicsResource.h"
 #include "Components/TransformComponent.h"
-#include <SDL.h>
+#include "SDL.h"
 
 //------------------------------------------------------------------------------------------
 // Name: constructor
@@ -22,7 +22,7 @@ RectGraphicsResource::RectGraphicsResource(float width, float height, const Colo
 	}
 
 	SDL_FillRect(surface, nullptr, SDL_MapRGBA(surface->format, this->r, this->g, this->b, this->a));
-};
+}
 //------------------------------------------------------------------------------------------
 // Name: destructor
 // Desc: 
@@ -47,8 +47,8 @@ void RectGraphicsResource::Render(SDL_Renderer* sdlRenderer, TransformComponent*
 
 	auto  x = static_cast<uint16_t>(transformComponent->position.x - 0.5f*dx);
 	auto  y = static_cast<uint16_t>(transformComponent->position.y - 0.5f*dy);
-	auto  w = this->width*scaleX;
-	auto  h = this->height*scaleY;
+	auto  w = static_cast<uint16_t>(this->width*scaleX);
+	auto  h = static_cast<uint16_t>(this->height*scaleY);
 
 	SDL_Rect rect = { x, y, w, h };
 

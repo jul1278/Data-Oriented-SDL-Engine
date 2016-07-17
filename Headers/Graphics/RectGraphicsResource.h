@@ -6,6 +6,7 @@
 #define RECT_GRAPHICS_RESOURCE_H
 
 #include "Graphics/IGraphicsResource.h"
+#include "SDL.h"
 
 struct SDL_Surface; 
 struct SDL_Texture; 

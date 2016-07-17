@@ -43,6 +43,8 @@ private:
 
 public:
 
+	SDLEventCollector() : SDLEventCollector(0, 0) {}
+
 	SDLEventCollector(unsigned int width, unsigned int height)
 	{
 		this->width = width;

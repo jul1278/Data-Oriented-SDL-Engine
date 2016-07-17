@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <Components/ComponentCollectionRepository.h>
 #include <Components/GraphicsComponent.h>
 #include <Components/TransformComponent.h>

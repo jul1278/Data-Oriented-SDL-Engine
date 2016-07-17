@@ -6,7 +6,9 @@
 
 #include "Graphics/GraphicsUtility.h"
 #include <vector>
+#include <list>
 #include <unordered_map>
+#include <string>
 
 const int NO_RENDER = 0; 
 

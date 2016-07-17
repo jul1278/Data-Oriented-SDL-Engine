@@ -36,6 +36,7 @@ PlayerSpaceshipAction::PlayerSpaceshipAction(IStage* stage) : IAction(stage)
 	auto asteroidCollisionHandler = [this](const CollisionEventArgs& collisionEventArgs) {this->OnPlayerAsteroidCollision(collisionEventArgs); };
 
 	this->sdlEventCollector->RegisterListener<ButtonEventArgs>(bind(buttonEventHandler, placeholders::_1));
+	this->sdlEventCollector->RegisterListener<QuitApplicationEventArgs>(bind(&PlayerSpaceshipAction::OnQuitApplication, this, placeholders::_1));
 
 	auto task = new CollisionPhysicsTask("PlayerSpaceShip", "EnemyAsteroids");
 	task->RegisterListener<CollisionEventArgs>(bind(asteroidCollisionHandler, placeholders::_1));
