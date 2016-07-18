@@ -42,14 +42,12 @@ In order to build the test project, you'll need to setup the google test framewo
 http://www.bogotobogo.com/cplusplus/google_unit_test_gtest.php
 
 # Future Plans
-- bunch of stuff is going to be re-written. (check the wiki)
-- Use Google test instead of the visual studio test
-- CMake build system for osx and windows
 - *Maybe* move to proper OpenGL
+- Linux build
 
 # Contributing
+Linux build?
 
-ok sure
 
 
 
