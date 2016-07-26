@@ -1,7 +1,7 @@
 #ifndef BUTTON_EVENT_ARGS_H
 #define BUTTON_EVENT_ARGS_H
 
-#include "IEventArgs.h"
+#include "Events/IEventArgs.h"
 
 enum Key
 {

@@ -10,6 +10,8 @@
 #include <Components/ComponentCollectionRepository.h>
 #include "ITransform.h"
 
+#include <algorithm>
+
 class Camera
 {
 private:
@@ -21,39 +23,52 @@ private:
 
 	ITransform* transform;
 
+	unsigned int shakeCounter; 
+	unsigned int shakeMax; 
+
+	TransformComponent shakeTransform; 
+
 public:
 
+	//------------------------------------------------------------------------------------------------
+	// Name: Constructor
+	// Desc:
+	//------------------------------------------------------------------------------------------------
 	Camera(Vector2D size, Vector2D position, ComponentCollectionRepository* componentCollectionRepository, Graphics* graphics)
 	{
 		this->componentCollectionRepository = componentCollectionRepository; 
-		this->graphics = graphics; 
+		this->graphics = graphics;
+        this->transform = nullptr;
+		this->shakeCounter = 0; 
 	}
-	
-	// names of collections we want to render onto this camera
+	//------------------------------------------------------------------------------------------------
+	// Name: Constructor
+	// Desc:
+	//------------------------------------------------------------------------------------------------
 	void InsertCollection(string collection)
 	{
-		if (find(renderCollections.begin(), renderCollections.end(), collection) == renderCollections.end()) {
+		if (find(this->renderCollections.begin(), this->renderCollections.end(), collection) == this->renderCollections.end()) {
 			this->renderCollections.push_back(collection);
 		}
 	}
-
+	//------------------------------------------------------------------------------------------------
+	// Name: ContainsCollection
+	// Desc:
+	//------------------------------------------------------------------------------------------------
+	bool ContainsCollection(const string& collection)
+	{
+		return find(this->renderCollections.begin(), this->renderCollections.end(), collection) != this->renderCollections.end();
+	}
+	//------------------------------------------------------------------------------------------------
+	// Name: InsertTransformParent
+	// Desc:
+	//------------------------------------------------------------------------------------------------
 	void InsertTransformParent(ITransform* transform)
 	{
 		this->transform = transform; 
 	}
 
-	void Render()
-	{
-		for (auto collection : this->renderCollections) {
-			
-			auto graphicComponents = this->componentCollectionRepository->SelectFromCollection<GraphicsComponent>(collection);
-			auto transformComponents = this->componentCollectionRepository->SelectFromCollection<TransformComponent>(collection); 
-
-			auto p = (*transform)(); 
-
-			this->graphics->UpdateGraphics(graphicComponents, transformComponents, p);
-		}
-	}
+	void Render();
 };
 
 #endif // CAMERA_H

@@ -1,13 +1,13 @@
 #ifndef CAMERA_TEST_APP_H
 #define CAMERA_TEST_APP_H
 
-#include "Game\IGameApp.h"
-#include "Components\ComponentCollectionRepository.h"
+#include "Game/IGameApp.h"
+#include "Components/ComponentCollectionRepository.h"
 #include "Graphics/Camera.h"
 #include "Graphics/StarGraphicsResource.h"
-#include "CameraTestStage.h"
-#include <Graphics/MouseCameraTransform.h>
-#include <Graphics/GridGraphicsResource.h>
+#include "Graphics/CameraTestStage.h"
+#include "Graphics/MouseCameraTransform.h"
+#include "Graphics/GridGraphicsResource.h"
 
 class CameraTestApp : public IGameApp
 {

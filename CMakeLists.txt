@@ -3,6 +3,9 @@ project(SimpleComponentsProj)
 
 include(ExternalProject)
 
+
+
+# set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 
@@ -38,7 +41,9 @@ if (CMAKE_VERSION VERSION_LESS 2.8.11)
   include_directories("${gtest_SOURCE_DIR}/include"
                       "${gmock_SOURCE_DIR}/include")
 endif()
- 
+
+
+
 # Now simply link your own targets against gtest, gmock,
 # etc. as appropriate
 
@@ -140,6 +145,7 @@ set(SOURCE_FILES
         Source/SDLEventCollector.cpp
         Source/SnakeAction.cpp
         Source/SpaceGameApp.cpp
+        Source/Graphics/Camera.cpp
         Headers/Utility/ProcessUtility.h)
 
 set(TEST_SOURCE_FILES
@@ -153,6 +159,7 @@ set(TEST_SOURCE_FILES
         Source/SpaceGame/SpaceGameMenuStage.cpp
         Source/ComponentCollection.cpp
         Source/Graphics.cpp
+        Source/Graphics/Camera.cpp
         Source/Physics.cpp
         Source/SDLEventCollector.cpp
         Source/SnakeAction.cpp
@@ -166,8 +173,7 @@ set(TEST_SOURCE_FILES
         GoogleTestComponents/VectorTests.cpp
         GoogleTestComponents/PerformanceTests.cpp)
 
-include_directories(${GTEST_INCLUDE_DIR})
-include_directories("${PROJECT_SOURCE_DIR}/Headers")
+include_directories(${GTEST_INCLUDE_DIR} ${SimpleComponentsProj_SOURCE_DIR}/Headers)
 include_directories(${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR})
 
 add_executable(SimpleComponentsProj ${SOURCE_FILES})

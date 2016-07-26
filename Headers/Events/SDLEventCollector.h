@@ -2,6 +2,7 @@
 #define SDL_EVENT_COLLECTOR_H
 
 #include "Events/EventObserveable.h"
+#include "Utility/Vector.h"
 #include "SDL.h"
 
 struct TransformComponent;

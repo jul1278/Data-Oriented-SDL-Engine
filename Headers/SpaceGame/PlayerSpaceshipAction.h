@@ -11,10 +11,13 @@
 #include "Physics/CollisionPhysicsTask.h"
 #include "Graphics/RectGraphicsResource.h"
 #include "Events/QuitApplicationEventArgs.h"
+#include "Graphics/Camera.h"
 
 class PlayerSpaceshipAction : public IAction
 {
 private:
+
+	Camera* spaceShipCamera; 
 
 	unsigned int width; 
 	unsigned int height; 
@@ -28,7 +31,7 @@ private:
 	void FireWeapon(const ButtonEventArgs buttonEventArgs) const;
 	void OnButtonEvent(const ButtonEventArgs& buttonEventArgs) const;
 
-	void OnPlayerAsteroidCollision(const CollisionEventArgs& collisionEventArgs) const;
+	void OnPlayerAsteroidCollision(const CollisionEventArgs& collisionEventArgs);
 	void OnProjectileAsteroidCollision(const CollisionEventArgs& collisionEventArgs) const;
 
 	void OnQuitApplication(const QuitApplicationEventArgs& quitApplicationEventArgs)

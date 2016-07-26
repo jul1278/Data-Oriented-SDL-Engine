@@ -273,6 +273,20 @@ void Graphics::RenderCameras()
 	}
 }
 //------------------------------------------------------------------------------------
+// Name: FindCamera
+// Desc: Find the first camera which renders the specified collection, returns null if not found
+//------------------------------------------------------------------------------------
+Camera* Graphics::FindCamera(const string& collection)
+{
+	for(auto camera : this->cameras) {
+		if(camera->ContainsCollection(collection)) {
+			return camera; 
+		}
+	}
+
+	return nullptr; 
+}
+//------------------------------------------------------------------------------------
 // Name: UpdateGraphics
 // Desc:
 //------------------------------------------------------------------------------------

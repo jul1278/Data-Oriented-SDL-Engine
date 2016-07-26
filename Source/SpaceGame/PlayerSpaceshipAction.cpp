@@ -165,15 +165,13 @@ void PlayerSpaceshipAction::OnButtonEvent(const ButtonEventArgs& buttonEventArgs
 // Name: OnPlayerAsteroidCollision
 // Desc: 
 //--------------------------------------------------------------------------------------
-void PlayerSpaceshipAction::OnPlayerAsteroidCollision(const CollisionEventArgs& collisionEventArgs) const
+void PlayerSpaceshipAction::OnPlayerAsteroidCollision(const CollisionEventArgs& collisionEventArgs)
 {
-	
 }
 //--------------------------------------------------------------------------------------
 // Name: OnProjectileAsteroidCollision
 // Desc: 
 //--------------------------------------------------------------------------------------
 void PlayerSpaceshipAction::OnProjectileAsteroidCollision(const CollisionEventArgs& collisionEventArgs) const
-{
-	
+{	
 }

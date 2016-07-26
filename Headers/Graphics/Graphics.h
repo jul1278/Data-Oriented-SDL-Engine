@@ -62,6 +62,7 @@ public:
 	void PrintConsoleText(const string& message); 
 
 	void AddCamera(Camera* camera); 
+	Camera* FindCamera(const string& collection); 
 	void RenderCameras();
 
 	void UpdateGraphics(vector<GraphicsComponent>* graphicsComponents, vector<TransformComponent>* transformComponents);

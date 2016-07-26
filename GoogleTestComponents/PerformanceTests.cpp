@@ -62,8 +62,6 @@ void PerformanceTime(double testTime)
         // "read/write/search permissions for owner and group, and with read/search permissions for others."
 	    auto result = mkdir(filePath.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 
-        cout << filePath.c_str() << " " << result << endl;
-
         ofstream newFile(fileName);
 
         if (newFile.good()) {
@@ -108,7 +106,6 @@ void PerformanceTime(double testTime)
 TEST(PerformanceTest, InsertComponentsPerfTest)
 {
 	const auto numComponents = 5000;
-
 	auto start = chrono::steady_clock::now();
 
 	ComponentCollectionRepository componentCollectionRepository;
@@ -149,19 +146,17 @@ TEST(PerformanceTest, InsertMultipleTypeComponentsPerfTest)
 	PerformanceTime(t); 
 }
 //-----------------------------------------------------------------------------
-// Name: InsertMultipleTypeComponentsPerfTest
+// Name: DeleteComponentsPerfTest
 // Desc: 		
 //-----------------------------------------------------------------------------
 TEST(PerformanceTest, DeleteComponentsPerfTest)
 {
 	const auto numComponents = 5000;
-
 	auto start = chrono::steady_clock::now();
 
 	ComponentCollectionRepository componentCollectionRepository;
 
 	vector<int> ids;
-
 	componentCollectionRepository.NewCollection("TestCollection");
 
 	for (auto i = 0; i < numComponents; ++i) {

@@ -2,11 +2,13 @@
 #define SPACE_GAME_STAGE_H
 
 #include "Game/IStage.h"
+#include "Graphics/Camera.h"
 #include "SpaceGame/BackgroundStarsAction.h"
 #include "SpaceGame/PlayerSpaceshipAction.h"
 #include "SpaceGame/AsteroidAction.h"
 #include "Actions/IAction.h"
 #include "Events/QuitApplicationEventArgs.h"
+#include "Utility/Vector.h"
 
 class SpaceGameStage : public IStage
 {
@@ -14,7 +16,8 @@ class SpaceGameStage : public IStage
 	int stageWidth; 
 	int stageHeight; 
 
-	SDLEventCollector* sdlEventCollector; 
+	SDLEventCollector* sdlEventCollector;
+	Camera* camera;
 
 public:
 
@@ -27,11 +30,19 @@ public:
 		this->stageWidth = graphics->WindowWidth(); 
 
 		this->sdlEventCollector = new SDLEventCollector(this->stageWidth, this->stageHeight);
+		this->camera = new Camera(Vector2D(this->stageWidth, this->stageHeight), Vector2D(), this->GetComponentCollectionRepository(), graphics);
 
 		// Actions
 		this->InsertAction(new AsteroidAction(this));
 		this->InsertAction(new PlayerSpaceshipAction(this));
 		this->InsertAction(new BackgroundStarsAction(this));
+
+		this->camera->InsertCollection("ScrollingBackgroundStars");
+		this->camera->InsertCollection("PlayerSpaceShip");
+		this->camera->InsertCollection("EnemyAsteroids");
+		this->camera->InsertCollection("PlayerSpaceShipProjectiles");
+
+		graphics->AddCamera(this->camera);
 	}
 
 	~SpaceGameStage()
@@ -44,33 +55,17 @@ public:
 		// Warning! don't call this here otherwise actions wont get events - they'll be lost here.
 		// Issue 58 addresses this.
 		//this->sdlEventCollector->Update();
+
+		// TODO: Shouldn't really have to call this? IStage should call this.
 		this->GetPhysics()->ExecuteTasks(this->GetComponentCollectionRepository()); 
 
 		// call base class update first
 		IStage::Update(); 
 
 		auto graphics = this->GetGameApp()->GetGraphics();
-		auto componentCollectionRepository = this->GetComponentCollectionRepository();
-
-		auto starTransformComponents = componentCollectionRepository->SelectFromCollection<TransformComponent>("ScrollingBackgroundStars");
-		auto starGraphicsComponents = componentCollectionRepository->SelectFromCollection<GraphicsComponent>("ScrollingBackgroundStars");
-
-		auto playerTransformComponents = componentCollectionRepository->SelectFromCollection<TransformComponent>("PlayerSpaceShip");
-		auto playerGraphicsComponents = componentCollectionRepository->SelectFromCollection<GraphicsComponent>("PlayerSpaceShip");
-
-		auto asteroidTransformComponents = componentCollectionRepository->SelectFromCollection<TransformComponent>("EnemyAsteroids");
-		auto asteroidGraphicsComponents = componentCollectionRepository->SelectFromCollection<GraphicsComponent>("EnemyAsteroids");
-
-		auto projectileTransformComponents = componentCollectionRepository->SelectFromCollection<TransformComponent>("PlayerSpaceShipProjectiles");
-		auto projectileGraphicsComponents = componentCollectionRepository->SelectFromCollection<GraphicsComponent>("PlayerSpaceShipProjectiles"); 
 
 		graphics->Clear();
-
-		graphics->UpdateGraphics(starGraphicsComponents, starTransformComponents);
-		graphics->UpdateGraphics(asteroidGraphicsComponents, asteroidTransformComponents);
-		graphics->UpdateGraphics(playerGraphicsComponents, playerTransformComponents);
-		graphics->UpdateGraphics(projectileGraphicsComponents, projectileTransformComponents); 
-
+		graphics->RenderCameras();
 		graphics->Present();
 	}
 };
