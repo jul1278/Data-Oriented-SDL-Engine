@@ -73,6 +73,7 @@ set(SOURCE_FILES
         Headers/Components/TransformComponent.h
         Headers/Components/VectorContainer.h
         Headers/Components/VelocityComponent.h
+        Headers/Components/Component.h
         Headers/Events/ButtonEventArgs.h
         Headers/Events/CollisionEventArgs.h
         Headers/Events/EventObserveable.h
@@ -171,6 +172,7 @@ set(TEST_SOURCE_FILES
         GoogleTestComponents/PhysicsTest.cpp
         GoogleTestComponents/SDLEventTests.cpp
         GoogleTestComponents/VectorTests.cpp
+        GoogleTestComponents/SerializationTests.cpp
         GoogleTestComponents/PerformanceTests.cpp)
 
 include_directories(${GTEST_INCLUDE_DIR} ${SimpleComponentsProj_SOURCE_DIR}/Headers)
