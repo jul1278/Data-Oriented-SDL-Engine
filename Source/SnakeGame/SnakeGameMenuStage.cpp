@@ -1,6 +1,6 @@
 #include "Game/IGameApp.h"
 #include "Graphics/Graphics.h"
-#include "Components/ComponentCollectionRepository.h"
+#include "Components/Repository/ComponentCollectionRepository.h"
 #include "Events/SDLEventCollector.h"
 #include "SnakeGame/SnakeGameMenuStage.h"
 #include "Graphics/TextGraphicsResource.h"

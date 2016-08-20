@@ -1,6 +1,6 @@
 #include "SnakeGame/SnakeGameStage.h"
 #include "Graphics/Graphics.h"
-#include "Components/ComponentCollectionRepository.h"
+#include "Components/Repository/ComponentCollectionRepository.h"
 #include "SnakeGame/SnakeAction.h"
 #include "Components/GraphicsComponent.h"
 #include "SDL.h"

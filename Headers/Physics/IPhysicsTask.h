@@ -1,7 +1,7 @@
 #ifndef I_PHYSICS_TASK_H
 #define I_PHYSICS_TASK_H
 
-#include "Components/ComponentCollectionRepository.h"
+#include "Components/Repository/ComponentCollectionRepository.h"
 #include "Events/EventObserveable.h"
 
 class IPhysicsTask

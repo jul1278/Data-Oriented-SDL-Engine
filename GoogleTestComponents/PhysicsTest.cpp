@@ -1,5 +1,5 @@
 #include "Utility/Vector.h"
-#include "Components/ComponentCollectionRepository.h"
+#include "Components/Repository/ComponentCollectionRepository.h"
 #include "Physics/Physics.h"
 #include "Components/PhysicsComponent.h"
 #include "Components/TransformComponent.h"

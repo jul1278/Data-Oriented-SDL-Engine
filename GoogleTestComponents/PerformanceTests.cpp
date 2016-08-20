@@ -1,4 +1,4 @@
-#include "Components/ComponentCollectionRepository.h"
+#include "Components/Repository/ComponentCollectionRepository.h"
 #include "Components/GraphicsComponent.h"
 #include "Components/TransformComponent.h"
 #include "Components/PhysicsComponent.h"

@@ -1,7 +1,7 @@
 #ifndef VECTOR_CONTAINER_H
 #define VECTOR_CONTAINER_H
 
-#include "BaseComponent.h"
+#include "Components/BaseComponent.h"
 
 #include <vector>
 #include <type_traits>

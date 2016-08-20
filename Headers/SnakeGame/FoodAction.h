@@ -4,7 +4,7 @@
 
 #include "Game/IGameApp.h"
 #include "Graphics/Graphics.h"
-#include "Components/ComponentCollectionRepository.h"
+#include "Components/Repository/ComponentCollectionRepository.h"
 #include "Physics/Physics.h"
 #include "Actions/IAction.h"
 #include "Events/CollisionEventArgs.h"

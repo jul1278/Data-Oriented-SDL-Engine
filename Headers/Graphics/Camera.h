@@ -7,7 +7,7 @@
 #include "Events/MouseMotionEventArgs.h"
 #include <Components/TransformComponent.h>
 #include <Components/GraphicsComponent.h>
-#include <Components/ComponentCollectionRepository.h>
+#include "Components/Repository/ComponentCollectionRepository.h"
 #include "ITransform.h"
 
 #include <algorithm>

@@ -1,7 +1,7 @@
 #include "Game/IGameApp.h"
 #include "Graphics/Graphics.h"
 #include "Physics/Physics.h"
-#include "Components/ComponentCollectionRepository.h"
+#include "Components/Repository/ComponentCollectionRepository.h"
 #include "Events/SDLEventCollector.h"
 #include "Events/IntersectionEventArgs.h"
 #include "Physics/IntersectionTask.h"

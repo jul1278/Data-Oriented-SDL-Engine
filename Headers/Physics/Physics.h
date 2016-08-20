@@ -2,7 +2,7 @@
 #define PHYSICS_H
 
 #include "Events/CollisionEventArgs.h"
-#include "Components/ComponentCollectionRepository.h"
+#include "Components/Repository/ComponentCollectionRepository.h"
 
 class IPhysicsTask;
 

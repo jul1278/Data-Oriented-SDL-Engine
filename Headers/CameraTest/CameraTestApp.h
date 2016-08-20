@@ -2,7 +2,7 @@
 #define CAMERA_TEST_APP_H
 
 #include "Game/IGameApp.h"
-#include "Components/ComponentCollectionRepository.h"
+#include "Components/Repository/ComponentCollectionRepository.h"
 #include "Graphics/Camera.h"
 #include "Graphics/StarGraphicsResource.h"
 #include "Graphics/CameraTestStage.h"

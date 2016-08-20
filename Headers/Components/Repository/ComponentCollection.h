@@ -1,7 +1,7 @@
 #ifndef COMPONENT_COLLECTION_H
 #define COMPONENT_COLLECTION_H
 
-#include "Components/VectorContainer.h"
+#include "Components/Repository/VectorContainer.h"
 #include "Components/BaseComponent.h"
 
 #include <string>
@@ -22,10 +22,16 @@ class ComponentCollection
 	unordered_map<type_index, IVectorContainer*> componentCollection;
 	unordered_map<unsigned int, tuple<type_index*, IVectorContainer*>> idToComponent;
 
+	// new
+	// unordered_map<string, shared_ptr<IVectorContainer>> componentContainerMap; 
+	// unordered_map<unsigned int, tuple<string, shared_ptr<IVectorContainer>> idToComponentContainerMap; 
+
 public:
 
-	ComponentCollection() {}
-
+	ComponentCollection()
+	{
+	} 
+	
 	~ComponentCollection()
 	{
 		for (auto pair : this->componentCollection)
@@ -53,7 +59,7 @@ public:
 			this->componentCollection[type_index(typeid(T))] = vectorContainer;
 		}
 
-		VectorContainer<T>* container = static_cast<VectorContainer<T>*>(this->componentCollection[type_index(typeid(T))]);
+		VectorContainer<T>* container = dynamic_cast<VectorContainer<T>*>(this->componentCollection[type_index(typeid(T))]);
 
 		container->vec.push_back(T());
 		T* component = &container->vec.back();

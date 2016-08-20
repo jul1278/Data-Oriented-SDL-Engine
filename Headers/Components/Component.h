@@ -13,11 +13,19 @@ using namespace SerialUtility;
 
 namespace Component 
 {
+    enum ComponentType
+    {
+        None,
+        BaseComponent,
+        TransformComponent,
+        GraphicsComponent
+    };
+
     //-------------------------------------------------------------------------------------
     // Name: Serialize 
     // Desc: serialize BaseComponent
     //-------------------------------------------------------------------------------------
-    bool Serialize(const BaseComponent& component, NamedValue* nameValue) 
+    bool Serialize(const struct BaseComponent& component, NamedValue* nameValue) 
     {
         if (nameValue != nullptr) {
             nameValue->Add("id", to_string(component.id));
@@ -32,7 +40,7 @@ namespace Component
     // Name: Deserialize 
     // Desc: Deserialize BaseComponent
     //-------------------------------------------------------------------------------------
-    bool Deserialize(const NamedValue& nameValuePairs, BaseComponent* component)
+    bool Deserialize(const struct NamedValue& nameValuePairs, struct BaseComponent* component)
     {
         if (component != nullptr) {
             component->id = stoi(nameValuePairs.GetNamedValue("id"));
@@ -47,10 +55,10 @@ namespace Component
     // Name: Serialize 
     // Desc: Serialize TransformComponent
     //-------------------------------------------------------------------------------------
-    bool Serialize(const TransformComponent& transformComponent, NamedValue* namedValue)
+    bool Serialize(const struct TransformComponent& transformComponent, NamedValue* namedValue)
     {
         if (namedValue != nullptr) {
-            if (Serialize(dynamic_cast<const BaseComponent&>(transformComponent), namedValue)) {
+            if (Serialize(dynamic_cast<const struct BaseComponent&>(transformComponent), namedValue)) {
                 namedValue->Add("position", transformComponent.position);
                 namedValue->Add("orientation", transformComponent.orientation);
                 namedValue->Add("scale", transformComponent.scale);
@@ -65,10 +73,10 @@ namespace Component
     // Name: Deserialize 
     // Desc: Deserialize TransformComponent
     //-------------------------------------------------------------------------------------
-    bool Deserialize(const NamedValue& namedValue, TransformComponent* transformComponent)
+    bool Deserialize(const NamedValue& namedValue, struct TransformComponent* transformComponent)
     {
         if (transformComponent != nullptr) {
-            if (Deserialize(namedValue, dynamic_cast<BaseComponent*>(transformComponent))) {
+            if (Deserialize(namedValue, dynamic_cast<struct BaseComponent*>(transformComponent))) {
                 auto positionValue = namedValue.Value("position");
                 auto orientationValue = namedValue.Value("orientation"); 
                 auto scaleValue = namedValue.Value("scale");

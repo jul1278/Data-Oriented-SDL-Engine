@@ -1,6 +1,6 @@
 #include "Graphics/Color.h"
 #include "Graphics/Graphics.h"
-#include "Components/ComponentCollectionRepository.h"
+#include "Components/Repository/ComponentCollectionRepository.h"
 #include "Components/GraphicsComponent.h"
 #include "Graphics/RectGraphicsResource.h"
 #include "Graphics/BubbleGraphicsResources.h"

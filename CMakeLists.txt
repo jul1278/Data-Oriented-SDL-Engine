@@ -60,18 +60,19 @@ set(SOURCE_FILES
         Headers/Actions/SimpleButtonAction.h
         Headers/CameraTest/CameraTestApp.h
         Headers/CameraTest/CameraTestStage.h
+        Headers/Components/Repository/ComponentCollection.h
+        Headers/Components/Repository/ComponentCollectionRepository.h
+        Headers/Components/Repository/CComponentCollection.h
         Headers/Components/AISimpleGoalComponent.h
         Headers/Components/BaseComponent.h
         Headers/Components/CollisionComponent.h
-        Headers/Components/ComponentCollection.h
-        Headers/Components/ComponentCollectionRepository.h
         Headers/Components/GraphicsComponent.h
         Headers/Components/IntersectionComponent.h
         Headers/Components/PhysicsComponent.h
         Headers/Components/SimpleButtonComponent.h
         Headers/Components/SimpleStateComponent.h
         Headers/Components/TransformComponent.h
-        Headers/Components/VectorContainer.h
+        Headers/Components/Repository/VectorContainer.h
         Headers/Components/VelocityComponent.h
         Headers/Components/Component.h
         Headers/Events/ButtonEventArgs.h
@@ -139,7 +140,7 @@ set(SOURCE_FILES
         Source/SnakeGame/SnakeGameStage.cpp
         Source/SpaceGame/PlayerSpaceshipAction.cpp
         Source/SpaceGame/SpaceGameMenuStage.cpp
-        Source/ComponentCollection.cpp
+        Source/Components/ComponentCollection.cpp
         Source/Graphics.cpp
         Source/main.cpp
         Source/Physics.cpp
@@ -158,7 +159,9 @@ set(TEST_SOURCE_FILES
         Source/SnakeGame/SnakeGameStage.cpp
         Source/SpaceGame/PlayerSpaceshipAction.cpp
         Source/SpaceGame/SpaceGameMenuStage.cpp
-        Source/ComponentCollection.cpp
+        Source/Components/ComponentCollection.cpp
+        Source/Components/ComponentRepository.cpp
+        Source/Components/ComponentContainerFactory.cpp
         Source/Graphics.cpp
         Source/Graphics/Camera.cpp
         Source/Physics.cpp
@@ -166,6 +169,10 @@ set(TEST_SOURCE_FILES
         Source/SnakeAction.cpp
         Source/SpaceGameApp.cpp
         GoogleTestComponents/ComponentCollectionRepositoryTests.cpp
+        GoogleTestComponents/ComponentContainerTests.cpp
+        GoogleTestComponents/ComponentCollectionTests.cpp
+        GoogleTestComponents/ComponentCollectionIteratorTests.cpp
+        GoogleTestComponents/ComponentRepositoryTests.cpp
         GoogleTestComponents/EventTests.cpp
         GoogleTestComponents/GraphicsTests.cpp
         GoogleTestComponents/MathUtilTests.cpp

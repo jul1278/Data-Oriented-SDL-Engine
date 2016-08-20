@@ -5,7 +5,7 @@
 #ifndef SPACE_GAME_ENTITY_CONSTRUCTOR_H
 #define SPACE_GAME_ENTITY_CONSTRUCTOR_H
 
-#include "Components/ComponentCollectionRepository.h"
+#include "Components/Repository/ComponentCollectionRepository.h"
 #include "Utility/Vector.h"
 #include "Components/TransformComponent.h"
 #include "Components/GraphicsComponent.h"
