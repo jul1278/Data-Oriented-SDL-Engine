@@ -75,11 +75,15 @@ public:
     //-------------------------------------------------------------
     virtual void Remove(unsigned int id) override final 
     {
-        auto component = this->FindId(id); 
-        
+        auto component = this->FindId(id);         
+
         // swap 'n pop
         if (component != this->components->end()) {
             swap(*component, this->components->back());
+
+            auto back = this->components->back();
+            memset((void*)&back, 0, sizeof(T));
+
             this->components->pop_back(); 
         }
     }  

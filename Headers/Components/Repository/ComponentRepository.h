@@ -36,6 +36,9 @@ class ComponentRepository
 	// component type name to container 
 	unordered_map<string, shared_ptr<IComponentContainer>> componentContainer;
 
+	// id to Container
+	unordered_map<unsigned int, weak_ptr<IComponentContainer>> idMap; 
+
 	// collection name string -> ComponentRepository
 	ComponentContainerFactory componentContainerFactory; 
 
@@ -65,6 +68,37 @@ public:
 	string Name() { return this->collectionName; }
 	static unsigned int GenerateId() { return id++; }
 
+	//-----------------------------------------------------------------------------------
+	// Name: SelectId
+	// Desc: select component of id 
+	//-----------------------------------------------------------------------------------
+	template<typename T = BaseComponent, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
+	T* SelectId(unsigned int id)
+	{
+		BaseComponent* component = nullptr; 
+
+		if (this->idMap.find(id) != this->idMap.end()) {
+			if (auto container = this->idMap[id].lock()) {
+				component = container->SelectBase(id); 	
+			}
+
+		} else {
+
+			for(auto child : this->childRepository) {
+				auto repository = child.second; 
+
+				if (component = repository->SelectId(id)) {
+					break; 
+				}
+			}
+		}
+
+		if (component != nullptr) {
+			return static_cast<T*>(component);
+		}
+
+		return nullptr; 
+	}
 	//-----------------------------------------------------------------------------------
 	// Name: Select
 	// Desc: select all components of type T from collection collectionName
@@ -138,6 +172,9 @@ public:
 				component->id = this->GenerateId(); 
 			}  	
 			
+			// store the id
+			this->idMap.insert(make_pair(component->id, componentContainer));
+
 			return component;
 		
 		} else {
@@ -152,6 +189,25 @@ public:
 		}
 
 		return component;
+	}
+	//--------------------------------------------------------------------------------
+	// Name: Remove
+	// Desc:
+	//--------------------------------------------------------------------------------
+	void Remove(unsigned int id)
+	{
+		if (this->idMap.find(id) != this->idMap.end()) {
+			if(auto container = this->idMap[id].lock()) {
+				container->Remove(id); 
+			}
+
+		} else {
+
+			for(auto child : this->childRepository) {
+				auto repository = child.second; 
+				repository->Remove(id); 
+			}
+		}
 	}
 	//--------------------------------------------------------------------------------
 	// Name: NewCollection
