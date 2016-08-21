@@ -2,10 +2,10 @@
 // Created by Julian  on 17/11/15.
 //
 
-#include "SpaceGame/SpaceGameApp.h"
+#include "Demos/SpaceGame/SpaceGameApp.h"
 #include "Components/Repository/ComponentCollectionRepository.h"
-#include "SpaceGame/SpaceGameStage.h"
-#include "SpaceGame/SpaceGameMenuStage.h"
+#include "Demos/SpaceGame/SpaceGameStage.h"
+#include "Demos/SpaceGame/SpaceGameMenuStage.h"
 
 #include <stdlib.h>
 #include <memory>

@@ -12,7 +12,7 @@
 #include "Components/GraphicsComponent.h"
 #include "Graphics/RectGraphicsResource.h"
 #include "Physics/IntersectionTask.h"
-#include "SnakeGame/SnakeEatFoodTask.h"
+#include "Demos/SnakeGame/SnakeEatFoodTask.h"
 
 #include <math.h>
 

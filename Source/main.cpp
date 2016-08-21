@@ -1,4 +1,4 @@
-#include <SpaceGame/SpaceGameApp.h>
+#include "Demos/SpaceGame/SpaceGameApp.h"
 
 //------------------------------------------------------------------------------------
 // Name: main

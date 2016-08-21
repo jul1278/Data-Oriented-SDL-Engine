@@ -58,8 +58,8 @@ add_dependencies(${GTEST_LIBRARY} googletest)
 set(SOURCE_FILES
         Headers/Actions/IAction.h
         Headers/Actions/SimpleButtonAction.h
-        Headers/CameraTest/CameraTestApp.h
-        Headers/CameraTest/CameraTestStage.h
+        Headers/Demos/CameraTest/CameraTestApp.h
+        Headers/Demos/CameraTest/CameraTestStage.h
         Headers/Components/Repository/ComponentCollection.h
         Headers/Components/Repository/ComponentCollectionRepository.h
         Headers/Components/Repository/CComponentCollection.h
@@ -114,21 +114,21 @@ set(SOURCE_FILES
         Headers/Physics/IPhysicsTask.h
         Headers/Physics/Physics.h
         Headers/Physics/VelocityTask.h
-        Headers/SnakeGame/FoodAction.h
-        Headers/SnakeGame/SnakeAction.h
-        Headers/SnakeGame/SnakeEatFoodTask.h
-        Headers/SnakeGame/SnakeEatSelfTask.h
-        Headers/SnakeGame/SnakeGameApp.h
-        Headers/SnakeGame/SnakeGameMenuStage.h
-        Headers/SnakeGame/SnakeGameStage.h
-        Headers/SpaceGame/AsteroidAction.h
-        Headers/SpaceGame/BackgroundStarsAction.h
-        Headers/SpaceGame/PlayerSpaceshipAction.h
-        Headers/SpaceGame/SpaceGameAction.h
-        Headers/SpaceGame/SpaceGameApp.h
-        Headers/SpaceGame/SpaceGameEntityConstructor.h
-        Headers/SpaceGame/SpaceGameMenuStage.h
-        Headers/SpaceGame/SpaceGameStage.h
+        Headers/Demos/SnakeGame/FoodAction.h
+        Headers/Demos/SnakeGame/SnakeAction.h
+        Headers/Demos/SnakeGame/SnakeEatFoodTask.h
+        Headers/Demos/SnakeGame/SnakeEatSelfTask.h
+        Headers/Demos/SnakeGame/SnakeGameApp.h
+        Headers/Demos/SnakeGame/SnakeGameMenuStage.h
+        Headers/Demos/SnakeGame/SnakeGameStage.h
+        Headers/Demos/SpaceGame/AsteroidAction.h
+        Headers/Demos/SpaceGame/BackgroundStarsAction.h
+        Headers/Demos/SpaceGame/PlayerSpaceshipAction.h
+        Headers/Demos/SpaceGame/SpaceGameAction.h
+        Headers/Demos/SpaceGame/SpaceGameApp.h
+        Headers/Demos/SpaceGame/SpaceGameEntityConstructor.h
+        Headers/Demos/SpaceGame/SpaceGameMenuStage.h
+        Headers/Demos/SpaceGame/SpaceGameStage.h
         Headers/Utility/DebugUtility.h
         Headers/Utility/LogUtility.h
         Headers/Utility/MathUtility.h

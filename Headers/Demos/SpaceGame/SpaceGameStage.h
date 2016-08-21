@@ -3,9 +3,9 @@
 
 #include "Game/IStage.h"
 #include "Graphics/Camera.h"
-#include "SpaceGame/BackgroundStarsAction.h"
-#include "SpaceGame/PlayerSpaceshipAction.h"
-#include "SpaceGame/AsteroidAction.h"
+#include "Demos/SpaceGame/BackgroundStarsAction.h"
+#include "Demos/SpaceGame/PlayerSpaceshipAction.h"
+#include "Demos/SpaceGame/AsteroidAction.h"
 #include "Actions/IAction.h"
 #include "Events/QuitApplicationEventArgs.h"
 #include "Utility/Vector.h"

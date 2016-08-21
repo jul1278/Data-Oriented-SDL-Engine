@@ -1,7 +1,7 @@
-#include "SnakeGame/SnakeGameStage.h"
+#include "Demos/SnakeGame/SnakeGameStage.h"
 #include "Graphics/Graphics.h"
 #include "Components/Repository/ComponentCollectionRepository.h"
-#include "SnakeGame/SnakeAction.h"
+#include "Demos/SnakeGame/SnakeAction.h"
 #include "Components/GraphicsComponent.h"
 #include "SDL.h"
 

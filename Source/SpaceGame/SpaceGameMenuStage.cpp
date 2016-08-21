@@ -1,9 +1,9 @@
-#include "SpaceGame/SpaceGameMenuStage.h"
+#include "Demos/SpaceGame/SpaceGameMenuStage.h"
 #include "Components/GraphicsComponent.h"
 #include "Components/SimpleButtonComponent.h"
 #include "Graphics/Graphics.h"
 #include "Events/MouseButtonEventArgs.h"
-#include "SpaceGame/SpaceGameStage.h"
+#include "Demos/SpaceGame/SpaceGameStage.h"
 #include "Graphics/TextGraphicsResource.h"
 
 //--------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 #include "Graphics/Graphics.h"
-#include "SnakeGame/SnakeGameApp.h"
-#include "SnakeGame/SnakeGameStage.h"
-#include "SnakeGame/SnakeGameMenuStage.h"
+#include "Demos/SnakeGame/SnakeGameApp.h"
+#include "Demos/SnakeGame/SnakeGameStage.h"
+#include "Demos/SnakeGame/SnakeGameMenuStage.h"
 
 //------------------------------------------------------------------------------------
 // Name: SnakeGameApp

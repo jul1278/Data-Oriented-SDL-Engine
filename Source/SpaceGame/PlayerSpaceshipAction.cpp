@@ -1,4 +1,4 @@
-#include "SpaceGame/PlayerSpaceshipAction.h"
+#include "Demos/SpaceGame/PlayerSpaceshipAction.h"
 #include "Graphics/Color.h"
 #include <Physics/VelocityTask.h>
 

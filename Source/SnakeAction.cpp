@@ -11,10 +11,10 @@
 #include "Graphics/TextGraphicsResource.h"
 #include "Components/GraphicsComponent.h"
 #include "Components/TransformComponent.h"
-#include "SnakeGame/SnakeAction.h"
-#include "SnakeGame/SnakeEatFoodTask.h"
-#include "SnakeGame/SnakeEatSelfTask.h"
-#include "SnakeGame/SnakeGameStage.h"
+#include "Demos/SnakeGame/SnakeAction.h"
+#include "Demos/SnakeGame/SnakeEatFoodTask.h"
+#include "Demos/SnakeGame/SnakeEatSelfTask.h"
+#include "Demos/SnakeGame/SnakeGameStage.h"
 
 #include <string>
 #include <iostream>

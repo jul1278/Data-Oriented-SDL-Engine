@@ -2,7 +2,7 @@
 #include "Graphics/Graphics.h"
 #include "Components/Repository/ComponentCollectionRepository.h"
 #include "Events/SDLEventCollector.h"
-#include "SnakeGame/SnakeGameMenuStage.h"
+#include "Demos/SnakeGame/SnakeGameMenuStage.h"
 #include "Graphics/TextGraphicsResource.h"
 #include "Events/MouseButtonEventArgs.h"
 #include "Events/MouseMotionEventArgs.h"
@@ -10,7 +10,7 @@
 #include "Components/GraphicsComponent.h"
 #include "Components/SimpleButtonComponent.h"
 #include "Components/TransformComponent.h"
-#include "SnakeGame/SnakeGameStage.h"
+#include "Demos/SnakeGame/SnakeGameStage.h"
 
 //----------------------------------------------------------------------------------------
 // Name: SnakeGameMenuStage
