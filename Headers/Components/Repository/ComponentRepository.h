@@ -39,6 +39,9 @@ class ComponentRepository
 	// id to Container
 	unordered_map<unsigned int, weak_ptr<IComponentContainer>> idMap; 
 
+	// entity id to id
+	unordered_map<unsigned int, list<unsigned int>> entityIdToComponentId; 
+
 	// collection name string -> ComponentRepository
 	ComponentContainerFactory componentContainerFactory; 
 
@@ -66,7 +69,9 @@ public:
 	// Desc:
 	//-----------------------------------------------------------------------------------
 	string Name() { return this->collectionName; }
-	static unsigned int GenerateId() { return id++; }
+	
+	// implemented in ComponentRepository.cpp
+	static unsigned int GenerateId(); 
 
 	//-----------------------------------------------------------------------------------
 	// Name: SelectId
@@ -149,6 +154,35 @@ public:
 		return nullptr;
 	}
 	//--------------------------------------------------------------------------------
+	// Name: NewComponent
+	// Desc:
+	//--------------------------------------------------------------------------------
+	template<typename T = BaseComponent, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
+	T* NewComponent(const string& collectionName, unsigned int entityId)
+	{
+		T* component = nullptr;
+
+		if (this->Name() == collectionName) {
+
+			if(component = this->NewComponent<T>(collectionName)) {
+				component->entityId = entityId; 	
+				this->entityIdToComponentId[entityId].push_back(component->id);
+			}
+
+		} else {
+
+			for (auto child : this->childRepository) {
+				auto repository = child.second; 
+				
+				if(component = repository->NewComponent<T>(collectionName, entityId)) {
+					break;
+				}
+			}
+		}
+
+		return component; 
+	}
+	//--------------------------------------------------------------------------------
 	// Name: NewBaseComponent
 	// Desc:
 	//--------------------------------------------------------------------------------
@@ -166,6 +200,8 @@ public:
 			}
 			
 			auto componentContainer = this->componentContainer[componentType]; 
+			assert(componentContainer != nullptr); 
+
 			component = componentContainer->AddBase();
 			
 			if (component != nullptr) {
@@ -183,7 +219,8 @@ public:
 				
 				auto repository = child.second;
 				if (component = repository->NewComponent(componentType, collectionName)) {
-					component->id = this->GenerateId(); 
+					//component->id = this->GenerateId(); 
+					break; 
 				}
 			}
 		}
@@ -194,20 +231,57 @@ public:
 	// Name: Remove
 	// Desc:
 	//--------------------------------------------------------------------------------
-	void Remove(unsigned int id)
+	bool Remove(unsigned int id)
 	{
 		if (this->idMap.find(id) != this->idMap.end()) {
 			if(auto container = this->idMap[id].lock()) {
+			
 				container->Remove(id); 
+				this->idMap.erase(id);
+				return true; 
 			}
 
 		} else {
 
 			for(auto child : this->childRepository) {
 				auto repository = child.second; 
-				repository->Remove(id); 
+				
+				if(repository->Remove(id)) {
+					return true; 
+				} 
 			}
 		}
+
+		return false; 
+	}
+	//--------------------------------------------------------------------------------
+	// Name: RemoveEntity
+	// Desc:
+	//--------------------------------------------------------------------------------
+	bool RemoveEntity(unsigned int entityId)
+	{
+		if (this->entityIdToComponentId.find(entityId) != this->entityIdToComponentId.end()) {
+
+			auto ids = this->entityIdToComponentId[entityId]; 
+
+			for(auto id : ids) {
+				this->Remove(id); 
+			}
+
+			return true;
+
+		} else {
+
+			for (auto child : this->childRepository) {
+				auto repository = child.second; 
+
+				if (repository->RemoveEntity(entityId) ) {
+					return true; 
+				}
+			}
+		}
+
+		return false; 
 	}
 	//--------------------------------------------------------------------------------
 	// Name: NewCollection

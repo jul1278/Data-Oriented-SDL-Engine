@@ -6,18 +6,18 @@
 
 class VelocityTask : public IPhysicsTask
 {
-	void Task(ComponentCollectionRepository* componentCollectionRepository, 
+	void Task(ComponentRepository* componentRepository, 
 		const string& collection1, const string& collection2, EventObservable* eventObservable) override final
 	{
-		auto physicsComponents = componentCollectionRepository->SelectFromCollection<PhysicsComponent>(collection1); 
+		auto physicsComponents = componentRepository->Select<PhysicsComponent>(collection1); 
 		
-		if (physicsComponents == nullptr || physicsComponents->size() == 0) {
+		if (physicsComponents.Size() == 0) {
 			return; 
 		}
 
-		for (auto& component : *physicsComponents) {
+		for (auto& component : physicsComponents) {
 			
-			auto transformComponent = componentCollectionRepository->Select<TransformComponent>(component.transformComponentId); 
+			auto transformComponent = componentRepository->SelectId<TransformComponent>(component.transformComponentId); 
 
 			// TODO: this should have a timestep and stuff
 			component.velocity += component.acceleration; 

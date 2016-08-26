@@ -10,8 +10,8 @@ class CameraTestStage : public IStage
 
 public:
 
-	CameraTestStage(IGameApp* gameApp, ComponentCollectionRepository* componentCollectionRepository, Physics* physics, SDLEventCollector* sdlEventCollector)
-		: IStage(gameApp, componentCollectionRepository, physics)
+	CameraTestStage(IGameApp* gameApp, componentRepository* componentRepository, Physics* physics, SDLEventCollector* sdlEventCollector)
+		: IStage(gameApp, componentRepository, physics)
 	{
 		this->gameApp = gameApp; 
 		this->sdlEventCollector = sdlEventCollector; 

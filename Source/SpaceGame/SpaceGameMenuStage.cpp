@@ -1,3 +1,4 @@
+#include "Components/Repository/ComponentRepository.h"
 #include "Demos/SpaceGame/SpaceGameMenuStage.h"
 #include "Components/GraphicsComponent.h"
 #include "Components/SimpleButtonComponent.h"
@@ -11,10 +12,10 @@
 // Desc: 
 //--------------------------------------------------------------------------
 SpaceGameMenuStage::SpaceGameMenuStage(IGameApp* gameApp) 
-	: IStage(gameApp, new ComponentCollectionRepository, new Physics(gameApp->GetGraphics()->WindowWidth(), gameApp->GetGraphics()->WindowHeight()))
+	: IStage(gameApp, new ComponentRepository("SpaceGameMenuStage"), new Physics(gameApp->GetGraphics()->WindowWidth(), gameApp->GetGraphics()->WindowHeight()))
 {
 	auto graphics = gameApp->GetGraphics();
-	auto componentCollectionRepository = this->GetComponentCollectionRepository(); 
+	auto componentRepository = this->GetComponentRepository(); 
 	
 	this->stageHeight = gameApp->GetGraphics()->WindowHeight();
 	this->stageWidth = gameApp->GetGraphics()->WindowWidth();
@@ -25,11 +26,11 @@ SpaceGameMenuStage::SpaceGameMenuStage(IGameApp* gameApp)
 	auto buttonGraphicsComponent = new TextGraphicsResource("Start Game", 25, Color(Color::White));
 	auto newGameTextGraphicResId = graphics->AddGraphicsResource(buttonGraphicsComponent);
 
-	componentCollectionRepository->NewCollection("MainMenu");
+	componentRepository->NewCollection("MainMenu");
 
-	auto newGameTextTransform = componentCollectionRepository->NewComponent<TransformComponent>("MainMenu");
-	auto newGameTextGraphicComponent = componentCollectionRepository->NewComponent<GraphicsComponent>("MainMenu");
-	auto newGameButtonComponent = componentCollectionRepository->NewComponent<SimpleButtonComponent>("MainMenu");
+	auto newGameTextTransform = componentRepository->NewComponent<TransformComponent>("MainMenu");
+	auto newGameTextGraphicComponent = componentRepository->NewComponent<GraphicsComponent>("MainMenu");
+	auto newGameButtonComponent = componentRepository->NewComponent<SimpleButtonComponent>("MainMenu");
 
 	newGameTextTransform->position = Vector2D(this->stageWidth / 2, this->stageHeight / 2);
 	newGameTextTransform->scale = Vector2D(1.0f, 1.0f);
@@ -50,10 +51,10 @@ SpaceGameMenuStage::SpaceGameMenuStage(IGameApp* gameApp)
 void SpaceGameMenuStage::Update()
 {
 	auto graphics = this->GetGameApp()->GetGraphics();
-	auto componentCollectionRepository = this->GetComponentCollectionRepository();
+	auto componentRepository = this->GetComponentRepository();
 
-	auto transformComponents = componentCollectionRepository->SelectFromCollection<TransformComponent>("MainMenu");
-	auto graphicsComponents = componentCollectionRepository->SelectFromCollection<GraphicsComponent>("MainMenu");
+	auto transformComponents = componentRepository->Select<TransformComponent>("MainMenu");
+	auto graphicsComponents = componentRepository->Select<GraphicsComponent>("MainMenu");
 
 	this->sdlEventCollector->Update();
 
@@ -67,15 +68,15 @@ void SpaceGameMenuStage::Update()
 //--------------------------------------------------------------------------
 void SpaceGameMenuStage::OnMenuStartGameMouseOver(const MouseMotionEventArgs& mouseMotionEventArgs) const
 {
-	auto componentCollectionRepository = this->GetComponentCollectionRepository();
-	auto startGameButtonComponents = componentCollectionRepository->SelectFromCollection<SimpleButtonComponent>("MainMenu");
+	auto componentRepository = this->GetComponentRepository();
+	auto startGameButtonComponents = componentRepository->Select<SimpleButtonComponent>("MainMenu");
 
-	if (startGameButtonComponents->empty()) {
+	if (startGameButtonComponents.empty()) {
 		return; 
 	}
 
-	auto& startGameButton = startGameButtonComponents->front(); 
-	auto buttonTransformComponent = componentCollectionRepository->Select<TransformComponent>(startGameButton.transformComponentId); 
+	auto& startGameButton = startGameButtonComponents.front(); 
+	auto buttonTransformComponent = componentRepository->SelectId<TransformComponent>(startGameButton.transformComponentId); 
 
 	if (mouseMotionEventArgs.MouseOver()) {
 		buttonTransformComponent->scale = Vector2D(1.2f, 1.2f);

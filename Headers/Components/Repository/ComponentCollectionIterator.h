@@ -1,7 +1,7 @@
 #ifndef COMPONENT_COLLECTION_ITERATOR_H
 #define COMPONENT_COLLECTION_ITERATOR_H
 
-#include "components/Repository/CComponentCollectionFwd.h"
+#include "Components/Repository/CComponentCollectionFwd.h"
 
 #include <cassert>      
 #include <cstddef>      
@@ -41,7 +41,8 @@ public:
 	ComponentCollectionIterator<T>& operator++() 
 	{
 		auto size = this->componentCollection->Size();
-		if(this->index >= (size - 1)) {
+		//if(this->index >= (size - 1)) {
+		if(size == 0 || this->index + 1 >= size) {
 			this->componentCollection = nullptr;  
 		}
 
@@ -55,9 +56,10 @@ public:
 	ComponentCollectionIterator<T> operator++ (int)
 	{
 		auto size = this->componentCollection->Size();
-		if(this->index >= (size - 1)) {
+
+		if(size == 0 || this->index + 1 >= size) {
 			ComponentCollectionIterator componentCollectionIterator(nullptr); 
-			return  componentCollectionIterator; 
+			return componentCollectionIterator; 
 		}
 
 		ComponentCollectionIterator componentCollectionIterator(this->componentCollection);

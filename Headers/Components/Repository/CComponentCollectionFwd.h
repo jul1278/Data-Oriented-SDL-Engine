@@ -8,7 +8,7 @@
 
 namespace Repository 
 {
-    template<typename T, typename U = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
+    template<typename T, typename U = typename std::enable_if<std::is_base_of<BaseComponent, T>::value>::type>
     class ComponentCollection;
 }
 

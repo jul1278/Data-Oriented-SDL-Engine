@@ -3,9 +3,7 @@ project(SimpleComponentsProj)
 
 include(ExternalProject)
 
-
-
-# set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 
@@ -141,6 +139,8 @@ set(SOURCE_FILES
         Source/SpaceGame/PlayerSpaceshipAction.cpp
         Source/SpaceGame/SpaceGameMenuStage.cpp
         Source/Components/ComponentCollection.cpp
+        Source/Components/ComponentRepository.cpp
+        Source/Components/ComponentContainerFactory.cpp
         Source/Graphics.cpp
         Source/main.cpp
         Source/Physics.cpp

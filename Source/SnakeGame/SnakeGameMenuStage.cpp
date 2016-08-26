@@ -1,6 +1,6 @@
 #include "Game/IGameApp.h"
 #include "Graphics/Graphics.h"
-#include "Components/Repository/ComponentCollectionRepository.h"
+#include "Components/Repository/ComponentRepository.h"
 #include "Events/SDLEventCollector.h"
 #include "Demos/SnakeGame/SnakeGameMenuStage.h"
 #include "Graphics/TextGraphicsResource.h"
@@ -17,7 +17,7 @@
 // Desc: 
 //----------------------------------------------------------------------------------------
 SnakeGameMenuStage::SnakeGameMenuStage(IGameApp* gameApp) 
-	: IStage(gameApp, new ComponentCollectionRepository, 
+	: IStage(gameApp, new ComponentRepository("SnakeGameMenuStage"), 
 	new Physics(gameApp->GetGraphics()->WindowWidth(), gameApp->GetGraphics()->WindowHeight()))
 {
 	this->gameApp = gameApp;
@@ -29,7 +29,7 @@ SnakeGameMenuStage::SnakeGameMenuStage(IGameApp* gameApp)
 //----------------------------------------------------------------------------------------
 void SnakeGameMenuStage::Setup()
 {
-	auto componentCollectionRepository = this->GetComponentCollectionRepository(); 
+	auto componentRepository = this->GetComponentRepository(); 
 
 	auto graphics = this->GetGameApp()->GetGraphics(); 
 	
@@ -42,11 +42,11 @@ void SnakeGameMenuStage::Setup()
 	auto buttonGraphicsComponent = new TextGraphicsResource("Start Game", 25, Color(Color::White));
 	auto newGameTextGraphicResId = graphics->AddGraphicsResource(buttonGraphicsComponent);
 
-	componentCollectionRepository->NewCollection("MainMenu");
+	componentRepository->NewCollection("MainMenu");
 
-	auto newGameTextTransform = componentCollectionRepository->NewComponent<TransformComponent>("MainMenu");
-	auto newGameTextGraphicComponent = componentCollectionRepository->NewComponent<GraphicsComponent>("MainMenu");
-	auto newGameButtonComponent = componentCollectionRepository->NewComponent<SimpleButtonComponent>("MainMenu");
+	auto newGameTextTransform = componentRepository->NewComponent<TransformComponent>("MainMenu");
+	auto newGameTextGraphicComponent = componentRepository->NewComponent<GraphicsComponent>("MainMenu");
+	auto newGameButtonComponent = componentRepository->NewComponent<SimpleButtonComponent>("MainMenu");
 
 	newGameTextTransform->position = Vector2D(this->stageWidth / 2, this->stageHeight / 2);
 	newGameTextTransform->scale = Vector2D(1.0f, 1.0f);
@@ -83,10 +83,10 @@ SnakeGameMenuStage::~SnakeGameMenuStage()
 void SnakeGameMenuStage::Update()
 {
 	auto graphics = gameApp->GetGraphics();
-	auto componentCollectionRepository = this->GetComponentCollectionRepository();
+	auto componentRepository = this->GetComponentRepository();
 
-	auto transformComponents = componentCollectionRepository->SelectFromCollection<TransformComponent>("MainMenu");
-	auto graphicsComponents = componentCollectionRepository->SelectFromCollection<GraphicsComponent>("MainMenu");
+	auto transformComponents = componentRepository->Select<TransformComponent>("MainMenu");
+	auto graphicsComponents = componentRepository->Select<GraphicsComponent>("MainMenu");
 
 	this->sdlEventCollector->Update();
 
@@ -111,20 +111,21 @@ void SnakeGameMenuStage::OnMenuStartGameClick(const MouseButtonEventArgs& mouseB
 //----------------------------------------------------------------------------------------
 void SnakeGameMenuStage::OnMenuStartGameMouseOver(const MouseMotionEventArgs& mouseMotionEventArgs) const
 {
-	auto startGameButtonComponents = this->GetComponentCollectionRepository()->SelectFromCollection<SimpleButtonComponent>("MainMenu");
+	auto startGameButtonComponents = this->GetComponentRepository()->Select<SimpleButtonComponent>("MainMenu");
 
-	if (startGameButtonComponents->empty()) {
+	if (startGameButtonComponents.empty()) {
 		return; 
 	}
 
-	auto& startGameButton = startGameButtonComponents->front(); 
+	auto& startGameButton = startGameButtonComponents.front(); 
 
-	auto startButtonTransform = this->GetComponentCollectionRepository()->Select<TransformComponent>(startGameButton.transformComponentId); 
+	auto startButtonTransform = this->GetComponentRepository()->SelectId<TransformComponent>(startGameButton.transformComponentId); 
 
 	if (mouseMotionEventArgs.MouseOver()) {
 		startButtonTransform->scale = Vector2D(1.2f, 1.2f);
-	}
-	else {
+	
+	} else {
+		
 		startButtonTransform->scale = Vector2D(1.0f, 1.0f);
 	}
 }

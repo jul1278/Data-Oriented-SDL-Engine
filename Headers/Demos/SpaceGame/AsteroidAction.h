@@ -30,17 +30,13 @@ public:
 		this->height = stage->GetGameApp()->GetGraphics()->WindowHeight();
 		
 		auto initNumAsteroids = 1; 
-
 		auto graphics = this->GetParentStage()->GetGameApp()->GetGraphics(); 
-		auto componentCollectionRepository = this->GetParentStage()->GetComponentCollectionRepository(); 
 
 		for (auto i = 0; i < 4*initNumAsteroids; i++) {
 			auto radius = 10.0f + 5.0f*MathUtility::RandomFloatUniformDist(); 
 			this->asteroidGraphicsResIds.push_back(graphics->AddGraphicsResource(new ProceduralAsteroidGraphicsResource(radius, 1.2f, 10)));
 		}
 
-		// SpaceGameEntityConstructor::ConstructEnemyAsteroids(componentCollectionRepository, asteroidGraphicsResIds, this->width, this->height, initNumAsteroids);
-	
 		auto projectileCollisionTask = new CollisionPhysicsTask("EnemyAsteroids", "PlayerSpaceShipProjectiles"); 
 		auto projectileCollisionTaskHandler = [=](const CollisionEventArgs& collisionEventArgs) {this->OnProjectileCollision(collisionEventArgs); };
 
@@ -67,34 +63,36 @@ public:
 	{
 		// NOTE: a more 'elegant way of doing this would be a 'spawnAsteroidOnTimerElapse' or something'
 		if (1 == MathUtility::RandomIntUniformDist() % 100) {
-			auto componentCollectionRepository = this->GetParentStage()->GetComponentCollectionRepository();
+
+			auto componentRepository = this->GetParentStage()->GetComponentRepository();
 			auto graphics = this->GetParentStage()->GetGameApp()->GetGraphics();
-			SpaceGameEntityConstructor::ConstructEnemyAsteroids(componentCollectionRepository, asteroidGraphicsResIds, this->width, this->height, 1); 
+			
+			SpaceGameEntityConstructor::ConstructEnemyAsteroids(componentRepository, asteroidGraphicsResIds, this->width, this->height, 1); 
 		}
 	}
 	//-------------------------------------------------------------------------------
 	// Name: SolveAsteroidPhysics
 	// Desc: do logic/physics for the enemy asteroids 
 	//-------------------------------------------------------------------------------
-	static void SolveAsteroidPhysics(ComponentCollectionRepository* componentCollectionRepository) 
+	static void SolveAsteroidPhysics(ComponentRepository* componentRepository) 
 	{
-		auto asteroidPhysicsComponents = componentCollectionRepository->SelectFromCollection<PhysicsComponent>("EnemyAsteroids");
-		auto playerPhysicsComponents = componentCollectionRepository->SelectFromCollection<PhysicsComponent>("PlayerSpaceShip");
+		auto asteroidPhysicsComponents = componentRepository->Select<PhysicsComponent>("EnemyAsteroids");
+		auto playerPhysicsComponents = componentRepository->Select<PhysicsComponent>("PlayerSpaceShip");
 
-		if (asteroidPhysicsComponents == nullptr || asteroidPhysicsComponents->size() == 0) {
+		if (asteroidPhysicsComponents.Size() == 0) {
 			return;
 		}
 
-		if (playerPhysicsComponents == nullptr || playerPhysicsComponents->size() == 0) {
+		if (playerPhysicsComponents.Size() == 0) {
 			return;
 		}
 
-		auto playerPhysicsComponent = playerPhysicsComponents->front();
+		auto playerPhysicsComponent = playerPhysicsComponents.front();
 
-		for (auto& physicsComponent : *asteroidPhysicsComponents) {
+		for (auto& physicsComponent : asteroidPhysicsComponents) {
 
-			auto playerTransformComponent = componentCollectionRepository->Select<TransformComponent>(playerPhysicsComponent.transformComponentId);
-			auto transformComponent = componentCollectionRepository->Select<TransformComponent>(physicsComponent.transformComponentId); 
+			auto playerTransformComponent = componentRepository->SelectId<TransformComponent>(playerPhysicsComponent.transformComponentId);
+			auto transformComponent = componentRepository->SelectId<TransformComponent>(physicsComponent.transformComponentId); 
 
 			auto distVector = playerTransformComponent->position - transformComponent->position;
 
@@ -118,10 +116,10 @@ public:
 	//-------------------------------------------------------------------------------
 	void OnProjectileCollision(const CollisionEventArgs& collisionEventArgs) const
 	{
-		auto componentCollectionRepository = this->GetParentStage()->GetComponentCollectionRepository(); 
+		auto componentRepository = this->GetParentStage()->GetComponentRepository(); 
 
-		componentCollectionRepository->RemoveEntity(collisionEventArgs.entityId1);
-		componentCollectionRepository->RemoveEntity(collisionEventArgs.entityId2);
+		componentRepository->RemoveEntity(collisionEventArgs.entityId1);
+		componentRepository->RemoveEntity(collisionEventArgs.entityId2);
 	}
 	//-------------------------------------------------------------------------------
 	// Name: OnAsteroidExitBounds
@@ -129,18 +127,18 @@ public:
 	//-------------------------------------------------------------------------------
 	void OnAsteroidExitBounds(const ExitBoundsEventArgs& exitBoundsEventArgs) const
 	{
-		auto componentCollectionRepository = this->GetParentStage()->GetComponentCollectionRepository();
+		auto componentRepository = this->GetParentStage()->GetComponentRepository();
 		auto height = this->GetParentStage()->GetGameApp()->GetGraphics()->WindowHeight();
 		auto width = this->GetParentStage()->GetGameApp()->GetGraphics()->WindowWidth(); 
 		
 		// if we left the bottom of the screen
 		if (exitBoundsEventArgs.exitPoint.y > height) {
-			componentCollectionRepository->RemoveEntity(exitBoundsEventArgs.entityId);
+			componentRepository->RemoveEntity(exitBoundsEventArgs.entityId);
 
 		} else if (exitBoundsEventArgs.exitPoint.y > 0.0f) {
 
-			auto transformComponent = componentCollectionRepository->Select<TransformComponent>(exitBoundsEventArgs.transformComponentId); 
-			auto physicsComponent = componentCollectionRepository->Select<PhysicsComponent>(exitBoundsEventArgs.physicsComponentId); 
+			auto transformComponent = componentRepository->SelectId<TransformComponent>(exitBoundsEventArgs.transformComponentId); 
+			auto physicsComponent = componentRepository->SelectId<PhysicsComponent>(exitBoundsEventArgs.physicsComponentId); 
 
 			physicsComponent->velocity.x = 0.0f; 
 			physicsComponent->velocity.y = 2.5f; 
@@ -160,10 +158,10 @@ public:
 			return; 
 		}
 
-		auto componentCollectionRepository = this->GetParentStage()->GetComponentCollectionRepository();
+		auto componentRepository = this->GetParentStage()->GetComponentRepository();
 
-		auto physicsComponent1 = componentCollectionRepository->Select<PhysicsComponent>(collisionEventArgs.physicsComponentId1); 
-		auto physicsComponent2 = componentCollectionRepository->Select<PhysicsComponent>(collisionEventArgs.physicsComponentId2); 
+		auto physicsComponent1 = componentRepository->SelectId<PhysicsComponent>(collisionEventArgs.physicsComponentId1); 
+		auto physicsComponent2 = componentRepository->SelectId<PhysicsComponent>(collisionEventArgs.physicsComponentId2); 
 
 		swap(physicsComponent1->velocity, physicsComponent2->velocity); 
 	}

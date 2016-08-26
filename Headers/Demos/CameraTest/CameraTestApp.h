@@ -2,7 +2,7 @@
 #define CAMERA_TEST_APP_H
 
 #include "Game/IGameApp.h"
-#include "Components/Repository/ComponentCollectionRepository.h"
+#include "Components/Repository/componentRepository.h"
 #include "Graphics/Camera.h"
 #include "Graphics/StarGraphicsResource.h"
 #include "Graphics/CameraTestStage.h"
@@ -18,7 +18,7 @@ class CameraTestApp : public IGameApp
 	SDLEventCollector* sdlEventCollector;
 
 	Graphics* graphics;
-	ComponentCollectionRepository* componentCollectionRepository; 
+	componentRepository* componentRepository; 
 	IStage* cameraTestStage;
 
 	MouseCameraTransform* mouseCameraTransform; 
@@ -30,22 +30,22 @@ public:
 	CameraTestApp()
 	{
 		this->sdlEventCollector = new SDLEventCollector(500, 500); 
-		this->componentCollectionRepository = new ComponentCollectionRepository();
+		this->componentRepository = new componentRepository();
 		this->graphics = new Graphics(500, 500, "CameraTest"); 
 		
 		this->mouseCameraTransform = new MouseCameraTransform(this->sdlEventCollector);
 
-		this->camera = new Camera(Vector2D(500.0f, 500.0f), Vector2D(0.0f, 0.0f), this->componentCollectionRepository, this->graphics); 
+		this->camera = new Camera(Vector2D(500.0f, 500.0f), Vector2D(0.0f, 0.0f), this->componentRepository, this->graphics); 
 
 		auto graphicResourceId = this->graphics->AddGraphicsResource(new StarGraphicsResource(10.0f, 5.0f, 0xff, 0xff, 0xff, 0xff)); 
 		auto gridResourceId = this->graphics->AddGraphicsResource(new GridGraphicsResource(20.0f, 50, 50, 0xff, 0xff, 0xff, 0xff)); 
 
-		this->componentCollectionRepository->NewCollection("CameraTestComponents");
-		auto transform = this->componentCollectionRepository->NewComponent<TransformComponent>("CameraTestComponents"); 
-		auto graphicComponent = this->componentCollectionRepository->NewComponent<GraphicsComponent>("CameraTestComponents"); 
+		this->componentRepository->NewCollection("CameraTestComponents");
+		auto transform = this->componentRepository->NewComponent<TransformComponent>("CameraTestComponents"); 
+		auto graphicComponent = this->componentRepository->NewComponent<GraphicsComponent>("CameraTestComponents"); 
 
-		auto transformGrid = this->componentCollectionRepository->NewComponent<TransformComponent>("CameraTestComponents");
-		auto graphicComponentGrid = this->componentCollectionRepository->NewComponent<GraphicsComponent>("CameraTestComponents");
+		auto transformGrid = this->componentRepository->NewComponent<TransformComponent>("CameraTestComponents");
+		auto graphicComponentGrid = this->componentRepository->NewComponent<GraphicsComponent>("CameraTestComponents");
 
 		transformGrid->position = Vector2D(0.0f, 0.0f); 
 		graphicComponentGrid->transformComponent = transformGrid;
@@ -61,12 +61,12 @@ public:
 
 		this->graphics->AddCamera(this->camera); 
 
-		this->PushStage(new CameraTestStage(this, this->componentCollectionRepository, nullptr, this->sdlEventCollector));
+		this->PushStage(new CameraTestStage(this, this->componentRepository, nullptr, this->sdlEventCollector));
 	}
 
 	~CameraTestApp()
 	{
-		delete this->componentCollectionRepository;
+		delete this->componentRepository;
 	}
 
 	Graphics* GetGraphics() override final

@@ -1,6 +1,6 @@
 #include "Demos/SnakeGame/SnakeGameStage.h"
 #include "Graphics/Graphics.h"
-#include "Components/Repository/ComponentCollectionRepository.h"
+#include "Components/Repository/ComponentRepository.h"
 #include "Demos/SnakeGame/SnakeAction.h"
 #include "Components/GraphicsComponent.h"
 #include "SDL.h"
@@ -9,7 +9,7 @@
 // Name: SnakeGameStage
 // Desc:
 //-----------------------------------------------------------------------
-SnakeGameStage::SnakeGameStage(IGameApp* gameApp) : IStage(gameApp, new ComponentCollectionRepository,
+SnakeGameStage::SnakeGameStage(IGameApp* gameApp) : IStage(gameApp, new ComponentRepository("SnakeGameStage"),
 	new Physics(gameApp->GetGraphics()->WindowWidth(), gameApp->GetGraphics()->WindowHeight()))
 {
 	this->snakeAction = new SnakeAction(this);
@@ -30,21 +30,21 @@ SnakeGameStage::~SnakeGameStage()
 //-----------------------------------------------------------------------
 void SnakeGameStage::Update()
 {
-	auto componentCollections = this->GetComponentCollectionRepository();
+	auto componentRepository = this->GetComponentRepository();
 	auto graphics = this->GetGameApp()->GetGraphics();
 	auto physics = this->GetPhysics();
 
-	physics->ExecuteTasks(componentCollections);
+	physics->ExecuteTasks(componentRepository);
 
 	this->foodAction->Update();
 	this->snakeAction->Update();
 
-	auto graphicsComponents = componentCollections->SelectFromCollection<GraphicsComponent>("Snake");
-	auto transformComponents = componentCollections->SelectFromCollection<TransformComponent>("Snake");
-	auto foodGraphicsComponents = componentCollections->SelectFromCollection<GraphicsComponent>("Food");
-	auto foodTransformComponents = componentCollections->SelectFromCollection<TransformComponent>("Food");
-	auto scoreTransformComponents = componentCollections->SelectFromCollection<TransformComponent>("Score");
-	auto scoreGraphicsComponents = componentCollections->SelectFromCollection<GraphicsComponent>("Score");
+	auto graphicsComponents = componentRepository->Select<GraphicsComponent>("Snake");
+	auto transformComponents = componentRepository->Select<TransformComponent>("Snake");
+	auto foodGraphicsComponents = componentRepository->Select<GraphicsComponent>("Food");
+	auto foodTransformComponents = componentRepository->Select<TransformComponent>("Food");
+	auto scoreTransformComponents = componentRepository->Select<TransformComponent>("Score");
+	auto scoreGraphicsComponents = componentRepository->Select<GraphicsComponent>("Score");
 
 	SDL_Delay(100);
 

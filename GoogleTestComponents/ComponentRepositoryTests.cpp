@@ -20,6 +20,7 @@ TEST(ComponentRepositoryTests, MultipleCollections)
 	EXPECT_TRUE(componentRepository.ContainsCollection("Test1"));
 	EXPECT_TRUE(componentRepository.ContainsCollection("Test2"));
 	EXPECT_TRUE(componentRepository.ContainsCollection("Test3"));
+	EXPECT_FALSE(componentRepository.ContainsCollection("Test4"));
 }
 //-------------------------------------------------------------------------
 // Name: AddComponent
@@ -87,8 +88,14 @@ TEST(ComponentRepositoryTests, RemoveId)
 
 		EXPECT_EQ(collection.Size(), 1); 
 
+		auto id = component->id; 
+
 		componentRepository.Remove(component->id); 
 		EXPECT_EQ(collection.Size(), 0); 
+		EXPECT_TRUE(collection.empty());
+
+		auto selectComponent = componentRepository.SelectId(id);
+		EXPECT_EQ(selectComponent, nullptr); 
 	}
 }
 //-------------------------------------------------------------------------
@@ -141,6 +148,70 @@ TEST(ComponentRepositoryTests, SelectId)
 	EXPECT_EQ(component1->id, component2->id);
 }
 //-------------------------------------------------------------------------
-// Name: RemoveId
+// Name: RemoveEntityId
+// Desc:
+//-------------------------------------------------------------------------
+TEST(ComponentRepositoryTests, RemoveEntityId)
+{
+	ComponentRepository componentRepository("Test1");
+
+	componentRepository.NewCollection("Test2");
+	componentRepository.NewCollection("Test3");
+
+	auto entityId = componentRepository.GenerateId(); 
+
+	auto physicsComponent = componentRepository.NewComponent<PhysicsComponent>("Test2", entityId); 
+	auto transformComponent = componentRepository.NewComponent<TransformComponent>("Test2", entityId);
+	auto graphicsComponent = componentRepository.NewComponent<GraphicsComponent>("Test2", entityId);
+
+	componentRepository.RemoveEntity(entityId); 
+
+	auto physicsComponents = componentRepository.Select<PhysicsComponent>(); 
+	auto transformComponents = componentRepository.Select<TransformComponent>();
+	auto graphicsComponents = componentRepository.Select<GraphicsComponent>();
+
+	for (auto physicsComponent : physicsComponents) {}
+	for (auto transformComponent : transformComponents) {}
+	for (auto graphicsComponent : graphicsComponents) {}
+
+	// TODO: 
+	EXPECT_EQ(physicsComponents.Size(), 0);
+	EXPECT_EQ(transformComponents.Size(), 0);
+	EXPECT_EQ(graphicsComponents.Size(), 0); 
+}
+//-------------------------------------------------------------------------
+// Name: RemoveEntityInsideLoop
+// Desc:
+//-------------------------------------------------------------------------
+TEST(ComponentRepositoryTests, RemoveEntityInsideLoop)
+{
+	ComponentRepository componentRepository("Test1");
+
+	auto entityId = componentRepository.GenerateId(); 
+
+	auto transformComponent = componentRepository.NewComponent<TransformComponent>("Test2", entityId);
+	auto graphicsComponent = componentRepository.NewComponent<GraphicsComponent>("Test2", entityId);
+
+	componentRepository.NewComponent<TransformComponent>();
+	componentRepository.NewComponent<GraphicsComponent>();
+	componentRepository.NewComponent<TransformComponent>();
+	componentRepository.NewComponent<GraphicsComponent>();
+
+	auto transformComponents = componentRepository.Select<TransformComponent>();
+	auto graphicsComponents = componentRepository.Select<GraphicsComponent>();
+
+	for (auto transformComponent : transformComponents) {
+		componentRepository.RemoveEntity(entityId); 	
+	}
+
+	for (auto transformComponent : transformComponents) {}
+	for (auto graphicsComponent : graphicsComponents) {}
+
+	// Should have removed 2 from each
+	EXPECT_EQ(graphicsComponents.Size(), 2); 
+	EXPECT_EQ(transformComponents.Size(), 2);
+}
+//-------------------------------------------------------------------------
+// Name: RemoveEntityId
 // Desc:
 //-------------------------------------------------------------------------

@@ -2,7 +2,7 @@
 #define PHYSICS_H
 
 #include "Events/CollisionEventArgs.h"
-#include "Components/Repository/ComponentCollectionRepository.h"
+#include "Components/Repository/ComponentRepository.h"
 
 class IPhysicsTask;
 
@@ -28,10 +28,10 @@ public:
 
 	void AddPhysicsTask(IPhysicsTask* physicsTask); 
 
-	void ExecuteTasks(ComponentCollectionRepository* componentCollectionRepository); 
-	void SolveAsteroidPhysics(ComponentCollectionRepository* componentCollectionRepository) const;
-	static void SolvePhysics(ComponentCollectionRepository* componentCollectionRepository, const string& collectionName);
-	static void SolveSimplePhysics(ComponentCollectionRepository* componentCollectionRepository, const string& collectionName);  
+	void ExecuteTasks(ComponentRepository* componentRepository); 
+	void SolveAsteroidPhysics(ComponentRepository* componentRepository) const;
+	static void SolvePhysics(ComponentRepository* componentRepository, const string& collectionName);
+	static void SolveSimplePhysics(ComponentRepository* componentRepository, const string& collectionName);  
 };
 
 #endif // PHYSICS_H

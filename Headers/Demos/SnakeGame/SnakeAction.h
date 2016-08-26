@@ -6,7 +6,7 @@
 
 class QuitApplicationEventArgs;
 class IntersectionEventArgs;
-class ComponentCollectionRepository;
+class componentRepository;
 class IGameApp; 
 class ButtonEventArgs;
 class TextGraphicsResource; 

@@ -5,6 +5,7 @@
 #include "Components/GraphicsComponent.h"
 #include "Components/PhysicsComponent.h"
 #include "Components/VelocityComponent.h"
+#include "Components/SimpleButtonComponent.h"
 
 
 //------------------------------------------------------------------------------
@@ -19,4 +20,5 @@ ComponentContainerFactory::ComponentContainerFactory()
     this->Register<GraphicsComponent>();
     this->Register<PhysicsComponent>();
     this->Register<VelocityComponent>(); 
+    this->Register<SimpleButtonComponent>(); 
 }

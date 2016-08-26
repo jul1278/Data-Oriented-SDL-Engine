@@ -4,7 +4,12 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
+#include "Components/BaseComponent.h"
+#include "Components/GraphicsComponent.h"
+#include "Components/TransformComponent.h"
 #include "Graphics/GraphicsUtility.h"
+#include "Components/Repository/CComponentCollectionFwd.h"
+
 #include <vector>
 #include <list>
 #include <unordered_map>
@@ -65,8 +70,11 @@ public:
 	Camera* FindCamera(const string& collection); 
 	void RenderCameras();
 
-	void UpdateGraphics(vector<GraphicsComponent>* graphicsComponents, vector<TransformComponent>* transformComponents);
-	void UpdateGraphics(vector<GraphicsComponent>* graphicsComponents, vector<TransformComponent>* transformComponents, TransformComponent* parent); 
+	void UpdateGraphics(Repository::ComponentCollection<GraphicsComponent>& graphicsComponents,
+	 Repository::ComponentCollection<TransformComponent>& transformComponents);
+	
+	void UpdateGraphics(Repository::ComponentCollection<GraphicsComponent>& graphicsComponents,
+	 Repository::ComponentCollection<TransformComponent>& transformComponents, TransformComponent* parent); 
 	
 	int WindowHeight() const;
 	int WindowWidth() const;

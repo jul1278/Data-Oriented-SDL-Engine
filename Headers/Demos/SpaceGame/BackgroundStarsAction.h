@@ -27,21 +27,21 @@ public:
 
 		auto starGraphicResId = graphics->AddGraphicsResource(new StarGraphicsResource(5.0f, 2.5f, Color(Color::DarkGray)));
 		
-		SpaceGameEntityConstructor::ConstructBackgroundStars(this->GetParentStage()->GetComponentCollectionRepository(), starGraphicResId, this->width, this->height, 20);
+		SpaceGameEntityConstructor::ConstructBackgroundStars(this->GetParentStage()->GetComponentRepository(), starGraphicResId, this->width, this->height, 20);
 	}
 
 	void Update() override final
 	{
-		auto componentCollectionRepository = this->GetParentStage()->GetComponentCollectionRepository(); 
+		auto componentRepository = this->GetParentStage()->GetComponentRepository(); 
 
-		auto starPhysicsComponents = componentCollectionRepository->SelectFromCollection<VelocityComponent>("ScrollingBackgroundStars");
-		auto starTransformComponents = componentCollectionRepository->SelectFromCollection<TransformComponent>("ScrollingBackgroundStars"); 
+		auto starPhysicsComponents = componentRepository->Select<VelocityComponent>("ScrollingBackgroundStars");
+		auto starTransformComponents = componentRepository->Select<TransformComponent>("ScrollingBackgroundStars"); 
 
 		// star background loop
-		for (auto physicsComponent : *starPhysicsComponents) {
+		for (auto physicsComponent : starPhysicsComponents) {
 
 			auto id = physicsComponent.transformComponentId; 
-			auto transformComponent = componentCollectionRepository->Select<TransformComponent>(id); 
+			auto transformComponent = componentRepository->SelectId<TransformComponent>(id); 
 
 			transformComponent->position.y += physicsComponent.velocity.y;
 

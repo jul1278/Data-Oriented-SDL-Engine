@@ -1,5 +1,5 @@
 #include "Utility/Vector.h"
-#include "Components/Repository/ComponentCollectionRepository.h"
+#include "Components/Repository/ComponentRepository.h"
 #include "Physics/Physics.h"
 #include "Components/PhysicsComponent.h"
 #include "Components/TransformComponent.h"
@@ -25,20 +25,18 @@ TEST(PhysicsTest, SolveSimplePhysicsTest)
 {
 	const string testCollectionName = "TestCollection";
 
-	ComponentCollectionRepository componentCollectionRepository; 
+	ComponentRepository componentRepository(testCollectionName); 
 	Physics physics(10.0f, 10.0f); 
-
-	componentCollectionRepository.NewCollection(testCollectionName); 
 			
-	auto simplePhysicsComponent = componentCollectionRepository.NewComponent<VelocityComponent>(testCollectionName);
-	auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>(testCollectionName); 
+	auto simplePhysicsComponent = componentRepository.NewComponent<VelocityComponent>(testCollectionName);
+	auto transformComponent = componentRepository.NewComponent<TransformComponent>(testCollectionName); 
 
 	simplePhysicsComponent->transformComponentId = transformComponent->id; 
 
 	transformComponent->position = Vector2D(1.0f, 1.0f); 
 	simplePhysicsComponent->velocity = Vector2D(1.0f, 1.0f); 
 
-	physics.SolveSimplePhysics(&componentCollectionRepository, testCollectionName); 
+	physics.SolveSimplePhysics(&componentRepository, testCollectionName); 
 
 	EXPECT_EQ(transformComponent->position.x, 2.0f); 
 	EXPECT_EQ(transformComponent->position.y, 2.0f); 
@@ -51,13 +49,13 @@ TEST(PhysicsTest, SolvePhysicsTest)
 {
 	const string testCollectionName = "TestCollection";
 
-	ComponentCollectionRepository componentCollectionRepository;
+	ComponentRepository componentRepository("PhysicsTest");
 	Physics physics(10.0f,10.0f);
 
-	componentCollectionRepository.NewCollection(testCollectionName);
+	componentRepository.NewCollection(testCollectionName);
 
-	auto physicsComponent = componentCollectionRepository.NewComponent<PhysicsComponent>(testCollectionName);
-	auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>(testCollectionName);
+	auto physicsComponent = componentRepository.NewComponent<PhysicsComponent>(testCollectionName);
+	auto transformComponent = componentRepository.NewComponent<TransformComponent>(testCollectionName);
 
 	physicsComponent->transformComponentId = transformComponent->id;
 
@@ -67,7 +65,7 @@ TEST(PhysicsTest, SolvePhysicsTest)
 	physicsComponent->velocity = Vector2D(1.0f, 1.0f);
 	physicsComponent->angularVelocity = 1.0f; 
 
-	physics.SolvePhysics(&componentCollectionRepository, testCollectionName);
+	physics.SolvePhysics(&componentRepository, testCollectionName);
 			
 	auto angle = transformComponent->Angle(); 
 			
@@ -86,16 +84,16 @@ TEST(PhysicsTest, PhysicsTaskCollisionTest)
 	auto collection1Name = string("Collection1");
 	auto collection2Name = string("Collection2");
 
-	auto componentCollectionRepository = ComponentCollectionRepository(); 
+	auto componentRepository = ComponentRepository("Test"); 
 
-	componentCollectionRepository.NewCollection(collection1Name);
-	componentCollectionRepository.NewCollection(collection2Name); 
+	componentRepository.NewCollection(collection1Name);
+	componentRepository.NewCollection(collection2Name); 
 
-	auto trans1 = componentCollectionRepository.NewComponent<TransformComponent>(collection1Name);
-	auto phys1 = componentCollectionRepository.NewComponent<PhysicsComponent>(collection1Name);
+	auto trans1 = componentRepository.NewComponent<TransformComponent>(collection1Name);
+	auto phys1 = componentRepository.NewComponent<PhysicsComponent>(collection1Name);
 
-	auto trans2 = componentCollectionRepository.NewComponent<TransformComponent>(collection2Name);
-	auto phys2 = componentCollectionRepository.NewComponent<PhysicsComponent>(collection2Name); 
+	auto trans2 = componentRepository.NewComponent<TransformComponent>(collection2Name);
+	auto phys2 = componentRepository.NewComponent<PhysicsComponent>(collection2Name); 
 
 	trans1->position = Vector2D(0.0f, 1.0f); 
 	phys1->radius = 2.0f; 
@@ -107,13 +105,19 @@ TEST(PhysicsTest, PhysicsTaskCollisionTest)
 
 	auto physics = Physics(10, 10); 
 
-	auto physicsTask = new CollisionPhysicsTask("Collection1", "Collection2"); 
+	auto transCollection1 = componentRepository.Select<TransformComponent>(collection2Name);
+	auto physCollection1 = componentRepository.Select<PhysicsComponent>(collection2Name);
 
+	EXPECT_EQ(transCollection1.Size(), 1);
+	EXPECT_EQ(physCollection1.Size(), 1); 
+
+	// NOTE: Physics will clean this up
+	auto physicsTask = new CollisionPhysicsTask(collection1Name, collection2Name); 
 	physics.AddPhysicsTask(physicsTask); 
 
 	physicsTask->RegisterListener<CollisionEventArgs>(bind(&OnCollision, placeholders::_1));
 
-	physics.ExecuteTasks(&componentCollectionRepository); 
+	physics.ExecuteTasks(&componentRepository); 
 
 	EXPECT_TRUE(onCollisionSuccess); 
 }
@@ -123,7 +127,7 @@ TEST(PhysicsTest, PhysicsTaskCollisionTest)
 //------------------------------------------------------------------------------------
 TEST(PhysicsTest, VelocityTaskTest)
 {
-	ComponentCollectionRepository components; 
+	ComponentRepository components("Test"); 
 	Physics physics = Physics(1000, 1000); 
 
 	components.NewCollection("Collection1");
@@ -162,12 +166,12 @@ TEST(PhysicsTest, VelocityTaskTest)
 
 	physics.ExecuteTasks(&components); 
 
-	auto transformComponents1 = components.SelectFromCollection<TransformComponent>("Collection1"); 
-	auto transformComponents2 = components.SelectFromCollection<TransformComponent>("Collection2"); 
+	auto transformComponents1 = components.Select<TransformComponent>("Collection1"); 
+	auto transformComponents2 = components.Select<TransformComponent>("Collection2"); 
 
 	for (auto i = 0; i < 100; i++) {
 
-		auto component = (*transformComponents1)[i];
+		auto component = transformComponents1[i];
 		auto expected = Vector2D((i*5.0f) + 1.0f + 1.5f, (i*5.0f) + 1.0f + 1.5f); 
 
 		//auto expectedAngle = Vector2D((i*5.0f), (i*5.0f)); 
@@ -180,7 +184,7 @@ TEST(PhysicsTest, VelocityTaskTest)
 
 	for (auto i = 0; i < 20; i++) {
 
-		auto component = (*transformComponents2)[i];
+		auto component = transformComponents2[i];
 		auto expected = Vector2D((i*5.0f) + 1.0f + 1.0f, (i*5.0f) + 1.0f + 1.0f);
 
 		EXPECT_EQ(component.position.x, expected.x);
@@ -199,16 +203,16 @@ TEST(PhysicsTest, PhysicsTaskNoCollisionTest)
 	auto collection1Name = string("Collection1");
 	auto collection2Name = string("Collection2");
 
-	auto componentCollectionRepository = ComponentCollectionRepository();
+	ComponentRepository componentRepository("Test");
 
-	componentCollectionRepository.NewCollection(collection1Name);
-	componentCollectionRepository.NewCollection(collection2Name);
+	componentRepository.NewCollection(collection1Name);
+	componentRepository.NewCollection(collection2Name);
 
-	auto trans1 = componentCollectionRepository.NewComponent<TransformComponent>(collection1Name);
-	auto phys1 = componentCollectionRepository.NewComponent<PhysicsComponent>(collection1Name);
+	auto trans1 = componentRepository.NewComponent<TransformComponent>(collection1Name);
+	auto phys1 = componentRepository.NewComponent<PhysicsComponent>(collection1Name);
 
-	auto trans2 = componentCollectionRepository.NewComponent<TransformComponent>(collection2Name);
-	auto phys2 = componentCollectionRepository.NewComponent<PhysicsComponent>(collection2Name);
+	auto trans2 = componentRepository.NewComponent<TransformComponent>(collection2Name);
+	auto phys2 = componentRepository.NewComponent<PhysicsComponent>(collection2Name);
 
 	trans1->position = Vector2D(0.0f, 0.0f);
 	phys1->radius = 0.1f;
@@ -226,7 +230,7 @@ TEST(PhysicsTest, PhysicsTaskNoCollisionTest)
 
 	physicsTask->RegisterListener<CollisionEventArgs>(bind(&OnCollision, placeholders::_1));
 
-	physics.ExecuteTasks(&componentCollectionRepository);
+	physics.ExecuteTasks(&componentRepository);
 
 	EXPECT_FALSE(onCollisionSuccess);
 }

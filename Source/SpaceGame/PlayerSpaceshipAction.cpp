@@ -1,6 +1,6 @@
 #include "Demos/SpaceGame/PlayerSpaceshipAction.h"
 #include "Graphics/Color.h"
-#include <Physics/VelocityTask.h>
+#include "Physics/VelocityTask.h"
 
 //-------------------------------------------------------------------------------------
 // Name: PlayerSpaceshipAction
@@ -25,8 +25,7 @@ PlayerSpaceshipAction::PlayerSpaceshipAction(IStage* stage) : IAction(stage)
 	//
 	// Construct entities
 	//
-	SpaceGameEntityConstructor::ConstructPlayerSpaceShip(this->GetParentStage()->GetComponentCollectionRepository(), spaceShipGraphicResId, Vector2D(this->width / 2.0f, this->height - 60));
-	//SpaceGameEntityConstructor::ConstructPlayerWeapons(this->GetParentStage()->GetComponentCollectionRepository());
+	SpaceGameEntityConstructor::ConstructPlayerSpaceShip(this->GetParentStage()->GetComponentRepository(), spaceShipGraphicResId, Vector2D(this->width / 2.0f, this->height - 60));
 
 
 	//
@@ -51,57 +50,59 @@ PlayerSpaceshipAction::PlayerSpaceshipAction(IStage* stage) : IAction(stage)
 //-------------------------------------------------------------------------------------
 void PlayerSpaceshipAction::MoveSpaceShip(const ButtonEventArgs& buttonEventArgs) const
 {
-	auto componentCollectionRepository = this->GetParentStage()->GetComponentCollectionRepository();
-	auto playerPhysicsComponents = componentCollectionRepository->SelectFromCollection<PhysicsComponent>("PlayerSpaceShip");
+	auto componentRepository = this->GetParentStage()->GetComponentRepository();
+	auto playerPhysicsComponents = componentRepository->Select<PhysicsComponent>("PlayerSpaceShip");
 
-	for (auto& physicsComponent : *playerPhysicsComponents) {
+	for (auto& physicsComponent : playerPhysicsComponents) {
 
-		auto transformComponent = componentCollectionRepository->Select<TransformComponent>(physicsComponent.transformComponentId);
+		auto transformComponent = componentRepository->SelectId<TransformComponent>(physicsComponent.transformComponentId);
 
 		if (transformComponent->position.y < (this->height - 60)) {
 			physicsComponent.velocity.y = 1.0f;
-		}
-		else {
+		
+		} else {
+		
 			physicsComponent.velocity.y = 0.0f;
 		}
 
 		if (!buttonEventArgs.Released()) {
 
 			switch (buttonEventArgs.Key()) {
-			case LEFT_ARROW:
-			{
-				if (transformComponent->position.x > 25) {
-					physicsComponent.velocity = Vector2D(-4.0f, 0.0f);
+				case LEFT_ARROW:
+				{
+					if (transformComponent->position.x > 25) {
+						physicsComponent.velocity = Vector2D(-4.0f, 0.0f);
+					}
+					break;
 				}
-				break;
-			}
-			case RIGHT_ARROW:
-			{
-				if (transformComponent->position.x < (this->width - 50)) {
-					physicsComponent.velocity = Vector2D(4.0f, 0.0f);
+				case RIGHT_ARROW:
+				{
+					if (transformComponent->position.x < (this->width - 50)) {
+						physicsComponent.velocity = Vector2D(4.0f, 0.0f);
+					}
+					break;
 				}
-				break;
-			}
-			case UP_ARROW:
-			{
-				if (transformComponent->position.y > 25) {
-					physicsComponent.velocity = Vector2D(0.0f, -4.0f);
+				case UP_ARROW:
+				{
+					if (transformComponent->position.y > 25) {
+						physicsComponent.velocity = Vector2D(0.0f, -4.0f);
+					} 
+					break;
 				}
-				break;
-			}
-			case DOWN_ARROW:
-			{
-				if (transformComponent->position.y < (this->height - 60)) {
-					physicsComponent.velocity = Vector2D(0.0f, 4.0f);
+				case DOWN_ARROW:
+				{
+					if (transformComponent->position.y < (this->height - 60)) {
+						physicsComponent.velocity = Vector2D(0.0f, 4.0f);
+					}
+					break;
 				}
-				break;
-			}
-			case SPACE:
-			{
-				break;
-			}
+				case SPACE:
+				{
+					break;
+				}
 
-			default: break;
+				default: 
+					break;
 			}
 		} else {
 			physicsComponent.velocity.x = 0.0f;
@@ -109,21 +110,27 @@ void PlayerSpaceshipAction::MoveSpaceShip(const ButtonEventArgs& buttonEventArgs
 	}
 }
 //-------------------------------------------------------------------------------------
-// Name: OnButtonEvent
+// Name: FireWeapon
 // Desc: 
 //-------------------------------------------------------------------------------------
 void PlayerSpaceshipAction::FireWeapon(const ButtonEventArgs buttonEventArgs) const
 {
-	auto componentCollectionRepository = this->GetParentStage()->GetComponentCollectionRepository(); 
-	auto playerTransform = componentCollectionRepository->SelectFromCollection<TransformComponent>("PlayerSpaceShip")->front(); 
+	auto componentRepository = this->GetParentStage()->GetComponentRepository(); 
+	auto playerComponents = componentRepository->Select<TransformComponent>("PlayerSpaceShip"); 
+	auto playerTransform = playerComponents.front();
 
 	if (!buttonEventArgs.Released()) {
 
-		auto entityId = componentCollectionRepository->NewEntityId();
+		auto entityId = componentRepository->GenerateId();
 
-		auto transformComponent = componentCollectionRepository->NewComponent<TransformComponent>("PlayerSpaceShipProjectiles", entityId); 
-		auto graphicsComponent = componentCollectionRepository->NewComponent<GraphicsComponent>("PlayerSpaceShipProjectiles", entityId);
-		auto physicsComponent = componentCollectionRepository->NewComponent<PhysicsComponent>("PlayerSpaceShipProjectiles", entityId);
+		// Create the collection if it doesn't exist
+		if (!componentRepository->ContainsCollection("PlayerSpaceShipProjectiles")) {
+			componentRepository->NewCollection("PlayerSpaceShipProjectiles"); 
+		}
+
+		auto transformComponent = componentRepository->NewComponent<TransformComponent>("PlayerSpaceShipProjectiles", entityId); 
+		auto graphicsComponent = componentRepository->NewComponent<GraphicsComponent>("PlayerSpaceShipProjectiles", entityId);
+		auto physicsComponent = componentRepository->NewComponent<PhysicsComponent>("PlayerSpaceShipProjectiles", entityId);
 
 		transformComponent->position = playerTransform.position; 
 

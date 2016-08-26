@@ -4,7 +4,7 @@
 
 #include "Game/IGameApp.h"
 #include "Graphics/Graphics.h"
-#include "Components/Repository/ComponentCollectionRepository.h"
+#include "Components/Repository/componentRepository.h"
 #include "Physics/Physics.h"
 #include "Actions/IAction.h"
 #include "Events/CollisionEventArgs.h"
@@ -33,13 +33,13 @@ class FoodAction : public IAction
 	void SpawnFood() const
 	{
 		auto graphics = this->stage->GetGameApp()->GetGraphics();
-		auto componentCollections = this->stage->GetComponentCollectionRepository();
+		auto componentCollections = this->stage->GetComponentRepository();
 
 		auto width = graphics->WindowWidth();
 		auto height = graphics->WindowHeight();
 
-		auto& foodTransform = componentCollections->SelectFromCollection<TransformComponent>("Food")->front();
-		auto snakeTransforms = componentCollections->SelectFromCollection<TransformComponent>("Snake");
+		auto& foodTransform = componentCollections->Select<TransformComponent>("Food").front();
+		auto snakeTransforms = componentCollections->Select<TransformComponent>("Snake");
 
 		auto notSpawnFood = true;
 
@@ -53,7 +53,7 @@ class FoodAction : public IAction
 
 			notSpawnFood = false;
 
-			for (auto snakeTransform : *snakeTransforms) {
+			for (auto snakeTransform : snakeTransforms) {
 				if (snakeTransform.position == foodTransform.position) {
 					notSpawnFood = true;
 					break;
@@ -74,7 +74,7 @@ public:
 		width = stage->GetGameApp()->GetGraphics()->WindowWidth(); 
 		height = stage->GetGameApp()->GetGraphics()->WindowHeight(); 
 
-		auto componentCollection = stage->GetComponentCollectionRepository();
+		auto componentCollection = stage->GetComponentRepository();
 		auto graphics = stage->GetGameApp()->GetGraphics();
 		auto physics = stage->GetPhysics();
 
@@ -111,8 +111,8 @@ public:
 
 		this->updateCounter++; 
 
-		auto components = stage->GetComponentCollectionRepository();
-		auto& foodTransform = components->SelectFromCollection<TransformComponent>("Food")->front();
+		auto components = stage->GetComponentRepository();
+		auto& foodTransform = components->Select<TransformComponent>("Food").front();
 
 		auto diffX = foodTransform.position.x - this->goalX; 
 		auto diffY = foodTransform.position.y - this->goalY; 
@@ -139,8 +139,8 @@ public:
 	
 	void OnSnakeIntersection(const IntersectionEventArgs& intersectionEventArgs) const
 	{
-		auto components = this->stage->GetComponentCollectionRepository(); 
-		auto snakeHead = components->SelectFromCollection<TransformComponent>("Snake")->front(); 
+		auto components = this->stage->GetComponentRepository(); 
+		auto snakeHead = components->Select<TransformComponent>("Snake").front(); 
 
 		if (intersectionEventArgs.TransformComponent1()->id == snakeHead.id 
 			|| intersectionEventArgs.TransformComponent2()->id == snakeHead.id) {

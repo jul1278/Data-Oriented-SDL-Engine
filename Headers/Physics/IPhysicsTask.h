@@ -1,7 +1,7 @@
 #ifndef I_PHYSICS_TASK_H
 #define I_PHYSICS_TASK_H
 
-#include "Components/Repository/ComponentCollectionRepository.h"
+#include "Components/Repository/ComponentRepository.h"
 #include "Events/EventObserveable.h"
 
 class IPhysicsTask
@@ -13,7 +13,7 @@ private:
 	string collection1; 
 	string collection2; 
 
-	virtual void Task(ComponentCollectionRepository* componentCollectionRepository, 
+	virtual void Task(ComponentRepository* componentRepository, 
 		const string& collection1, const string& collection2, EventObservable* eventObservable) = 0;
 
 public:
@@ -32,9 +32,9 @@ public:
 
 	virtual ~IPhysicsTask() {}
 
-	void Execute(ComponentCollectionRepository* componentCollectionRepository)
+	void Execute(ComponentRepository* componentRepository)
 	{
-		this->Task(componentCollectionRepository, this->collection1, this->collection2, &this->eventObservable); 
+		this->Task(componentRepository, this->collection1, this->collection2, &this->eventObservable); 
 	}
 };
 

@@ -1,6 +1,7 @@
 #ifndef SPACE_GAME_STAGE_H
 #define SPACE_GAME_STAGE_H
 
+#include "Components/Repository/ComponentRepository.h"
 #include "Game/IStage.h"
 #include "Graphics/Camera.h"
 #include "Demos/SpaceGame/BackgroundStarsAction.h"
@@ -21,7 +22,7 @@ class SpaceGameStage : public IStage
 
 public:
 
-	explicit SpaceGameStage(IGameApp* gameApp) : IStage(gameApp, new ComponentCollectionRepository,
+	explicit SpaceGameStage(IGameApp* gameApp) : IStage(gameApp, new ComponentRepository("SpaceGameStage"),
 		new Physics(gameApp->GetGraphics()->WindowWidth(), gameApp->GetGraphics()->WindowHeight()))
 	{
 		auto graphics = this->GetGameApp()->GetGraphics(); 
@@ -30,7 +31,7 @@ public:
 		this->stageWidth = graphics->WindowWidth(); 
 
 		this->sdlEventCollector = new SDLEventCollector(this->stageWidth, this->stageHeight);
-		this->camera = new Camera(Vector2D(this->stageWidth, this->stageHeight), Vector2D(), this->GetComponentCollectionRepository(), graphics);
+		this->camera = new Camera(Vector2D(this->stageWidth, this->stageHeight), Vector2D(), this->GetComponentRepository(), graphics);
 
 		// Actions
 		this->InsertAction(new AsteroidAction(this));
@@ -57,7 +58,7 @@ public:
 		//this->sdlEventCollector->Update();
 
 		// TODO: Shouldn't really have to call this? IStage should call this.
-		this->GetPhysics()->ExecuteTasks(this->GetComponentCollectionRepository()); 
+		this->GetPhysics()->ExecuteTasks(this->GetComponentRepository()); 
 
 		// call base class update first
 		IStage::Update(); 

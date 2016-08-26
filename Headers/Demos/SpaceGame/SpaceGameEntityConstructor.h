@@ -5,7 +5,7 @@
 #ifndef SPACE_GAME_ENTITY_CONSTRUCTOR_H
 #define SPACE_GAME_ENTITY_CONSTRUCTOR_H
 
-#include "Components/Repository/ComponentCollectionRepository.h"
+#include "Components/Repository/ComponentRepository.h"
 #include "Utility/Vector.h"
 #include "Components/TransformComponent.h"
 #include "Components/GraphicsComponent.h"
@@ -23,14 +23,14 @@ public:
 	// Name: ConstructPlayerSpaceShip
 	// Desc:
 	//---------------------------------------------------------------------------
-	static void ConstructPlayerSpaceShip(ComponentCollectionRepository* componentCollectionRepository, int graphicResourceId, Vector2D position)
+	static void ConstructPlayerSpaceShip(ComponentRepository* componentRepository, int graphicResourceId, Vector2D position)
 	{
 		const auto playerSpaceShipCollectionName = "PlayerSpaceShip"; 
-		componentCollectionRepository->NewCollection(playerSpaceShipCollectionName); 
+		componentRepository->NewCollection(playerSpaceShipCollectionName); 
 
-		auto transformComponent = componentCollectionRepository->NewComponent<TransformComponent>(playerSpaceShipCollectionName);
-		auto graphicsComponent = componentCollectionRepository->NewComponent<GraphicsComponent>(playerSpaceShipCollectionName);
-		auto physicsComponent = componentCollectionRepository->NewComponent<PhysicsComponent>(playerSpaceShipCollectionName);
+		auto transformComponent = componentRepository->NewComponent<TransformComponent>(playerSpaceShipCollectionName);
+		auto graphicsComponent = componentRepository->NewComponent<GraphicsComponent>(playerSpaceShipCollectionName);
+		auto physicsComponent = componentRepository->NewComponent<PhysicsComponent>(playerSpaceShipCollectionName);
 
 		transformComponent->position = position; 
 		transformComponent->scale = Vector2D(0.5f, 0.5f); 
@@ -45,7 +45,7 @@ public:
 	// Name: ConstructBackgroundStars
 	// Desc:
 	//--------------------------------------------------------------------------------
-	static void ConstructBackgroundStars(ComponentCollectionRepository* componentCollectionRepository, int graphicResourceId, int width, int height, int num)
+	static void ConstructBackgroundStars(ComponentRepository* componentRepository, int graphicResourceId, int width, int height, int num)
 	{
 		default_random_engine defaultRandomEngine; 
 		uniform_int_distribution<int> yUniformIntDistribution(0, height); 
@@ -54,13 +54,13 @@ public:
 		const auto collectionName = "ScrollingBackgroundStars";
 		const auto starScrollVelocity = 0.5f; 
 
-		componentCollectionRepository->NewCollection(collectionName); 
+		componentRepository->NewCollection(collectionName); 
 
 		for (auto i = 0; i < num; i++) {
 
-			auto transformComponent = componentCollectionRepository->NewComponent<TransformComponent>(collectionName);
-			auto graphicsComponent = componentCollectionRepository->NewComponent<GraphicsComponent>(collectionName); 
-			auto physicsComponent = componentCollectionRepository->NewComponent<VelocityComponent>(collectionName); 
+			auto transformComponent = componentRepository->NewComponent<TransformComponent>(collectionName);
+			auto graphicsComponent = componentRepository->NewComponent<GraphicsComponent>(collectionName); 
+			auto physicsComponent = componentRepository->NewComponent<VelocityComponent>(collectionName); 
 
 			auto scale = scaleUniformDist(defaultRandomEngine); 
 
@@ -79,18 +79,18 @@ public:
 	// Name: ConstructEnemyAsteroids
 	// Desc:
 	//---------------------------------------------------------------------------
-	static void ConstructEnemyAsteroids(ComponentCollectionRepository* componentCollectionRepository, vector<int>& graphicResourceIds, int width, int height, int num)
+	static void ConstructEnemyAsteroids(ComponentRepository* componentRepository, vector<int>& graphicResourceIds, int width, int height, int num)
 	{
 		const auto collectionName = "EnemyAsteroids"; 
 
-		componentCollectionRepository->NewCollection(collectionName); 
+		componentRepository->NewCollection(collectionName); 
 
 		for (auto i = 0; i < num; i++) {
-			auto entityId = componentCollectionRepository->NewEntityId();
+			auto entityId = componentRepository->GenerateId();
 
-			auto transformComponent = componentCollectionRepository->NewComponent<TransformComponent>(collectionName, entityId);
-			auto graphicsComponent = componentCollectionRepository->NewComponent<GraphicsComponent>(collectionName, entityId);
-			auto physicsComponent = componentCollectionRepository->NewComponent<PhysicsComponent>(collectionName, entityId);
+			auto transformComponent = componentRepository->NewComponent<TransformComponent>(collectionName, entityId);
+			auto graphicsComponent = componentRepository->NewComponent<GraphicsComponent>(collectionName, entityId);
+			auto physicsComponent = componentRepository->NewComponent<PhysicsComponent>(collectionName, entityId);
 
 			physicsComponent->mass = MathUtility::RandomFloatUniformDist(); 
 			physicsComponent->transformComponentId = transformComponent->id;
@@ -112,20 +112,20 @@ public:
 	// Name: ConstructPlayerWeapons
 	// Desc:
 	//---------------------------------------------------------------------------
-	static void ConstructPlayerWeapons(ComponentCollectionRepository* componentCollectionRepository)
+	static void ConstructPlayerWeapons(ComponentRepository* componentRepository)
 	{
 		const auto collectionName = "PlayerSpaceShipProjectiles"; 
 		const auto maxNumProjectiles = 40; 
 
-		componentCollectionRepository->NewCollection(collectionName); 
+		componentRepository->NewCollection(collectionName); 
 		
 		for (auto i = 0; i < maxNumProjectiles; i++) {
 
-			auto entityId = componentCollectionRepository->NewEntityId();
+			auto entityId = componentRepository->GenerateId();
 
-			auto transformComponent = componentCollectionRepository->NewComponent<TransformComponent>(collectionName, entityId); 
-			auto graphicsComponent = componentCollectionRepository->NewComponent<GraphicsComponent>(collectionName, entityId);
-			auto physicsComponent = componentCollectionRepository->NewComponent<PhysicsComponent>(collectionName, entityId);
+			auto transformComponent = componentRepository->NewComponent<TransformComponent>(collectionName, entityId); 
+			auto graphicsComponent = componentRepository->NewComponent<GraphicsComponent>(collectionName, entityId);
+			auto physicsComponent = componentRepository->NewComponent<PhysicsComponent>(collectionName, entityId);
 
 			physicsComponent->radius = 1.0f; 
 

@@ -7,12 +7,12 @@
 
 class SnakeEatSelfTask : public IPhysicsTask
 {
-	void Task(ComponentCollectionRepository* componentCollectionRepository, const string& collection1, const string& collection2, EventObservable* eventObservable) override
+	void Task(ComponentRepository* componentRepository, const string& collection1, const string& collection2, EventObservable* eventObservable) override
 	{
-		auto snakeComponents = componentCollectionRepository->SelectFromCollection<TransformComponent>(collection1);
-		auto snakeHead = snakeComponents->front(); 
+		auto snakeComponents = componentRepository->Select<TransformComponent>(collection1);
+		auto snakeHead = snakeComponents.front(); 
 
-		for (auto component : *snakeComponents) {
+		for (auto component : snakeComponents) {
 
 			if (component.id == snakeHead.id) {
 				continue; 

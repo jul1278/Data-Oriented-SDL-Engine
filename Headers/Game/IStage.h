@@ -2,10 +2,12 @@
 #define I_STAGE_H
 
 
-#include "Components/Repository/ComponentCollectionRepository.h"
+#include "Components/Repository/ComponentRepository.h"
 #include <Physics/Physics.h>
 #include <Actions/IAction.h>
 #include <Graphics/Graphics.h>
+
+#include <memory>
 
 class IGameApp; 
 
@@ -15,17 +17,17 @@ private:
  
 	IGameApp* gameApp; 
 
-	ComponentCollectionRepository* componentCollectionRepository; 
+	ComponentRepository* componentRepository; 
 	Physics* physics; 
 
 	list<IAction*> actions; 
 
 public:
 
-	IStage(IGameApp* gameApp, ComponentCollectionRepository* componentCollectionRepository, Physics* physics)
+	IStage(IGameApp* gameApp, ComponentRepository* componentRepository, Physics* physics)
 	{
 		this->gameApp = gameApp; 
-		this->componentCollectionRepository = componentCollectionRepository; 
+		this->componentRepository = componentRepository; 
 		this->physics = physics; 
 	}
 
@@ -36,7 +38,7 @@ public:
 
 	virtual ~IStage()
 	{
-		delete this->componentCollectionRepository; 
+		delete this->componentRepository; 
 		delete this->physics;
 
 		remove_if(this->actions.begin(), this->actions.end(), [](IAction* action){ delete action; return true; });
@@ -49,9 +51,9 @@ public:
 		}
 	}
 
-	ComponentCollectionRepository* GetComponentCollectionRepository() const
+	ComponentRepository* GetComponentRepository() const
 	{
-		return this->componentCollectionRepository; 
+		return this->componentRepository; 
 	}
 	
 	Physics* GetPhysics() const

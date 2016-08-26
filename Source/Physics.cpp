@@ -27,17 +27,17 @@ Physics::~Physics()
 // Name: Exectute
 // Desc:
 //-------------------------------------------------------------------------------
-void Physics::ExecuteTasks(ComponentCollectionRepository* componentCollectionRepository)
+void Physics::ExecuteTasks(ComponentRepository* componentRepository)
 {
 	for (auto task : tasks) {
-		task->Execute(componentCollectionRepository);
+		task->Execute(componentRepository);
 	}
 }
 //-------------------------------------------------------------------------------
 // Name: SolveAsteroidPhysics
 // Desc: temp function to do logic/physics for the enemy asteroids 
 //-------------------------------------------------------------------------------
-void Physics::SolveAsteroidPhysics(ComponentCollectionRepository* componentCollectionRepository) const
+void Physics::SolveAsteroidPhysics(ComponentRepository* componentRepository) const
 {
 #ifdef _WIN32
 	#pragma message ("WARNING: "__FILE__ "  -  " __FUNCTION__" is deprecated.")
@@ -46,21 +46,21 @@ void Physics::SolveAsteroidPhysics(ComponentCollectionRepository* componentColle
 	#warning "Function is deprecated"	
 #endif
 	
-	auto asteroidPhysicsComponents = componentCollectionRepository->SelectFromCollection<PhysicsComponent>("EnemyAsteroids");
-	auto playerPhysicsComponents = componentCollectionRepository->SelectFromCollection<PhysicsComponent>("PlayerSpaceShip");
+	auto asteroidPhysicsComponents = componentRepository->Select<PhysicsComponent>("EnemyAsteroids");
+	auto playerPhysicsComponents = componentRepository->Select<PhysicsComponent>("PlayerSpaceShip");
 
-	if (asteroidPhysicsComponents == nullptr || asteroidPhysicsComponents->size() == 0) {
+	if (asteroidPhysicsComponents.Size() == 0) {
 		return;
 	}
 
-	if (playerPhysicsComponents == nullptr || playerPhysicsComponents->size() == 0) {
+	if (playerPhysicsComponents.Size() == 0) {
 		return;
 	}
 
-	auto playerPhysicsComponent = playerPhysicsComponents->front();
-	auto playerTransformComponent = componentCollectionRepository->Select<TransformComponent>(playerPhysicsComponent.transformComponentId); 
+	auto playerPhysicsComponent = playerPhysicsComponents.front();
+	auto playerTransformComponent = componentRepository->SelectId<TransformComponent>(playerPhysicsComponent.transformComponentId); 
 
-	for (auto physicsComponent : *asteroidPhysicsComponents) {
+	for (auto physicsComponent : asteroidPhysicsComponents) {
 
 		if (playerTransformComponent->position.x > this->width || playerTransformComponent->position.x <= 0 ||
 			playerTransformComponent->position.y > this->height || playerTransformComponent->position.y <= 0) {
@@ -71,7 +71,7 @@ void Physics::SolveAsteroidPhysics(ComponentCollectionRepository* componentColle
 			continue;
 		}
 
-		auto transformComponent = componentCollectionRepository->Select<TransformComponent>(physicsComponent.transformComponentId); 
+		auto transformComponent = componentRepository->SelectId<TransformComponent>(physicsComponent.transformComponentId); 
 
 		// 
 		auto distVector = playerTransformComponent->position - transformComponent->position;
@@ -94,7 +94,7 @@ void Physics::SolveAsteroidPhysics(ComponentCollectionRepository* componentColle
 // Name: SolvePhysics
 // Desc: 
 //-------------------------------------------------------------------------------
-void Physics::SolvePhysics(ComponentCollectionRepository* componentCollectionRepository, const string& collectionName)
+void Physics::SolvePhysics(ComponentRepository* componentRepository, const string& collectionName)
 {
 #ifdef _WIN32
 	#pragma message ("WARNING: "__FILE__ "  -  " __FUNCTION__" is deprecated.")
@@ -102,26 +102,22 @@ void Physics::SolvePhysics(ComponentCollectionRepository* componentCollectionRep
 #ifdef __APPLE__
 	#warning "Function is deprecated"	
 #endif
-	auto physicsComponents = componentCollectionRepository->SelectFromCollection<PhysicsComponent>(collectionName);
+	auto physicsComponents = componentRepository->Select<PhysicsComponent>(collectionName);
 
-	if (physicsComponents == nullptr) {
-		return;
-	}
+	for (auto component : physicsComponents) {
+		if (auto transformComponent = componentRepository->SelectId<TransformComponent>(component.transformComponentId)) {
 
-	for (auto component : *physicsComponents) {
-
-		auto transformComponent = componentCollectionRepository->Select<TransformComponent>(component.transformComponentId);
-
-		transformComponent->orientation = Vector2D(component.angularVelocity) + transformComponent->orientation;
-		transformComponent->position.x += component.velocity.x;
-		transformComponent->position.y += component.velocity.y;
+			transformComponent->orientation = Vector2D(component.angularVelocity) + transformComponent->orientation;
+			transformComponent->position.x += component.velocity.x;
+			transformComponent->position.y += component.velocity.y;
+		}
 	}
 }
 //-------------------------------------------------------------------------------
 // Name: SolveSimplePhysics
 // Desc: 
 //-------------------------------------------------------------------------------
-void Physics::SolveSimplePhysics(ComponentCollectionRepository* componentCollectionRepository, const string& collectionName)
+void Physics::SolveSimplePhysics(ComponentRepository* componentRepository, const string& collectionName)
 {
 #ifdef _WIN32
 	#pragma message ("WARNING: "__FILE__ "  -  " __FUNCTION__" is deprecated.")
@@ -129,15 +125,11 @@ void Physics::SolveSimplePhysics(ComponentCollectionRepository* componentCollect
 #ifdef __APPLE__
 	#warning "Function is deprecated"	
 #endif
-	auto physicsComponents = componentCollectionRepository->SelectFromCollection<VelocityComponent>(collectionName);
+	auto physicsComponents = componentRepository->Select<VelocityComponent>(collectionName);
 
-	if (physicsComponents == nullptr) {
-		return;
-	}
+	for (auto component : physicsComponents) {
 
-	for (auto component : *physicsComponents) {
-
-		auto transformComponent = componentCollectionRepository->Select<TransformComponent>(component.transformComponentId);
+		auto transformComponent = componentRepository->SelectId<TransformComponent>(component.transformComponentId);
 
 		transformComponent->position.x += component.velocity.x;
 		transformComponent->position.y += component.velocity.y;

@@ -49,26 +49,19 @@ public:
 	{
 		this->sdlEventCollector->Update(); 
 
-		auto componentCollectionRepository = this->GetParentStage()->GetComponentCollectionRepository();
-		auto projectileGraphics = componentCollectionRepository->SelectFromCollection<GraphicsComponent>("PlayerSpaceShipProjectiles");
+		auto componentRepository = this->GetParentStage()->GetComponentRepository();
+		auto projectileGraphics = componentRepository->Select<GraphicsComponent>("PlayerSpaceShipProjectiles");
+		auto projectileTransforms = componentRepository->Select<TransformComponent>("PlayerSpaceShipProjectiles"); 
 
-		if (projectileGraphics == nullptr || projectileGraphics->size() == 0) {
+		if (projectileTransforms.Size() == 0) {
 			return; 
 		}
 
-		for (auto graphicsComponent : *projectileGraphics) {
-			auto transform = componentCollectionRepository->Select<TransformComponent>(graphicsComponent.transformComponentId);
-			
-			if (transform == nullptr) {
-				continue; 
-			}
+		for (auto transform : projectileTransforms) {
+			if (transform.position.x > this->width || transform.position.x < 0.0f || 
+				transform.position.y > this->height || transform.position.y < 0.0f) {
 
-			if (transform->position.x > this->width || 
-				transform->position.x < 0.0f || 
-				transform->position.y > this->height || 
-				transform->position.y < 0.0f) {
-
-				componentCollectionRepository->RemoveEntity(graphicsComponent.entityId); 
+				componentRepository->RemoveEntity(transform.entityId); 
 			}
 		}
 	}

@@ -8,21 +8,21 @@ class CollisionPhysicsTask : public IPhysicsTask
 {
 private:
 
-	void Task(ComponentCollectionRepository* componentCollectionRepository, const string& collection1, const string& collection2, EventObservable* eventObservable) override
+	void Task(ComponentRepository* componentRepository, const string& collection1, const string& collection2, EventObservable* eventObservable) override
 	{
-		auto physCollection1 = componentCollectionRepository->SelectFromCollection<PhysicsComponent>(collection1);
-		auto physCollection2 = componentCollectionRepository->SelectFromCollection<PhysicsComponent>(collection2);
+		auto physCollection1 = componentRepository->Select<PhysicsComponent>(collection1);
+		auto physCollection2 = componentRepository->Select<PhysicsComponent>(collection2);
 
-		if (physCollection1 == nullptr || physCollection2 == nullptr) {
+		if (physCollection1.empty() || physCollection2.empty()) {
 			return;
 		}
 
-		if (physCollection1->empty() || physCollection2->empty()) {
-			return;
+		if (physCollection1.Size() == 0 && physCollection2.Size() == 0) {
+			return; 
 		}
 
-		for (auto physComponent1 : *physCollection1) {
-			auto transformComponent1 = componentCollectionRepository->Select<TransformComponent>(physComponent1.transformComponentId); 
+		for (auto physComponent1 : physCollection1) {
+			auto transformComponent1 = componentRepository->SelectId<TransformComponent>(physComponent1.transformComponentId); 
 			
 			if (transformComponent1 == nullptr) {
 				continue; 
@@ -30,8 +30,8 @@ private:
 			
 			auto pos1 = transformComponent1->position;
 
-			for (auto physComponent2 : *physCollection2) {
-				auto transformComponent2 = componentCollectionRepository->Select<TransformComponent>(physComponent2.transformComponentId); 
+			for (auto physComponent2 : physCollection2) {
+				auto transformComponent2 = componentRepository->SelectId<TransformComponent>(physComponent2.transformComponentId); 
 
 				if (transformComponent2 == nullptr) {
 					continue; 

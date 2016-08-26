@@ -1,6 +1,7 @@
 //
 // Created by Julian  on 17/11/15.
 //
+#include "Components/Repository/CComponentCollection.h"
 #include "Graphics/IGraphicsResource.h"
 #include "Components/GraphicsComponent.h"
 #include "Components/TransformComponent.h"
@@ -290,28 +291,21 @@ Camera* Graphics::FindCamera(const string& collection)
 // Name: UpdateGraphics
 // Desc:
 //------------------------------------------------------------------------------------
-void Graphics::UpdateGraphics(vector<GraphicsComponent>* graphicsComponents, vector<TransformComponent>* transformComponents)
+void Graphics::UpdateGraphics(Repository::ComponentCollection<GraphicsComponent>& graphicsComponents, 
+	Repository::ComponentCollection<TransformComponent>& transformComponents)
 {
 	// TODO: should call the UpdateGraphics(vector<GraphicsComponent>*, vector<TransformComponent>*, TransformComponent*)
 	//	     with parent = (0,0) etc etc
 	//       this is probably faster though  
 
-	if (graphicsComponents == nullptr || graphicsComponents->size() == 0) {
-		return; 
-	}
-
-	if (transformComponents == nullptr || transformComponents->size() == 0) {
-		return; 
-	}
-
-	for (auto graphicsComponent : *graphicsComponents) {
+	for (auto graphicsComponent : graphicsComponents) {
 		
 		if (graphicsComponent.resourceId == NO_RENDER) {
 			continue; 
 		}
 
 		auto id = graphicsComponent.transformComponentId; 
-		auto transformComponent = find_if(transformComponents->begin(), transformComponents->end(), [id](const TransformComponent& t) {return t.id == id; });
+		auto transformComponent = find_if(transformComponents.begin(), transformComponents.end(), [id](const TransformComponent& t) {return t.id == id; });
 
 		auto graphicsResource = this->graphicsResourceMap[graphicsComponent.resourceId];
 		graphicsResource->Render(this->renderer, &(*transformComponent));
@@ -321,16 +315,17 @@ void Graphics::UpdateGraphics(vector<GraphicsComponent>* graphicsComponents, vec
 // Name: UpdateGraphics
 // Desc:
 //------------------------------------------------------------------------------------
-void Graphics::UpdateGraphics(vector<GraphicsComponent>* graphicsComponents, vector<TransformComponent>* transformComponents, TransformComponent* parent)
+void Graphics::UpdateGraphics(Repository::ComponentCollection<GraphicsComponent>& graphicsComponents, 
+	Repository::ComponentCollection<TransformComponent>& transformComponents, TransformComponent* parent)
 {
-	for (auto graphicsComponent : *graphicsComponents) {
+	for (auto graphicsComponent : graphicsComponents) {
 
 		if (graphicsComponent.resourceId == NO_RENDER) {
 			continue; 
 		}
 		
 		auto id = graphicsComponent.transformComponentId;
-		auto transformComponent = find_if(transformComponents->begin(), transformComponents->end(), [id](const TransformComponent& t) {return t.id == id; });
+		auto transformComponent = find_if(transformComponents.begin(), transformComponents.end(), [id](const TransformComponent& t) {return t.id == id; });
 
 
 		auto graphicsResource = this->graphicsResourceMap[graphicsComponent.resourceId];

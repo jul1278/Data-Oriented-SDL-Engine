@@ -23,8 +23,7 @@ SnakeGameApp::SnakeGameApp()
 //------------------------------------------------------------------------------------
 SnakeGameApp::~SnakeGameApp()
 {
-	delete this->graphics; 
-	
+	delete this->graphics; 	
 	delete this->snakeGameMenu; 
 	delete this->snakeGameStage; 
 }

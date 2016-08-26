@@ -7,17 +7,17 @@
 
 class IntersectionTask : public IPhysicsTask
 {
-	void Task(ComponentCollectionRepository* componentCollectionRepository, const string& collection1, const string& collection2, EventObservable* eventObservable) override
+	void Task(ComponentRepository* componentRepository, const string& collection1, const string& collection2, EventObservable* eventObservable) override
 	{
-		auto components1 = componentCollectionRepository->SelectFromCollection<TransformComponent>(collection1);
-		auto components2 = componentCollectionRepository->SelectFromCollection<TransformComponent>(collection2);
+		auto components1 = componentRepository->Select<TransformComponent>(collection1);
+		auto components2 = componentRepository->Select<TransformComponent>(collection2);
 
-		if (components1->size() == 0 || components2->size() == 0) {
+		if (components1.Size() == 0 || components2.Size() == 0) {
 			return; 
 		}
 
-		for (auto component1 : *components1) {
-			for (auto component2 : *components2) {
+		for (auto component1 : components1) {
+			for (auto component2 : components2) {
 
 				if (&component1 == &component2) {
 					continue; 

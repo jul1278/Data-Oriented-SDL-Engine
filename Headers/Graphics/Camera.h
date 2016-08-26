@@ -2,12 +2,12 @@
 #define CAMERA_H
 
 #include "Graphics.h"
-#include <Utility/Vector.h>
-#include <Events/SDLEventCollector.h>
+#include "Utility/Vector.h"
+#include "Events/SDLEventCollector.h"
 #include "Events/MouseMotionEventArgs.h"
-#include <Components/TransformComponent.h>
-#include <Components/GraphicsComponent.h>
-#include "Components/Repository/ComponentCollectionRepository.h"
+#include "Components/TransformComponent.h"
+#include "Components/GraphicsComponent.h"
+#include "Components/Repository/ComponentRepository.h"
 #include "ITransform.h"
 
 #include <algorithm>
@@ -16,7 +16,7 @@ class Camera
 {
 private:
 	
-	ComponentCollectionRepository* componentCollectionRepository;
+	ComponentRepository* componentRepository;
 	Graphics* graphics; 
 
 	list<string> renderCollections; 
@@ -34,9 +34,9 @@ public:
 	// Name: Constructor
 	// Desc:
 	//------------------------------------------------------------------------------------------------
-	Camera(Vector2D size, Vector2D position, ComponentCollectionRepository* componentCollectionRepository, Graphics* graphics)
+	Camera(Vector2D size, Vector2D position, ComponentRepository* componentRepository, Graphics* graphics)
 	{
-		this->componentCollectionRepository = componentCollectionRepository; 
+		this->componentRepository = componentRepository; 
 		this->graphics = graphics;
         this->transform = nullptr;
 		this->shakeCounter = 0; 

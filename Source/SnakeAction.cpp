@@ -1,7 +1,7 @@
 #include "Game/IGameApp.h"
 #include "Graphics/Graphics.h"
 #include "Physics/Physics.h"
-#include "Components/Repository/ComponentCollectionRepository.h"
+#include "Components/Repository/ComponentRepository.h"
 #include "Events/SDLEventCollector.h"
 #include "Events/IntersectionEventArgs.h"
 #include "Physics/IntersectionTask.h"
@@ -37,7 +37,7 @@ SnakeAction::SnakeAction(IStage* stage) : IAction(stage)
 
 	auto graphics = stage->GetGameApp()->GetGraphics();
 	auto physics = stage->GetPhysics(); 
-	auto componentCollection = stage->GetComponentCollectionRepository();
+	auto componentCollection = stage->GetComponentRepository();
 	
 	auto headStartPos = Vector2D(graphics->WindowWidth() / 2.0f, graphics->WindowHeight() / 2.0f);
 
@@ -107,16 +107,16 @@ SnakeAction::~SnakeAction()
 //---------------------------------------------------------------------------
 void SnakeAction::Update() 
 {
-	auto componentCollectionRepository = this->stage->GetComponentCollectionRepository(); 
+	auto componentRepository = this->stage->GetComponentRepository(); 
 
-	auto transformComponents = componentCollectionRepository->SelectFromCollection<TransformComponent>("Snake");
-	auto graphicsComponents = componentCollectionRepository->SelectFromCollection<GraphicsComponent>("Snake");
-	auto foodTransform = componentCollectionRepository->SelectFromCollection<TransformComponent>("Food")->front(); 
+	auto transformComponents = componentRepository->Select<TransformComponent>("Snake");
+	auto graphicsComponents = componentRepository->Select<GraphicsComponent>("Snake");
+	auto foodTransform = componentRepository->Select<TransformComponent>("Food").front(); 
 
 	this->sdlEventCollector->Update();
 
-	if (!transformComponents->empty()) {
-		auto& headTransform = transformComponents->front();
+	if (!transformComponents.empty()) {
+		auto& headTransform = transformComponents.front();
 
 		Vector2D lastPos;
 		auto nextPos = headTransform.position;
@@ -136,9 +136,9 @@ void SnakeAction::Update()
 			break;
 		}
 
-		for (auto i = 1; i < transformComponents->size(); i++) {
-			lastPos = (*transformComponents)[i].position;
-			(*transformComponents)[i].position = nextPos;
+		for (auto i = 1; i < transformComponents.Size(); i++) {
+			lastPos = transformComponents[i].position;
+			transformComponents[i].position = nextPos;
 			nextPos = lastPos;
 		}
 	}
@@ -194,17 +194,17 @@ void SnakeAction::OnButtonEvent(const ButtonEventArgs& buttonEventArgs)
 //---------------------------------------------------------------------------
 void SnakeAction::OnEatFood(const IntersectionEventArgs& intersectionEventArgs)
 {
-	auto componentCollectionRepository = this->stage->GetComponentCollectionRepository(); 
-	auto snakeComponents = componentCollectionRepository->SelectFromCollection<TransformComponent>("Snake"); 
+	auto componentRepository = this->stage->GetComponentRepository(); 
+	auto snakeComponents = componentRepository->Select<TransformComponent>("Snake"); 
 	
 	this->snakeScore++;
 
 	this->textGraphicResource->SetText(to_string(this->snakeScore));
 
-	auto newSnakePart = componentCollectionRepository->NewComponent<TransformComponent>("Snake");
-	auto newSnakeGraphic = componentCollectionRepository->NewComponent<GraphicsComponent>("Snake");
+	auto newSnakePart = componentRepository->NewComponent<TransformComponent>("Snake");
+	auto newSnakeGraphic = componentRepository->NewComponent<GraphicsComponent>("Snake");
 
-	newSnakePart->position = snakeComponents->back().position;
+	newSnakePart->position = snakeComponents.back().position;
 	newSnakeGraphic->transformComponentId = newSnakePart->id;
 	newSnakeGraphic->resourceId = this->snakeGraphicId;	
 }

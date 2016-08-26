@@ -8,11 +8,10 @@ void Camera::Render()
 {
 	for (auto collection : this->renderCollections) {
 		
-		auto graphicComponents = this->componentCollectionRepository->SelectFromCollection<GraphicsComponent>(collection);
-		auto transformComponents = this->componentCollectionRepository->SelectFromCollection<TransformComponent>(collection);
+		auto graphicComponents = this->componentRepository->Select<GraphicsComponent>(collection);
+		auto transformComponents = this->componentRepository->Select<TransformComponent>(collection);
 
-		if (graphicComponents == nullptr || transformComponents == nullptr ||
-			graphicComponents->size() == 0 || transformComponents->size() == 0) {
+		if (graphicComponents.Size() == 0 || transformComponents.Size() == 0) {
 			continue;
 		}
 

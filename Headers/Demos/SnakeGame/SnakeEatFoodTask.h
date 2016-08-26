@@ -7,13 +7,13 @@
 
 class SnakeEatFoodTask : public IPhysicsTask
 {
-	void Task(ComponentCollectionRepository* componentCollectionRepository, const string& collection1, const string& collection2, EventObservable* eventObservable) override
+	void Task(ComponentRepository* componentRepository, const string& collection1, const string& collection2, EventObservable* eventObservable) override
 	{
-		auto snakeComponents = componentCollectionRepository->SelectFromCollection<TransformComponent>(collection1);
-		auto foodComponents = componentCollectionRepository->SelectFromCollection<TransformComponent>(collection2); 
+		auto snakeComponents = componentRepository->Select<TransformComponent>(collection1);
+		auto foodComponents = componentRepository->Select<TransformComponent>(collection2); 
 		
-		auto snakeHead = snakeComponents->front();
-		auto food = foodComponents->front(); 
+		auto snakeHead = snakeComponents.front();
+		auto food = foodComponents.front(); 
 
 		if (snakeHead.position == food.position) {
 			eventObservable->Invoke<IntersectionEventArgs>(IntersectionEventArgs(&snakeHead, &food));

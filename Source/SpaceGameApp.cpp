@@ -3,7 +3,7 @@
 //
 
 #include "Demos/SpaceGame/SpaceGameApp.h"
-#include "Components/Repository/ComponentCollectionRepository.h"
+#include "Components/Repository/ComponentRepository.h"
 #include "Demos/SpaceGame/SpaceGameStage.h"
 #include "Demos/SpaceGame/SpaceGameMenuStage.h"
 

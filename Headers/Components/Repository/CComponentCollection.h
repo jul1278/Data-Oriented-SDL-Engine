@@ -2,6 +2,7 @@
 #define C_COMPONENT_COLLECTION_H
 
 #include "Components/Repository/ComponentCollectionIterator.h"
+#include "Components/Repository/IComponentContainer.h"
 #include "Components/BaseComponent.h"
 
 #include <list>
@@ -152,11 +153,56 @@ namespace Repository
             }
         }
         //---------------------------------------------------------------------------------
+        // Name: empty
+        // Desc:
+        //---------------------------------------------------------------------------------
+        bool empty()
+        {
+            if (!this->components.empty()) {
+                for (auto container : this->components) {
+                    if (auto c = container.lock()) {
+                        // As soon as we find one that isn't empty we can return true. 
+                        if (!(*c).empty()) {
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            return true; 
+        }
+        //---------------------------------------------------------------------------------
+        // Name: front
+        // Desc:
+        //---------------------------------------------------------------------------------
+        T& front()
+        {
+            auto firstContainer = components.front(); 
+            auto front = firstContainer.lock();
+        
+            return (*front).front();
+        }
+        //---------------------------------------------------------------------------------
+        // Name: back
+        // Desc:
+        //---------------------------------------------------------------------------------
+        T& back()
+        {
+            auto backContainer = components.back();
+            auto back = backContainer.lock();
+
+            return (*back).back(); 
+        }
+        //---------------------------------------------------------------------------------
         // Name: begin
         // Desc:
         //---------------------------------------------------------------------------------
         ComponentCollectionIterator<T> begin()
         {
+            if (this->empty()) {
+                return this->end();
+            }
+
             return ComponentCollectionIterator<T>(this); 
         }
         //---------------------------------------------------------------------------------
