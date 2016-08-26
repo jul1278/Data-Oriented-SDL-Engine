@@ -1,4 +1,5 @@
 #include "Components/Repository/ComponentCollectionRepository.h"
+#include "Components/Repository/ComponentRepository.h"
 #include "Components/GraphicsComponent.h"
 #include "Components/TransformComponent.h"
 #include "Components/PhysicsComponent.h"
@@ -166,6 +167,138 @@ TEST(PerformanceTest, DeleteComponentsPerfTest)
 
 	for (auto i = 0; i < numComponents; i++) {
 		componentCollectionRepository.RemoveComponent(ids[i]);
+	}
+	
+	auto end = chrono::steady_clock::now();
+	auto t = chrono::duration<double, milli>(end - start).count();
+	
+	PerformanceTime(t); 
+}
+//-----------------------------------------------------------------------------
+// Name: DeleteComponentsPerfTest
+// Desc: 		
+//-----------------------------------------------------------------------------
+TEST(PerformanceTest, RetrieveByIdPerfTest)
+{
+	const auto numComponents = 5000;
+	ComponentCollectionRepository componentCollectionRepository;
+
+	vector<int> ids;
+	componentCollectionRepository.NewCollection("TestCollection");
+
+	for (auto i = 0; i < numComponents; ++i) {
+		auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>("TestCollection");
+		ids.push_back(transformComponent->id);
+	}
+
+	auto start = chrono::steady_clock::now();
+
+	for (auto i = 0; i < numComponents; i++) {
+		auto component = componentCollectionRepository.Select<TransformComponent>(ids[i]);
+	}
+	
+	auto end = chrono::steady_clock::now();
+	auto t = chrono::duration<double, milli>(end - start).count();
+	
+	PerformanceTime(t); 
+}
+//-----------------------------------------------------------------------------
+// Name: ComponentRepositoryInsertComponentsPerfTest
+// Desc: 		
+//-----------------------------------------------------------------------------
+TEST(PerformanceTest, ComponentRepositoryInsertComponentsPerfTest)
+{
+	const auto numComponents = 5000;
+	auto start = chrono::steady_clock::now();
+
+	ComponentRepository componentRepository("PerformanceTest");
+
+	auto entityId = componentRepository.GenerateId();
+	componentRepository.NewCollection("TestCollection");
+
+	for (auto i = 0; i < numComponents; ++i) {
+		auto transformComponent = componentRepository.NewComponent<TransformComponent>("TestCollection");
+	}
+
+	auto end = chrono::steady_clock::now();
+	auto t = chrono::duration<double, milli>(end - start).count();
+
+	PerformanceTime(t); 
+}
+//-----------------------------------------------------------------------------
+// Name: ComponentRepositoryInsertMultipleTypeComponentsPerfTest
+// Desc: 		
+//-----------------------------------------------------------------------------
+TEST(PerformanceTest, ComponentRepositoryInsertMultipleTypeComponentsPerfTest)
+{
+	const auto numComponents = 5000;
+
+	auto start = chrono::steady_clock::now();
+
+	ComponentRepository componentRepository("PerformanceTest");
+
+	auto entityId = componentRepository.GenerateId();
+	componentRepository.NewCollection("TestCollection");
+
+	for (auto i = 0; i < numComponents; ++i) {
+		auto transformComponent = componentRepository.NewComponent<TransformComponent>("TestCollection");
+		auto graphicsComponent = componentRepository.NewComponent<GraphicsComponent>("TestCollection");
+	}
+
+	auto end = chrono::steady_clock::now();
+	auto t = chrono::duration<double, milli>(end - start).count();
+
+	PerformanceTime(t); 
+}
+//-----------------------------------------------------------------------------
+// Name: ComponentRepositoryDeleteComponentsPerfTest
+// Desc: 		
+//-----------------------------------------------------------------------------
+TEST(PerformanceTest, ComponentRepositoryDeleteComponentsPerfTest)
+{
+	const auto numComponents = 5000;
+	auto start = chrono::steady_clock::now();
+
+	ComponentRepository componentRepository("PerformanceTest");
+
+	vector<int> ids;
+	componentRepository.NewCollection("TestCollection");
+
+	for (auto i = 0; i < numComponents; ++i) {
+		auto transformComponent = componentRepository.NewComponent<TransformComponent>("TestCollection");
+		ids.push_back(transformComponent->id);
+	}
+
+	for (auto i = 0; i < numComponents; i++) {
+		componentRepository.Remove(ids[i]);
+	}
+	
+	auto end = chrono::steady_clock::now();
+	auto t = chrono::duration<double, milli>(end - start).count();
+	
+	PerformanceTime(t); 
+}
+//-----------------------------------------------------------------------------
+// Name: ComponentRepositoryRetrieveByIdPerfTest
+// Desc: 		
+//-----------------------------------------------------------------------------
+TEST(PerformanceTest, ComponentRepositoryRetrieveByIdPerfTest)
+{
+	const auto numComponents = 5000;
+	ComponentRepository componentRepository("PerformanceTest");
+
+	vector<int> ids;
+	componentRepository.NewCollection("TestCollection");
+
+	for (auto i = 0; i < numComponents; ++i) {
+		auto transformComponent = componentRepository.NewComponent<TransformComponent>("TestCollection");
+		ids.push_back(transformComponent->id);
+	}
+
+	auto start = chrono::steady_clock::now();
+	
+	for (auto i = 0; i < numComponents; i++) {
+		auto selectComponent = componentRepository.SelectId<TransformComponent>(ids[i]);
 	}
 	
 	auto end = chrono::steady_clock::now();
