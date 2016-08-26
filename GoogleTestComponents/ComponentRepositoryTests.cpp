@@ -111,7 +111,6 @@ TEST(ComponentRepositoryTests, SelectFromChildCollection)
 
 	componentRepository.NewComponent<GraphicsComponent>("Child1");
 	componentRepository.NewComponent<GraphicsComponent>("Child1");
-
 	componentRepository.NewComponent<GraphicsComponent>("Child2");
 	componentRepository.NewComponent<GraphicsComponent>("Child2");
 	componentRepository.NewComponent<GraphicsComponent>("Child2");
@@ -211,7 +210,3 @@ TEST(ComponentRepositoryTests, RemoveEntityInsideLoop)
 	EXPECT_EQ(graphicsComponents.Size(), 2); 
 	EXPECT_EQ(transformComponents.Size(), 2);
 }
-//-------------------------------------------------------------------------
-// Name: RemoveEntityId
-// Desc:
-//-------------------------------------------------------------------------
