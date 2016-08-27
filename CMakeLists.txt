@@ -179,6 +179,7 @@ set(TEST_SOURCE_FILES
         GoogleTestComponents/PhysicsTest.cpp
         GoogleTestComponents/SDLEventTests.cpp
         GoogleTestComponents/VectorTests.cpp
+        GoogleTestComponents/XmlTest.cpp
         GoogleTestComponents/SerializationTests.cpp
         GoogleTestComponents/PerformanceTests.cpp)
 
