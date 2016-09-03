@@ -1,6 +1,8 @@
 #ifndef XML_DOCUMENT_H
 #define XML_DOCUMENT_H
 
+#include "Utility/ProcessUtility.h"
+
 #include <list>
 #include <stack>
 #include <vector>
@@ -26,12 +28,50 @@ struct XmlTag
 	unordered_map<string, string> attributes; 
 
 	bool closeTag;
+
+	XmlTag()
+	{
+
+	}
+
+	XmlTag(const XmlTag& xmlTag) 
+	{
+		this->parent = xmlTag.parent; 
+
+		for(auto child : xmlTag.children) {
+			this->children.push_back(child); 
+		}
+
+		this->name = xmlTag.name; 
+		this->attributes = xmlTag.attributes; 
+		this->closeTag = xmlTag.closeTag;  
+	}
 };
 
 //
 class XmlDocument
 {	
+
+	list<XmlTag> tags; 
+
 public:
+
+	//-----------------------------------------------------------------------
+	// Name: Filter
+	// Desc:
+	//-----------------------------------------------------------------------
+	static string Filter(const string& str, char filterChar)
+	{
+		string result;
+
+		for(auto c : str) {
+			if (c != filterChar) {
+				result += c; 
+			}
+		}
+
+		return result; 
+	}
 
 	//-----------------------------------------------------------------------
 	// Name: Split
@@ -46,7 +86,15 @@ public:
 
 		for (auto i = 0; i < text.length(); i++) {
 			
-			currString += text[i];
+			if (currString.empty() && text[i] != ' ') {
+				currString += text[i];				
+			
+			} else if (!currString.empty()) {
+
+				currString += text[i];
+			}
+
+		
 			auto result = find(splitChars.begin(), splitChars.end(), text[i]);
 
 			if (result != splitChars.end()) {
@@ -203,7 +251,8 @@ public:
 		auto strings = Split(innerText, ' '); 
 
 		if (strings.size() > 0) {
-			tag.name = strings.front(); 
+			tag.name = XmlDocument::Filter(strings.front(), '/'); 
+
 		} else {
 			// return empty tag
 			return tag; 
@@ -267,52 +316,96 @@ public:
 	//---------------------------------------------------------------
 	static list<XmlTag> ToDocument(list<string> tokens) 
 	{
-		list<XmlTag> tags; 
+		// this is a list of all the top level tags
+		list<XmlTag> tags;
 		stack<XmlTag> tagStack; 
 
 		for(auto token : tokens) {
 
-			if (tagStack.empty()) {
-				tagStack.push(ToXmlTag(token));
+			auto tag = ToXmlTag(token); 
+
+			// if not a closing tag then push onto the stack
+			if (!tag.closeTag || tagStack.empty()) {
+				tagStack.push(tag); 	
 			
 			} else {
 
-				auto tag = ToXmlTag(token); 
+				auto& topTag = tagStack.top(); 
 
-				if (tag.closeTag && tagStack.size() > 1) {
-					tagStack.pop(); 
+				if (topTag.name == tag.name) {
+					
+					if (tagStack.size() == 1) {
+						tags.push_back(topTag); 
+						tagStack.pop();	
+					
+					} else {
 
-				} else if (tag.closeTag && tagStack.size() == 1) {
-					auto tag = tagStack.top(); 
-					tags.push_back(tag);
+						auto topTagCopy = tagStack.top();
+						tagStack.pop(); 
 
+						auto& nextTop = tagStack.top();
+						nextTop.children.push_back(topTagCopy);
+					}
 				} else {
 
-					auto lastTag = tagStack.top(); 
-					lastTag.children.push_back(tag);
+					topTag.children.push_back(tag);
 				}
 			}
 		}
+
+		return tags; 
 	}
 
 	//---------------------------------------------------------------
 	// Name: XmlDocument
 	// Desc:
 	//---------------------------------------------------------------
-	XmlDocument(const string& file) 
+	XmlDocument(string file) 
 	{
-		// ifstream fileStream(file); 
-		// stringstream buffer; 
-		// buffer << fileStream; 
+		// std::ifstream fileStream;
+		// fileStream.open(file, std::fstream::in);
+		
+		FILE* fp = nullptr;
+		fp = fopen(file.c_str(), "r");
 
-		// auto fileText = buffer.str(); 
+		if (fp != nullptr) {
 
-		// vector<char> splitChars = {'<', '>'};
+			string fileContent; 
+			string line; 
 
-		// auto tokens = this.Split(); 
+			while (true) {
+
+				auto c = fgetc(fp);
+
+				if (c != EOF) {
+					fileContent += c; 	
+				
+				} else {
+
+					break; 
+				}
+			}
+
+			// remove all \n and \t
+			replace(fileContent.begin(), fileContent.end(), '\n', ' ');
+			replace(fileContent.begin(), fileContent.end(), '\t', ' ');
+
+			vector<char> splitChars = {'<','>'};
+			auto tokens = XmlDocument::Split(fileContent, splitChars); 
+			this->tags = XmlDocument::ToDocument(tokens); 	
+		}
+
+		fclose(fp); 
 	}
 
-
+	//-----------------------------------------------------------------
+	// Name: Tags
+	// Desc:
+	//-----------------------------------------------------------------
+	list<XmlTag> Tags()
+	{
+		return this->tags; 
+	}
 }; 
 
 #endif // XML_DOCUMENT_H

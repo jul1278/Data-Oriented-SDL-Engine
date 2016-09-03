@@ -1,0 +1,32 @@
+<Entity name="entity1">
+	<GraphicsComponent name="square">
+		<TransformComponent name="squareTransform">
+			<Position x="10.0" y="10.0"/>
+			<Orientation x="10.0" y="10.0"/>
+			<Scale x="10.0" y="10.0"/>
+		</TransformComponent>
+	</GraphicsComponent>
+
+	<PhysicsComponent name="physics">
+		<TransformComponent name="squareTransform"/>
+	</PhysicsComponent>
+</Entity>
+
+<Entity name="entity2">
+	<GraphicsComponent name="square">
+		<TransformComponent name="squareTransform">
+			<Position x="10.0" y="10.0"/>
+			<Orientation x="10.0" y="10.0"/>
+			<Scale x="10.0" y="10.0"/>
+		</TransformComponent>
+		<Resource path="Resources/Sprites/sprite.png"/>
+	</GraphicsComponent>
+
+	<PhysicsComponent name="physics">
+		<TransformComponent name="squareTransform"/>
+	</PhysicsComponent>
+</Entity>
+
+
+
+

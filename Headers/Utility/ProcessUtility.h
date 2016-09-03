@@ -5,7 +5,7 @@
 #ifndef PROCESS_UTILITY_H
 #define PROCESS_UTILITY_H
 
-#include <string.h>
+#include <string>
 
 #ifdef __APPLE__
     #include <sys/param.h>

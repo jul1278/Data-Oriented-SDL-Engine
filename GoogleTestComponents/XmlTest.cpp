@@ -8,18 +8,41 @@
 
 using namespace std; 
 
+void PrintTags(list<XmlTag> tags, int depth) 
+{
+	for(auto tag : tags) {
+
+		// print our indents
+		for (auto i = 0; i < depth; i++) {
+			cout << "  "; 
+		}
+
+		cout << tag.name << " : ";
+
+		for(auto attr : tag.attributes) {
+			auto key = attr.first; 
+
+			cout << key << " " ; 
+		}
+
+		cout << endl; 
+
+		if (!tag.children.empty()) {
+			PrintTags(tag.children, depth + 1); 
+		} 
+	} 
+}
+
 //----------------------------------------------------------------
 // Name: StringSplit
 // Desc:
 //----------------------------------------------------------------
 TEST(XmlTests, StringSplit)
 {
-	XmlDocument xmlDocument(""); 
-
 	auto xml = "<a><b><c></c></b></a>    ";
 	vector<char> splitChars = {'<', '>'};
 
-	auto split = xmlDocument.Split(xml, splitChars); 
+	auto split = XmlDocument::Split(xml, splitChars); 
 	list<string> expectedResults = {"<a>","<b>","<c>","</c>","</b>","</a>"}; 
 
 	EXPECT_EQ(expectedResults, split);
@@ -30,10 +53,8 @@ TEST(XmlTests, StringSplit)
 //----------------------------------------------------------------
 TEST(XmlTests, CharSplit)
 {
-	XmlDocument xmlDocument(""); 
-
 	auto xml = "a = \"10.0f\" b = \"10.0f\"    ";
-	auto split = xmlDocument.Split(xml, ' '); 
+	auto split = XmlDocument::Split(xml, ' '); 
 
 	list<string> expectedResults = {"a", "=", "\"10.0f\"", "b", "=", "\"10.0f\""}; 
 
@@ -114,5 +135,25 @@ TEST(XmlTests, ExtractNameStrings)
 	EXPECT_EQ(names2, expected2); 
 	EXPECT_EQ(names3, expected3); 
 }
+//----------------------------------------------------------------
+// Name: XmlReadDocument
+// Desc:
+//----------------------------------------------------------------
+TEST(XmlTests, XmlReadSimpleDocument)
+{	
+	//auto xmlDoc = XmlDocument("/Users/P/Documents/Projects/SimpleComponents/Build/test1.xml"); 
+	auto xmlDoc = XmlDocument("test1.xml"); 
+	auto tags = xmlDoc.Tags(); 
+
+	auto tag = tags.front(); 
+
+	//EXPECT_EQ(tags.size(), 1); 
+	//EXPECT_EQ(tag.name, "GraphicsComponent"); 
+	//EXPECT_EQ(tag.children.size(), 1); 
+	cout << "Printing xml structure..." << endl;
+	PrintTags(tags, 0);
+}
+
+
 
 
