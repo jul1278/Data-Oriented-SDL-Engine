@@ -22,4 +22,14 @@ struct BaseComponent
 	}
 };
 
+struct BaseLinkedComponent : public BaseComponent
+{
+	unsigned int linkedComponentId; 
+
+	BaseLinkedComponent()
+	{
+		this->linkedComponentId = 0; 
+	}
+};
+
 #endif //BASE_COMPONENT_H

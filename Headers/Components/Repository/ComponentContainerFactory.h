@@ -7,12 +7,16 @@
 #include <typeinfo>
 #include <unordered_map>
 #include <string>
+#include <exception>
 
 using namespace std;
 
 class ComponentContainerFactory 
 {
-	unordered_map<string, function<IComponentContainer*(void)>> componentTypeFactory; 
+	list<string> componentNames; 
+	
+	unordered_map<string, function<IComponentContainer*(void)>> componentTypeContainerFactory;
+	unordered_map<string, function<BaseComponent*(void)>> componentTypeFactory; 
 
 public:
 
@@ -28,9 +32,13 @@ public:
 	void Register()
 	{
 		auto typeName = TypeUtility::TypeName<T>();
-		auto factory = []() -> IComponentContainer* {return new ComponentContainer<T>();};
+		auto containerFactory = []() -> IComponentContainer* {return new ComponentContainer<T>();};
+		auto componentFactory = []() -> BaseComponent* {return new T();};
 
-		this->componentTypeFactory.insert(make_pair(typeName, factory));
+		this->componentTypeContainerFactory.insert(make_pair(typeName, containerFactory));
+		this->componentNames.push_back(typeName);
+
+		this->componentTypeFactory.insert(make_pair(typeName, componentFactory));
 	}
 
 	//------------------------------------------------------------------------------
@@ -39,7 +47,29 @@ public:
 	//------------------------------------------------------------------------------
 	shared_ptr<IComponentContainer> New(const string& name)
 	{
-		return shared_ptr<IComponentContainer>(this->componentTypeFactory.at(name)()); 
+		return shared_ptr<IComponentContainer>(this->componentTypeContainerFactory.at(name)()); 
+	}
+
+	//-------------------------------------------------------------------------------
+	// Name: ComponentFromName
+	// Desc: 
+	//-------------------------------------------------------------------------------
+	shared_ptr<BaseComponent> ComponentFromName(const string& name)
+	{
+		if (this->componentTypeFactory.find(name) != this->componentTypeFactory.end()) {
+			return shared_ptr<BaseComponent>(this->componentTypeFactory[name]());
+		}
+
+		throw string(name + " does not exist."); 
+	}
+
+	//------------------------------------------------------------------------------
+	// Name: ComponentNames
+	// Desc: 
+	//------------------------------------------------------------------------------
+	list<string> ComponentNames()
+	{
+		return this->componentNames; 
 	}
 
 };

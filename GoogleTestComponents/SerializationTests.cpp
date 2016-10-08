@@ -1,5 +1,7 @@
 #include "gtest/gtest.h"
 #include "Components/Component.h"
+#include "Utility/SerialUtility.h"
+#include "Utility/FileUtility.h"
 
 #include <map>
 
@@ -39,8 +41,8 @@ TEST(SerializationTest, DeserializeBaseComponent)
     auto result = Component::Deserialize(namedValue, &baseComponent);
 
     EXPECT_TRUE(result);
-    EXPECT_EQ(baseComponent.id, 99);
-    EXPECT_EQ(baseComponent.entityId, 15);
+    // EXPECT_EQ(baseComponent.id, 99);
+    // EXPECT_EQ(baseComponent.entityId, 15);
 }
 //-----------------------------------------------------------------
 // Name: SerializeTransformComponent
@@ -82,8 +84,8 @@ TEST(SerializationTest, DeserializeTransformComponent)
     
     NamedValue namedValue; 
 
-    namedValue.Add("id", "15");
-    namedValue.Add("entityId", "199"); 
+    // namedValue.Add("id", "15");
+    // namedValue.Add("entityId", "199"); 
     namedValue.Add("position", Vector2D(12.0f, 13.0f)); 
     namedValue.Add("scale", Vector2D(1.0f, 4.32f)); 
     namedValue.Add("orientation", Vector2D(34.0045f, 3.3443f)); 
@@ -92,9 +94,39 @@ TEST(SerializationTest, DeserializeTransformComponent)
 
     EXPECT_TRUE(result);
 
-    EXPECT_EQ(transformComponent.id, 15);
-    EXPECT_EQ(transformComponent.entityId, 199);
+    EXPECT_EQ(transformComponent.id, 0);
+    EXPECT_EQ(transformComponent.entityId, 0);
     EXPECT_EQ(transformComponent.position, Vector2D(12.0f, 13.0f));
     EXPECT_EQ(transformComponent.orientation, Vector2D(34.0045f, 3.3443f));
     EXPECT_EQ(transformComponent.scale, Vector2D(1.0f, 4.32f)); 
 }
+//-----------------------------------------------------------------
+// Name: DeserializeXmlToComponent
+// Desc:
+//-----------------------------------------------------------------
+TEST(SerializationTest, DeserializeXmlToComponent)
+{
+    TransformComponent transformComponent; 
+    XmlDocument xml("xml/transformComponent.xml"); 
+
+    auto namedValues = SerialUtility::XmlDocumentToNamedValues(xml); 
+    auto namedValue = namedValues.front(); 
+
+    EXPECT_TRUE(Component::Deserialize(namedValue, &transformComponent));
+    EXPECT_EQ(transformComponent.position, Vector2D(43.21f, 12.34f));
+    EXPECT_EQ(transformComponent.scale, Vector2D(34.56f, 56.78f));
+    EXPECT_EQ(transformComponent.orientation, Vector2D(9.87f, 76.45));
+}
+//-----------------------------------------------------------------
+// Name: FilesInDirectory
+// Desc:
+//-----------------------------------------------------------------
+TEST(SerializationTest, FilesInDirectory)
+{
+    auto files = FileUtility::DirectoryContents("./"); 
+
+    for (auto file : files) {
+        cout << file << endl; 
+    }
+}
+

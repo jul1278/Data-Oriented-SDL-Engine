@@ -29,10 +29,7 @@ struct XmlTag
 
 	bool closeTag;
 
-	XmlTag()
-	{
-
-	}
+	XmlTag() {}
 
 	XmlTag(const XmlTag& xmlTag) 
 	{
@@ -360,7 +357,7 @@ public:
 	// Name: XmlDocument
 	// Desc:
 	//---------------------------------------------------------------
-	XmlDocument(string file) 
+	XmlDocument(const string& file) 
 	{
 		// std::ifstream fileStream;
 		// fileStream.open(file, std::fstream::in);
@@ -402,7 +399,7 @@ public:
 	// Name: Tags
 	// Desc:
 	//-----------------------------------------------------------------
-	list<XmlTag> Tags()
+	list<XmlTag> Tags() const
 	{
 		return this->tags; 
 	}

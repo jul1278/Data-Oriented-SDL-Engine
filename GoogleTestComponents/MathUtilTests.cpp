@@ -25,4 +25,20 @@ TEST(MathUtilTests, StdNormalDistHasZeroMean)
 	cumulativeSum /= numSamples; 
 	EXPECT_TRUE(cumulativeSum < threshold); 
 }
+//-----------------------------------------------------------------------------
+// Name: StdNormalDistHasZeroMean
+// Desc: 
+//-----------------------------------------------------------------------------
+TEST(MathUtilTests, ParseFloat)
+{
+	const auto str1 = "43.21"; 
+	const auto str2 = "34.12304";
+
+	auto result1 = MathUtility::ParseFloat(str1); 
+	auto result2 = MathUtility::ParseFloat(str2); 
+
+	EXPECT_EQ(result1, 43.21f); 
+	EXPECT_EQ(result2, 34.12304f); 
+}
+
 	

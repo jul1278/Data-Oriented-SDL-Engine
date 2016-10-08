@@ -57,8 +57,8 @@ public:
     Graphics(int windowWidth, int windowHeight, string appName);
     ~Graphics();
 
-    // Load a sprite resource and associate it with a string
-    int LoadGraphicResource(string fileName, string resourceName);
+    // Load a sprite resource from a filename
+    int LoadGraphicResource(string fileName);
     int AddGraphicsResource(IGraphicsResource* graphicsResource);
 
 	void Clear() const;

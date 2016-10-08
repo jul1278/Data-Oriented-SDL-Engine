@@ -20,7 +20,7 @@ PlayerSpaceshipAction::PlayerSpaceshipAction(IStage* stage) : IAction(stage)
 	// Resources
 	//
 	this->projectileGraphicResId = graphics->AddGraphicsResource(new RectGraphicsResource(2.0f, 12.0f, Color(Color::Red)));
-	auto spaceShipGraphicResId = graphics->LoadGraphicResource("Resources//space_ship.png", "spaceShip");
+	auto spaceShipGraphicResId = graphics->LoadGraphicResource("Resources//space_ship.png");
 
 	//
 	// Construct entities

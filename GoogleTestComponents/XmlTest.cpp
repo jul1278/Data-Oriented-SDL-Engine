@@ -1,5 +1,6 @@
 // XmlTest.cpp
 #include "XmlDocument.h"
+#include "Utility/SerialUtility.h"
 
 #include <list>
 #include <iostream>
@@ -152,6 +153,15 @@ TEST(XmlTests, XmlReadSimpleDocument)
 	//EXPECT_EQ(tag.children.size(), 1); 
 	cout << "Printing xml structure..." << endl;
 	PrintTags(tags, 0);
+}
+//------------------------------------------------------------------
+// Name: 
+// Desc:
+//------------------------------------------------------------------
+TEST(XmlTests, XmlToNamedValues)
+{
+	auto xmlDoc = XmlDocument("test1.xml"); 
+	auto namedValues = SerialUtility::XmlDocumentToNamedValues(xmlDoc);
 }
 
 

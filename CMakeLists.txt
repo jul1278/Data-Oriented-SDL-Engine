@@ -130,6 +130,8 @@ set(SOURCE_FILES
         Headers/Utility/DebugUtility.h
         Headers/Utility/LogUtility.h
         Headers/Utility/MathUtility.h
+        Headers/Utility/ProcessUtility.h
+        Headers/Utility/FileUtility.h
         Headers/Utility/Vector.h
         Source/Graphics/BubbleGraphicsResource.cpp
         Source/Graphics/RectGraphicsResource.cpp
@@ -141,14 +143,14 @@ set(SOURCE_FILES
         Source/Components/ComponentCollection.cpp
         Source/Components/ComponentRepository.cpp
         Source/Components/ComponentContainerFactory.cpp
-        Source/Graphics.cpp
+        Source/Graphics/Graphics.cpp
         Source/main.cpp
-        Source/Physics.cpp
-        Source/SDLEventCollector.cpp
-        Source/SnakeAction.cpp
-        Source/SpaceGameApp.cpp
-        Source/Graphics/Camera.cpp
-        Headers/Utility/ProcessUtility.h)
+        Source/Utility/SerialUtility.cpp
+        Source/Physics/Physics.cpp
+        Source/Events/SDLEventCollector.cpp
+        Source/SnakeGame/SnakeAction.cpp
+        Source/SpaceGame/SpaceGameApp.cpp
+        Source/Graphics/Camera.cpp)
 
 set(TEST_SOURCE_FILES
         ${gtest_SOURCE_DIR}/src/gtest_main.cc
@@ -162,12 +164,13 @@ set(TEST_SOURCE_FILES
         Source/Components/ComponentCollection.cpp
         Source/Components/ComponentRepository.cpp
         Source/Components/ComponentContainerFactory.cpp
-        Source/Graphics.cpp
+        Source/Graphics/Graphics.cpp
         Source/Graphics/Camera.cpp
-        Source/Physics.cpp
-        Source/SDLEventCollector.cpp
-        Source/SnakeAction.cpp
-        Source/SpaceGameApp.cpp
+        Source/Physics/Physics.cpp
+        Source/Events/SDLEventCollector.cpp
+        Source/SnakeGame/SnakeAction.cpp
+        Source/SpaceGame/SpaceGameApp.cpp
+        Source/Utility/SerialUtility.cpp
         GoogleTestComponents/ComponentCollectionRepositoryTests.cpp
         GoogleTestComponents/ComponentContainerTests.cpp
         GoogleTestComponents/ComponentCollectionTests.cpp

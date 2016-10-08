@@ -23,7 +23,4 @@ struct GraphicsComponent : public BaseComponent
     }
 };
 
-
-
-
 #endif //GRAPHICS_COMPONENT_H

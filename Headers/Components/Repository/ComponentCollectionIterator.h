@@ -99,7 +99,6 @@ public:
 	//---------------------------------------------------------------------------------------------
 	bool operator== (const ComponentCollectionIterator<T> rhs) const
 	{
-		cout << "==" << endl;
 		if (this->componentCollection == nullptr && rhs.componentCollection == nullptr) {
 			return true;
 		}

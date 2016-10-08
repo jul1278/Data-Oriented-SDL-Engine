@@ -150,12 +150,15 @@ Graphics::~Graphics()
 //------------------------------------------------------------------------------------
 SDL_Surface* Graphics::LoadSurface(std::string filename, SDL_PixelFormat* format)
 {
+
 	SDL_Surface* optimizedSurface = nullptr;
 
 	auto loadedSurface = IMG_Load(filename.c_str());
 
 	if (loadedSurface == nullptr) {
 		cout << IMG_GetError() << " filename: " << filename.c_str() << endl;
+		return nullptr; 
+
 	} else {
 
 		optimizedSurface = SDL_ConvertSurface(loadedSurface, format, 0);
@@ -167,22 +170,35 @@ SDL_Surface* Graphics::LoadSurface(std::string filename, SDL_PixelFormat* format
 		SDL_FreeSurface(loadedSurface);
 	}
 
+	
 	return optimizedSurface;
 }
 //------------------------------------------------------------------------------------
 // Name: LoadGraphicResource
 // Desc:
 //------------------------------------------------------------------------------------
-int Graphics::LoadGraphicResource(std::string fileName, std::string resourceName)
+int Graphics::LoadGraphicResource(std::string fileName)
 {
-    auto surface = this->LoadSurface(fileName, this->sdlSurface->format);
+	// TODO: validate file exists
+
+	SDL_Surface* surface = nullptr;
+
+		//Check if we've already loaded this resource otherwise load it
+	if (this->resourceSurfaceMap.find(fileName) != this->resourceSurfaceMap.end()) {
+		surface = this->resourceSurfaceMap[fileName]; 
+	
+	} else {
+
+		surface = this->LoadSurface(fileName, this->sdlSurface->format);
+		this->resourceSurfaceMap[fileName] = surface; 	
+	}
 
     if (surface != nullptr) {
 
         auto id = GetNextResourceId();
-
         auto spriteGraphicsResource = new SpriteGraphicsResource(surface);
-        this->graphicsResourceMap.insert(std::pair<int, IGraphicsResource*>(id, spriteGraphicsResource));
+
+        this->graphicsResourceMap[id] = spriteGraphicsResource;
 
 		return id;
     }
