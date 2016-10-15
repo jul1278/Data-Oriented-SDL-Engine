@@ -11,14 +11,31 @@
 #endif // __APPLE__
 
 #ifdef _WIN32
-#include <Windows.h>
+	#include <Windows.h>
 #endif
 
 using namespace std;
 
 namespace FileUtility
 {
-	static list<string> DirectoryContents(const string& directory)
+	//--------------------------------------------------------------------- 
+	// Name: StringEndsWith
+	// Desc: 
+	//---------------------------------------------------------------------
+	static bool StringEndsWith(const string& str, const string& end)
+	{
+		if (str.length() < end.length()) {
+			return false; 
+		}
+
+		return std::equal(str.end() - end.length(), str.end(), end.begin());
+	}
+
+	//-------------------------------------------------------------------------------------------
+	// Name: StringEndsWith
+	// Desc: 
+	//-------------------------------------------------------------------------------------------
+	static list<string> DirectoryContents(const string& directory, const string& extension = "")
 	{
 		
 		list<string> files;
@@ -37,8 +54,13 @@ namespace FileUtility
 #endif 
 		
 #ifdef _WIN32
+		// TODO: implement
 
 #endif
+		if (!extension.empty()) {
+			files.remove_if([extension](const string& file) {return !StringEndsWith(file, extension); });
+		}
+		
 		return files; 
 	}
 

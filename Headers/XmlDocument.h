@@ -55,7 +55,7 @@ public:
 
 	//-----------------------------------------------------------------------
 	// Name: Filter
-	// Desc:
+	// Desc: removes filterChar from specified string
 	//-----------------------------------------------------------------------
 	static string Filter(const string& str, char filterChar)
 	{
@@ -251,6 +251,7 @@ public:
 			tag.name = XmlDocument::Filter(strings.front(), '/'); 
 
 		} else {
+			
 			// return empty tag
 			return tag; 
 		}

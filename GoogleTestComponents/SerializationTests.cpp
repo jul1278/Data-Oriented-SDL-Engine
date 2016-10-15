@@ -2,6 +2,7 @@
 #include "Components/Component.h"
 #include "Utility/SerialUtility.h"
 #include "Utility/FileUtility.h"
+#include "Game/GameStateLoader.h"
 
 #include <map>
 
@@ -38,7 +39,7 @@ TEST(SerializationTest, DeserializeBaseComponent)
     namedValue.Add("id", "99");
     namedValue.Add("entityId", "15");
 
-    auto result = Component::Deserialize(namedValue, &baseComponent);
+    auto result = Component::Deserialize(&baseComponent, namedValue);
 
     EXPECT_TRUE(result);
     // EXPECT_EQ(baseComponent.id, 99);
@@ -90,7 +91,7 @@ TEST(SerializationTest, DeserializeTransformComponent)
     namedValue.Add("scale", Vector2D(1.0f, 4.32f)); 
     namedValue.Add("orientation", Vector2D(34.0045f, 3.3443f)); 
 
-    auto result = Component::Deserialize(namedValue, &transformComponent); 
+    auto result = Component::Deserialize(&transformComponent, namedValue); 
 
     EXPECT_TRUE(result);
 
@@ -112,10 +113,18 @@ TEST(SerializationTest, DeserializeXmlToComponent)
     auto namedValues = SerialUtility::XmlDocumentToNamedValues(xml); 
     auto namedValue = namedValues.front(); 
 
-    EXPECT_TRUE(Component::Deserialize(namedValue, &transformComponent));
+    EXPECT_TRUE(Component::Deserialize(&transformComponent, namedValue));
     EXPECT_EQ(transformComponent.position, Vector2D(43.21f, 12.34f));
     EXPECT_EQ(transformComponent.scale, Vector2D(34.56f, 56.78f));
     EXPECT_EQ(transformComponent.orientation, Vector2D(9.87f, 76.45));
+}
+//-----------------------------------------------------------------
+// Name: LoadGameStateFromXml
+// Desc:
+//-----------------------------------------------------------------
+TEST(SerializationTest, LoadGameStateFromDirectory)
+{
+    //GameStateLoader gameStateLoader(directory, componentRepository, graphics); 
 }
 //-----------------------------------------------------------------
 // Name: FilesInDirectory
@@ -124,9 +133,18 @@ TEST(SerializationTest, DeserializeXmlToComponent)
 TEST(SerializationTest, FilesInDirectory)
 {
     auto files = FileUtility::DirectoryContents("./"); 
+    auto xmlFiles = FileUtility::DirectoryContents("./", "xml"); 
 
     for (auto file : files) {
-        cout << file << endl; 
+        cout << file << " "; 
     }
+
+    cout << endl << "XML Files: ";
+
+    for (auto xmlFile : xmlFiles) {
+        cout << xmlFile << " "; 
+    }
+
+    cout << endl; 
 }
 

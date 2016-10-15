@@ -43,7 +43,7 @@ namespace Component
     // Name: Deserialize 
     // Desc: Deserialize BaseComponent
     //-------------------------------------------------------------------------------------
-    bool Deserialize(const struct NamedValue& nameValuePairs, struct BaseComponent* component)
+    bool Deserialize(struct BaseComponent* component, const struct NamedValue& nameValuePairs)
     {
         if (component != nullptr) {
             component->id = stoi(nameValuePairs.GetNamedValue("id"));
@@ -76,7 +76,7 @@ namespace Component
     // Name: Deserialize 
     // Desc: Deserialize TransformComponent
     //-------------------------------------------------------------------------------------
-    bool Deserialize(const NamedValue& namedValue, struct TransformComponent* transformComponent)
+    bool Deserialize(struct TransformComponent* transformComponent, const NamedValue& namedValue)
     {
         if (transformComponent != nullptr) {
             auto positionValue = namedValue.Value("position");
@@ -110,7 +110,7 @@ namespace Component
     // Name: Deserialize 
     // Desc: Deserialize GraphicsComponent
     //-------------------------------------------------------------------------------------
-    bool Deserialize(const NamedValue& namedValue, struct GraphicsComponent* graphicsComponent, ParseContext& parseContext)
+    bool Deserialize(struct GraphicsComponent* graphicsComponent, const NamedValue& namedValue, ParseContext& parseContext)
     {
         if (graphicsComponent != nullptr) {
 

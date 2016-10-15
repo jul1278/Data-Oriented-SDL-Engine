@@ -21,7 +21,6 @@
 //-------------------------------------------------------------------------------
 class GameStateLoader
 {
-	ParseContext parseContext; 
 
 public:
 
@@ -30,7 +29,6 @@ public:
 	// Desc:
 	//----------------------------------------------------------------------------------------
 	GameStateLoader(const string& directory, shared_ptr<ComponentRepository> componentRepository, shared_ptr<Graphics> graphics)
-	: parseContext(ParseContext(componentRepository, graphics))
 	{
 		ComponentContainerFactory componentContainerFactory;
 
@@ -38,19 +36,18 @@ public:
 			return;
 		}
 
-		auto files = FileUtility::DirectoryContents(directory);
+		// find all the files with xml extension
+		auto files = FileUtility::DirectoryContents(directory, "xml");
 		auto currentEntityId = 0; 
 
+		ParseContext parseContext(componentRepository, graphics); 
+
 		for (auto file : files) {
+			XmlDocument xmlDocument(file); 
+			auto namedValues = SerialUtility::XmlDocumentToNamedValues(xmlDocument); 
 
-			if (IsXml(file)) {
-				
-				XmlDocument xmlDocument(file); 
-				auto namedValues = SerialUtility::XmlDocumentToNamedValues(xmlDocument); 
-
-				for (auto namedValue : namedValues) {
-
-				}
+			for (auto namedValue : namedValues) {
+				this->ParseNamedValues(namedValue, parseContext);	
 			}
 		}
 	}
@@ -84,28 +81,27 @@ public:
 	//----------------------------------------------------------------------------------------
 	void ParseNamedValues(const SerialUtility::NamedValue& topNamedValue, ParseContext parseContext) 
 	{
+		auto componentRepository = parseContext.ComponentRepository(); 
+
 		for (auto namedValuePair : topNamedValue.values) {
-			// auto name = namedValue.Name();
+			auto namedValue = namedValuePair.second; 
+			auto name = namedValue.Named();
 
-			// if (IsComponent(namedValue)) {
+			if (IsComponent(namedValue)) {
 
-			// 	// Create a component
-			// 	auto component = componentRepository->NewComponent(name); 
-			// 	component->entityId = parseContext.ParentEntityId(); 
+				// Create a component
+				auto component = componentRepository->NewComponent(name); 
+				component->entityId = parseContext.ParentEntityId(); 
 
-			// 	if (NamedValueToComponent(component, namedValue)) {
+				if (NamedValueToComponent(component, namedValue, parseContext)) {
+					
+				}
 
+			} else if (IsEntity(namedValue)) {
 
-			// 	} else {
+			} else {
 
-			// 		componentRepository.Remove(component->entityId); 
-			// 	}
-
-			// } else if (IsEntity(namedValue)) {
-
-			// } else {
-
-			// }
+			}
 		}
 	}
 
@@ -113,7 +109,7 @@ public:
 	// Name: NamedValueToComponent
 	// Desc:
 	//----------------------------------------------------------------------------------------
-	static bool NamedValueToComponent(BaseComponent* component, const SerialUtility::NamedValue& namedValue, const ParseContext& parseContext)
+	static bool NamedValueToComponent(BaseComponent* component, const SerialUtility::NamedValue& namedValue, ParseContext& parseContext)
 	{	
 		if (component == nullptr) {
 			return false; 
@@ -127,13 +123,13 @@ public:
 
 		if (name == "TransformComponent") {
 
-			TransformComponent* transformComponent = dynamic_cast<TransformComponent*>(component);
+			TransformComponent* transformComponent = static_cast<TransformComponent*>(component);
 			return Component::Deserialize(transformComponent, namedValue); 
 		}
 
 		if (name == "GraphicsComponent") {
 
-			GraphicsComponent* graphicsComponent = dynamic_cast<GraphicsComponent*>(component);
+			GraphicsComponent* graphicsComponent = static_cast<GraphicsComponent*>(component);
 			return Component::Deserialize(graphicsComponent, namedValue, parseContext); 
 		}
 	}
