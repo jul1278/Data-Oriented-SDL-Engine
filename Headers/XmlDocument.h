@@ -169,8 +169,8 @@ public:
 		return values; 
 	}
 	//-------------------------------------------------------------
-	// Name: Trim 
-	// Desc: Removes all leading and trailing occurences of trimChar
+	// Name: ExtractNameStrings 
+	// Desc: extract names from text
 	//-------------------------------------------------------------
 	static list<string> ExtractNameStrings(const string& text, char separator = '\"')
 	{
