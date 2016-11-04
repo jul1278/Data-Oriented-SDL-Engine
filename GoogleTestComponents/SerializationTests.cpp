@@ -119,12 +119,58 @@ TEST(SerializationTest, DeserializeXmlToComponent)
     EXPECT_EQ(transformComponent.orientation, Vector2D(9.87f, 76.45));
 }
 //-----------------------------------------------------------------
+// Name: NamedValueToBaseComponent
+// Desc:
+//-----------------------------------------------------------------
+TEST(SerializationTest, NamedValueToBaseComponent)
+{
+    shared_ptr<Graphics> graphics(new Graphics(100, 100, "Test")); 
+    shared_ptr<ComponentRepository> componentRepository(new ComponentRepository("Test")); 
+
+    ParseContext parseContext(componentRepository, graphics); 
+
+    NamedValue namedValue("BaseComponent"); 
+    namedValue.Add("name", "base_component_1"); 
+
+    BaseComponent baseComponent; 
+
+    EXPECT_TRUE(GameStateLoader::NamedValueToComponent(&baseComponent, namedValue, parseContext)); 
+}
+//-----------------------------------------------------------------
+// Name: NamedValueToTransformComponent
+// Desc:
+//-----------------------------------------------------------------
+TEST(SerializationTest, NamedValueToTransformComponent)
+{
+    shared_ptr<Graphics> graphics(new Graphics(100, 100, "Test")); 
+    shared_ptr<ComponentRepository> componentRepository(new ComponentRepository("Test")); 
+
+    ParseContext parseContext(componentRepository, graphics); 
+
+    NamedValue namedValue("TransformComponent"); 
+    namedValue.Add("name", "transform_component_1"); 
+    namedValue.Add("position", Vector2D(5.0f, 3.0f));
+    namedValue.Add("orientation", Vector2D(4.0f, 3.105f));
+    namedValue.Add("scale", Vector2D(2.50f, 1056.67f)); 
+
+    auto component = componentRepository->NewComponent<TransformComponent>();   
+
+    EXPECT_TRUE(GameStateLoader::NamedValueToComponent((BaseComponent*) component, namedValue, parseContext)); 
+
+    EXPECT_EQ(component->scale, Vector2D(2.50f, 1056.67f));
+    EXPECT_EQ(component->position, Vector2D(5.0f, 3.0f));
+    EXPECT_EQ(component->orientation, Vector2D(4.0f, 3.105f));
+}
+//-----------------------------------------------------------------
 // Name: LoadGameStateFromXml
 // Desc:
 //-----------------------------------------------------------------
 TEST(SerializationTest, LoadGameStateFromDirectory)
 {
-    //GameStateLoader gameStateLoader(directory, componentRepository, graphics); 
+    // shared_ptr<ComponentRepository> componentRepository; 
+    // shared_ptr<Graphics> graphics; 
+
+    // GameStateLoader gameStateLoader("", componentRepository, graphics); 
 }
 //-----------------------------------------------------------------
 // Name: FilesInDirectory

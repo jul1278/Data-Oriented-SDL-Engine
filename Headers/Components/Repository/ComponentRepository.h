@@ -59,16 +59,22 @@ public:
 	}
 
 	//-----------------------------------------------------------------------------------
-	// Name: 
+	// Name: destructor
 	// Desc:
 	//-----------------------------------------------------------------------------------
-	~ComponentRepository() {}
+	~ComponentRepository() 
+	{
+
+	}
 
 	//-----------------------------------------------------------------------------------
-	// Name: 
+	// Name: Name
 	// Desc:
 	//-----------------------------------------------------------------------------------
-	string Name() { return this->collectionName; }
+	string Name() 
+	{ 
+		return this->collectionName;
+ 	}
 	
 	// implemented in ComponentRepository.cpp
 	static unsigned int GenerateId(); 

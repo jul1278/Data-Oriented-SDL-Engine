@@ -42,6 +42,8 @@ public:
 
 		ParseContext parseContext(componentRepository, graphics); 
 
+		// TODO: we should go through and find all the components/entities/resources first
+
 		for (auto file : files) {
 			XmlDocument xmlDocument(file); 
 			auto namedValues = SerialUtility::XmlDocumentToNamedValues(xmlDocument); 
@@ -91,7 +93,14 @@ public:
 
 				// Create a component
 				auto component = componentRepository->NewComponent(name); 
-				component->entityId = parseContext.ParentEntityId(); 
+
+				if (namedValue.HasValue("entityId")) {
+
+					component->entityId = parseContext.NamedEntityId(namedValue.GetNamedValue("entityId"));
+				} else {
+
+					component->entityId = parseContext.ParentEntityId(); 
+				}
 
 				if (NamedValueToComponent(component, namedValue, parseContext)) {
 					

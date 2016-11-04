@@ -82,7 +82,6 @@ public:
 		string currString;
 
 		for (auto i = 0; i < text.length(); i++) {
-			
 			if (currString.empty() && text[i] != ' ') {
 				currString += text[i];				
 			
