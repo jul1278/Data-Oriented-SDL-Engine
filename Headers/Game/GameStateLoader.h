@@ -127,13 +127,13 @@ public:
 		auto name = namedValue.Named(); 
 
 		if (name == "BaseComponent") {
-			return Component::Deserialize(component, namedValue);
+			return Component::Deserialize(component, namedValue, parseContext);
 		}
 
 		if (name == "TransformComponent") {
 
 			TransformComponent* transformComponent = static_cast<TransformComponent*>(component);
-			return Component::Deserialize(transformComponent, namedValue); 
+			return Component::Deserialize(transformComponent, namedValue, parseContext); 
 		}
 
 		if (name == "GraphicsComponent") {

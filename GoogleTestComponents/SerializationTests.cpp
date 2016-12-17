@@ -33,13 +33,18 @@ TEST(SerializationTest, SerializeBaseComponent)
 //----------------------------------------------------------------
 TEST(SerializationTest, DeserializeBaseComponent) 
 {
+    shared_ptr<Graphics> graphics(nullptr); 
+    shared_ptr<ComponentRepository> componentRepository(new ComponentRepository("Test")); 
+
+    ParseContext parseContext(componentRepository, graphics); 
+
     BaseComponent baseComponent; 
 
     NamedValue namedValue; 
     namedValue.Add("id", "99");
     namedValue.Add("entityId", "15");
 
-    auto result = Component::Deserialize(&baseComponent, namedValue);
+    auto result = Component::Deserialize(&baseComponent, namedValue, parseContext);
 
     EXPECT_TRUE(result);
     // EXPECT_EQ(baseComponent.id, 99);
@@ -81,6 +86,11 @@ TEST(SerializationTest, SerializeTransformComponent)
 //-----------------------------------------------------------------
 TEST(SerializationTest, DeserializeTransformComponent)
 {
+    shared_ptr<Graphics> graphics(nullptr); 
+    shared_ptr<ComponentRepository> componentRepository(new ComponentRepository("Test")); 
+
+    ParseContext parseContext(componentRepository, graphics); 
+
     TransformComponent transformComponent;
     
     NamedValue namedValue; 
@@ -91,7 +101,7 @@ TEST(SerializationTest, DeserializeTransformComponent)
     namedValue.Add("scale", Vector2D(1.0f, 4.32f)); 
     namedValue.Add("orientation", Vector2D(34.0045f, 3.3443f)); 
 
-    auto result = Component::Deserialize(&transformComponent, namedValue); 
+    auto result = Component::Deserialize(&transformComponent, namedValue, parseContext); 
 
     EXPECT_TRUE(result);
 
@@ -107,13 +117,20 @@ TEST(SerializationTest, DeserializeTransformComponent)
 //-----------------------------------------------------------------
 TEST(SerializationTest, DeserializeXmlToComponent)
 {
+    EXPECT_TRUE(FileUtility::DirectoryExists("xml"));
+
+    shared_ptr<Graphics> graphics(nullptr); 
+    shared_ptr<ComponentRepository> componentRepository(new ComponentRepository("Test")); 
+
+    ParseContext parseContext(componentRepository, graphics); 
+
     TransformComponent transformComponent; 
     XmlDocument xml("xml/transformComponent.xml"); 
 
     auto namedValues = SerialUtility::XmlDocumentToNamedValues(xml); 
     auto namedValue = namedValues.front(); 
 
-    EXPECT_TRUE(Component::Deserialize(&transformComponent, namedValue));
+    EXPECT_TRUE(Component::Deserialize(&transformComponent, namedValue, parseContext));
     EXPECT_EQ(transformComponent.position, Vector2D(43.21f, 12.34f));
     EXPECT_EQ(transformComponent.scale, Vector2D(34.56f, 56.78f));
     EXPECT_EQ(transformComponent.orientation, Vector2D(9.87f, 76.45));
@@ -124,7 +141,7 @@ TEST(SerializationTest, DeserializeXmlToComponent)
 //-----------------------------------------------------------------
 TEST(SerializationTest, NamedValueToBaseComponent)
 {
-    shared_ptr<Graphics> graphics(new Graphics(100, 100, "Test")); 
+    shared_ptr<Graphics> graphics(nullptr); 
     shared_ptr<ComponentRepository> componentRepository(new ComponentRepository("Test")); 
 
     ParseContext parseContext(componentRepository, graphics); 
@@ -142,7 +159,7 @@ TEST(SerializationTest, NamedValueToBaseComponent)
 //-----------------------------------------------------------------
 TEST(SerializationTest, NamedValueToTransformComponent)
 {
-    shared_ptr<Graphics> graphics(new Graphics(100, 100, "Test")); 
+    shared_ptr<Graphics> graphics(nullptr); 
     shared_ptr<ComponentRepository> componentRepository(new ComponentRepository("Test")); 
 
     ParseContext parseContext(componentRepository, graphics); 
@@ -167,10 +184,10 @@ TEST(SerializationTest, NamedValueToTransformComponent)
 //-----------------------------------------------------------------
 TEST(SerializationTest, LoadGameStateFromDirectory)
 {
-    // shared_ptr<ComponentRepository> componentRepository; 
-    // shared_ptr<Graphics> graphics; 
+    shared_ptr<ComponentRepository> componentRepository; 
+    shared_ptr<Graphics> graphics; 
 
-    // GameStateLoader gameStateLoader("", componentRepository, graphics); 
+    GameStateLoader gameStateLoader("", componentRepository, graphics); 
 }
 //-----------------------------------------------------------------
 // Name: FilesInDirectory

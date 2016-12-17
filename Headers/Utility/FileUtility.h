@@ -6,6 +6,7 @@
 
 #ifdef __APPLE__
     #include <sys/param.h>
+	#include <sys/stat.h>
     #include <unistd.h>
 	#include <dirent.h>
 #endif // __APPLE__
@@ -22,6 +23,7 @@ namespace FileUtility
 	// Name: StringEndsWith
 	// Desc: 
 	//---------------------------------------------------------------------
+	// TODO: this shouldn't be here
 	static bool StringEndsWith(const string& str, const string& end)
 	{
 		if (str.length() < end.length()) {
@@ -32,7 +34,7 @@ namespace FileUtility
 	}
 
 	//-------------------------------------------------------------------------------------------
-	// Name: StringEndsWith
+	// Name: DirectoryContents
 	// Desc: 
 	//-------------------------------------------------------------------------------------------
 	static list<string> DirectoryContents(const string& directory, const string& extension = "")
@@ -62,6 +64,36 @@ namespace FileUtility
 		}
 		
 		return files; 
+	}
+
+	//-------------------------------------------------------------------------------------------
+	// Name: DirectoryExists
+	// Desc: 
+	//-------------------------------------------------------------------------------------------
+	static bool DirectoryExists(const string& dir)
+	{
+#ifdef __APPLE__
+		
+		struct stat sb;
+		if (stat(dir.c_str(), &sb) == 0) {
+			return S_ISDIR(sb.st_mode); 
+		}
+
+		return false; 
+#endif
+
+#ifdef _WIN32
+	DWORD ftyp = GetFileAttributesA(dir.c_str()); 
+	if (ftyp == INVALID_FILE_ATTRIBUTES) {
+		return false; 
+	}
+
+	if(ftyp & FILE_ATTRIBUTE_DIRECTORY) {
+		return true; 
+	}
+
+	return false; 
+#endif
 	}
 
 
