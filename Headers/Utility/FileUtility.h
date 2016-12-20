@@ -96,6 +96,34 @@ namespace FileUtility
 #endif
 	}
 
+	//-------------------------------------------------------------------------------------------
+	// Name: FileExists
+	// Desc: 
+	//-------------------------------------------------------------------------------------------
+	static bool FileExists(const string& filename) 
+	{
+
+#ifdef __APPLE__
+		struct stat sb;
+		return (stat(filename.c_str(), &sb) == 0); 
+#endif	
+
+
+#ifdef _WIN32
+		DWORD ftyp = GetFileAttributesA(filename.c_str()); 
+		if (ftyp == INVALID_FILE_ATTRIBUTES) {
+			return false; 
+		}
+
+		// could support FILE_ATTRIBUTE_READONLY ???
+		if(ftyp & FILE_ATTRIBUTE_NORMAL) {
+			return true; 
+		}
+
+		return false; 
+#endif	
+
+	}
 
 }
 

@@ -27,7 +27,6 @@ PlayerSpaceshipAction::PlayerSpaceshipAction(IStage* stage) : IAction(stage)
 	//
 	SpaceGameEntityConstructor::ConstructPlayerSpaceShip(this->GetParentStage()->GetComponentRepository(), spaceShipGraphicResId, Vector2D(this->width / 2.0f, this->height - 60));
 
-
 	//
 	// Event Handlers
 	//

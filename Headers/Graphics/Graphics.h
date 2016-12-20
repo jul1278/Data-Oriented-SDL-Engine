@@ -9,11 +9,13 @@
 #include "Components/TransformComponent.h"
 #include "Graphics/GraphicsUtility.h"
 #include "Components/Repository/CComponentCollectionFwd.h"
+#include "Utility/FileUtility.h"
 
 #include <vector>
 #include <list>
 #include <unordered_map>
 #include <string>
+#include <memory>
 
 const int NO_RENDER = 0; 
 
@@ -46,7 +48,7 @@ private:
 	int GetNextResourceId() { return ++resourceId; }
 
     unordered_map<int, IGraphicsResource*> graphicsResourceMap;
-    unordered_map<string, SDL_Surface*> resourceSurfaceMap;
+    unordered_map<string, shared_ptr<SDL_Surface>> resourceSurfaceMap;
 
 	list<string> consoleMessages; 
 

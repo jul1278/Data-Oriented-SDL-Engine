@@ -116,7 +116,9 @@ Graphics::Graphics(int windowWidth, int windowHeight, std::string appName)
 
 	cout << "TTF_Init() success." << endl; 
 
-	this->consoleFont = TTF_OpenFont("Resources//Anonymous_Pro.ttf", 10);
+	if(FileUtility::FileExists("Resources//Anonymous_Pro.ttf")) {
+		this->consoleFont = TTF_OpenFont("Resources//Anonymous_Pro.ttf", 10);
+	}
 
 	cout << "TTF_OpenFont() success." << endl; 
 }
@@ -130,14 +132,11 @@ Graphics::~Graphics()
 		delete camera; 
 	}
 
-    // Free the surfaces
-    for (std::pair<std::string, SDL_Surface*> resourceSurfaceMapElement : this->resourceSurfaceMap ) {
-        SDL_FreeSurface(resourceSurfaceMapElement.second);
-    }
-
-    for (std::pair<int, IGraphicsResource*> graphicsResourcePair : this->graphicsResourceMap) {
+    for (auto graphicsResourcePair : this->graphicsResourceMap) {
         delete graphicsResourcePair.second; 
     }
+
+	// Note that we dont need to delete our resource surface map because the shared_ptr will handle it.
 
     SDL_DestroyWindow(this->window);
     SDL_FreeSurface(this->sdlSurface);
@@ -170,7 +169,6 @@ SDL_Surface* Graphics::LoadSurface(std::string filename, SDL_PixelFormat* format
 		SDL_FreeSurface(loadedSurface);
 	}
 
-	
 	return optimizedSurface;
 }
 //------------------------------------------------------------------------------------
@@ -179,31 +177,30 @@ SDL_Surface* Graphics::LoadSurface(std::string filename, SDL_PixelFormat* format
 //------------------------------------------------------------------------------------
 int Graphics::LoadGraphicResource(std::string fileName)
 {
-	// TODO: validate file exists
+	if(!FileUtility::FileExists(fileName)) {
+		return -1;
+	}
 
-	SDL_Surface* surface = nullptr;
+	weak_ptr<SDL_Surface> surface;
 
-		//Check if we've already loaded this resource otherwise load it
+	//Check if we've already loaded this resource otherwise load it
 	if (this->resourceSurfaceMap.find(fileName) != this->resourceSurfaceMap.end()) {
 		surface = this->resourceSurfaceMap[fileName]; 
 	
 	} else {
+		
+		auto freeBehaviour = [](SDL_Surface* s){ SDL_FreeSurface(s);};
 
-		surface = this->LoadSurface(fileName, this->sdlSurface->format);
-		this->resourceSurfaceMap[fileName] = surface; 	
+		this->resourceSurfaceMap[fileName] = shared_ptr<SDL_Surface>(this->LoadSurface(fileName, this->sdlSurface->format), freeBehaviour);
+		surface = this->resourceSurfaceMap[fileName];
 	}
 
-    if (surface != nullptr) {
+	auto id = GetNextResourceId();
+	auto spriteGraphicsResource = new SpriteGraphicsResource(surface);
 
-        auto id = GetNextResourceId();
-        auto spriteGraphicsResource = new SpriteGraphicsResource(surface);
+	this->graphicsResourceMap[id] = spriteGraphicsResource;
 
-        this->graphicsResourceMap[id] = spriteGraphicsResource;
-
-		return id;
-    }
-
-    return -1;
+	return id;
 }
 //------------------------------------------------------------------------------------
 // Name: AddGraphicsResource
@@ -324,7 +321,10 @@ void Graphics::UpdateGraphics(Repository::ComponentCollection<GraphicsComponent>
 		auto transformComponent = find_if(transformComponents.begin(), transformComponents.end(), [id](const TransformComponent& t) {return t.id == id; });
 
 		auto graphicsResource = this->graphicsResourceMap[graphicsComponent.resourceId];
-		graphicsResource->Render(this->renderer, &(*transformComponent));
+
+		if (graphicsResource != nullptr) {
+			graphicsResource->Render(this->renderer, &(*transformComponent));
+		}
 	}
 }
 //------------------------------------------------------------------------------------
@@ -342,7 +342,6 @@ void Graphics::UpdateGraphics(Repository::ComponentCollection<GraphicsComponent>
 		
 		auto id = graphicsComponent.transformComponentId;
 		auto transformComponent = find_if(transformComponents.begin(), transformComponents.end(), [id](const TransformComponent& t) {return t.id == id; });
-
 
 		auto graphicsResource = this->graphicsResourceMap[graphicsComponent.resourceId];
 		graphicsResource->Render(this->renderer, &(*transformComponent), parent);

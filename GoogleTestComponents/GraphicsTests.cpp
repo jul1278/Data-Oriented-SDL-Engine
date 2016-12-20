@@ -86,7 +86,7 @@ TEST(GraphicsTests, TestShapes)
 	graphics->AddGraphicsResource(new CircleOutlineGraphicsResource(40.0f, 10.0f, Color(Color::DarkCyan)));
 	graphics->AddGraphicsResource(new GridGraphicsResource(15.0f, 5, 5, Color(Color::DeepPink)));
 	
-	auto graphicId = graphics->LoadGraphicResource("//Resources//space_ship.png"); 
+	auto graphicId = graphics->LoadGraphicResource("Resources//space_ship.png"); 
 	
 	graphics->AddGraphicsResource(new TextGraphicsResource("Red Hello World!", 20, Color(Color::IndianRed), "//Resources//Anonymous_Pro.ttf"));
 	graphics->AddGraphicsResource(new TextGraphicsResource("HIROSH", 20, Color(Color::Gold), "//Resources//HIROSHT.ttf"));
