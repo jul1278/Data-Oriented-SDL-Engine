@@ -117,7 +117,7 @@ TEST(SerializationTest, DeserializeTransformComponent)
 //-----------------------------------------------------------------
 TEST(SerializationTest, DeserializeXmlToComponent)
 {
-    EXPECT_TRUE(FileUtility::DirectoryExists("xml"));
+    ASSERT_TRUE(FileUtility::DirectoryExists("Resources//xml"));
 
     shared_ptr<Graphics> graphics(nullptr); 
     shared_ptr<ComponentRepository> componentRepository(new ComponentRepository("Test")); 
@@ -125,7 +125,7 @@ TEST(SerializationTest, DeserializeXmlToComponent)
     ParseContext parseContext(componentRepository, graphics); 
 
     TransformComponent transformComponent; 
-    XmlDocument xml("xml/transformComponent.xml"); 
+    XmlDocument xml("Resources//xml//transformComponent.xml"); 
 
     auto namedValues = SerialUtility::XmlDocumentToNamedValues(xml); 
     auto namedValue = namedValues.front(); 
@@ -195,12 +195,7 @@ TEST(SerializationTest, LoadGameStateFromDirectory)
 //-----------------------------------------------------------------
 TEST(SerializationTest, FilesInDirectory)
 {
-    auto files = FileUtility::DirectoryContents("./"); 
-    auto xmlFiles = FileUtility::DirectoryContents("./", "xml"); 
-
-    for (auto file : files) {
-        cout << file << " "; 
-    }
+    auto xmlFiles = FileUtility::DirectoryContents("Resources//xml//", "xml"); 
 
     cout << endl << "XML Files: ";
 

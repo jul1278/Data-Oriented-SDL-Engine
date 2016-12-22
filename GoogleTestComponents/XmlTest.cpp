@@ -140,8 +140,7 @@ TEST(XmlTests, ExtractNameStrings)
 //----------------------------------------------------------------
 TEST(XmlTests, XmlReadSimpleDocument)
 {	
-	//auto xmlDoc = XmlDocument("/Users/P/Documents/Projects/SimpleComponents/Build/test1.xml"); 
-	auto xmlDoc = XmlDocument("test1.xml"); 
+	auto xmlDoc = XmlDocument("Resources//xml//test1.xml"); 
 	auto tags = xmlDoc.Tags(); 
 
 	ASSERT_EQ(tags.size(), 2);
@@ -176,7 +175,7 @@ TEST(XmlTests, XmlReadSimpleDocument)
 //------------------------------------------------------------------
 TEST(XmlTests, XmlToNamedValues)
 {
-	auto xmlDoc = XmlDocument("test1.xml"); 
+	auto xmlDoc = XmlDocument("Resources//xml//test1.xml"); 
 	auto namedValues = SerialUtility::XmlDocumentToNamedValues(xmlDoc);
 }
 //----------------------------------------------------------------
@@ -185,7 +184,7 @@ TEST(XmlTests, XmlToNamedValues)
 //----------------------------------------------------------------
 TEST(XmlTests, XmlReadOpenCloseTagsOnSameLine)
 {	
-	auto xmlDoc = XmlDocument("CloseTagOnOneLine.xml"); 
+	auto xmlDoc = XmlDocument("Resources//xml//CloseTagOnOneLine.xml"); 
 	auto tags = xmlDoc.Tags(); 
 
 	auto tag = tags.front(); 
