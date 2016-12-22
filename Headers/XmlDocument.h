@@ -17,20 +17,25 @@
 
 using namespace std; 
 
-// XmlTag
+//------------------------------------------------------------------
+// Name: XmlTag
+//------------------------------------------------------------------
 struct XmlTag
 {
 	weak_ptr<XmlTag> parent;
 	list<XmlTag> children; 
+	unordered_map<string, string> attributes; 
 
 	string name; 
-
-	unordered_map<string, string> attributes; 
+	string content;
 
 	bool closeTag;
 
+	//------------------------------------------------------------------
+	// Name: XmlTag
+	// Desc:
+	//------------------------------------------------------------------
 	XmlTag() {}
-
 	XmlTag(const XmlTag& xmlTag) 
 	{
 		this->parent = xmlTag.parent; 
@@ -41,14 +46,16 @@ struct XmlTag
 
 		this->name = xmlTag.name; 
 		this->attributes = xmlTag.attributes; 
-		this->closeTag = xmlTag.closeTag;  
+		this->closeTag = xmlTag.closeTag;
+		this->content = xmlTag.content;   
 	}
 };
 
-//
+//------------------------------------------------------------------
+// Name: XmlDocument
+//------------------------------------------------------------------
 class XmlDocument
 {	
-
 	list<XmlTag> tags; 
 
 public:
@@ -57,7 +64,7 @@ public:
 	// Name: Filter
 	// Desc: removes filterChar from specified string
 	//-----------------------------------------------------------------------
-	static string Filter(const string& str, char filterChar)
+	static string Filter(const string& str, const char filterChar)
 	{
 		string result;
 
@@ -74,32 +81,74 @@ public:
 	// Name: Split
 	// Desc: split a string based on given vector of chars, splitting chars
 	//       are included in final string so:
-	//  "<a><b></b></a>" split by '<' and '>' becomes {"<a>", "<b>", "</b>", "</a>"}
+	//  "<a><b></b></a>" split by '<' and '>' -> {"<", "a", ">", "<", "b", ">", "<" "/b", ">", "<" "/a", ">"}
 	//-----------------------------------------------------------------------
-	static list<string> Split(const string& text, const vector<char>& splitChars)
+	static list<string> SplitToElements(const string& text)
 	{
+		const char openChar = '<';
+		const char closeChar = '>'; 
+		const char whitespaceChar = ' '; 
+
+		bool expectClose = false; 
+
 		list<string> strings; 
 		string currString;
 
-		for (auto i = 0; i < text.length(); i++) {
-			if (currString.empty() && text[i] != ' ') {
-				currString += text[i];				
-			
-			} else if (!currString.empty()) {
+		// TODO: could make an unordered_set out of spitChars vector
 
-				currString += text[i];
+		for (auto c : text) {
+			
+			// skip whitespace at the beginning
+			if (currString.empty() && c == whitespaceChar) {
+				continue; 
 			}
 
-		
-			auto result = find(splitChars.begin(), splitChars.end(), text[i]);
+			// open char <
+			if (c == openChar) {
 
-			if (result != splitChars.end()) {
-
-				if (currString.size() > 1) {
-						
-					strings.push_back(currString); 
-					currString.clear(); 					
+				if (expectClose) {
+					
+					// error 
+					throw new invalid_argument("Expecting close tag character '>' but encountered '<' opening character."); 
 				}
+
+				expectClose = true; 
+
+				if (!currString.empty()) {
+					
+					// current string is finished
+					strings.push_back(currString); 
+					currString.clear(); 
+				}
+
+				currString += c;
+			} 
+			// closing char >
+			else if (c == closeChar) {
+
+				if (!expectClose) {
+
+					// error 
+					throw new invalid_argument("Expecting open tag character '<' but encountered '>' closing character.");
+				}
+
+				expectClose = false; 
+
+				if (currString.empty()) {
+					
+					// error 
+					throw new invalid_argument("Unexpected character '>' here."); 
+
+				} else {
+
+					currString += c; 
+
+					strings.push_back(currString); 
+					currString.clear(); 
+				}
+			} else {
+
+				currString += c;
 			}
 		}
 
@@ -111,7 +160,7 @@ public:
 	// Desc: split a string into a list of strings by given character
 	//       split character is not included in final string.
 	//--------------------------------------------------------------
-	static list<string> Split(const string& text, char splitChar)
+	static list<string> Split(const string& text, const char splitChar)
 	{
 		list<string> splitStrings; 
 		string currString; 
@@ -143,7 +192,7 @@ public:
 	//       name="Name" a="b" c="abc" -> "Name", "b", "abc"
 	// 
 	//-------------------------------------------------------------
-	static list<string> ExtractValueStrings(const string& text, char separator = '\"')
+	static list<string> ExtractValueStrings(const string& text, const char separator = '\"')
 	{
 		list<string> values; 
 		string currentValue; 
@@ -171,7 +220,7 @@ public:
 	// Name: ExtractNameStrings 
 	// Desc: extract names from text
 	//-------------------------------------------------------------
-	static list<string> ExtractNameStrings(const string& text, char separator = '\"')
+	static list<string> ExtractNameStrings(const string& text, const char separator = '\"')
 	{
 		list<string> names; 
 		string currentName; 
@@ -181,7 +230,7 @@ public:
 		for(auto c : text) {
 
 			// if we've found a separator or we're inside a sep
-			if ((c == separator && name == true)) {
+			if (c == separator && name == true) {
 
 				if (!currentName.empty()) {
 					names.push_back(currentName); 
@@ -220,6 +269,16 @@ public:
 		trimmedString = str.substr(firstNotOf, lastNotOf - firstNotOf + 1); 
 		return trimmedString; 
 	}	
+
+	//-------------------------------------------------------------
+	// Name: TrimTrailingWhitespace
+	// Desc: Removes trailing whitespace
+	//-------------------------------------------------------------
+	static string TrimTrailingWhitespace(const string& str)
+	{
+		auto lastNotOf = str.find_last_not_of(' ');
+		return str.substr(0, lastNotOf + 1); 
+	}
 
 	//--------------------------------------------------------------
 	// Name: ToXmlTag
@@ -263,9 +322,8 @@ public:
 			auto values = ExtractValueStrings(innerTextNameRemoved); 
 
 			if (names.size() == values.size()) {
-				
-				//
 				auto valueIter = values.begin(); 
+
 				for(auto nameIter = names.begin(); nameIter != names.end() && valueIter != values.end(); nameIter++) {
 
 					tag.attributes[*nameIter] = *valueIter; 
@@ -318,6 +376,14 @@ public:
 		stack<XmlTag> tagStack; 
 
 		for(auto token : tokens) {
+
+			// is this tag content
+			if (token.find_first_of("<") != 0) {
+				auto& topTag = tagStack.top(); 
+				topTag.content = token; 
+
+				continue; 
+			}
 
 			auto tag = ToXmlTag(token); 
 
@@ -378,7 +444,6 @@ public:
 					fileContent += c; 	
 				
 				} else {
-
 					break; 
 				}
 			}
@@ -387,8 +452,7 @@ public:
 			replace(fileContent.begin(), fileContent.end(), '\n', ' ');
 			replace(fileContent.begin(), fileContent.end(), '\t', ' ');
 
-			vector<char> splitChars = {'<','>'};
-			auto tokens = XmlDocument::Split(fileContent, splitChars); 
+			auto tokens = XmlDocument::SplitToElements(fileContent); 
 			this->tags = XmlDocument::ToDocument(tokens); 	
 		}
 

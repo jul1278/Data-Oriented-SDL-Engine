@@ -41,9 +41,7 @@ void PrintTags(list<XmlTag> tags, int depth)
 TEST(XmlTests, StringSplit)
 {
 	auto xml = "<a><b><c></c></b></a>    ";
-	vector<char> splitChars = {'<', '>'};
-
-	auto split = XmlDocument::Split(xml, splitChars); 
+	auto split = XmlDocument::SplitToElements(xml); 
 	list<string> expectedResults = {"<a>","<b>","<c>","</c>","</b>","</a>"}; 
 
 	EXPECT_EQ(expectedResults, split);
@@ -146,13 +144,31 @@ TEST(XmlTests, XmlReadSimpleDocument)
 	auto xmlDoc = XmlDocument("test1.xml"); 
 	auto tags = xmlDoc.Tags(); 
 
-	auto tag = tags.front(); 
+	ASSERT_EQ(tags.size(), 2);
 
-	//EXPECT_EQ(tags.size(), 1); 
-	//EXPECT_EQ(tag.name, "GraphicsComponent"); 
-	//EXPECT_EQ(tag.children.size(), 1); 
-	cout << "Printing xml structure..." << endl;
-	PrintTags(tags, 0);
+	auto entity1Tag = tags.front(); 
+	auto entity2Tag = tags.back();
+
+	auto graphicsComponentSquareTag = entity1Tag.children.front();
+	auto physicsComponentPhysicsTag = entity1Tag.children.back(); 
+
+	auto transformTagSquareTransform = graphicsComponentSquareTag.children.front();
+	auto resourcesTag = graphicsComponentSquareTag.children.back();
+
+	auto entity2GraphicsComponentTag = entity2Tag.children.front(); 
+	auto entity2ResourceTag = entity2GraphicsComponentTag.children.back(); 
+
+	EXPECT_EQ(entity1Tag.attributes["name"], "entity1");
+	EXPECT_EQ(entity2Tag.attributes["name"], "entity2");
+
+	EXPECT_EQ(graphicsComponentSquareTag.attributes["name"], "square");
+	EXPECT_EQ(physicsComponentPhysicsTag.attributes["name"], "physics");
+
+	EXPECT_EQ(transformTagSquareTransform.attributes["name"], "squareTransform");
+	EXPECT_EQ(resourcesTag.name, "Resource");
+	
+	// 2 top level tags
+	EXPECT_EQ(tags.size(), 2); 
 }
 //------------------------------------------------------------------
 // Name: 
@@ -163,7 +179,32 @@ TEST(XmlTests, XmlToNamedValues)
 	auto xmlDoc = XmlDocument("test1.xml"); 
 	auto namedValues = SerialUtility::XmlDocumentToNamedValues(xmlDoc);
 }
+//----------------------------------------------------------------
+// Name: XmlReadOpenCloseTagsOnSameLine
+// Desc:
+//----------------------------------------------------------------
+TEST(XmlTests, XmlReadOpenCloseTagsOnSameLine)
+{	
+	auto xmlDoc = XmlDocument("CloseTagOnOneLine.xml"); 
+	auto tags = xmlDoc.Tags(); 
 
+	auto tag = tags.front(); 
+
+	EXPECT_EQ(tags.size(), 1); 
+	EXPECT_EQ(tag.content, "Hello World"); 
+}
+//----------------------------------------------------------------
+// Name: XmlReadOpenCloseTagsOnSameLine
+// Desc:
+//----------------------------------------------------------------
+TEST(XmlTests, TrimTrailingWhitespace)
+{
+	auto result = XmlDocument::TrimTrailingWhitespace("Hello world   ");
+	auto result2 = XmlDocument::TrimTrailingWhitespace("Hello world");
+	
+	EXPECT_EQ(result, string("Hello world"));
+	EXPECT_EQ(result2, string("Hello world"));
+}
 
 
 

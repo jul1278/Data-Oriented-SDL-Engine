@@ -5,7 +5,7 @@
 			<Orientation x="10.0" y="10.0"/>
 			<Scale x="10.0" y="10.0"/>
 		</TransformComponent>
-		<Resource path="Resources/Sprites/sprite.png"/>
+		<Resource path="Resources/Sprites/sprite.png"></Resource>
 	</GraphicsComponent>
 
 	<PhysicsComponent name="physics">
@@ -20,7 +20,7 @@
 			<Orientation x="10.0" y="10.0"/>
 			<Scale x="10.0" y="10.0"/>
 		</TransformComponent>
-		<Resource path="Resources/Sprites/sprite.png"/>
+		<Resource>Resources/Sprites/sprite.png</Resource>
 	</GraphicsComponent>
 
 	<PhysicsComponent name="physics">
