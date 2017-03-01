@@ -10,6 +10,7 @@
 #include <list>
 #include <math.h>
 #include <random>
+#include <algorithm>
 
 using namespace std;
 
@@ -62,6 +63,54 @@ namespace MathUtility
 	{
 		Vector2D v = Vector2D(vector.x*cosf(angle) + vector.y*sinf(angle), -vector.x*sinf(angle) + vector.y*cosf(angle)); 
 		return v; 
+	}
+	//---------------------------------------------------------------------------
+	// Name: RandInt
+	// Desc: returns a random integer from an interval
+	//---------------------------------------------------------------------------
+	static int RandInt(int left, int right, int step = 1) 
+	{ 
+
+		if (left > right)
+			swap(left, right);
+	
+		if (step <= 0 || left == right || abs(left) + abs(right) < step)
+			return left;
+	
+		int aright = abs(right);
+		int aleft = abs(left);
+	
+		if (aleft > aright)
+			swap(aleft, aright);
+	
+		int r = 1;
+		int c = 0;
+	
+		if (right <= 0 || left >= 0) {
+			left >= 0 ? r = 1 : r = -1;
+			r *= rand() % (aright - aleft) + aleft;
+		}
+		else {
+			aright += aleft;
+			aleft = 0;
+			r *= rand() % (aright - aleft) - abs(left);
+			c = abs(left);
+		}
+	
+		r += c;
+	
+		if (rand() % 2) {
+			r = (r / step) * step;
+			r = max(r, left);
+		}
+		else {
+			r = (r / step + 1) * step;
+			r = min(r, right + c);
+		}
+	
+		r -= c;
+	
+		return r;
 	}
 };
 
