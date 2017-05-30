@@ -94,7 +94,10 @@ Graphics::Graphics(int windowWidth, int windowHeight, std::string appName)
     // init sdl image
     int imgFlags = IMG_INIT_PNG;
     if (!(IMG_Init(imgFlags) & imgFlags)) {
-		std::cout << IMG_GetError() << std::endl; 
+		auto error = IMG_GetError();
+
+		std::cout << error << std::endl; 
+
         SDL_DestroyWindow(window);
         SDL_DestroyRenderer(renderer);
         SDL_Quit();

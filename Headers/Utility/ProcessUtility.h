@@ -13,7 +13,7 @@
 #endif // __APPLE__
 
 #ifdef _WIN32
-#include <Windows.h>
+	#include <Windows.h>
 #endif
 
 using namespace std;
@@ -38,8 +38,15 @@ namespace ProcessUtility
 
 #endif // __APPLE__
 
-        return "";
+#ifdef _WIN32
+		char buffer[MAX_PATH];
+		GetModuleFileName(NULL, buffer, MAX_PATH);
+		string workingDir(buffer);
+        return workingDir;
+
+#endif
     }
+
 };
 
 #endif // PROCESS_UTILITY_H

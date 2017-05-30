@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{23EAACA4-1914-4780-B919-1DD4095F5903}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <LibraryPath>C:\Julian\lib\SDL2-2.0.5-win32-x86\lib\x86;C:\Julian\lib\SDL2_ttf-2.0.14\lib\x86;C:\Julian\lib\SDL2_image-2.0.1\lib\x86;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.14393.0\ucrt\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);C:\Program Files (x86)\Windows Kits\10\Include\10.0.14393.0\ucrt;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>C:\Julian\lib\SDL2-2.0.5-win32-x86\include;C:\Julian\lib\SDL2_ttf-2.0.14\include;C:\Julian\lib\SDL2_image-2.0.1\include;C:\Julian\SimpleComponents\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalDependencies>SDL2_image.lib;SDL2_ttf.lib;SDL2.lib;SDL2main.lib	;Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\source\components\ComponentCollection.cpp" />
+    <ClCompile Include="..\source\components\ComponentContainerFactory.cpp" />
+    <ClCompile Include="..\source\components\ComponentRepository.cpp" />
+    <ClCompile Include="..\source\events\SDLEventCollector.cpp" />
+    <ClCompile Include="..\source\graphics\BubbleGraphicsResource.cpp" />
+    <ClCompile Include="..\source\graphics\Camera.cpp" />
+    <ClCompile Include="..\source\graphics\Graphics.cpp" />
+    <ClCompile Include="..\source\graphics\RectGraphicsResource.cpp" />
+    <ClCompile Include="..\source\main.cpp" />
+    <ClCompile Include="..\source\physics\Physics.cpp" />
+    <ClCompile Include="..\source\snakegame\SnakeAction.cpp" />
+    <ClCompile Include="..\source\snakegame\SnakeGameApp.cpp" />
+    <ClCompile Include="..\source\snakegame\SnakeGameMenuStage.cpp" />
+    <ClCompile Include="..\source\snakegame\SnakeGameStage.cpp" />
+    <ClCompile Include="..\source\spacegame\PlayerSpaceshipAction.cpp" />
+    <ClCompile Include="..\source\spacegame\SpaceGameApp.cpp" />
+    <ClCompile Include="..\source\spacegame\SpaceGameMenuStage.cpp" />
+    <ClCompile Include="..\source\utility\SerialUtility.cpp" />
+    <ClCompile Include="..\source\XmlDocument.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\headers\actions\IAction.h" />
+    <ClInclude Include="..\headers\actions\SimpleButtonAction.h" />
+    <ClInclude Include="..\headers\components\AISimpleGoalComponent.h" />
+    <ClInclude Include="..\headers\components\BaseComponent.h" />
+    <ClInclude Include="..\headers\components\CollisionComponent.h" />
+    <ClInclude Include="..\headers\components\Component.h" />
+    <ClInclude Include="..\headers\components\GraphicsComponent.h" />
+    <ClInclude Include="..\headers\components\IntersectionComponent.h" />
+    <ClInclude Include="..\headers\components\PhysicsComponent.h" />
+    <ClInclude Include="..\headers\components\repository\CComponentCollection.h" />
+    <ClInclude Include="..\headers\components\repository\CComponentCollectionFwd.h" />
+    <ClInclude Include="..\headers\components\repository\ComponentCollection.h" />
+    <ClInclude Include="..\headers\components\repository\ComponentCollectionIterator.h" />
+    <ClInclude Include="..\headers\components\repository\ComponentCollectionRepository.h" />
+    <ClInclude Include="..\headers\components\repository\ComponentContainerFactory.h" />
+    <ClInclude Include="..\headers\components\repository\ComponentRepository.h" />
+    <ClInclude Include="..\headers\components\repository\ComponentStore.h" />
+    <ClInclude Include="..\headers\components\repository\Entity.h" />
+    <ClInclude Include="..\headers\components\repository\IComponentContainer.h" />
+    <ClInclude Include="..\headers\components\repository\VectorContainer.h" />
+    <ClInclude Include="..\headers\components\SimpleButtonComponent.h" />
+    <ClInclude Include="..\headers\components\SimpleStateComponent.h" />
+    <ClInclude Include="..\headers\components\TransformComponent.h" />
+    <ClInclude Include="..\headers\components\VelocityComponent.h" />
+    <ClInclude Include="..\headers\demos\cameratest\CameraTestApp.h" />
+    <ClInclude Include="..\headers\demos\cameratest\CameraTestStage.h" />
+    <ClInclude Include="..\headers\demos\snakegame\FoodAction.h" />
+    <ClInclude Include="..\headers\demos\snakegame\SnakeAction.h" />
+    <ClInclude Include="..\headers\demos\snakegame\SnakeEatFoodTask.h" />
+    <ClInclude Include="..\headers\demos\snakegame\SnakeEatSelfTask.h" />
+    <ClInclude Include="..\headers\demos\snakegame\SnakeGameApp.h" />
+    <ClInclude Include="..\headers\demos\snakegame\SnakeGameMenuStage.h" />
+    <ClInclude Include="..\headers\demos\snakegame\SnakeGameStage.h" />
+    <ClInclude Include="..\headers\demos\spacegame\AsteroidAction.h" />
+    <ClInclude Include="..\headers\demos\spacegame\BackgroundStarsAction.h" />
+    <ClInclude Include="..\headers\demos\spacegame\PlayerSpaceshipAction.h" />
+    <ClInclude Include="..\headers\demos\spacegame\SpaceGameAction.h" />
+    <ClInclude Include="..\headers\demos\spacegame\SpaceGameApp.h" />
+    <ClInclude Include="..\headers\demos\spacegame\SpaceGameEntityConstructor.h" />
+    <ClInclude Include="..\headers\demos\spacegame\SpaceGameMenuStage.h" />
+    <ClInclude Include="..\headers\demos\spacegame\SpaceGameStage.h" />
+    <ClInclude Include="..\headers\events\ButtonEventArgs.h" />
+    <ClInclude Include="..\headers\events\CollisionEventArgs.h" />
+    <ClInclude Include="..\headers\events\EventObserveable.h" />
+    <ClInclude Include="..\headers\events\ExitBoundsEventArgs.h" />
+    <ClInclude Include="..\headers\events\IComponentProcess.h" />
+    <ClInclude Include="..\headers\events\IEventArgs.h" />
+    <ClInclude Include="..\headers\events\IntersectionEventArgs.h" />
+    <ClInclude Include="..\headers\events\ITaskEvent.h" />
+    <ClInclude Include="..\headers\events\MouseButtonEventArgs.h" />
+    <ClInclude Include="..\headers\events\MouseMotionEventArgs.h" />
+    <ClInclude Include="..\headers\events\QuitApplicationEventArgs.h" />
+    <ClInclude Include="..\headers\events\SDLEventCollector.h" />
+    <ClInclude Include="..\headers\events\TaskEvent.h" />
+    <ClInclude Include="..\headers\game\GameStateLoader.h" />
+    <ClInclude Include="..\headers\game\IGameApp.h" />
+    <ClInclude Include="..\headers\game\IStage.h" />
+    <ClInclude Include="..\headers\game\ParseContext.h" />
+    <ClInclude Include="..\headers\game\Parser.h" />
+    <ClInclude Include="..\headers\graphics\BubbleGraphicsResources.h" />
+    <ClInclude Include="..\headers\graphics\Camera.h" />
+    <ClInclude Include="..\headers\graphics\CircleFIllGraphicsResource.h" />
+    <ClInclude Include="..\headers\graphics\CircleOutlineGraphicsResource.h" />
+    <ClInclude Include="..\headers\graphics\Color.h" />
+    <ClInclude Include="..\headers\graphics\EnemyTriangleGraphicsResource.h" />
+    <ClInclude Include="..\headers\graphics\Graphics.h" />
+    <ClInclude Include="..\headers\graphics\GraphicsUtility.h" />
+    <ClInclude Include="..\headers\graphics\GridGraphicsResource.h" />
+    <ClInclude Include="..\headers\graphics\IGraphicsResource.h" />
+    <ClInclude Include="..\headers\graphics\ITransform.h" />
+    <ClInclude Include="..\headers\graphics\MouseCameraTransform.h" />
+    <ClInclude Include="..\headers\graphics\ProceduralAsteroidGraphicsResource.h" />
+    <ClInclude Include="..\headers\graphics\RectGraphicsResource.h" />
+    <ClInclude Include="..\headers\graphics\SpriteGraphicsResource.h" />
+    <ClInclude Include="..\headers\graphics\StarGraphicsResource.h" />
+    <ClInclude Include="..\headers\graphics\TextGraphicsResource.h" />
+    <ClInclude Include="..\headers\graphics\TriangleGraphicsResource.h" />
+    <ClInclude Include="..\headers\physics\CollisionPhysicsTask.h" />
+    <ClInclude Include="..\headers\physics\ExitBoundsTask.h" />
+    <ClInclude Include="..\headers\physics\IntersectionTask.h" />
+    <ClInclude Include="..\headers\physics\IPhysicsTask.h" />
+    <ClInclude Include="..\headers\physics\Physics.h" />
+    <ClInclude Include="..\headers\physics\VelocityTask.h" />
+    <ClInclude Include="..\headers\utility\DebugUtility.h" />
+    <ClInclude Include="..\headers\utility\FileUtility.h" />
+    <ClInclude Include="..\headers\utility\LogUtility.h" />
+    <ClInclude Include="..\headers\utility\MathUtility.h" />
+    <ClInclude Include="..\headers\utility\ProcessUtility.h" />
+    <ClInclude Include="..\headers\utility\SerialUtility.h" />
+    <ClInclude Include="..\headers\utility\TypeUtility.h" />
+    <ClInclude Include="..\headers\utility\Vector.h" />
+    <ClInclude Include="..\headers\XmlDocument.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

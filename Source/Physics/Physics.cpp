@@ -4,6 +4,7 @@
 #include <Components/VelocityComponent.h>
 #include <Components/TransformComponent.h>
 #include <Components/PhysicsComponent.h>
+#include <cmath>
 
 //-------------------------------------------------------------------------------
 // Name: AddPhysicsTask

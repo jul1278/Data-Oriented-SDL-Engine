@@ -7,6 +7,8 @@
 #include <Actions/IAction.h>
 #include <Graphics/Graphics.h>
 
+#include <functional>
+#include <algorithm>
 #include <memory>
 
 class IGameApp; 

@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include <string>
 #include <exception>
+#include <functional>
 
 using namespace std;
 

@@ -49,6 +49,10 @@ struct XmlTag
 		this->closeTag = xmlTag.closeTag;
 		this->content = xmlTag.content;   
 	}
+
+	//bool TryGetValueAs(const string& name, float* value); 
+	//bool TryGetValueAs(const string& name, int* value);
+	//bool TryGetValueAs(const string& name, string* value);
 };
 
 //------------------------------------------------------------------

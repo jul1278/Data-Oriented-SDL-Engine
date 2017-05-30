@@ -13,6 +13,7 @@
 
 #ifdef _WIN32
 	#include <Windows.h>
+	#include "Shlwapi.h"
 #endif
 
 using namespace std;
@@ -100,30 +101,22 @@ namespace FileUtility
 	// Name: FileExists
 	// Desc: 
 	//-------------------------------------------------------------------------------------------
+#ifdef __APPLE__
 	static bool FileExists(const string& filename) 
 	{
-
-#ifdef __APPLE__
 		struct stat sb;
 		return (stat(filename.c_str(), &sb) == 0); 
+	}
 #endif	
-
 
 #ifdef _WIN32
-		DWORD ftyp = GetFileAttributesA(filename.c_str()); 
-		if (ftyp == INVALID_FILE_ATTRIBUTES) {
-			return false; 
-		}
+	static bool FileExists(string path)
+	{
 
-		// could support FILE_ATTRIBUTE_READONLY ???
-		if(ftyp & FILE_ATTRIBUTE_NORMAL) {
-			return true; 
-		}
-
-		return false; 
-#endif	
+		return PathFileExists(path.c_str());
 
 	}
+#endif
 
 }
 

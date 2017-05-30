@@ -43,8 +43,9 @@ public:
 
 		if (fontPath.empty()) {
             auto currentDir = ProcessUtility::CurrentApplicationDirectory();
-			this->font = TTF_OpenFont("Resources//Anonymous_Pro.ttf", fontSize);
+			//auto fileExists = FileUtility::FileExists("..\\Resources\\Anonymous_Pro.ttf"); 
 
+			this->font = TTF_OpenFont("..\\Resources\\Anonymous_Pro.ttf", fontSize);
 		} else {
 
 			auto font = fontPath;//"Resources//" + fontName + ".ttf";
