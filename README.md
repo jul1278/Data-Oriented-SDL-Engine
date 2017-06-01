@@ -8,23 +8,7 @@ If you'd like to know more about component based design, here's a few links to g
 # Build Instructions
 
 ### OSX
-
-Make sure you have the following libraries in your frameworks folder.
-
-- https://www.libsdl.org/download-2.0.php
-- https://www.libsdl.org/projects/SDL_image/
-- https://www.libsdl.org/projects/SDL_ttf/
-
-Clone the branch for osx_build (not the master one!) and navigate to the SimpleComponents folder. 
-
-```
-mkdir Build
-cd Build
-cmake ..
-```
-
-This *should* clone the latest google test, generate a makefile for the main project and test project. 
-Finally just run make to build the thing. 
+Go to the mac_build branch
 
 ### Windows
 Clone the windows_build branch.
