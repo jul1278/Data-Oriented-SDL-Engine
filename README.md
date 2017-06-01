@@ -27,11 +27,11 @@ include paths point to the right locations (SDL libs and .h files, GoogleTest li
 
 Finally you'll need to copy the following DLL's from the SDL lib folders so they are in the .exe output folder (I'd reccomend setting up a post build macro in vs)
 
-libfreetype-6.dll
-libpng16-16.dll
-SDL2.dll
-SDL2_image.dll
-SDL2_ttf.dll
+- libfreetype-6.dll
+- libpng16-16.dll
+- SDL2.dll
+- SDL2_image.dll
+- SDL2_ttf.dll
 
 # Contributing
 
