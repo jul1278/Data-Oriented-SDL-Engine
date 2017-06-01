@@ -38,7 +38,7 @@ void PerformanceTime(double testTime)
 	ifstream file(fileName);
 
     if (!file.good()) {
-		CreateDirectory(L"//PerformanceResults", nullptr);
+		CreateDirectory("//PerformanceResults", nullptr);
 
         		// create the file
 		ofstream newFile(fileName);

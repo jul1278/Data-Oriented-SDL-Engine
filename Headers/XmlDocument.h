@@ -433,8 +433,14 @@ public:
 		// fileStream.open(file, std::fstream::in);
 		
 		FILE* fp = nullptr;
-		fp = fopen(file.c_str(), "r");
 
+#ifdef _WIN32
+		auto err = fopen_s(&fp, file.c_str(), "r");
+
+		// TODO: check err
+#else
+		fp = fopen(file.c_str(), "r");
+#endif
 		if (fp != nullptr) {
 
 			string fileContent; 

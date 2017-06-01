@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\GameCpp">
+      <UniqueIdentifier>{99227111-22cf-4506-9f9d-c43b52c7984b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\GoogleTestComponents\ComponentCollectionIteratorTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GoogleTestComponents\ComponentCollectionRepositoryTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GoogleTestComponents\ComponentCollectionTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GoogleTestComponents\ComponentContainerTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GoogleTestComponents\ComponentRepositoryTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GoogleTestComponents\EventTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GoogleTestComponents\GraphicsTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GoogleTestComponents\MathUtilTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GoogleTestComponents\PerformanceTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GoogleTestComponents\PhysicsTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GoogleTestComponents\SDLEventTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GoogleTestComponents\SerializationTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GoogleTestComponents\VectorTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GoogleTestComponents\XmlTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Components\ComponentCollection.cpp">
+      <Filter>Source Files\GameCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Components\ComponentContainerFactory.cpp">
+      <Filter>Source Files\GameCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Components\ComponentRepository.cpp">
+      <Filter>Source Files\GameCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Graphics\BubbleGraphicsResource.cpp">
+      <Filter>Source Files\GameCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Graphics\Camera.cpp">
+      <Filter>Source Files\GameCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Graphics\Graphics.cpp">
+      <Filter>Source Files\GameCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Graphics\RectGraphicsResource.cpp">
+      <Filter>Source Files\GameCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Events\SDLEventCollector.cpp">
+      <Filter>Source Files\GameCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Physics\Physics.cpp">
+      <Filter>Source Files\GameCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utility\SerialUtility.cpp">
+      <Filter>Source Files\GameCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\XmlDocument.cpp">
+      <Filter>Source Files\GameCpp</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
