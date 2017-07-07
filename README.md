@@ -30,15 +30,4 @@ Finally just run make to build the thing.
 
 Can be fairly painlessly setup in visual studio, make sure you clone the windows_build branch. 
 
-# Future Plans
-- bunch of stuff is going to be re-written. (check the wiki)
-- Use Google test instead of the visual studio test
-- CMake build system for osx and windows
-- *Maybe* move to proper OpenGL
-
-# Contributing
-
-ok sure
-
-
 
