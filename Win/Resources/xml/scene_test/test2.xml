@@ -1,0 +1,24 @@
+<GraphicsComponent name="square_top_left">
+    <TransformComponent name="squareTransform_top_left">
+        <Position x="1.0" y="1.0"/>
+    </TransformComponent>
+    <Resource id=0/>
+</GraphicsComponent>
+<GraphicsComponent name="square_top_right">
+    <TransformComponent name="squareTransform_top_right">
+        <Position x="101.0" y="1.0"/>
+    </TransformComponent>
+    <Resource id=1/>
+</GraphicsComponent>
+<GraphicsComponent name="square_bottom_left">
+    <TransformComponent name="squareTransform_bottom_left">
+        <Position x="1.0" y="101.0"/>
+    </TransformComponent>
+    <Resource id=2/>
+</GraphicsComponent>
+<GraphicsComponent name="square_bottom_right">
+    <TransformComponent name="squareTransform_bottom_right">
+        <Position x="101.0" y="101.0"/>
+    </TransformComponent>
+    <Resource id=3/>
+</GraphicsComponent>

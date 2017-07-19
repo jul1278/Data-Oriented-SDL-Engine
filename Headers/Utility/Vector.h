@@ -69,7 +69,7 @@ public:
 		return !((*this) == rhs); 
 	}
 
-    float Length() const { return sqrt( x*x + y*y );}
+    float Length() const { return sqrtf( x*x + y*y );}
     float Angle() const { return atan2f(this->y, this->x); }
 
 };

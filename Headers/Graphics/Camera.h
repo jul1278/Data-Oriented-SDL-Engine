@@ -69,6 +69,8 @@ public:
 	}
 
 	void Render();
+
+	~Camera() {}
 };
 
 #endif // CAMERA_H

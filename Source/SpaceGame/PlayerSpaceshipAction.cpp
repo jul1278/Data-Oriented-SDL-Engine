@@ -1,6 +1,37 @@
 #include "Demos/SpaceGame/PlayerSpaceshipAction.h"
 #include "Graphics/Color.h"
+#include "Graphics/TextGraphicsResource.h"
 #include "Physics/VelocityTask.h"
+
+//-------------------------------------------------------------------------------------
+// Name: SpaceShipProjectile
+//-------------------------------------------------------------------------------------
+class SpaceShipProjectile
+{
+public:
+	SpaceShipProjectile(ComponentRepository* componentRepository, TransformComponent& playerTransform, unsigned int projectileGraphicResId)
+	{
+		auto entityId = componentRepository->GenerateId();
+
+		// Create the collection if it doesn't exist
+		if (!componentRepository->ContainsCollection("PlayerSpaceShipProjectiles")) {
+			componentRepository->NewCollection("PlayerSpaceShipProjectiles");
+		}
+
+		auto transformComponent = componentRepository->NewComponent<TransformComponent>("PlayerSpaceShipProjectiles", entityId);
+		auto graphicsComponent = componentRepository->NewComponent<GraphicsComponent>("PlayerSpaceShipProjectiles", entityId);
+		auto physicsComponent = componentRepository->NewComponent<PhysicsComponent>("PlayerSpaceShipProjectiles", entityId);
+
+		transformComponent->position = playerTransform.position;
+
+		graphicsComponent->transformComponentId = transformComponent->id;
+		physicsComponent->transformComponentId = transformComponent->id;
+
+		graphicsComponent->resourceId = projectileGraphicResId;
+		physicsComponent->velocity = Vector2D(0.0f, -8.0f);
+		physicsComponent->radius = 1.0f;
+	}
+};
 
 //-------------------------------------------------------------------------------------
 // Name: PlayerSpaceshipAction
@@ -9,11 +40,12 @@
 PlayerSpaceshipAction::PlayerSpaceshipAction(IStage* stage) : IAction(stage)
 {
 	auto graphics = stage->GetGameApp()->GetGraphics();
-
+	auto componentRepository = this->GetParentStage()->GetComponentRepository(); 
 	this->width = graphics->WindowWidth();
 	this->height = graphics->WindowHeight();
 	this->sdlEventCollector = new SDLEventCollector(this->width, this->height);
 
+	this->health = 10; 
 	this->moveCounter = 0;
 
 	//
@@ -25,13 +57,27 @@ PlayerSpaceshipAction::PlayerSpaceshipAction(IStage* stage) : IAction(stage)
 	//
 	// Construct entities
 	//
-	SpaceGameEntityConstructor::ConstructPlayerSpaceShip(this->GetParentStage()->GetComponentRepository(), spaceShipGraphicResId, Vector2D(this->width / 2.0f, this->height - 60));
+	SpaceGameEntityConstructor::ConstructPlayerSpaceShip(componentRepository, spaceShipGraphicResId, Vector2D(this->width / 2.0f, this->height - 60));
+
+	this->healthBarGraphic = new RectGraphicsResource(100.0f, 10.0f, Color(Color::Green)); 
+	auto healthBarId = graphics->AddGraphicsResource(healthBarGraphic);
+	
+	componentRepository->NewCollection("PlayerHealthBar"); 
+	auto transformComponent = componentRepository->NewComponent<TransformComponent>("PlayerHealthBar");
+	auto graphicsComponent = componentRepository->NewComponent<GraphicsComponent>("PlayerHealthBar");
+
+	graphicsComponent->transformComponentId = transformComponent->id; 
+	graphicsComponent->resourceId = healthBarId; 
+
+	transformComponent->position.x = 20.0f;
+	transformComponent->position.y = this->height - 20.0f; 
+	transformComponent->orientation = Vector2D(0.0f); 
 
 	//
 	// Event Handlers
 	//
-	auto buttonEventHandler = [this](const ButtonEventArgs& buttonEventArgs) { this->OnButtonEvent(buttonEventArgs); };
-	auto asteroidCollisionHandler = [this](const CollisionEventArgs& collisionEventArgs) {this->OnPlayerAsteroidCollision(collisionEventArgs); };
+	auto buttonEventHandler = [this] (const ButtonEventArgs& buttonEventArgs) { this->OnButtonEvent(buttonEventArgs); };
+	auto asteroidCollisionHandler = [this] (const CollisionEventArgs& collisionEventArgs) {this->OnPlayerAsteroidCollision(collisionEventArgs); };
 
 	this->sdlEventCollector->RegisterListener<ButtonEventArgs>(bind(buttonEventHandler, placeholders::_1));
 	this->sdlEventCollector->RegisterListener<QuitApplicationEventArgs>(bind(&PlayerSpaceshipAction::OnQuitApplication, this, placeholders::_1));
@@ -108,6 +154,7 @@ void PlayerSpaceshipAction::MoveSpaceShip(const ButtonEventArgs& buttonEventArgs
 		}
 	}
 }
+
 //-------------------------------------------------------------------------------------
 // Name: FireWeapon
 // Desc: 
@@ -116,29 +163,10 @@ void PlayerSpaceshipAction::FireWeapon(const ButtonEventArgs buttonEventArgs) co
 {
 	auto componentRepository = this->GetParentStage()->GetComponentRepository(); 
 	auto playerComponents = componentRepository->Select<TransformComponent>("PlayerSpaceShip"); 
-	auto playerTransform = playerComponents.front();
+	auto& playerTransform = playerComponents.front();
 
 	if (!buttonEventArgs.Released()) {
-
-		auto entityId = componentRepository->GenerateId();
-
-		// Create the collection if it doesn't exist
-		if (!componentRepository->ContainsCollection("PlayerSpaceShipProjectiles")) {
-			componentRepository->NewCollection("PlayerSpaceShipProjectiles"); 
-		}
-
-		auto transformComponent = componentRepository->NewComponent<TransformComponent>("PlayerSpaceShipProjectiles", entityId); 
-		auto graphicsComponent = componentRepository->NewComponent<GraphicsComponent>("PlayerSpaceShipProjectiles", entityId);
-		auto physicsComponent = componentRepository->NewComponent<PhysicsComponent>("PlayerSpaceShipProjectiles", entityId);
-
-		transformComponent->position = playerTransform.position; 
-
-		graphicsComponent->transformComponentId = transformComponent->id; 
-		physicsComponent->transformComponentId = transformComponent->id; 
-
-		graphicsComponent->resourceId = this->projectileGraphicResId; 
-		physicsComponent->velocity = Vector2D(0.0f, -8.0f); 
-		physicsComponent->radius = 1.0f; 
+		SpaceShipProjectile spaceShipProjectile(componentRepository, playerTransform, this->projectileGraphicResId); 
 	}
 }
 //-------------------------------------------------------------------------------------
@@ -173,11 +201,19 @@ void PlayerSpaceshipAction::OnButtonEvent(const ButtonEventArgs& buttonEventArgs
 //--------------------------------------------------------------------------------------
 void PlayerSpaceshipAction::OnPlayerAsteroidCollision(const CollisionEventArgs& collisionEventArgs)
 {
+	if (this->health > 0) 
+	{
+		this->health--; 
+	}
+	else 
+	{
+		// game over!!!
+	}
 }
 //--------------------------------------------------------------------------------------
 // Name: OnProjectileAsteroidCollision
 // Desc: 
 //--------------------------------------------------------------------------------------
 void PlayerSpaceshipAction::OnProjectileAsteroidCollision(const CollisionEventArgs& collisionEventArgs) const
-{	
+{
 }

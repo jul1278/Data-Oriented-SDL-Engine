@@ -1,12 +1,17 @@
 #include "gtest/gtest.h"
 #include "Components/Component.h"
+#include "Components\TransformComponent.h"
+#include "Components\GraphicsComponent.h"
 #include "Utility/SerialUtility.h"
 #include "Utility/FileUtility.h"
 #include "Game/GameStateLoader.h"
+#include "Graphics/RectGraphicsResource.h"
+#include "Utility\Vector.h"
 
 #include <map>
 
 using namespace std;
+
 
 //----------------------------------------------------------------
 // Name: SerializeBaseComponent
@@ -19,13 +24,20 @@ TEST(SerializationTest, SerializeBaseComponent)
     baseComponent.id = 10;
     baseComponent.entityId = 99; 
 
-    NamedValue namedValue; 
+    SerialUtility::NamedValue namedValue; 
 
-    auto result = Component::Serialize(baseComponent, &namedValue); 
+    auto result = Component::Serialize(baseComponent, namedValue); 
 
     EXPECT_TRUE(result); 
-    EXPECT_EQ(namedValue.GetNamedValue("id"), "10");
-    EXPECT_EQ(namedValue.GetNamedValue("entityId"), "99");
+
+	std::string id;
+	std::string entityId; 
+
+	EXPECT_TRUE(namedValue.TryGetAttribute("id", id));
+	EXPECT_TRUE(namedValue.TryGetAttribute("entityId", entityId));
+
+    EXPECT_EQ(id, "10");
+    EXPECT_EQ(entityId, "99");
 }
 //----------------------------------------------------------------
 // Name: DeserializeBaseComponent
@@ -40,9 +52,9 @@ TEST(SerializationTest, DeserializeBaseComponent)
 
     BaseComponent baseComponent; 
 
-    NamedValue namedValue; 
-    namedValue.Add("id", "99");
-    namedValue.Add("entityId", "15");
+	SerialUtility::NamedValue namedValue;
+	namedValue.AddAttribute("id", "99");
+	namedValue.AddAttribute("entityId", "15");
 
     auto result = Component::Deserialize(&baseComponent, namedValue, parseContext);
 
@@ -61,24 +73,36 @@ TEST(SerializationTest, SerializeTransformComponent)
     transformComponent.orientation = Vector2D(3.10f, 45.34f);
     transformComponent.scale = Vector2D(56.0f, 12.000004f); 
 
-    NamedValue namedValue;
+	SerialUtility::NamedValue namedValue;
 
-    auto result = Component::Serialize(transformComponent, &namedValue);
+    bool result = Component::Serialize(transformComponent, namedValue);
 
     EXPECT_TRUE(result);
 
-    auto orientationValue = namedValue.Value("orientation");
-    auto scaleValue = namedValue.Value("scale"); 
-    auto positionValue = namedValue.Value("position"); 
+	SerialUtility::NamedValue orientationValue, scaleValue, positionValue;
 
-    EXPECT_EQ(orientationValue.GetNamedValue("x"),  "3.100000");
-    EXPECT_EQ(orientationValue.GetNamedValue("y"), "45.340000");
+    auto result1 = namedValue.TryGetNamedValue("orientation", orientationValue);
+    auto result2 = namedValue.TryGetNamedValue("scale", scaleValue);
+    auto result3 = namedValue.TryGetNamedValue("position", positionValue);
 
-    EXPECT_EQ(scaleValue.GetNamedValue("x"), "56.000000");
-    EXPECT_EQ(scaleValue.GetNamedValue("y"), "12.000004");
+	std::string resultStr; 
+	orientationValue.TryGetAttribute("x", resultStr);
+    EXPECT_EQ(resultStr,  "3.100000");
+    
+	orientationValue.TryGetAttribute("y", resultStr);
+	EXPECT_EQ(resultStr, "45.340000");
 
-    EXPECT_EQ(positionValue.GetNamedValue("x"), "12.000100");
-    EXPECT_EQ(positionValue.GetNamedValue("y"), "13.343400");
+	scaleValue.TryGetAttribute("x", resultStr);
+    EXPECT_EQ(resultStr, "56.000000");
+    
+	scaleValue.TryGetAttribute("y", resultStr);
+	EXPECT_EQ(resultStr, "12.000004");
+
+	positionValue.TryGetAttribute("x", resultStr);
+    EXPECT_EQ(resultStr, "12.000100");
+
+	positionValue.TryGetAttribute("y", resultStr);
+    EXPECT_EQ(resultStr, "13.343400");
 }
 //-----------------------------------------------------------------
 // Name: DeserializeTransformComponent
@@ -93,13 +117,13 @@ TEST(SerializationTest, DeserializeTransformComponent)
 
     TransformComponent transformComponent;
     
-    NamedValue namedValue; 
+	SerialUtility::NamedValue namedValue;
 
     // namedValue.Add("id", "15");
     // namedValue.Add("entityId", "199"); 
-    namedValue.Add("position", Vector2D(12.0f, 13.0f)); 
-    namedValue.Add("scale", Vector2D(1.0f, 4.32f)); 
-    namedValue.Add("orientation", Vector2D(34.0045f, 3.3443f)); 
+    namedValue.AddNamedValue("position", Vector2D(12.0f, 13.0f)); 
+    namedValue.AddNamedValue("scale", Vector2D(1.0f, 4.32f));
+    namedValue.AddNamedValue("orientation", Vector2D(34.0045f, 3.3443f));
 
     auto result = Component::Deserialize(&transformComponent, namedValue, parseContext); 
 
@@ -117,7 +141,7 @@ TEST(SerializationTest, DeserializeTransformComponent)
 //-----------------------------------------------------------------
 TEST(SerializationTest, DeserializeXmlToComponent)
 {
-    ASSERT_TRUE(FileUtility::DirectoryExists("Resources//xml"));
+    ASSERT_TRUE(FileUtility::DirectoryExists("..//Resources//xml"));
 
     shared_ptr<Graphics> graphics(nullptr); 
     shared_ptr<ComponentRepository> componentRepository(new ComponentRepository("Test")); 
@@ -125,7 +149,7 @@ TEST(SerializationTest, DeserializeXmlToComponent)
     ParseContext parseContext(componentRepository, graphics); 
 
     TransformComponent transformComponent; 
-    XmlDocument xml("Resources//xml//transformComponent.xml"); 
+    XmlDocument xml("..//Resources//xml//transformComponent.xml"); 
 
     auto namedValues = SerialUtility::XmlDocumentToNamedValues(xml); 
     auto namedValue = namedValues.front(); 
@@ -146,8 +170,8 @@ TEST(SerializationTest, NamedValueToBaseComponent)
 
     ParseContext parseContext(componentRepository, graphics); 
 
-    NamedValue namedValue("BaseComponent"); 
-    namedValue.Add("name", "base_component_1"); 
+	SerialUtility::NamedValue namedValue("BaseComponent");
+    namedValue.AddAttribute("name", "base_component_1"); 
 
     BaseComponent baseComponent; 
 
@@ -164,11 +188,11 @@ TEST(SerializationTest, NamedValueToTransformComponent)
 
     ParseContext parseContext(componentRepository, graphics); 
 
-    NamedValue namedValue("TransformComponent"); 
-    namedValue.Add("name", "transform_component_1"); 
-    namedValue.Add("position", Vector2D(5.0f, 3.0f));
-    namedValue.Add("orientation", Vector2D(4.0f, 3.105f));
-    namedValue.Add("scale", Vector2D(2.50f, 1056.67f)); 
+	SerialUtility::NamedValue namedValue("TransformComponent");
+    namedValue.AddAttribute("name", "transform_component_1"); 
+    namedValue.AddNamedValue("position", Vector2D(5.0f, 3.0f));
+    namedValue.AddNamedValue("orientation", Vector2D(4.0f, 3.105f));
+    namedValue.AddNamedValue("scale", Vector2D(2.50f, 1056.67f));
 
     auto component = componentRepository->NewComponent<TransformComponent>();   
 
@@ -184,10 +208,49 @@ TEST(SerializationTest, NamedValueToTransformComponent)
 //-----------------------------------------------------------------
 TEST(SerializationTest, LoadGameStateFromDirectory)
 {
-    shared_ptr<ComponentRepository> componentRepository; 
-    shared_ptr<Graphics> graphics; 
+    shared_ptr<ComponentRepository> componentRepository(new ComponentRepository("LoadGameStateFromDirectory")); 
+    shared_ptr<Graphics> graphics(new Graphics(200, 200, "TestColor"));
 
-    GameStateLoader gameStateLoader("", componentRepository, graphics); 
+	auto tl = graphics->AddGraphicsResource(new RectGraphicsResource(98, 98, Color(Color::AliceBlue)));
+	auto tr = graphics->AddGraphicsResource(new RectGraphicsResource(98, 98, Color(Color::Firebrick)));
+	auto bl = graphics->AddGraphicsResource(new RectGraphicsResource(98, 98, Color(Color::HotPink)));
+	auto br = graphics->AddGraphicsResource(new RectGraphicsResource(98, 98, Color(Color::BlueViolet)));
+
+	GameStateLoader gameStateLoader("..//Resources//xml//scene_test//", componentRepository, graphics); 
+
+	//TransformComponent* tl_t = componentRepository->NewComponent<TransformComponent>();
+	//TransformComponent* tr_t = componentRepository->NewComponent<TransformComponent>();
+	//TransformComponent* bl_t = componentRepository->NewComponent<TransformComponent>();
+	//TransformComponent* br_t = componentRepository->NewComponent<TransformComponent>();
+
+	//GraphicsComponent* tl_g = componentRepository->NewComponent<GraphicsComponent>();
+	//GraphicsComponent* tr_g = componentRepository->NewComponent<GraphicsComponent>();
+	//GraphicsComponent* bl_g = componentRepository->NewComponent<GraphicsComponent>();
+	//GraphicsComponent* br_g = componentRepository->NewComponent<GraphicsComponent>();
+
+	//tl_g->transformComponentId = tl_t->id;
+	//tr_g->transformComponentId = tr_t->id;
+	//bl_g->transformComponentId = bl_t->id;
+	//br_g->transformComponentId = br_t->id;
+
+	//tl_g->resourceId = tl;
+	//tr_g->resourceId = tr;
+	//bl_g->resourceId = bl;
+	//br_g->resourceId = br; 
+
+	//tl_t->position = Vector2D(1.0f, 1.0f); 
+	//tr_t->position = Vector2D(101.0f, 1.0f); 
+	//bl_t->position = Vector2D(1.0f, 101.0f); 
+	//br_t->position = Vector2D(101.0f, 101.0f); 
+	
+	auto transformComponents = componentRepository->Select<TransformComponent>();
+	auto graphicsComponents = componentRepository->Select<GraphicsComponent>();
+
+	graphics->UpdateGraphics(graphicsComponents, transformComponents);
+	graphics->Present();
+
+	SDL_Delay(10000); 
+
 }
 //-----------------------------------------------------------------
 // Name: FilesInDirectory

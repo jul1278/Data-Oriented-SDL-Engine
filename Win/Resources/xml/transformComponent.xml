@@ -1,0 +1,5 @@
+<TransformComponent name="transform">
+	<Position x="43.210" y="12.340"/>
+	<Orientation x="09.870" y="76.450"/>
+	<Scale x="34.560" y="56.780"/>
+</TransformComponent>

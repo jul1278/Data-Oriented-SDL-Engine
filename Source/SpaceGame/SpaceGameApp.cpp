@@ -10,6 +10,8 @@
 #include <stdlib.h>
 #include <memory>
 
+
+
 //------------------------------------------------------------------------------------
 // Name: SpaceGameApp
 // Desc:
@@ -35,6 +37,8 @@ SpaceGameApp::SpaceGameApp()
 SpaceGameApp::~SpaceGameApp()
 {
 	delete this->graphics; 
+	delete this->spaceGameStage; 
+	delete this->spaceGameMenu;
 }
 //------------------------------------------------------------------------------------
 // Name: GetGraphics

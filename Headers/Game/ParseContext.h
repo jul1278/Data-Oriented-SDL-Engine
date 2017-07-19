@@ -28,6 +28,7 @@ class ParseContext
 
 	unsigned int parentId; 
 	unsigned int parentEntityId; 
+	std::string parentCollectionName;
 
 public:
 
@@ -35,13 +36,18 @@ public:
 	// Name: ParseContext
 	// Desc:
 	//-----------------------------------------------------------------
-	ParseContext(shared_ptr<ComponentRepository> componentRepository, shared_ptr<Graphics> graphics, unsigned int parentId = 0, unsigned int parentEntityId = 0)
-	{
-		this->componentRepository = componentRepository; 
-		this->graphics = graphics; 
-		this->parentId = parentId; 
-		this->parentEntityId = parentEntityId; 
-	}
+	ParseContext(shared_ptr<ComponentRepository> componentRepository, 
+		shared_ptr<Graphics> graphics, 
+		unsigned int parentId = 0, 
+		unsigned int parentEntityId = 0, 
+		std::string parentCollectionName = "") : 
+		
+		componentRepository(componentRepository), 
+		graphics(graphics), 
+		parentId(parentId), 
+		parentEntityId(parentEntityId), 
+		parentCollectionName(parentCollectionName)
+	{}
 
 	//------------------------------------------------------------
 	// Name: ComponentRepository
@@ -116,6 +122,30 @@ public:
 	unsigned int ParentEntityId()
 	{
 		return this->parentEntityId; 
+	}
+
+	//------------------------------------------------------------
+	// Name: ParentEntityId
+	// Desc: 
+	//------------------------------------------------------------
+	std::string ParentCollectionName()
+	{
+		return this->parentCollectionName;
+	}
+
+	//------------------------------------------------------------
+	// Name: NewComponent
+	// Desc: 
+	//------------------------------------------------------------
+	template<typename T, T = BaseComponent>
+	T* NewComponent()
+	{
+		if (!this->componentRepository->ContainsCollection(this->ParentCollectionName())) {
+			// else get the default top level collection
+			collectionName = "";
+		}
+
+		auto baseComponent = this->componentRepository->NewComponent<T>(collectionName);
 	}
 };
 

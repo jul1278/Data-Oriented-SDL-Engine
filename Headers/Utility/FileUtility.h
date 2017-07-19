@@ -57,7 +57,21 @@ namespace FileUtility
 #endif 
 		
 #ifdef _WIN32
-		// TODO: implement
+
+		WIN32_FIND_DATA ffd;
+		
+		auto dir = directory + "*"; 
+
+		auto hFind = FindFirstFile(dir.c_str(), &ffd);
+		
+		do {
+
+			if (!(ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
+				string filename(ffd.cFileName);
+				files.push_back(directory + filename); // TODO: path combine properly 
+			}
+		} 
+		while (FindNextFile(hFind, &ffd) != 0);
 
 #endif
 		if (!extension.empty()) {

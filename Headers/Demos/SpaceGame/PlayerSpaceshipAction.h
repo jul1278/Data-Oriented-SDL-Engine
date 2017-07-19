@@ -23,6 +23,9 @@ private:
 	unsigned int height; 
 
 	SDLEventCollector* sdlEventCollector;
+	RectGraphicsResource* healthBarGraphic; 
+
+	unsigned int health; 
 
 	unsigned int moveCounter;
 	int projectileGraphicResId;
@@ -45,19 +48,27 @@ public:
 
 	PlayerSpaceshipAction(IStage* stage);
 
+	~PlayerSpaceshipAction()
+	{
+		// NOTE: Graphics owns the camera so dont delete
+		// TODO: make weak_ptr or something
+		// delete this->spaceShipCamera; 
+		delete this->sdlEventCollector; 
+	}
+
 	void Update() override final 
 	{
 		this->sdlEventCollector->Update(); 
 
 		auto componentRepository = this->GetParentStage()->GetComponentRepository();
-		auto projectileGraphics = componentRepository->Select<GraphicsComponent>("PlayerSpaceShipProjectiles");
-		auto projectileTransforms = componentRepository->Select<TransformComponent>("PlayerSpaceShipProjectiles"); 
+		auto& projectileGraphics = componentRepository->Select<GraphicsComponent>("PlayerSpaceShipProjectiles");
+		auto& projectileTransforms = componentRepository->Select<TransformComponent>("PlayerSpaceShipProjectiles"); 
 
 		if (projectileTransforms.Size() == 0) {
 			return; 
 		}
 
-		for (auto transform : projectileTransforms) {
+		for (auto& transform : projectileTransforms) {
 			if (transform.position.x > this->width || transform.position.x < 0.0f || 
 				transform.position.y > this->height || transform.position.y < 0.0f) {
 

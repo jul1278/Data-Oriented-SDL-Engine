@@ -63,6 +63,8 @@ TEST(ComponentCollectionIteratorTests, BeginIsNotEnd)
     auto end = componentCollection.end(); 
 
     EXPECT_NE(begin, end); 
+	EXPECT_EQ(begin, begin); 
+	EXPECT_EQ(end, end); 
 }
 //----------------------------------------------------------------
 // Name: STLFind_if

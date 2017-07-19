@@ -182,6 +182,23 @@ TEST(ComponentRepositoryTests, RemoveEntityId)
 // Name: RemoveEntityInsideLoop
 // Desc:
 //-------------------------------------------------------------------------
+TEST(ComponentRepositoryTests, TestPointerConsistency)
+{
+	ComponentRepository componentRepository("Test1");
+
+	auto entityId = componentRepository.GenerateId();
+	auto transformComponent = componentRepository.NewComponent<TransformComponent>("Test1", entityId);
+
+	for (auto i = 0; i < 1000; i++) {
+		componentRepository.NewComponent<TransformComponent>("Test1", entityId);
+	}
+
+	transformComponent->id = 100; 
+}
+//-------------------------------------------------------------------------
+// Name: RemoveEntityInsideLoop
+// Desc:
+//-------------------------------------------------------------------------
 TEST(ComponentRepositoryTests, RemoveEntityInsideLoop)
 {
 	ComponentRepository componentRepository("Test1");
@@ -190,6 +207,9 @@ TEST(ComponentRepositoryTests, RemoveEntityInsideLoop)
 
 	auto transformComponent = componentRepository.NewComponent<TransformComponent>("Test2", entityId);
 	auto graphicsComponent = componentRepository.NewComponent<GraphicsComponent>("Test2", entityId);
+
+	EXPECT_TRUE(transformComponent);
+	EXPECT_TRUE(graphicsComponent); 
 
 	componentRepository.NewComponent<TransformComponent>();
 	componentRepository.NewComponent<GraphicsComponent>();

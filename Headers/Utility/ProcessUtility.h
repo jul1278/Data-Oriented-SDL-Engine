@@ -14,6 +14,8 @@
 
 #ifdef _WIN32
 	#include <Windows.h>
+	#include <direct.h>
+	#define GetCurrentDir _getcwd
 #endif
 
 using namespace std;
@@ -39,11 +41,15 @@ namespace ProcessUtility
 #endif // __APPLE__
 
 #ifdef _WIN32
-		char buffer[MAX_PATH];
-		GetModuleFileName(NULL, buffer, MAX_PATH);
-		string workingDir(buffer);
-        return workingDir;
+		char currentPath[FILENAME_MAX];
+		if (!GetCurrentDir(currentPath, sizeof(currentPath))) {
+			
+			// error
+			return string("");
+		}
 
+		string workingDir(currentPath);
+        return workingDir;
 #endif
     }
 

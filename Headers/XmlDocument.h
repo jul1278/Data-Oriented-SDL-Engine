@@ -466,7 +466,9 @@ public:
 			this->tags = XmlDocument::ToDocument(tokens); 	
 		}
 
-		fclose(fp); 
+		if (fp != nullptr) {
+			fclose(fp);
+		}
 	}
 
 	//-----------------------------------------------------------------

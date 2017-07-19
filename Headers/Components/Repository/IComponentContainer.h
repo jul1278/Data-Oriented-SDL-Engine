@@ -67,8 +67,11 @@ public:
     //-------------------------------------------------------------
     T* Add()
     {
-        this->components->push_back(T());
-        return &this->components->back(); 
+        //this->components->push_back(T());
+		this->components->emplace_back(); 
+		auto p = &this->components->back();
+
+		return p; 
     }
     //-------------------------------------------------------------
     // Name: Remove
@@ -101,7 +104,9 @@ public:
     // Name: Destructor
     // Desc:
     //-------------------------------------------------------------
-    virtual ~ComponentContainer() {}  
+    virtual ~ComponentContainer() 
+	{
+	}  
 };
 
 #endif // I_COMPONENT_CONTAINER_H

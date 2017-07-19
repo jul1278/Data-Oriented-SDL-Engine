@@ -54,12 +54,14 @@ public:
 	template <typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
 	T* NewComponent()
 	{
-		if (this->componentCollection[type_index(typeid(T))] == nullptr) {
+		auto t = type_index(typeid(T));
+
+		if (this->componentCollection[t] == nullptr) {
 			auto vectorContainer = new VectorContainer<T>();
-			this->componentCollection[type_index(typeid(T))] = vectorContainer;
+			this->componentCollection[t] = vectorContainer;
 		}
 
-		VectorContainer<T>* container = dynamic_cast<VectorContainer<T>*>(this->componentCollection[type_index(typeid(T))]);
+		VectorContainer<T>* container = dynamic_cast<VectorContainer<T>*>(this->componentCollection[t]);
 
 		container->vec.push_back(T());
 		T* component = &container->vec.back();

@@ -38,7 +38,7 @@ public:
 		auto starTransformComponents = componentRepository->Select<TransformComponent>("ScrollingBackgroundStars"); 
 
 		// star background loop
-		for (auto physicsComponent : starPhysicsComponents) {
+		for (auto& physicsComponent : starPhysicsComponents) {
 
 			auto id = physicsComponent.transformComponentId; 
 			auto transformComponent = componentRepository->SelectId<TransformComponent>(id); 

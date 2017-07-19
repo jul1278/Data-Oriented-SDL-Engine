@@ -22,7 +22,7 @@ private:
 	ComponentRepository* componentRepository; 
 	Physics* physics; 
 
-	list<IAction*> actions; 
+	list<IAction*> actions; // do these need to be pointers? 
 
 public:
 

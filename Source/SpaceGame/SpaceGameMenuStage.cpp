@@ -45,6 +45,14 @@ SpaceGameMenuStage::SpaceGameMenuStage(IGameApp* gameApp)
 	this->sdlEventCollector->RegisterMouseOverHandler(*newGameButtonComponent, *newGameTextTransform, bind(&SpaceGameMenuStage::OnMenuStartGameMouseOver, this, placeholders::_1));
 }
 //--------------------------------------------------------------------------
+// Name: ~SpaceGameMenuStage
+// Desc: 
+//--------------------------------------------------------------------------
+SpaceGameMenuStage::~SpaceGameMenuStage()
+{
+	delete this->sdlEventCollector;
+}
+//--------------------------------------------------------------------------
 // Name: Update
 // Desc: 
 //--------------------------------------------------------------------------

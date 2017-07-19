@@ -15,7 +15,6 @@
 #include <tuple>
 #include <thread>
 
-
 //-----------------------------------------------------------------------------------------------
 // Name: Update
 // Desc: 
@@ -66,12 +65,12 @@ void SDLEventCollector::InitGameControllers()
 void SDLEventCollector::RegisterMouseOverHandler(Vector2D topLeft, Vector2D size, function<void(const MouseMotionEventArgs&)> handler)
 {
 	SDL_Rect rect = 
-			{ 
-				static_cast<int>(topLeft.x), 
-				static_cast<int>(topLeft.y), 
-				static_cast<int>(size.x), 
-				static_cast<int>(size.y) 
-			};
+	{ 
+		static_cast<int>(topLeft.x), 
+		static_cast<int>(topLeft.y), 
+		static_cast<int>(size.x), 
+		static_cast<int>(size.y) 
+	};
 
 	auto name = to_string(this->mouseOverNames.size());
 	
@@ -92,6 +91,24 @@ void SDLEventCollector::RegisterMouseOverHandler(const SimpleButtonComponent& si
 
 	this->RegisterMouseOverHandler(topLeft, size, handler); 
 }
+//-----------------------------------------------------------------------------------------------
+// Name: RegisterMouseOverHandler
+// Desc: 
+//-----------------------------------------------------------------------------------------------
+void SDLEventCollector::RegisterMouseOverHandler(Vector2D topLeft, Vector2D size, function<void(const MouseOverEventArgs&)> handler)
+{
+
+}
+
+//-----------------------------------------------------------------------------------------------
+// Name: RegisterMouseOverHandler
+// Desc: 
+//-----------------------------------------------------------------------------------------------
+void SDLEventCollector::RegisterMouseOverHandler(const SimpleButtonComponent& simpleButtonComponent, const TransformComponent& transformComponent, function<void(const MouseOverEventArgs&)> handler)
+{
+
+}
+
 //-----------------------------------------------------------------------------------------------
 // Name: RegisterMouseClickHandler
 // Desc: 
@@ -179,10 +196,17 @@ void SDLEventCollector::MouseMotionEvent(const SDL_Event& sdlEvent)
 		if (currentPosition.x > rect.x && currentPosition.x < (rect.x + rect.w) &&
 			currentPosition.y > rect.y && currentPosition.y < (rect.y + rect.h)) {
 
+			auto mouseEvent = MouseMotionEventArgs(currentPosition, lastPosition, size, true);
+			//auto mouseOverEvent = MouseOverEventArgs()
+
 			if (this->mouseOverNameState[name] == false) {
 				this->mouseOverNameState[name] = true;
-				this->InvokeGroup<MouseMotionEventArgs>(name, MouseMotionEventArgs(currentPosition, lastPosition, size, true));
+
+				this->InvokeGroup<MouseMotionEventArgs>(name, mouseEvent);
+				//this->InvokeGroup<MouseOverEventArgs>(name, )
 			}
+
+
 		}
 		else {
 

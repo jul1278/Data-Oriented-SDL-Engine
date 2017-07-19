@@ -314,7 +314,7 @@ void Graphics::UpdateGraphics(Repository::ComponentCollection<GraphicsComponent>
 	//	     with parent = (0,0) etc etc
 	//       this is probably faster though  
 
-	for (auto graphicsComponent : graphicsComponents) {
+	for (auto& graphicsComponent : graphicsComponents) {
 		
 		if (graphicsComponent.resourceId == NO_RENDER) {
 			continue; 
@@ -337,7 +337,7 @@ void Graphics::UpdateGraphics(Repository::ComponentCollection<GraphicsComponent>
 void Graphics::UpdateGraphics(Repository::ComponentCollection<GraphicsComponent>& graphicsComponents, 
 	Repository::ComponentCollection<TransformComponent>& transformComponents, TransformComponent* parent)
 {
-	for (auto graphicsComponent : graphicsComponents) {
+	for (auto& graphicsComponent : graphicsComponents) {
 
 		if (graphicsComponent.resourceId == NO_RENDER) {
 			continue; 

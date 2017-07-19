@@ -6,6 +6,10 @@
 #include "Components/TransformComponent.h"
 #include "Utility/ProcessUtility.h"
 
+//------------------------------------------------------------------------------------------
+// Name: TextGraphicsResource
+// Desc: 
+//------------------------------------------------------------------------------------------
 class TextGraphicsResource : public IGraphicsResource
 {
 
@@ -23,6 +27,10 @@ private:
 	SDL_Texture* fontTexture; 
 	SDL_Surface* fontSurface; 
 
+	//------------------------------------------------------------------------------------------
+	// Name: UpdateFontSurface
+	// Desc: 
+	//------------------------------------------------------------------------------------------
 	void UpdateFontSurface()
 	{
 		SDL_Color textColor = { this->r, this->g, this->b};
@@ -42,7 +50,7 @@ public:
 		this->b = color.B(); 
 
 		if (fontPath.empty()) {
-            auto currentDir = ProcessUtility::CurrentApplicationDirectory();
+            //auto currentDir = ProcessUtility::CurrentApplicationDirectory();
 			//auto fileExists = FileUtility::FileExists("..\\Resources\\Anonymous_Pro.ttf"); 
 
 			this->font = TTF_OpenFont("..\\Resources\\Anonymous_Pro.ttf", fontSize);
@@ -58,7 +66,11 @@ public:
 
 		this->UpdateFontSurface(); 
 	}
-	
+
+	//------------------------------------------------------------------------------------------
+	// Name: SetText
+	// Desc: 
+	//------------------------------------------------------------------------------------------
 	// NOTE: this is a bit bad, consider a RenderText(SDL_Renderer*, TransformComponent*, string&) function?
 	//   
 	void SetText(string text)
@@ -67,11 +79,19 @@ public:
 		this->UpdateFontSurface(); 
 	}
 
+	//------------------------------------------------------------------------------------------
+	// Name: GetText
+	// Desc: 
+	//------------------------------------------------------------------------------------------
 	string GetText(string text) const
 	{
 		return this->text; 
 	}
 
+	//------------------------------------------------------------------------------------------
+	// Name: GetSize
+	// Desc: 
+	//------------------------------------------------------------------------------------------
 	Vector2D GetSize()
 	{
 		if (this->fontSurface == nullptr) {
@@ -81,6 +101,10 @@ public:
 		return Vector2D(this->fontSurface->w, this->fontSurface->h); 
 	}
 
+	//------------------------------------------------------------------------------------------
+	// Name: Render
+	// Desc: 
+	//------------------------------------------------------------------------------------------
 	void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent) override final
 	{
 		if (this->fontSurface == nullptr) {
@@ -106,6 +130,10 @@ public:
 		SDL_RenderCopyEx(sdlRenderer, this->fontTexture, nullptr, &textRect, angleDeg, nullptr, SDL_FLIP_NONE);
 	}
 
+	//------------------------------------------------------------------------------------------
+	// Name: ~TextGraphicsResource
+	// Desc: 
+	//------------------------------------------------------------------------------------------
 	~TextGraphicsResource() override
 	{
 		SDL_DestroyTexture(this->fontTexture); 

@@ -42,6 +42,7 @@ public:
 		this->camera->InsertCollection("PlayerSpaceShip");
 		this->camera->InsertCollection("EnemyAsteroids");
 		this->camera->InsertCollection("PlayerSpaceShipProjectiles");
+		this->camera->InsertCollection("PlayerHealthBar"); 
 
 		graphics->AddCamera(this->camera);
 	}

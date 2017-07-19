@@ -4,6 +4,7 @@
 #include "Components/TransformComponent.h"
 #include "Components/PhysicsComponent.h"
 #include "Utility/ProcessUtility.h"
+#include "Utility/FileUtility.h"
 #include "gtest/gtest.h"
 
 #include <list>
@@ -13,12 +14,17 @@
 
 #ifdef _WIN32
     #include "Windows.h"
+
+	#define _CRTDBG_MAP_ALLOC
+	#include <stdlib.h>
+	#include <crtdbg.h>
+
 #else
 
-#ifdef  __APPLE__
-    #include <sys/types.h>
-    #include <sys/stat.h>
-#endif
+	#ifdef  __APPLE__
+		#include <sys/types.h>
+		#include <sys/stat.h>
+	#endif
 
 #endif 
 
@@ -28,21 +34,29 @@ void PerformanceTime(double testTime)
     string csvHeaders = "Date/Time, Test Time (ms)";
     string fileName;
 
+	auto currentApplicationDirectory = ProcessUtility::CurrentApplicationDirectory();
+
 #ifdef _WIN32
 
-	fileName += "//PerformanceResults//";
+	fileName += "\\PerformanceResults\\";
 	fileName += currentTestName;
 	fileName += ".csv";
+
+	auto directory = currentApplicationDirectory + "\\PerformanceResults\\";
+	fileName = currentApplicationDirectory + fileName;
 
 	// check there exists a file "/PerformanceResults/*currentTestName*.csv"
 	ifstream file(fileName);
 
     if (!file.good()) {
-		CreateDirectory("//PerformanceResults", nullptr);
+		
+		// if the file doesn't exist try and create the directory
+		CreateDirectory(directory.c_str(), nullptr);
+		
+        // create the file
+		ofstream newFile;
 
-        		// create the file
-		ofstream newFile(fileName);
-
+		newFile.open(fileName, ios::out, ios::trunc);
 		newFile << csvHeaders << endl;
 		newFile.close();
 	}
@@ -75,7 +89,8 @@ void PerformanceTime(double testTime)
     #endif
 #endif
 
-	ofstream writeFile(fileName, ofstream::out | ofstream::app);
+	ofstream writeFile;
+	writeFile.open(fileName, ofstream::out | ofstream::in | ofstream::app);
 
 	if (writeFile.good()) {
         auto currentTime = time(nullptr);
@@ -100,209 +115,322 @@ void PerformanceTime(double testTime)
 
 	writeFile.close(); 
 }
+
+//-----------------------------------------------------------------------------
+// Name: PerformanceTestFixture	
+//-----------------------------------------------------------------------------
+class PerformanceTestFixture : public ::testing::Test 
+{
+public:
+	PerformanceTestFixture() 
+	{
+
+	}
+
+	void SetUp()
+	{
+
+	}
+
+	void TearDown()
+	{
+
+	}
+
+	~PerformanceTestFixture()
+	{
+#ifdef _WIN32
+		_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
+		_CrtDumpMemoryLeaks();
+#endif
+	}
+
+};
+
 //-----------------------------------------------------------------------------
 // Name: InsertComponentsPerfTest
 // Desc: 		
 //-----------------------------------------------------------------------------
-TEST(PerformanceTest, InsertComponentsPerfTest)
+TEST_F(PerformanceTestFixture, TestMemLeak)
 {
-	const auto numComponents = 5000;
-	auto start = chrono::steady_clock::now();
+	const auto numComponents = 1;
 
 	ComponentCollectionRepository componentCollectionRepository;
-	auto entityId = componentCollectionRepository.NewEntityId();
-	componentCollectionRepository.NewCollection("TestCollection");
+	//auto entityId = componentCollectionRepository.NewEntityId();
+	//componentCollectionRepository.NewCollection("TestCollection");
 
-	for (auto i = 0; i < numComponents; ++i) {
-		auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>("TestCollection");
+	//for (auto i = 0; i < numComponents; ++i) {
+	//	auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>("TestCollection");
+	//}
+}
+
+//-----------------------------------------------------------------------------
+// Name: InsertComponentsPerfTest
+// Desc: 		
+//-----------------------------------------------------------------------------
+TEST_F(PerformanceTestFixture, InsertComponentsPerfTest)
+{
+	const auto numComponents = 5000;
+	const auto numRuns = 5;
+
+	double averageTime = 0.0;
+
+	for (auto i = 0; i < numRuns; i++) {
+		auto start = chrono::steady_clock::now();
+
+		ComponentCollectionRepository componentCollectionRepository;
+		auto entityId = componentCollectionRepository.NewEntityId();
+		componentCollectionRepository.NewCollection("TestCollection");
+
+		for (auto i = 0; i < numComponents; ++i) {
+			auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>("TestCollection");
+		}
+
+		auto end = chrono::steady_clock::now();
+		auto t = chrono::duration<double, milli>(end - start).count();
+
+		averageTime = (t + (i * averageTime)) / (i + 1); 
 	}
 
-	auto end = chrono::steady_clock::now();
-	auto t = chrono::duration<double, milli>(end - start).count();
-
-	PerformanceTime(t); 
+	PerformanceTime(averageTime); 
 }
 //-----------------------------------------------------------------------------
 // Name: InsertMultipleTypeComponentsPerfTest
 // Desc: 		
 //-----------------------------------------------------------------------------
-TEST(PerformanceTest, InsertMultipleTypeComponentsPerfTest)
+TEST_F(PerformanceTestFixture, InsertMultipleTypeComponentsPerfTest)
 {
 	const auto numComponents = 5000;
+	const auto numRuns = 5;
 
-	auto start = chrono::steady_clock::now();
+	double averageTime = 0.0;
 
-	ComponentCollectionRepository componentCollectionRepository;
-	auto entityId = componentCollectionRepository.NewEntityId();
-	componentCollectionRepository.NewCollection("TestCollection");
+	for (auto i = 0; i < numRuns; i++) {
+		auto start = chrono::steady_clock::now();
 
-	for (auto i = 0; i < numComponents; ++i) {
-		auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>("TestCollection");
-		auto graphicsComponent = componentCollectionRepository.NewComponent<GraphicsComponent>("TestCollection");
+		ComponentCollectionRepository componentCollectionRepository;
+		auto entityId = componentCollectionRepository.NewEntityId();
+		componentCollectionRepository.NewCollection("TestCollection");
+
+		for (auto i = 0; i < numComponents; ++i) {
+			auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>("TestCollection");
+			auto graphicsComponent = componentCollectionRepository.NewComponent<GraphicsComponent>("TestCollection");
+		}
+
+		auto end = chrono::steady_clock::now();
+		auto t = chrono::duration<double, milli>(end - start).count();
+
+		averageTime = (t + (i * averageTime)) / (i + 1); 
 	}
 
-	auto end = chrono::steady_clock::now();
-	auto t = chrono::duration<double, milli>(end - start).count();
-
-	PerformanceTime(t); 
+	PerformanceTime(averageTime);
 }
 //-----------------------------------------------------------------------------
 // Name: DeleteComponentsPerfTest
 // Desc: 		
 //-----------------------------------------------------------------------------
-TEST(PerformanceTest, DeleteComponentsPerfTest)
+TEST_F(PerformanceTestFixture, DeleteComponentsPerfTest)
 {
 	const auto numComponents = 5000;
-	auto start = chrono::steady_clock::now();
+	const auto numRuns = 5;
 
-	ComponentCollectionRepository componentCollectionRepository;
+	double averageTime = 0.0;
 
-	vector<int> ids;
-	componentCollectionRepository.NewCollection("TestCollection");
+	for (auto i = 0; i < numRuns; i++) {
 
-	for (auto i = 0; i < numComponents; ++i) {
-		auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>("TestCollection");
-		ids.push_back(transformComponent->id);
+		auto start = chrono::steady_clock::now();
+
+		ComponentCollectionRepository componentCollectionRepository;
+
+		vector<int> ids;
+		componentCollectionRepository.NewCollection("TestCollection");
+
+		for (auto i = 0; i < numComponents; ++i) {
+			auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>("TestCollection");
+			ids.push_back(transformComponent->id);
+		}
+
+		for (auto i = 0; i < numComponents; i++) {
+			componentCollectionRepository.RemoveComponent(ids[i]);
+		}
+
+		auto end = chrono::steady_clock::now();
+		auto t = chrono::duration<double, milli>(end - start).count();
+
+		averageTime = (t + (i * averageTime)) / (i + 1); 
 	}
 
-	for (auto i = 0; i < numComponents; i++) {
-		componentCollectionRepository.RemoveComponent(ids[i]);
-	}
-	
-	auto end = chrono::steady_clock::now();
-	auto t = chrono::duration<double, milli>(end - start).count();
-	
-	PerformanceTime(t); 
+	PerformanceTime(averageTime); 
 }
 //-----------------------------------------------------------------------------
 // Name: DeleteComponentsPerfTest
 // Desc: 		
 //-----------------------------------------------------------------------------
-TEST(PerformanceTest, RetrieveByIdPerfTest)
+TEST_F(PerformanceTestFixture, RetrieveByIdPerfTest)
 {
 	const auto numComponents = 5000;
-	ComponentCollectionRepository componentCollectionRepository;
+	const auto numRuns = 5;
 
-	vector<int> ids;
-	componentCollectionRepository.NewCollection("TestCollection");
+	double averageTime = 0.0;
 
-	for (auto i = 0; i < numComponents; ++i) {
-		auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>("TestCollection");
-		ids.push_back(transformComponent->id);
+	for (auto i = 0; i < numRuns; i++) {
+
+		ComponentCollectionRepository componentCollectionRepository;
+
+		vector<int> ids;
+		componentCollectionRepository.NewCollection("TestCollection");
+
+		for (auto i = 0; i < numComponents; ++i) {
+			auto transformComponent = componentCollectionRepository.NewComponent<TransformComponent>("TestCollection");
+			ids.push_back(transformComponent->id);
+		}
+
+		auto start = chrono::steady_clock::now();
+
+		for (auto i = 0; i < numComponents; i++) {
+			auto component = componentCollectionRepository.Select<TransformComponent>(ids[i]);
+		}
+
+		auto end = chrono::steady_clock::now();
+		auto t = chrono::duration<double, milli>(end - start).count();
+
+		averageTime = (t + (i * averageTime)) / (i + 1); 
 	}
 
-	auto start = chrono::steady_clock::now();
-
-	for (auto i = 0; i < numComponents; i++) {
-		auto component = componentCollectionRepository.Select<TransformComponent>(ids[i]);
-	}
-	
-	auto end = chrono::steady_clock::now();
-	auto t = chrono::duration<double, milli>(end - start).count();
-	
-	PerformanceTime(t); 
+	PerformanceTime(averageTime);
 }
 //-----------------------------------------------------------------------------
 // Name: ComponentRepositoryInsertComponentsPerfTest
 // Desc: 		
 //-----------------------------------------------------------------------------
-TEST(PerformanceTest, ComponentRepositoryInsertComponentsPerfTest)
+TEST_F(PerformanceTestFixture, ComponentRepositoryInsertComponentsPerfTest)
 {
 	const auto numComponents = 5000;
-	auto start = chrono::steady_clock::now();
+	const auto numRuns = 5;
 
-	ComponentRepository componentRepository("PerformanceTest");
+	double averageTime = 0.0;
 
-	auto entityId = componentRepository.GenerateId();
-	componentRepository.NewCollection("TestCollection");
+	for (auto i = 0; i < numRuns; i++) {
+		auto start = chrono::steady_clock::now();
 
-	for (auto i = 0; i < numComponents; ++i) {
-		auto transformComponent = componentRepository.NewComponent<TransformComponent>("TestCollection");
+		ComponentRepository componentRepository("PerformanceTest");
+
+		auto entityId = componentRepository.GenerateId();
+		componentRepository.NewCollection("TestCollection");
+
+		for (auto i = 0; i < numComponents; ++i) {
+			auto transformComponent = componentRepository.NewComponent<TransformComponent>("TestCollection");
+		}
+
+		auto end = chrono::steady_clock::now();
+		auto t = chrono::duration<double, milli>(end - start).count();
+
+		averageTime = (t + (i * averageTime)) / (i + 1); 
 	}
 
-	auto end = chrono::steady_clock::now();
-	auto t = chrono::duration<double, milli>(end - start).count();
-
-	PerformanceTime(t); 
+	PerformanceTime(averageTime);
 }
 //-----------------------------------------------------------------------------
 // Name: ComponentRepositoryInsertMultipleTypeComponentsPerfTest
 // Desc: 		
 //-----------------------------------------------------------------------------
-TEST(PerformanceTest, ComponentRepositoryInsertMultipleTypeComponentsPerfTest)
+TEST_F(PerformanceTestFixture, ComponentRepositoryInsertMultipleTypeComponentsPerfTest)
 {
 	const auto numComponents = 5000;
+	const auto numRuns = 5;
 
-	auto start = chrono::steady_clock::now();
+	double averageTime = 0.0;
 
-	ComponentRepository componentRepository("PerformanceTest");
+	for (auto i = 0; i < numRuns; i++) {
+		auto start = chrono::steady_clock::now();
 
-	auto entityId = componentRepository.GenerateId();
-	componentRepository.NewCollection("TestCollection");
+		ComponentRepository componentRepository("PerformanceTest");
 
-	for (auto i = 0; i < numComponents; ++i) {
-		auto transformComponent = componentRepository.NewComponent<TransformComponent>("TestCollection");
-		auto graphicsComponent = componentRepository.NewComponent<GraphicsComponent>("TestCollection");
+		auto entityId = componentRepository.GenerateId();
+		componentRepository.NewCollection("TestCollection");
+
+		for (auto i = 0; i < numComponents; ++i) {
+			auto transformComponent = componentRepository.NewComponent<TransformComponent>("TestCollection");
+			auto graphicsComponent = componentRepository.NewComponent<GraphicsComponent>("TestCollection");
+		}
+
+		auto end = chrono::steady_clock::now();
+		auto t = chrono::duration<double, milli>(end - start).count();
+
+		averageTime = (t + (i*averageTime)) / (i + 1); 
 	}
 
-	auto end = chrono::steady_clock::now();
-	auto t = chrono::duration<double, milli>(end - start).count();
-
-	PerformanceTime(t); 
+	PerformanceTime(averageTime);
 }
 //-----------------------------------------------------------------------------
 // Name: ComponentRepositoryDeleteComponentsPerfTest
 // Desc: 		
 //-----------------------------------------------------------------------------
-TEST(PerformanceTest, ComponentRepositoryDeleteComponentsPerfTest)
+TEST_F(PerformanceTestFixture, ComponentRepositoryDeleteComponentsPerfTest)
 {
 	const auto numComponents = 5000;
-	auto start = chrono::steady_clock::now();
+	const auto numRuns = 5;
 
-	ComponentRepository componentRepository("PerformanceTest");
+	double averageTime = 0.0; 
 
-	vector<int> ids;
-	componentRepository.NewCollection("TestCollection");
+	for (auto i = 0; i < numRuns; i++) {
+		auto start = chrono::steady_clock::now();
 
-	for (auto i = 0; i < numComponents; ++i) {
-		auto transformComponent = componentRepository.NewComponent<TransformComponent>("TestCollection");
-		ids.push_back(transformComponent->id);
+		ComponentRepository componentRepository("PerformanceTest");
+
+		vector<int> ids;
+		componentRepository.NewCollection("TestCollection");
+
+		for (auto i = 0; i < numComponents; ++i) {
+			auto transformComponent = componentRepository.NewComponent<TransformComponent>("TestCollection");
+			ids.push_back(transformComponent->id);
+		}
+
+		for (auto i = 0; i < numComponents; i++) {
+			componentRepository.Remove(ids[i]);
+		}
+
+		auto end = chrono::steady_clock::now();
+		auto t = chrono::duration<double, milli>(end - start).count();
+
+		averageTime = (t + (i * averageTime)) / (i + 1); 
 	}
 
-	for (auto i = 0; i < numComponents; i++) {
-		componentRepository.Remove(ids[i]);
-	}
-	
-	auto end = chrono::steady_clock::now();
-	auto t = chrono::duration<double, milli>(end - start).count();
-	
-	PerformanceTime(t); 
+	PerformanceTime(averageTime);
 }
 //-----------------------------------------------------------------------------
 // Name: ComponentRepositoryRetrieveByIdPerfTest
 // Desc: 		
 //-----------------------------------------------------------------------------
-TEST(PerformanceTest, ComponentRepositoryRetrieveByIdPerfTest)
+TEST_F(PerformanceTestFixture, ComponentRepositoryRetrieveByIdPerfTest)
 {
 	const auto numComponents = 5000;
-	ComponentRepository componentRepository("PerformanceTest");
+	const auto numRuns = 5;
 
-	vector<int> ids;
-	componentRepository.NewCollection("TestCollection");
+	double averageTime = 0.0;
 
-	for (auto i = 0; i < numComponents; ++i) {
-		auto transformComponent = componentRepository.NewComponent<TransformComponent>("TestCollection");
-		ids.push_back(transformComponent->id);
+	for (auto i = 0; i < numRuns; i++) {
+		ComponentRepository componentRepository("PerformanceTest");
+
+		vector<int> ids;
+		componentRepository.NewCollection("TestCollection");
+
+		for (auto i = 0; i < numComponents; ++i) {
+			auto transformComponent = componentRepository.NewComponent<TransformComponent>("TestCollection");
+			ids.push_back(transformComponent->id);
+		}
+
+		auto start = chrono::steady_clock::now();
+
+		for (auto i = 0; i < numComponents; i++) {
+			auto selectComponent = componentRepository.SelectId<TransformComponent>(ids[i]);
+		}
+
+		auto end = chrono::steady_clock::now();
+		auto t = chrono::duration<double, milli>(end - start).count();
+
+		averageTime = (t + (i * averageTime)) / (i + 1); 
 	}
 
-	auto start = chrono::steady_clock::now();
-	
-	for (auto i = 0; i < numComponents; i++) {
-		auto selectComponent = componentRepository.SelectId<TransformComponent>(ids[i]);
-	}
-	
-	auto end = chrono::steady_clock::now();
-	auto t = chrono::duration<double, milli>(end - start).count();
-	
-	PerformanceTime(t); 
+	PerformanceTime(averageTime);
 }

@@ -37,6 +37,9 @@ public:
 		auto componentFactory = []() -> BaseComponent* {return new T();};
 
 		this->componentTypeContainerFactory.insert(make_pair(typeName, containerFactory));
+
+		// TODO: remove 'struct' from the beginning if it is there
+
 		this->componentNames.push_back(typeName);
 
 		this->componentTypeFactory.insert(make_pair(typeName, componentFactory));

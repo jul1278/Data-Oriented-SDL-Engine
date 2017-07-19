@@ -27,7 +27,7 @@ private:
 
 	// map string to component collection
 	// TODO: can we make this not a pointer?
-	unordered_map<string, ComponentCollection*> componentCollectionMap; 
+	unordered_map<string, unique_ptr<ComponentCollection>> componentCollectionMap; 
 
 	// id to parent collection
 	unordered_map<unsigned int, string> idToCollectionMap;
@@ -47,7 +47,7 @@ public:
 	ComponentCollectionRepository()
 	{
 		// default collection so there is always somewhere to add to
-        this->componentCollectionMap[defaultCollectionName] = new ComponentCollection(); 
+		this->componentCollectionMap[defaultCollectionName].reset(new ComponentCollection());
 	}
 	//------------------------------------------------------------------------------------
 	// Name: Destructor
@@ -55,9 +55,10 @@ public:
 	//------------------------------------------------------------------------------------
     ~ComponentCollectionRepository()
 	{
-        for (const auto& pair : this->componentCollectionMap) {
-            delete pair.second; 
-        }
+   //     for (const auto& pair : this->componentCollectionMap) {
+			//auto second = get<1>(pair);
+   //         //delete second;
+   //     }
 	}
 	//------------------------------------------------------------------------------------
 	// Name: NewComponent
@@ -73,7 +74,7 @@ public:
 		BaseComponent* newComponent = nullptr;
 		newComponent = this->componentCollectionMap[collectionName]->NewComponent<T>();
 
-		auto collection = componentCollectionMap[collectionName]; 
+		auto& collection = componentCollectionMap[collectionName]; 
 		this->idToCollectionMap[newComponent->id] = collectionName; 
 
 		if (entityId > 0) {
@@ -100,7 +101,7 @@ public:
 			collectionName = defaultCollectionName;
 		}
 
-		auto collection = this->componentCollectionMap[collectionName]; 
+		auto& collection = this->componentCollectionMap[collectionName]; 
 		//auto component = this->SelectBase(id); 
 
 		//// find my entity and remove my id from its list
@@ -139,7 +140,7 @@ public:
 	void NewCollection(const string collectionName)
 	{
 		if (componentCollectionMap.find(collectionName) == componentCollectionMap.end()) {
-            componentCollectionMap[collectionName] = new ComponentCollection();
+            componentCollectionMap[collectionName].reset(new ComponentCollection());
 		}
 	}
 	//------------------------------------------------------------------------------------
@@ -173,7 +174,7 @@ public:
 	T* Select(int id)
 	{
 		auto collectionName = this->idToCollectionMap[id]; 
-		auto collection = this->componentCollectionMap[collectionName]; 
+		auto& collection = this->componentCollectionMap[collectionName]; 
 
 		if (collection != nullptr) {
 
@@ -190,13 +191,15 @@ public:
 	BaseComponent* SelectBase(int id)
 	{
 		auto collectionName = this->idToCollectionMap[id]; 
-		auto collection = this->componentCollectionMap[collectionName];
+		//auto collection = this->componentCollectionMap[collectionName];
 
-		if (collection != nullptr) {
-			return collection->SelectBase(id); 
-		}
+		
 
-		return nullptr; 
+		//if (collection != nullptr) {
+		return this->componentCollectionMap[collectionName]->SelectBase(id);
+		//}
+
+		//return nullptr; 
 	}
 	//------------------------------------------------------------------------------------
 	// Name: DeleteCollection
@@ -204,7 +207,10 @@ public:
 	//------------------------------------------------------------------------------------
 	void DeleteCollection(const string& name)
 	{
-		delete this->componentCollectionMap[name];
+		//delete this->componentCollectionMap[name];
+		if (this->componentCollectionMap.find(name) != this->componentCollectionMap.end()) {
+			this->componentCollectionMap.erase(name); 
+		}
 	}
 	//------------------------------------------------------------------------------------
 	// Name: GetCollections
@@ -214,7 +220,7 @@ public:
 	{
 		list<string> collectionNames; 
 
-		for (auto name : this->componentCollectionMap) {
+		for (auto& name : this->componentCollectionMap) {
 			collectionNames.push_back(name.first); 
 		}
 

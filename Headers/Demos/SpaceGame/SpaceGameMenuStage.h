@@ -19,6 +19,7 @@ class SpaceGameMenuStage : public IStage
 public:
 
 	SpaceGameMenuStage(IGameApp* gameApp); 
+	~SpaceGameMenuStage(); 
 
 	void Update() override final;
 };

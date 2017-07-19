@@ -33,6 +33,10 @@ public:
 		}
 	}
 
+	//------------------------------------------------------------------------------------------------
+	// Name: RegisterListener
+	// Desc:
+	//------------------------------------------------------------------------------------------------
 	template<typename T, typename = typename enable_if<is_base_of<IEventArgs, T>::value>::type>
 	void RegisterListener(function<void(const T&)> listener)
 	{
@@ -44,6 +48,10 @@ public:
 		taskEvent->operator+=(listener); 
 	}
 
+	//------------------------------------------------------------------------------------------------
+	// Name: RegisterGroupListener
+	// Desc:
+	//------------------------------------------------------------------------------------------------
 	template<typename T, typename = typename enable_if<is_base_of<IEventArgs, T>::value>::type>
 	void RegisterGroupListener(string groupName, function<void(const T&)> handler)
 	{
@@ -58,6 +66,10 @@ public:
 		taskEvent->operator+=(handler); 
 	}
 
+	//------------------------------------------------------------------------------------------------
+	// Name: InvokeGroup
+	// Desc:
+	//------------------------------------------------------------------------------------------------
 	template<typename T, typename = typename enable_if<is_base_of<IEventArgs, T>::value>::type>
 	void InvokeGroup(string groupName, T eventArgs)
 	{
@@ -68,6 +80,10 @@ public:
 		taskEvent->Invoke(eventArgs); 		
 	}
 
+	//------------------------------------------------------------------------------------------------
+	// Name: Invoke
+	// Desc:
+	//------------------------------------------------------------------------------------------------
 	template<typename T, typename = typename enable_if<is_base_of<IEventArgs, T>::value>::type>
 	void Invoke(T eventArgs)
 	{

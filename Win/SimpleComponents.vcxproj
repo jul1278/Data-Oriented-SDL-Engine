@@ -136,7 +136,6 @@
     <ClInclude Include="..\headers\components\repository\CComponentCollectionFwd.h" />
     <ClInclude Include="..\headers\components\repository\ComponentCollection.h" />
     <ClInclude Include="..\headers\components\repository\ComponentCollectionIterator.h" />
-    <ClInclude Include="..\headers\components\repository\ComponentCollectionRepository.h" />
     <ClInclude Include="..\headers\components\repository\ComponentContainerFactory.h" />
     <ClInclude Include="..\headers\components\repository\ComponentRepository.h" />
     <ClInclude Include="..\headers\components\repository\ComponentStore.h" />
@@ -149,6 +148,8 @@
     <ClInclude Include="..\headers\components\VelocityComponent.h" />
     <ClInclude Include="..\headers\demos\cameratest\CameraTestApp.h" />
     <ClInclude Include="..\headers\demos\cameratest\CameraTestStage.h" />
+    <ClInclude Include="..\Headers\Demos\FunTest\FunTestGameApp.h" />
+    <ClInclude Include="..\Headers\Demos\FunTest\FunTestMenuStage.h" />
     <ClInclude Include="..\headers\demos\snakegame\FoodAction.h" />
     <ClInclude Include="..\headers\demos\snakegame\SnakeAction.h" />
     <ClInclude Include="..\headers\demos\snakegame\SnakeEatFoodTask.h" />
@@ -168,12 +169,12 @@
     <ClInclude Include="..\headers\events\CollisionEventArgs.h" />
     <ClInclude Include="..\headers\events\EventObserveable.h" />
     <ClInclude Include="..\headers\events\ExitBoundsEventArgs.h" />
-    <ClInclude Include="..\headers\events\IComponentProcess.h" />
     <ClInclude Include="..\headers\events\IEventArgs.h" />
     <ClInclude Include="..\headers\events\IntersectionEventArgs.h" />
     <ClInclude Include="..\headers\events\ITaskEvent.h" />
     <ClInclude Include="..\headers\events\MouseButtonEventArgs.h" />
     <ClInclude Include="..\headers\events\MouseMotionEventArgs.h" />
+    <ClInclude Include="..\Headers\Events\MouseOverEventArgs.h" />
     <ClInclude Include="..\headers\events\QuitApplicationEventArgs.h" />
     <ClInclude Include="..\headers\events\SDLEventCollector.h" />
     <ClInclude Include="..\headers\events\TaskEvent.h" />
@@ -196,6 +197,7 @@
     <ClInclude Include="..\headers\graphics\MouseCameraTransform.h" />
     <ClInclude Include="..\headers\graphics\ProceduralAsteroidGraphicsResource.h" />
     <ClInclude Include="..\headers\graphics\RectGraphicsResource.h" />
+    <ClInclude Include="..\Headers\Graphics\SimpleStatusBarGraphicResource.h" />
     <ClInclude Include="..\headers\graphics\SpriteGraphicsResource.h" />
     <ClInclude Include="..\headers\graphics\StarGraphicsResource.h" />
     <ClInclude Include="..\headers\graphics\TextGraphicsResource.h" />

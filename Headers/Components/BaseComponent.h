@@ -4,6 +4,8 @@
 #ifndef BASE_COMPONENT_H
 #define BASE_COMPONENT_H
 
+#include <iostream>
+
 struct BaseComponent
 {
 	unsigned int id;
@@ -20,6 +22,11 @@ struct BaseComponent
 	{
 		return static_cast<T>(this); 
 	}
+
+	//~BaseComponent()
+	//{
+	//	std::cout << "delete component\n";
+	//}
 };
 
 struct BaseLinkedComponent : public BaseComponent

@@ -13,6 +13,7 @@ struct Vector2D;
 struct SimpleButtonComponent;
 class MouseMotionEventArgs;
 class MouseButtonEventArgs;
+class MouseOverEventArgs; 
 
 using namespace std; 
 
@@ -65,6 +66,10 @@ public:
 
 	void RegisterMouseOverHandler(Vector2D topLeft, Vector2D size, function<void(const MouseMotionEventArgs&)> handler); 
 	void RegisterMouseOverHandler(const SimpleButtonComponent& simpleButtonComponent, const TransformComponent& transformComponent, function<void(const MouseMotionEventArgs&)> handler);
+
+	void RegisterMouseOverHandler(Vector2D topLeft, Vector2D size, function<void(const MouseOverEventArgs&)> handler);
+	void RegisterMouseOverHandler(const SimpleButtonComponent& simpleButtonComponent, const TransformComponent& transformComponent, function<void(const MouseOverEventArgs&)> handler);
+
 
 	void RegisterMouseClickHandler(Vector2D topLeft, Vector2D size, function<void(const MouseButtonEventArgs&)> handler); 
 	void RegisterMouseClickHandler(const SimpleButtonComponent& simpleButtonComponent, const TransformComponent& transform, function<void(const MouseButtonEventArgs&)> handler);
