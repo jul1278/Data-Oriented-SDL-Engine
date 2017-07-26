@@ -137,15 +137,19 @@ public:
 	// Name: NewComponent
 	// Desc: 
 	//------------------------------------------------------------
-	template<typename T, T = BaseComponent>
+	template<typename T> // todo: where T is child class of BaseComponent
 	T* NewComponent()
 	{
+		std::string collectionName; 
+
 		if (!this->componentRepository->ContainsCollection(this->ParentCollectionName())) {
 			// else get the default top level collection
 			collectionName = "";
 		}
 
 		auto baseComponent = this->componentRepository->NewComponent<T>(collectionName);
+
+		return baseComponent; 
 	}
 };
 

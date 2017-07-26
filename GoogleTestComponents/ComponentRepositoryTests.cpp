@@ -179,7 +179,7 @@ TEST(ComponentRepositoryTests, RemoveEntityId)
 	EXPECT_EQ(graphicsComponents.Size(), 0); 
 }
 //-------------------------------------------------------------------------
-// Name: RemoveEntityInsideLoop
+// Name: TestPointerConsistency
 // Desc:
 //-------------------------------------------------------------------------
 TEST(ComponentRepositoryTests, TestPointerConsistency)
@@ -189,44 +189,47 @@ TEST(ComponentRepositoryTests, TestPointerConsistency)
 	auto entityId = componentRepository.GenerateId();
 	auto transformComponent = componentRepository.NewComponent<TransformComponent>("Test1", entityId);
 
+	auto id = transformComponent->id; 
+
 	for (auto i = 0; i < 1000; i++) {
 		componentRepository.NewComponent<TransformComponent>("Test1", entityId);
 	}
 
-	transformComponent->id = 100; 
+	EXPECT_EQ(transformComponent->id, id); 
 }
 //-------------------------------------------------------------------------
 // Name: RemoveEntityInsideLoop
-// Desc:
+// Desc: 
 //-------------------------------------------------------------------------
-TEST(ComponentRepositoryTests, RemoveEntityInsideLoop)
-{
-	ComponentRepository componentRepository("Test1");
-
-	auto entityId = componentRepository.GenerateId(); 
-
-	auto transformComponent = componentRepository.NewComponent<TransformComponent>("Test2", entityId);
-	auto graphicsComponent = componentRepository.NewComponent<GraphicsComponent>("Test2", entityId);
-
-	EXPECT_TRUE(transformComponent);
-	EXPECT_TRUE(graphicsComponent); 
-
-	componentRepository.NewComponent<TransformComponent>();
-	componentRepository.NewComponent<GraphicsComponent>();
-	componentRepository.NewComponent<TransformComponent>();
-	componentRepository.NewComponent<GraphicsComponent>();
-
-	auto transformComponents = componentRepository.Select<TransformComponent>();
-	auto graphicsComponents = componentRepository.Select<GraphicsComponent>();
-
-	for (auto transformComponent : transformComponents) {
-		componentRepository.RemoveEntity(entityId); 	
-	}
-
-	for (auto transformComponent : transformComponents) {}
-	for (auto graphicsComponent : graphicsComponents) {}
-
-	// Should have removed 2 from each
-	EXPECT_EQ(graphicsComponents.Size(), 2); 
-	EXPECT_EQ(transformComponents.Size(), 2);
-}
+// TODO: What is this test even doing?
+//TEST(ComponentRepositoryTests, RemoveEntityInsideLoop)
+//{
+//	ComponentRepository componentRepository("Test1");
+//
+//	auto entityId = componentRepository.GenerateId(); 
+//
+//	auto transformComponent = componentRepository.NewComponent<TransformComponent>("Test2", entityId);
+//	auto graphicsComponent = componentRepository.NewComponent<GraphicsComponent>("Test2", entityId);
+//
+//	EXPECT_TRUE(transformComponent);
+//	EXPECT_TRUE(graphicsComponent); 
+//
+//	componentRepository.NewComponent<TransformComponent>();
+//	componentRepository.NewComponent<GraphicsComponent>();
+//	componentRepository.NewComponent<TransformComponent>();
+//	componentRepository.NewComponent<GraphicsComponent>();
+//
+//	auto transformComponents = componentRepository.Select<TransformComponent>();
+//	auto graphicsComponents = componentRepository.Select<GraphicsComponent>();
+//
+//	for (auto transformComponent : transformComponents) {
+//		componentRepository.RemoveEntity(entityId); 	
+//	}
+//
+//	for (auto transformComponent : transformComponents) {}
+//	for (auto graphicsComponent : graphicsComponents) {}
+//
+//	// Should have removed 2 from each
+//	EXPECT_EQ(graphicsComponents.Size(), 2); 
+//	EXPECT_EQ(transformComponents.Size(), 2);
+//}

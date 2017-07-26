@@ -74,7 +74,7 @@ namespace SerialUtility
 		//-------------------------------------------------------------------
 		bool TryGetNamedVectorValue(const std::string& name, Vector2D& vector) const
 		{
-			NamedValue nameValue;
+			NamedValue nameValue("default");
 
 			if (this->TryGetNamedValue(name, nameValue)) {
 				float x, y;
@@ -164,7 +164,7 @@ namespace SerialUtility
         // Name: NamedValue
         // Desc:
         //-------------------------------------------------------------------
-        NamedValue(string name = "") : name(name) {}
+        NamedValue(string name) : name(name) {}
 
         //-------------------------------------------------------------------
         // Name: NamedValue

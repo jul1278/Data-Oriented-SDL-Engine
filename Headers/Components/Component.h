@@ -57,28 +57,27 @@ namespace Component
 	// Name: Deserialize 
 	// Desc: Deserialize BaseComponent
 	//-------------------------------------------------------------------------------------
-	BaseComponent* Deserialize(const struct SerialUtility::NamedValue& namedValue, ParseContext& parseContext)
+	template<typename T>
+	T* Deserialize(const struct SerialUtility::NamedValue& namedValue, ParseContext& parseContext)
 	{
 		// check if namedValue.name is a component
-		if (IsComponent(namedValue.Name()) {
+		if (IsComponent(namedValue.Name())) {
 
 			auto name = namedValue.Name();
 
-			if (name == STRING(BaseComponent)) {
-				return Component::Deserialize<BaseComponent>(namedValue, parseContext);
+			if (name == "BaseComponent") {
+				return (T*) Component::DeserializeAs<BaseComponent>(namedValue, parseContext);
 			}
 
-			if (name == STRING(TransformComponent)) {
-
-				TransformComponent* transformComponent = static_cast<TransformComponent*>(component);
-				return Component::Deserialize(namedValue, parseContext);
+			if (name == "TransformComponent") {
+				return (T*) Component::DeserializeAs<TransformComponent>(namedValue, parseContext);
 			}
 
-			if (name == STRING(GraphicsComponent)) {
+			//if (name == "GraphicsComponent") {
 
-				GraphicsComponent* graphicsComponent = static_cast<GraphicsComponent*>(component);
-				return Component::Deserialize(namedValue, parseContext);
-			}
+			//	GraphicsComponent* graphicsComponent = static_cast<GraphicsComponent*>(component);
+			//	return Component::Deserialize(namedValue, parseContext);
+			//}
 
 		} else {
 			return nullptr;
@@ -89,27 +88,30 @@ namespace Component
 	// Name: Deserialize 
 	// Desc: Deserialize BaseComponent
 	//-------------------------------------------------------------------------------------
-	template<typename T, T = struct BaseComponent>
-	BaseComponent* Deserialize(const struct SerialUtility::NamedValue& nameValue, ParseContext& parseContext)
+	template<typename T>
+	T* DeserializeAs(const struct SerialUtility::NamedValue& namedValue, ParseContext& parseContext);
+
+	//-------------------------------------------------------------------------------------
+	// Name: Deserialize 
+	// Desc: Deserialize BaseComponent
+	//-------------------------------------------------------------------------------------
+	template<>
+	BaseComponent* DeserializeAs<BaseComponent>(const struct SerialUtility::NamedValue& nameValue, ParseContext& parseContext)
 	{
 		BaseComponent* baseComponent = parseContext.NewComponent<BaseComponent>();
 
 		// check if we're even trying to get an entityId
-		std::string entityId;
-		unsigned int id;
+		int entityId;
 
-		if (nameValue.TryGetAttribute("entityId", entityId) && baseComponent != nullptr) {
+		if (baseComponent != nullptr) {
 
 			// check if the entityId is specified
-			if (parseContext.ParentEntityId() == 0) {
+			if (parseContext.ParentEntityId() != 0) {
+				baseComponent->entityId = parseContext.ParentEntityId();
+			
+			} else if (nameValue.TryGetAttribute("entityId", entityId)) {
 
-				if (nameValue.TryGetAttribute("entityId", id)) {
-					baseComponent->entityId = id;
-
-				} else {
-
-					baseComponent->entityId = parseContext.ParentEntityId();
-				}
+				baseComponent->entityId = entityId;
 			}
 		}
 
@@ -120,13 +122,13 @@ namespace Component
 	// Name: Deserialize 
 	// Desc: Deserialize TransformComponent
 	//-------------------------------------------------------------------------------------
-	template<typename T, T = TransformComponent>
-	BaseComponent* Deserialize(const SerialUtility::NamedValue& namedValue, ParseContext& parseContext)
+	template<>
+	TransformComponent* DeserializeAs<TransformComponent>(const SerialUtility::NamedValue& namedValue, ParseContext& parseContext)
 	{
-		TransformComponent* transformComponent = static_cast<TransformComponent*>(Deserialize<BaseComponent>(namedValue, parseContext)); 
+		TransformComponent* transformComponent = static_cast<TransformComponent*>(Component::DeserializeAs<BaseComponent>(namedValue, parseContext)); 
 
 		if (transformComponent != nullptr) {
-			SerialUtility::NamedValue positionValue, orientationValue, scaleValue;
+			SerialUtility::NamedValue positionValue("position"), orientationValue("orientation"), scaleValue("scale");
 
 			if (!namedValue.TryGetNamedVectorValue("position", transformComponent->position)) {
 				transformComponent->position = Vector2D();
@@ -140,87 +142,32 @@ namespace Component
 				transformComponent->scale = Vector2D();
 			}
 
-			return true;
+			return transformComponent;
 		}
 		
-
-		return false;
+		return nullptr;
 	}
 
 	//-------------------------------------------------------------------------------------
 	// Name: Deserialize 
-	// Desc: Deserialize BaseComponent
+	// Desc: Deserialize GraphicsComponent
 	//-------------------------------------------------------------------------------------
-	//bool Deserialize(struct BaseComponent* component, const struct SerialUtility::NamedValue& nameValuePairs, ParseContext& parseContext)
-	//{
-	//	if (component != nullptr) {
+	template<>
+	GraphicsComponent* DeserializeAs<GraphicsComponent>(const SerialUtility::NamedValue& namedValue, ParseContext& parseContext)
+	{
+		// TODO: implement
+		return parseContext.NewComponent<GraphicsComponent>();
+	}
 
-	//		// check if we're even trying to get an entityId
-	//		std::string entityId;
-	//		if (nameValuePairs.TryGetAttribute("entityId", entityId)) {
-
-	//			// check if the entityId is specified
-	//			if (parseContext.ParentEntityId() == 0) {
-	//				int id;
-
-	//				if (nameValuePairs.TryGetAttribute("entityId", id)) {
-	//					component->entityId = id;
-	//				}
-
-	//			}
-	//			else {
-
-	//				component->entityId = parseContext.ParentEntityId();
-	//			}
-	//		}
-
-	//		return true;
-	//	}
-
-	//	return false;
-	//}
-
-
-
-    //-------------------------------------------------------------------------------------
-    // Name: Deserialize 
-    // Desc: Deserialize GraphicsComponent
-    //-------------------------------------------------------------------------------------
-    bool Deserialize(struct GraphicsComponent* graphicsComponent, const SerialUtility::NamedValue& namedValue, ParseContext& parseContext)
-    {
-        if (graphicsComponent != nullptr) {
-
-            if (Deserialize((BaseComponent*) graphicsComponent, namedValue, parseContext)) {
-                
-				std::string transformComponentName; 
-				if (!namedValue.TryGetAttribute("name", transformComponentName)) {
-					return false;
-				}
-
-                auto transformComponentId = parseContext.NamedId(transformComponentName); 
-                graphicsComponent->transformComponentId = transformComponentId; 
-
-				
-				// we're looking for named value called resource
-				SerialUtility::NamedValue resource; 
-				if (namedValue.TryGetNamedValue("resource", resource)) {
-
-					string path;
-					string name;
-
-					if (resource.TryGetAttribute("path", path)) {
-						graphicsComponent->resourceId = parseContext.ResourceIdFromPath(path);
-					
-					} else if (resource.TryGetAttribute("name", name)) {
-
-						graphicsComponent->resourceId = parseContext.ResourceIdFromName(name, resource);
-					}
-				}
-            }
-        }
-
-        return false; 
-    }
+	//-------------------------------------------------------------------------------------
+	// Name: IsComponent 
+	// Desc: returns true if there is a component with the corresponding name
+	//-------------------------------------------------------------------------------------
+	bool IsComponent(const std::string& name)
+	{
+		// TODO: implement
+		return true;
+	}
 }
 
 #endif // COMPONENT_H
