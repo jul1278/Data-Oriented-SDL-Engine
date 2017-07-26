@@ -79,9 +79,9 @@ TEST(SerializationTest, SerializeTransformComponent)
 
 	SerialUtility::NamedValue orientationValue("orientation"), scaleValue("scale"), positionValue("position");
 
-    auto result1 = namedValue.TryGetNamedValue("orientation", orientationValue);
-    auto result2 = namedValue.TryGetNamedValue("scale", scaleValue);
-    auto result3 = namedValue.TryGetNamedValue("position", positionValue);
+    auto result1 = namedValue.TryGetNamedValue("Orientation", orientationValue);
+    auto result2 = namedValue.TryGetNamedValue("Scale", scaleValue);
+    auto result3 = namedValue.TryGetNamedValue("Position", positionValue);
 
 	std::string resultStr; 
 	orientationValue.TryGetAttribute("x", resultStr);
@@ -117,9 +117,9 @@ TEST(SerializationTest, DeserializeTransformComponent)
 
     // namedValue.Add("id", "15");
     namedValue.AddAttribute("entityId", "199"); 
-    namedValue.AddNamedValue("position", Vector2D(12.0f, 13.0f)); 
-    namedValue.AddNamedValue("scale", Vector2D(1.0f, 4.32f));
-    namedValue.AddNamedValue("orientation", Vector2D(34.0045f, 3.3443f));
+    namedValue.AddNamedValue("Position", Vector2D(12.0f, 13.0f)); 
+    namedValue.AddNamedValue("Scale", Vector2D(1.0f, 4.32f));
+    namedValue.AddNamedValue("Orientation", Vector2D(34.0045f, 3.3443f));
 
     TransformComponent* transformComponent = Component::Deserialize<TransformComponent>(namedValue, parseContext);
 
@@ -186,9 +186,9 @@ TEST(SerializationTest, NamedValueToTransformComponent)
 
 	SerialUtility::NamedValue namedValue("TransformComponent");
     namedValue.AddAttribute("name", "transform_component_1"); 
-    namedValue.AddNamedValue("position", Vector2D(5.0f, 3.0f));
-    namedValue.AddNamedValue("orientation", Vector2D(4.0f, 3.105f));
-    namedValue.AddNamedValue("scale", Vector2D(2.50f, 1056.67f));
+    namedValue.AddNamedValue("Position", Vector2D(5.0f, 3.0f));
+    namedValue.AddNamedValue("Orientation", Vector2D(4.0f, 3.105f));
+    namedValue.AddNamedValue("Scale", Vector2D(2.50f, 1056.67f));
 
 	auto component = Component::Deserialize<TransformComponent>(namedValue, parseContext);
 

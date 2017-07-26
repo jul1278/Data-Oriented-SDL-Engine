@@ -33,9 +33,9 @@ namespace Component
     bool Serialize(const struct TransformComponent& transformComponent, SerialUtility::NamedValue& namedValue)
     {
         if (Serialize(dynamic_cast<const struct BaseComponent&>(transformComponent), namedValue)) {
-            namedValue.AddNamedValue("position", transformComponent.position);
-            namedValue.AddNamedValue("orientation", transformComponent.orientation);
-            namedValue.AddNamedValue("scale", transformComponent.scale);
+            namedValue.AddNamedValue("Position", transformComponent.position);
+            namedValue.AddNamedValue("Orientation", transformComponent.orientation);
+            namedValue.AddNamedValue("Scale", transformComponent.scale);
 
             return true;
         }    
@@ -128,17 +128,17 @@ namespace Component
 		TransformComponent* transformComponent = static_cast<TransformComponent*>(Component::DeserializeAs<BaseComponent>(namedValue, parseContext)); 
 
 		if (transformComponent != nullptr) {
-			SerialUtility::NamedValue positionValue("position"), orientationValue("orientation"), scaleValue("scale");
+			SerialUtility::NamedValue positionValue("Position"), orientationValue("Orientation"), scaleValue("Scale");
 
-			if (!namedValue.TryGetNamedVectorValue("position", transformComponent->position)) {
+			if (!namedValue.TryGetNamedVectorValue("Position", transformComponent->position)) {
 				transformComponent->position = Vector2D();
 			}
 
-			if (!namedValue.TryGetNamedVectorValue("orientation", transformComponent->orientation)) {
+			if (!namedValue.TryGetNamedVectorValue("Orientation", transformComponent->orientation)) {
 				transformComponent->orientation = Vector2D();
 			}
 
-			if (!namedValue.TryGetNamedVectorValue("scale", transformComponent->scale)) {
+			if (!namedValue.TryGetNamedVectorValue("Scale", transformComponent->scale)) {
 				transformComponent->scale = Vector2D();
 			}
 

@@ -174,25 +174,15 @@ namespace SerialUtility
         {
             this->name = xmlTag.name; 
 
-            // name to lowercase
-            std::transform(this->name.begin(), this->name.end(), this->name.begin(), ::tolower); 
-
             for(auto pair : xmlTag.attributes) {
-
                 auto attrName = pair.first; 
-
-                // name to lowercase
-                std::transform(attrName.begin(), attrName.end(), attrName.begin(), ::tolower);
 
                 auto xmlValue = pair.second; 
 				this->attributes[attrName] = xmlValue; 
             }
 
             for(auto child : xmlTag.children) {
-
                 auto childName = child.name; 
-                std::transform(childName.begin(), childName.end(), childName.begin(), ::tolower);
-
 				this->namedValues.push_back(NamedValue(child)); 
             }
         }
