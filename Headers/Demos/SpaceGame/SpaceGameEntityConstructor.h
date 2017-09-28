@@ -45,7 +45,7 @@ public:
 	// Name: ConstructBackgroundStars
 	// Desc:
 	//--------------------------------------------------------------------------------
-	static void ConstructBackgroundStars(ComponentRepository* componentRepository, int graphicResourceId, int width, int height, int num)
+	static void ConstructBackgroundStars(ComponentRepository* componentRepository, unsigned int graphicResourceId, unsigned int width, unsigned int height, unsigned int num)
 	{
 		default_random_engine defaultRandomEngine; 
 		uniform_int_distribution<int> yUniformIntDistribution(0, height); 
@@ -56,7 +56,7 @@ public:
 
 		componentRepository->NewCollection(collectionName); 
 
-		for (auto i = 0; i < num; i++) {
+		for (auto i = 0U; i < num; i++) {
 
 			auto transformComponent = componentRepository->NewComponent<TransformComponent>(collectionName);
 			auto graphicsComponent = componentRepository->NewComponent<GraphicsComponent>(collectionName); 
@@ -65,7 +65,10 @@ public:
 			auto scale = scaleUniformDist(defaultRandomEngine); 
 
 			transformComponent->scale = Vector2D(scale, scale); 
-			transformComponent->position.x = (i+1)*(width / num); 
+			
+			auto result = (i + 1) * (((float)width) / num);
+			transformComponent->position.x = result; 
+			
 			transformComponent->position.y = 2.0f*yUniformIntDistribution(defaultRandomEngine); 
 
 			graphicsComponent->resourceId = graphicResourceId; 

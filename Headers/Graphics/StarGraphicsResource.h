@@ -18,8 +18,8 @@ private:
 	uint8_t g;
 	uint8_t b;
 
-	uint8_t radiusInner;
-	uint8_t radiusOuter; 
+	uint16_t radiusInner;
+	uint16_t radiusOuter; 
 
 public:
 
@@ -40,8 +40,8 @@ public:
 
 	void Render(SDL_Renderer* sdlRenderer, TransformComponent* transformComponent) override final
 	{
-		int vx1, vx2, vy1, vy2;
-		int hx1, hx2, hy1, hy2; 
+		float vx1, vx2, vy1, vy2;
+		float hx1, hx2, hy1, hy2; 
 
 		vx1 = transformComponent->position.x; 
 		vx2 = transformComponent->position.x; 

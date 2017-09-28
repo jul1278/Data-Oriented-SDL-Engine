@@ -8,6 +8,7 @@
 #include "SDL_ttf.h"
 #include "SDL_image.h"
 #include <string.h>
+#include <cstdint>
 #include <math.h>
 
 namespace GraphicsUtility
@@ -16,50 +17,59 @@ namespace GraphicsUtility
     // Name: FillCircle
     // Desc:
     //----------------------------------------------------------------------------------
-    static void OutlineCircle(SDL_Surface *surface, uint16_t radius, uint16_t thickness, uint32_t color)
+    static void OutlineCircle(SDL_Surface* surface, const uint16_t radius, const uint16_t thickness, const uint32_t color)
     {
         if (surface == nullptr) {
             return;
         }
 
+		// should report error or something?
+		if (thickness > radius) {
+			return; 
+		}
+
         if (!surface->locked) {
             SDL_LockSurface(surface);
         }
 
-        auto pixels = static_cast<Uint8*>(surface->pixels);
+        auto pixels = static_cast<uint8_t*>(surface->pixels);
 
         // set all the pixels to have 0x00 alpha channel
-        memset(static_cast<void*>(pixels), 0x00, sizeof(Uint32)*surface->w*surface->h);
+        memset((void*)pixels, 0x00, sizeof(uint32_t)*surface->w*surface->h);
+			
+		uint32_t diff = radius - thickness; 
+		uint32_t diffSqr = diff * diff; 
 
-        for (auto x = 0; x < radius; x++) {
+        for (auto x = 0U; x < radius; x++) {
 
-            auto yTop = sqrtf(radius*radius - x*x);
+			auto arg = radius*radius - x*x; 
+            auto yTop = sqrtf(arg);
 
-            for (auto y = 0; y < yTop; y++) {
+            for (auto y = 0U; y < yTop; y++) {
 
-                auto innerRadiusSqr = (radius - thickness)*(radius - thickness);
+				auto innerRadiusSqr = diffSqr; //(radius - thickness)*(radius - thickness);
 
-                if ((x*x + y*y ) < innerRadiusSqr ) {
+                if ((x*x + y*y) < innerRadiusSqr ) {
                     continue;
                 }
 
-                Uint32 index = (y + radius - 1)* surface->pitch - 4*(x + radius);
+                uint32_t index = (y + radius - 1)* surface->pitch - 4*(x + radius);
 
-                auto addr = reinterpret_cast<uint32_t*>(pixels + index);
+                auto addr = (uint32_t*)(pixels + index);
                 *addr = color;
 
                 // TODO: why -2?
                 index = (y + radius -2)* surface->pitch + 4*(x + radius);
 
-                addr = reinterpret_cast<uint32_t*>(pixels + index);
+                addr = (uint32_t*)(pixels + index);
                 *addr = color;
-                index = (-y + radius - 1)* surface->pitch + 4*(x + radius);
+                index = ((-1 * y) + radius - 1) * surface->pitch + 4*(x + radius);
 
-                addr = reinterpret_cast<uint32_t*>(pixels + index);
+                addr = (uint32_t*)(pixels + index);
                 *addr = color;
-                index = (-y + radius)* surface->pitch - 4*(x + radius);
+                index = ((-1 * y) + radius)* surface->pitch - 4*(x + radius);
 
-                addr = reinterpret_cast<uint32_t*>(pixels + index);
+                addr = (uint32_t*)(pixels + index);
                 *addr = color;        
             }
         }
@@ -70,7 +80,7 @@ namespace GraphicsUtility
     // Name: FillCircle
     // Desc:
     //----------------------------------------------------------------------------------
-    static void FillCircle(SDL_Surface *surface, uint16_t radius, uint32_t color)
+    static void FillCircle(SDL_Surface *surface, const uint16_t radius, const uint32_t color)
     {
         if (surface == nullptr) {
             return;
@@ -80,33 +90,40 @@ namespace GraphicsUtility
             SDL_LockSurface(surface);
         }
 
-        auto pixels = static_cast<Uint8*>(surface->pixels);
+        auto pixels = static_cast<uint8_t*>(surface->pixels);
 
         // set all the pixels to have 0x00 alpha channel
-		memset(static_cast<void*>(pixels), 0x00, sizeof(Uint32)*surface->w*surface->h);
+		memset(static_cast<void*>(pixels), 0x00, sizeof(uint32_t)*surface->w*surface->h);
 
-        for (auto x = 0; x < radius; x++) {
+        for (auto x = 0U; x < radius; x++) {
 
-	        auto yTop = sqrtf(radius*radius - x*x);
+			auto arg = radius*radius - x*x;
 
-            for (auto y = 0; y < yTop; y++) {
+			if (arg < 0) {
+				// error
+				break; 
+			}
 
-                Uint32 index = (y + radius - 1)* surface->pitch - 4*(x + radius);
+	        auto yTop = sqrtf(arg);
 
-                auto addr = reinterpret_cast<uint32_t*>(pixels + index);
+            for (auto y = 0U; y < yTop; y++) {
+
+                uint32_t index = (y + radius - 1)* surface->pitch - 4*(x + radius);
+
+                auto addr = (uint32_t*)(pixels + index);
                 *addr = color;
 
                 // TODO: why -2?
                 index = (y + radius -2)* surface->pitch + 4*(x + radius);
-                addr = reinterpret_cast<uint32_t*>(pixels + index);
+                addr = (uint32_t*)(pixels + index);
                 *addr = color;
 
-                index = (-y + radius - 1)* surface->pitch + 4*(x + radius);    
-                addr = reinterpret_cast<uint32_t*>(pixels + index);
+                index = ((-1 * y) + radius - 1)* surface->pitch + 4*(x + radius);    
+                addr = (uint32_t*)(pixels + index);
                 *addr = color;
             
-                index = (-y + radius)* surface->pitch - 4*(x + radius);
-                addr = reinterpret_cast<uint32_t*>(pixels + index);
+                index = ((-1 * y) + radius)* surface->pitch - 4*(x + radius);
+                addr = (uint32_t*)(pixels + index);
                 *addr = color;
             }
         }
@@ -114,7 +131,11 @@ namespace GraphicsUtility
         SDL_UnlockSurface(surface);
     };
 
-    static void FillIsoTriangle(SDL_Surface* surface, int width, int height, uint32_t color)
+	//----------------------------------------------------------------------------------
+	// Name: FillIsoTriangle
+	// Desc:
+	//----------------------------------------------------------------------------------
+    static void FillIsoTriangle(SDL_Surface* surface, uint32_t width, uint32_t height, uint32_t color)
     {
         if (surface == nullptr) {
             return;
@@ -124,7 +145,7 @@ namespace GraphicsUtility
             SDL_LockSurface(surface);
         }
 
-	    auto pixels = static_cast<Uint8*>(surface->pixels);
+	    auto pixels = static_cast<uint8_t*>(surface->pixels);
         
         // set all the pixels to have 0x00 alpha channel
         memset(static_cast<void*>(pixels), 0xff000000, surface->w*surface->h);
@@ -137,7 +158,7 @@ namespace GraphicsUtility
 	        auto x = 0;
 	        auto slope = static_cast<float>(height)/(0.5f*width);
 
-            for (auto y = 0; y < height; y++) {
+            for (auto y = 0U; y < height; y++) {
 
                 while ( error < 0.5f ) {
 
@@ -168,12 +189,12 @@ namespace GraphicsUtility
 
         } else {
 
-	        auto y = 0;
+	        auto y = 0U;
 	        auto slope = (0.5f*width) / height;
 
-            for ( int x = floor(0.5f*width); x < width; x++) {
+            for (uint32_t x = floor(0.5f*width); x < width; x++) {
 
-                while ( error < 0.5f ) {
+                while ( error < 0.5f ) { // TODO: should there be another condition here to exit the loop? what if we run out of pixels before reaching error == 0.5?
 
                     // accumulate error
 	                auto dx = fabsf( static_cast<float>(x - floor(0.5f*width)) - y*slope);
@@ -204,10 +225,6 @@ namespace GraphicsUtility
         SDL_UnlockSurface(surface);
     }
 };
-
-//const float PI = 3.1415927;
-
-
 
 #endif // GRAPHICS_UTILITY_H
 

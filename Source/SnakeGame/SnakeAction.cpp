@@ -136,7 +136,7 @@ void SnakeAction::Update()
 			break;
 		}
 
-		for (auto i = 1; i < transformComponents.Size(); i++) {
+		for (auto i = 1U; i < transformComponents.Size(); i++) {
 			lastPos = transformComponents[i].position;
 			transformComponents[i].position = nextPos;
 			nextPos = lastPos;

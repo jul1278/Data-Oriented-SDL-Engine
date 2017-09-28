@@ -84,7 +84,7 @@ public:
 	// Desc: select component of id 
 	//-----------------------------------------------------------------------------------
 	template<typename T = BaseComponent, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
-	T* SelectId(unsigned int id)
+	T* SelectId(const unsigned int id)
 	{
 		BaseComponent* component = nullptr; 
 
@@ -95,7 +95,7 @@ public:
 
 		} else {
 
-			for(auto child : this->childRepository) {
+			for(auto& child : this->childRepository) {
 				auto repository = child.second; 
 
 				if (component = repository->SelectId(id)) {
@@ -113,6 +113,7 @@ public:
 	//-----------------------------------------------------------------------------------
 	// Name: Select
 	// Desc: select all components of type T from collection collectionName
+	//       OK to return object because return value optimisation?
 	//-----------------------------------------------------------------------------------
 	template<typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
 	Repository::ComponentCollection<T> Select(const string& collectionName = "")
@@ -132,7 +133,7 @@ public:
 		if (collectionName != this->Name() || collectionName == "") {
 			
 			// search my children 
-			for (auto namedRepository : this->childRepository) {
+			for (auto& namedRepository : this->childRepository) {
 
 				// I guess this allows multiple repositories with the same name?
 				auto repository = namedRepository.second;
@@ -164,7 +165,7 @@ public:
 	// Desc:
 	//--------------------------------------------------------------------------------
 	template<typename T = BaseComponent, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
-	T* NewComponent(const string& collectionName, unsigned int entityId)
+	T* NewComponent(const string& collectionName, const unsigned int entityId)
 	{
 		T* component = nullptr;
 
@@ -177,7 +178,7 @@ public:
 
 		} else {
 
-			for (auto child : this->childRepository) {
+			for (auto& child : this->childRepository) {
 				auto repository = child.second; 
 				
 				if(component = repository->NewComponent<T>(collectionName, entityId)) {
@@ -221,7 +222,7 @@ public:
 		
 		} else {
 
-			for (auto child : this->childRepository) {
+			for (auto& child : this->childRepository) {
 				
 				auto repository = child.second;
 				if (component = repository->NewComponent(componentType, collectionName)) {
@@ -237,7 +238,7 @@ public:
 	// Name: Remove
 	// Desc:
 	//--------------------------------------------------------------------------------
-	bool Remove(unsigned int id)
+	bool Remove(const unsigned int id)
 	{
 		if (this->idMap.find(id) != this->idMap.end()) {
 			if(auto container = this->idMap[id].lock()) {
@@ -264,7 +265,7 @@ public:
 	// Name: RemoveEntity
 	// Desc:
 	//--------------------------------------------------------------------------------
-	bool RemoveEntity(unsigned int entityId)
+	bool RemoveEntity(const unsigned int entityId)
 	{
 		if (this->entityIdToComponentId.find(entityId) != this->entityIdToComponentId.end()) {
 
@@ -311,7 +312,7 @@ public:
 			return true;
 		}
 
-		for (auto child : this->childRepository) {
+		for (auto& child : this->childRepository) {
 			if (child.second->ContainsCollection(collectionName)) {
 				return true;
 			}

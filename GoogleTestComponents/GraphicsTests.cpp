@@ -43,7 +43,7 @@ TEST(GraphicsTests, TestColor)
 	graphics->AddGraphicsResource(new RectGraphicsResource(20, 20, Color(Color::White)));
 	graphics->AddGraphicsResource(new RectGraphicsResource(20, 20, Color(Color::Yellow)));
 
-	for (auto i = 0; i < numComponents; i++) {
+	for (auto i = 0U; i < numComponents; i++) {
 
 		auto transformComponent = componentRepository.NewComponent<TransformComponent>(); 
 		auto graphicsComponent = componentRepository.NewComponent<GraphicsComponent>();

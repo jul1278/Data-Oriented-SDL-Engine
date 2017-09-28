@@ -22,10 +22,10 @@ public:
 
 	ProceduralAsteroidGraphicsResource(const float radius, const float eccentricity, const unsigned int points)
 	{
-		const auto angleInc = (2 * M_PI) / points;
+		const auto angleInc = (float) (2.0 * M_PI) / points;
 		auto angle = 0.0f;
 
-		for (auto i = 0; i < points; i++) {
+		for (auto i = 0U; i < points; i++) {
 			auto d = radius + 0.5f*radius*MathUtility::RandomFloatUniformDist();
 			auto x = d*cosf(angle);
 			auto y = eccentricity*d*sinf(angle);
@@ -46,7 +46,7 @@ public:
 		
 		auto angle = transformComponent->orientation.Angle();
 
-		for (auto i = 0; i < (this->points.size() - 1); i++) {
+		for (auto i = 0U; i < (this->points.size() - 1); i++) {
 
 			auto point1 = MathUtility::RotateVector(this->points[i], angle) + transformComponent->position; 
 			auto point2 = MathUtility::RotateVector(this->points[i + 1], angle) + transformComponent->position;

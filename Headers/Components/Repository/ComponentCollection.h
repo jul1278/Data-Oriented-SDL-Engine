@@ -83,7 +83,7 @@ public:
 	template<typename T, typename = typename enable_if<is_base_of<BaseComponent, T>::value>::type>
 	vector<T>* Select()
 	{
-		auto iContainer = componentCollection[type_index(typeid(T))];
+		auto iContainer = this->componentCollection[type_index(typeid(T))];
 		auto container = static_cast<VectorContainer<T>*>(iContainer);
 		return &(container->vec);
 	}

@@ -169,7 +169,7 @@ public:
 		list<string> splitStrings; 
 		string currString; 
 
-		for (auto i = 0; i < text.length(); i++) {
+		for (auto i = 0U; i < text.length(); i++) {
 			
 			if (text[i] == splitChar) {
 				if (!currString.empty()) {

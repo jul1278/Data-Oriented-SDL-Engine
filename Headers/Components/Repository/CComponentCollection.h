@@ -80,7 +80,7 @@ namespace Repository
         //-------------------------------------------------------------------------------
         void Append(Repository::ComponentCollection<T>& componentCollection)
         {
-            for(auto collection : componentCollection.components) {
+            for(auto& collection : componentCollection.components) {
                 
                 // We can assume they're not empty
                 this->components.push_back(collection);     
@@ -94,7 +94,7 @@ namespace Repository
         {
             unsigned int counter = 0; 
 
-            for (auto vec : this->components) {
+            for (auto& vec : this->components) {
                 if (auto v = vec.lock()) {
                     counter += v->size();
                     
@@ -136,7 +136,7 @@ namespace Repository
             }
             
             // Linear but I think this is ok since I wouldn't expect the list to be very large
-            for(auto vec : this->components) {
+            for(auto& vec : this->components) {
                 if (auto v = vec.lock()) {
                     if (index >= v->size()) {
                         index -= v->size();
@@ -159,7 +159,7 @@ namespace Repository
         bool empty()
         {
             if (!this->components.empty()) {
-                for (auto container : this->components) {
+                for (auto& container : this->components) {
                     if (auto c = container.lock()) {
                         // As soon as we find one that isn't empty we can return true. 
                         if (!(*c).empty()) {

@@ -106,7 +106,7 @@ namespace SerialUtility
 			if (this->TryGetAttribute(name, result)) {
 				try {
 					attribute = std::atoi(result.c_str());
-				} catch (std::exception& e) {
+				} catch (std::exception) {
 					return false; 
 				}
 				
@@ -139,9 +139,9 @@ namespace SerialUtility
 			std::string result;
 			if (this->TryGetAttribute(name, result)) {
 				try {
-					attribute = std::atof(result.c_str());
+					attribute = (float) std::atof(result.c_str());
 				}
-				catch (std::exception& e) {
+				catch (std::exception) {
 					return false;
 				}
 

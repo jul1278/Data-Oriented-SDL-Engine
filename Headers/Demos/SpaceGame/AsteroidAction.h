@@ -143,7 +143,9 @@ public:
 			physicsComponent->velocity.x = 0.0f; 
 			physicsComponent->velocity.y = 2.5f; 
 
-			transformComponent->position.x = (width / 2) + (MathUtility::RandomIntUniformDist() % (width / 2)); 
+			auto halfWidth = ((float)width) / 2.0f; 
+
+			transformComponent->position.x = halfWidth + (MathUtility::RandomIntUniformDist() % (width / 2)); 
 			transformComponent->position.y = -10.0f; 
 		}
 	}
