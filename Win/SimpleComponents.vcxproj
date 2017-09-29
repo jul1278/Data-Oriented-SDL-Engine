@@ -214,6 +214,7 @@
     <ClInclude Include="..\headers\utility\MathUtility.h" />
     <ClInclude Include="..\headers\utility\ProcessUtility.h" />
     <ClInclude Include="..\headers\utility\SerialUtility.h" />
+    <ClInclude Include="..\Headers\Utility\SpatialHashTable.h" />
     <ClInclude Include="..\headers\utility\TypeUtility.h" />
     <ClInclude Include="..\headers\utility\Vector.h" />
     <ClInclude Include="..\headers\XmlDocument.h" />

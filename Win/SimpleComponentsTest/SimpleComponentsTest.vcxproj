@@ -144,6 +144,7 @@
     <ClCompile Include="..\..\Source\Physics\Physics.cpp" />
     <ClCompile Include="..\..\Source\Utility\SerialUtility.cpp" />
     <ClCompile Include="..\..\Source\XmlDocument.cpp" />
+    <ClCompile Include="SpatialHashTest.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
