@@ -93,5 +93,8 @@
     <ClCompile Include="..\..\Source\XmlDocument.cpp">
       <Filter>Source Files\GameCpp</Filter>
     </ClCompile>
+    <ClCompile Include="SpatialHashTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

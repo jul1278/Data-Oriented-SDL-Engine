@@ -128,9 +128,6 @@
     <ClInclude Include="..\headers\components\repository\ComponentCollectionIterator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\headers\components\repository\ComponentCollectionRepository.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\headers\components\repository\ComponentContainerFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -210,9 +207,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\headers\events\ExitBoundsEventArgs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\headers\events\IComponentProcess.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\headers\events\IEventArgs.h">
@@ -348,6 +342,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\headers\utility\Vector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Demos\FunTest\FunTestGameApp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Demos\FunTest\FunTestMenuStage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Events\MouseOverEventArgs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Graphics\SimpleStatusBarGraphicResource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Utility\SpatialHashTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
